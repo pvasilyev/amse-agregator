@@ -39,7 +39,64 @@ mkdir data
 == Основные классы ==
 _Данные классы представляют основные сущности объектов, хранимых в базе._
 
-Щас тут будут классы =)
+===Город - `City`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Координаты - Coordinates : Point
+ Фотографии - Photos : ArrayList<String>
+ Ключевые слова - KeyWords : ArrayList<String>
+}}}
+
+===Архитектурная Достопримечательность - `ArchitectualAttraction`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Координаты - Coordinates : Point
+ Фотографии - Photos : ArrayList<String>
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Дата основания - Date : Date
+ Архитектор - Architect : String
+ Тип(ы) - Types : ArrayList<String>
+ Цена - Cost : String
+ Адрес - Address : String
+}}}
+
+===Природная Достопримечательность - `NaturalAttraction`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Координаты - Coordinates : Point
+ Фотографии - Photos : ArrayList<String>
+ Ключевые слова - KeyWords : ArrayList<String>
+ Ближайший город - City : ObjectId
+}}}
+
+===Отель - `Hotel`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Координаты - Coordinates : Point
+ Фотографии - Photos : ArrayList<String>
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Сайт - Website : String
+ Тип Номеров - Rooms : String
+}}}
+
+===Кафэ - `Cafe`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Координаты - Coordinates : Point
+ Фотографии - Photos : ArrayList<String>
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Сайт - Website : String
+ Музыка - Music : String
+}}}
+
 
 == Основные методы взаимодействия с базой ==
 _Методы, предоставляющие возможность добавления, удаления и редактирования элементов базы._
