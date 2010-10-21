@@ -1,0 +1,47 @@
+#summary All about storage and DB.
+#labels Phase-Deploy,Phase-Implementation
+
+= Хранилище =
+== Установка и настройка MongoDB ==
+----
+=== Сервер MongoDB ===
+_Всё очень просто и сводится к обычной распаковке архива и запуску, но все же:_
+ # Скачиваем последнюю стабильную версию под свою систему с [http://www.mongodb.org/downloads официального сайта] MongoDB. Мы используем версию [http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.6.3.tgz 1.6.3-linux32bit].
+{{{
+wget -O mongo.tgz http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.6.3.tgz
+}}}
+ # Распаковываем содержимое архива.
+{{{
+tar xzf mongo.tgz
+}}}
+ # Переходим в распакованный каталог _mongodb-linux-i686-1.6.3_
+{{{
+cd mongodb-linux-i686-1.6.3
+}}}
+ # Создаем директорию, в которой будет храниться наша база.
+{{{
+mkdir data
+}}}
+ # Запускаем сервер базы данных, указывая желаемую директорию с базой (параметр --dbpath)
+{{{
+./bin/mongod --dbpath data
+}}}
+
+=== MongoDB & Java ===
+Для взаимодействия с сервером MongoDB из нашей Java-программы, нам необходимо скачать [http://github.com/mongodb/mongo-java-driver/downloads Java-драйвер].<br>
+Мы пользуемся последней на данный момент версией - [http://github.com/downloads/mongodb/mongo-java-driver/mongo-2.2.jar mongo-2.2.jar]
+
+Затем полученный .jar файл, нужно либо положить в ваш _classpath_, либо подключить его в вашей IDE.
+
+Например в _eclipse_, это можно сделать в параметрах вашего проекта:
+ _Project - Properties - Java Build Path - Libraries - Add External JARs_
+----
+== Основные классы ==
+_Данные классы представляют основные сущности объектов, хранимых в базе._
+
+Щас тут будут классы =)
+
+== Основные методы взаимодействия с базой ==
+_Методы, предоставляющие возможность добавления, удаления и редактирования элементов базы._
+
+Щас тут будут методы =)
