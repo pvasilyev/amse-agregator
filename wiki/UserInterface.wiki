@@ -1,0 +1,4 @@
+Будут использованы следующие технологии:
+-html
+-xlst
+-framework XFrеsh http://sourceforge.net/projects/xfresh/develop
