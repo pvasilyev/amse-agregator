@@ -1,4 +1,5 @@
-Будут использованы следующие технологии:
--html
--xlst
--framework XFrеsh http://sourceforge.net/projects/xfresh/develop
+*Будут использованы следующие технологии:*
+ * html
+ * Описание
+ * xslt-преобразование
+ * framework XFrеsh http://sourceforge.net/projects/xfresh/develop
