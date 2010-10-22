@@ -1,0 +1,37 @@
+package ru.amse.agregator.storage;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
+public class Hotel extends CityElement {
+	
+	public static final String FIELD_ROOMS = "rooms";
+
+	public Hotel(DBObject dbObject){
+		super(dbObject);
+		this.setAllFromDBObject(dbObject);
+	}
+	
+	public Hotel(){
+		this(new BasicDBObject());
+	}
+	
+	public void setAllFromDBObject(DBObject dbObject){
+		copyField(dbObject,FIELD_ROOMS);
+	}
+	
+	//----
+	
+	public void setRooms(String rooms){
+		myDBObj.put(FIELD_ROOMS,rooms);
+	}
+	
+	//----
+		
+	public String getRooms(){
+		return myDBObj.getString(FIELD_ROOMS);
+	}
+			
+}
+
+
