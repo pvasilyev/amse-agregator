@@ -183,6 +183,8 @@ ObjectId DataBase.getCityIdByName(String cityName);
 == Пример использования ==
 _Пример использования вышеописанных методов и классов._
 
+Перед запуском программы, незабываем поднять у себя базу по [Storage#Сервер_MongoDB].
+
 {{{
 //Подключаем все необходимые классы хранилища.
 import ru.amse.agregator.storage.ArchitectualAttraction;
