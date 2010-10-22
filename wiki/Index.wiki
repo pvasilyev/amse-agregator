@@ -1,3 +1,4 @@
 #summary Информация о поиске и индексаторе
 
 Индексирование будет производиться с помощью библиотеки для java lucene 3.0.2
+Скачать библиотеку можно [ftp://apache.rinet.ru/pub/mirror/apache.org/dist//lucene/java/lucene-3.0.2.zip здесь].
