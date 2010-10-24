@@ -23,7 +23,7 @@ iv@gate:~/amse-agregator/miner$ javac -cp /home/iv/code/webharvest2b1-bin/webhar
 
 Запускаем:
 {{{
-java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.miner.Main   resources/<input.txt>
+java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.miner.Main   resources/<inputfile>
 
 Пример:
 
