@@ -7,10 +7,14 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
+import ru.amse.agregator.searcher.Searcher;
+import ru.amse.agregator.storage.City;
+import ru.amse.agregator.storage.DataBase;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
  * Author: Bondarev Timofey
@@ -19,12 +23,66 @@ import java.io.IOException;
  */
 
 public class Indexer {
+
+    private static class DataToIndex {
+        public static void writeDataToFile(File dataDir) {
+            try {
+                //connectToDB();
+                ArrayList<City> cites = DataBase.getAllSity(); // функция будет реализована позже от хранилища
+                File cityDir = new File(dataDir.getAbsolutePath() + "/City/");
+
+                if (!cityDir.exists()) {
+                    if (!cityDir.mkdirs()) {
+                        System.out.println("Cann't create subdirectory /City/");
+                        return;
+                    }
+                }
+                File current;
+                String name = "Рим";
+                for (int i = 0; i < cites.size(); ++i) {
+                    current = new File(cityDir.getAbsolutePath() + name);// cites.get(i).getName());
+                    if (!current.exists()) {
+                        current.createNewFile();
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Error in writeDataToBase");                
+            }
+        }
+
+        private static void connectToDB() {
+            DataBase.connectToMainBase();
+            // TODO убрать после того, как появятся данные в базе
+            City someCity = new City();
+            someCity.setName("Rome");
+            someCity.setDescription("wqe ertty ytryertwer wertwertwete tyuerwewq rteryrty rtwert ewrtwertrwey trr");
+            someCity.setPhoto("RomeInPhoto");
+            DataBase.add(someCity);
+            // TODO до этого места
+        }
+    }
+
     public static void makeIndex(File indexDir, File dataDir) {
+        cleanDirectory(indexDir);
+        DataToIndex.writeDataToFile(dataDir);
         index(indexDir, dataDir);
     }
 
+     private static void cleanDirectory(File indexDir) {
+        File[] files = indexDir.listFiles();
+        for (int i = 0; i < files.length; ++i) {
+            if (!files[i].isDirectory()) {
+                files[i].delete();
+            } else {
+                cleanDirectory(files[i]);
+                files[i].delete();
+            }
+        }
+    }
+    
     private static void index(File indexDir, File dataDir) {
         try {
+            Searcher.setIndexDir(indexDir);                                
             Directory indexDirectory = new NIOFSDirectory(indexDir);
             IndexWriter writer = new IndexWriter(indexDirectory,
                                                  new StandardAnalyzer(Version.LUCENE_30),
@@ -61,7 +119,6 @@ public class Indexer {
             doc.add(new Field("contents", new FileReader(f)));
             doc.add(new Field("filename", f.getCanonicalPath(), Field.Store.YES, Field.Index.ANALYZED));
 
-            //doc.add(new Field("filename", f.getCanonicalPath()));
             writer.addDocument(doc);
         } catch (IOException e) {
             System.out.println("Error in indexFile");

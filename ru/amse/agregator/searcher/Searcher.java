@@ -18,7 +18,23 @@ import java.io.IOException;
  */
 
 public class Searcher {
-    public static void search(File indexDir, String q) {
+    private static File INDEX_DIR;
+
+    public static void setIndexDir(File iDir) {
+        if (iDir.exists()) {
+            INDEX_DIR = iDir;
+        }
+    }
+
+    public static void search(UserQuery query) {
+        search(INDEX_DIR, query);
+    }
+
+    private static void search(File indexDir, UserQuery query) {
+        search(indexDir, query.getQueryExpression());
+    }
+
+    private static void search(File indexDir, String q) {
         try {
             Directory fsDirectory = new NIOFSDirectory(indexDir);
             IndexSearcher is = new IndexSearcher(fsDirectory);
