@@ -9,10 +9,10 @@
 Имеет одну `public static` функцию `makeIndex(File dataDir, File indexDir)`, которая создает из файлов, находящихся в папке `dataDir` индекс в папке `indexDir`, в которой в дальнейшем можно осуществлять поиск с помощью класса `Searcher`.
 <br><br>
 *Поисковик* располагается в package `ru.amse.agregator.searcher`, класс `Searcher`.<br> 
-Имеет одну `public static` функцию `search(File indexDir, String query)`<br>
+Имеет одну `public static` функцию `search(UserQuery query)`<br>
 Получает от интерфейса объект Query вида:<br>
 {{{
-class Query {
+class UserQuery {
     String query;
     String[] labels;
 }
