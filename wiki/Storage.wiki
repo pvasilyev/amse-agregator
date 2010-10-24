@@ -140,11 +140,8 @@ void DataBase.printAll();
 
 ====Добавление в базу. Возвращает id добавленного в базу объекта.====
 {{{
-//ArchitectualAttraction
-ObjectId DataBase.add(ArchitectualAttraction storageObject);
-
-//NaturalAttraction
-ObjectId DataBase.add(NaturalAttraction storageObject);
+//ArchitectualAttraction or NaturalAttraction
+ObjectId DataBase.add(Attraction storageObject);
 
 //City
 ObjectId DataBase.add(City storageObject);
@@ -172,6 +169,21 @@ Cafe DataBase.getCafe(ObjectId id);
 
 //Hotel
 Hotel DataBase.getHotel(ObjectId id);
+}}}
+
+====Получение списка из всех элементов коллекции====
+{{{
+//ArchitectualAttraction or NaturalAttraction
+ArrayList<Attraction> getAllAttractions();
+
+//City
+ArrayList<City> getAllCities();
+
+//Cafe
+ArrayList<Cafe> getAllCafes();
+
+//Hotel
+ArrayList<Hotel> getAllHotels();
 }}}
 
 ====Получение id города, по его названию. Если город не найден, то возвращается null.====
@@ -265,10 +277,10 @@ public class Example {
 
 ----
 == =) ==
-Исходники всех классов необходимых для того чтобы работало все вышеописанное уже можно брать из *svn/trunk/storage/*<br>
+Исходники всех классов необходимых для того чтобы работало все вышеописанное уже можно брать из *svn/trunk/ru/amse/agregator/storage/*<br>
 Незабываем писать о всех найденных ошибках и неточностях в комменты или личку.
 Также все что не понятно, тоже спрашивайте.
 
 _Классы хранилища еще будут неоднократно изменяться и расширяться, следите за обновлениями и используйте в своих частях последнюю версию._
 
-В скором времени возможности расширятся, для удовлетворения потребностей индексатора и кластеризатора. Также появится внутренний GUI для просмотра и управления базой.
+В скором времени появится внутренний GUI для просмотра и управления базой.
