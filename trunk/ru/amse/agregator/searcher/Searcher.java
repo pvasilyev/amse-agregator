@@ -1,4 +1,4 @@
-package ru.amse.agregator.Searcher;
+package ru.amse.agregator.searcher;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
