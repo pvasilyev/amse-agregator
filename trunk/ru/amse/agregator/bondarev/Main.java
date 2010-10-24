@@ -16,25 +16,12 @@ public class Main {
         File indexDir = new File("index");
         File dataDir = new File("data");
 
-        //cleanDirectory(indexDir);
-        //Indexer.makeIndex(indexDir, dataDir);
-        //Searcher.search(indexDir, "uses");
-
-        DataToIndex.writeDataToFile();        
+        Indexer.makeIndex(indexDir, dataDir);
+        Searcher.search(new UserQuery("uses"));
 
         System.out.println("Done!");
     }
 
-    private static void cleanDirectory(File indexDir) {
-        File[] files = indexDir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-            if (!files[i].isDirectory()) {
-                files[i].delete();
-            } else {
-                cleanDirectory(files[i]);
-                files[i].delete();
-            }
-        }
-    }
+   
 }
 
