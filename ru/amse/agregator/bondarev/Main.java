@@ -1,8 +1,7 @@
-﻿package ru.amse.bondarev;
+package ru.amse.agregator.bondarev;
 
-
-import ru.amse.agregator.Searcher.Searcher;
-import ru.amse.agregator.indexer.Indexer;
+import ru.amse.agregator.searcher.*;
+import ru.amse.agregator.indexer.*;
 
 import java.io.File;
 
@@ -17,11 +16,11 @@ public class Main {
         File indexDir = new File("index");
         File dataDir = new File("data");
 
-        cleanDirectory(indexDir);
+        //cleanDirectory(indexDir);
+        //Indexer.makeIndex(indexDir, dataDir);
+        //Searcher.search(indexDir, "uses");
 
-        Indexer.makeIndex(indexDir, dataDir);
-
-        Searcher.search(indexDir, "uses");        
+        DataToIndex.writeDataToFile();        
 
         System.out.println("Done!");
     }
