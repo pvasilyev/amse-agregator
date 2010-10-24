@@ -32,7 +32,7 @@ public class Main {
 			String configFile = s.substring(s.indexOf(';')+1);
 			
 			ScraperConfiguration config = new ScraperConfiguration(configFile);
-			Scraper scraper = new Scraper(config, "minerwork");
+			Scraper scraper = new Scraper(config, "resources/");
 			scraper.addVariableToContext("inputFile", linksFile);
 			scraper.execute();
 			
