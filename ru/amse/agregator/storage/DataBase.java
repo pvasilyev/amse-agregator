@@ -1,6 +1,7 @@
 package ru.amse.agregator.storage;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -23,7 +24,6 @@ public class DataBase {
 	
 	public static final String COLLECTION_ATTRACTIONS = "attractions";
 	public static final String COLLECTION_CITIES = "city";
-	public static final String COLLECTION_NATURAL_ATTRACTIONS = "natural_attractions";
 	public static final String COLLECTION_CAFE = "cafe";
 	public static final String COLLECTION_HOTELS = "hotels";
 
@@ -70,54 +70,56 @@ public class DataBase {
 	}
 	
 	
-	//Add object - 'obj' in collection - 'collectionName'
-	private static ObjectId addToCollection(String collectionName, DBObject obj){
-		if(myDB != null){
-			return (ObjectId) myDB.getCollection(collectionName).save(obj).getField("_id");
-		} else {
-			return null;
+	public static ArrayList<Attraction> getAllAttractions(){
+		ArrayList<Attraction> allCollection = new ArrayList<Attraction>();
+		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find();
+		while(cur.hasNext()){
+			allCollection.add((Attraction)cur.next());
 		}
+		return allCollection;
 	}
 	
-	//Replace in collection 'collectionName', object with id 'id' by 'newObj'
-	private static ObjectId updateInCollectionById(String collectionName, ObjectId id, DBObject newObj){
-		if(myDB != null){
-			newObj.put("_id", id);
-			return (ObjectId) myDB.getCollection(collectionName).save(newObj).getField("_id");
-		} else {
-			return null;
-		}		
-	}
-		
-	//Find one object in collection 'collectionName' where field 'key' == 'value'
-	private static DBObject findInCollection(String collectionName, String key, Object value){
-		if(myDB != null){
-			BasicDBObject criteria = new BasicDBObject(key, value);
-			return myDB.getCollection(collectionName).findOne(criteria);
-		} else {
-			return null;
+	public static ArrayList<City> getAllCities(){
+		ArrayList<City> allCollection = new ArrayList<City>();
+		DBCursor cur = myDB.getCollection(COLLECTION_CITIES).find();
+		while(cur.hasNext()){
+			allCollection.add((City)cur.next());
 		}
+		return allCollection;
 	}
 	
-	//Find one object in collection 'collectionName' where field id == 'id'
-	private static DBObject findInCollectionById(String collectionName, ObjectId id){
-		return findInCollection(collectionName,"_id", id);
+	public static ArrayList<Cafe> getAllCafes(){
+		ArrayList<Cafe> allCollection = new ArrayList<Cafe>();
+		DBCursor cur = myDB.getCollection(COLLECTION_CAFE).find();
+		while(cur.hasNext()){
+			allCollection.add((Cafe)cur.next());
+		}
+		return allCollection;
+	}
+	
+	public static ArrayList<Hotel> getAllHotels(){
+		ArrayList<Hotel> allCollection = new ArrayList<Hotel>();
+		DBCursor cur = myDB.getCollection(COLLECTION_HOTELS).find();
+		while(cur.hasNext()){
+			allCollection.add((Hotel)cur.next());
+		}
+		return allCollection;
+	}
+
+	
+	//Attraction
+	public static ObjectId add(Attraction storageObject){
+		return addToCollection(COLLECTION_ATTRACTIONS, storageObject.toDBObject());
 	}
 	
 	//ArchitectualAttraction
-	public static ObjectId add(ArchitectualAttraction storageObject){
-		return addToCollection(COLLECTION_ATTRACTIONS, storageObject.toDBObject());
-	}
 	public static ArchitectualAttraction getArchitectualAttraction(ObjectId id){
 		return (ArchitectualAttraction) findInCollectionById(COLLECTION_ATTRACTIONS, id);
 	}
 		
 	//NaturalAttractions
-	public static ObjectId add(NaturalAttraction storageObject){
-		return addToCollection(COLLECTION_NATURAL_ATTRACTIONS, storageObject.toDBObject());
-	}
 	public static NaturalAttraction getNaturalAttraction(ObjectId id){
-		return (NaturalAttraction) findInCollectionById(COLLECTION_NATURAL_ATTRACTIONS, id);
+		return (NaturalAttraction) findInCollectionById(COLLECTION_ATTRACTIONS, id);
 	}
 	
 	//City
@@ -169,16 +171,38 @@ public class DataBase {
 	}
 	
 	
-	
-	
-	
-	
-	
-	/**
-	//Это пока еще не реализовано.	
-	public static ObjectId add(KurortAttraction storageObject){
-		return addToCollection("attractions", storageObject.toDBObject());
+	//Add object - 'object' in collection - 'collectionName'
+	private static ObjectId addToCollection(String collectionName, DBObject object){
+		if(myDB != null){
+			return (ObjectId) myDB.getCollection(collectionName).save(object).getField("_id");
+		} else {
+			return null;
+		}
 	}
-			
-	*/
+	
+	//Replace in collection 'collectionName', object with id 'id' by 'newObj'
+	private static ObjectId updateInCollectionById(String collectionName, ObjectId id, DBObject newObj){
+		if(myDB != null){
+			newObj.put("_id", id);
+			return (ObjectId) myDB.getCollection(collectionName).save(newObj).getField("_id");
+		} else {
+			return null;
+		}		
+	}
+		
+	//Find one object in collection 'collectionName' where field 'key' == 'value'
+	private static DBObject findInCollection(String collectionName, String key, Object value){
+		if(myDB != null){
+			BasicDBObject criteria = new BasicDBObject(key, value);
+			return myDB.getCollection(collectionName).findOne(criteria);
+		} else {
+			return null;
+		}
+	}
+	
+	//Find one object in collection 'collectionName' where field id == 'id'
+	private static DBObject findInCollectionById(String collectionName, ObjectId id){
+		return findInCollection(collectionName,"_id", id);
+	}
+	
 }
