@@ -4,17 +4,27 @@
 Скачать библиотеку можно [ftp://apache.rinet.ru/pub/mirror/apache.org/dist//lucene/java/lucene-3.0.2.zip здесь].
 
 = Использование =
-
+== Индексирование ==
 *Индексатор* располагается в package `ru.amse.agregator.indexator`, класс `Indexator`.<br> 
 Имеет одну `public static` функцию `makeIndex(File dataDir, File indexDir)`, которая создает из файлов, находящихся в папке `dataDir` индекс в папке `indexDir`, в которой в дальнейшем можно осуществлять поиск с помощью класса `Searcher`.
 <br><br>
+== Поиск ==
 *Поисковик* располагается в package `ru.amse.agregator.searcher`, класс `Searcher`.<br> 
 Имеет одну `public static` функцию `search(UserQuery query)`<br>
 Получает от интерфейса объект Query вида:<br>
 {{{
 class UserQuery {
-    String query;
-    String[] labels;
+    UserQuery(String queryExpression);
+    UserQuery(String queryExpression, String[] labels);
+    setQueryExpression(String queryExpression);
+    setLabels(String[] labels);
+    addLabel(String label); // не тестировалась
 }
 }}}
-где `query` - это то, что ввел пользователь в область ввода, а `labels` - это массив дополнительных условий, которые он отметил на странице поиска.
+где `queryEpxression` - это то, что ввел пользователь в область ввода, а `labels` - это массив дополнительных условий, которые он отметил на странице поиска.
+<br><br>
+Еще не реализовано:
+ * создание каталога с файлами, из которых нужно строить индекс, из базы данных <br>
+ * возвращение класса с результатом поиска интерфейсу
+
+Т.к. уезжаю до вечера понедельника из города, возможно смогу  это сделать за то время, пока меня не будет, но я не буду иметь возможности выложить результаты из-за отсутствия интернета.
