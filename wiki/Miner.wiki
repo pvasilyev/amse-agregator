@@ -4,6 +4,32 @@
 Являеться компонентом системы ответственным за сбор информации из Сети и ее сохранение в БД. Информация получаемая на выходе программы - унифицированные записи в Сырой БД.
 Используемая технология: Web-Harvester.
 
+===Как компилить и запускать Miner===
+Для компиляции Miner'a потребуются JAR-файлы web-harvestera. [http://web-harvest.sourceforge.net/download/webharvest2b1-bin.zip Ссылка для скачивания]
+
+После checkout идем в папку amse-agregator/miner и компилим командой:
+{{{
+ javac -cp <full path to webharvest_2.jar> ru/amse/agregator/miner/Main.java
+
+ Пример:
+
+ javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
+}}}
+
+Далее переходим на уровни ниже:
+{{{
+ cd ru/amse/agregator/miner/
+}}}
+
+Запускаем:
+{{{
+java -cp <path to class>:<path to all WebHarvester JAR's> ru.amse.agregator.miner.Main resources<filname.txt>
+
+Пример:
+
+java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
+}}}
+
 На данном этапе разрабатываеться версия компоненты, которая после запуска пройдеться по заданному набору ссылок, собирая и занося в БД информацию про:
 
 *Города*
