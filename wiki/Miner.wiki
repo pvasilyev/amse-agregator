@@ -31,7 +31,9 @@ iv@gate:~/amse-agregator/miner/ru/amse/agregator/miner$ java -cp /home/iv/amse-a
 }}}
 
 
-Во входном файле храняться пары вида Файл со ссылками, Конфиг файл под эти ресурсы.
+Во входном файле храняться пары вида:
+
+'Файл с ссылками;Конфиг файл под эти ресурсы'
 {{{
 <linksfile>;resources/<configfile>
 
