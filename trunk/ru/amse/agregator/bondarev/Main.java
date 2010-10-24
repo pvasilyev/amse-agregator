@@ -1,4 +1,4 @@
-package ru.amse.bondarev;
+﻿package ru.amse.bondarev;
 
 
 import ru.amse.agregator.Searcher.Searcher;
@@ -21,7 +21,7 @@ public class Main {
 
         Indexer.makeIndex(indexDir, dataDir);
 
-        Searcher.search(indexDir, "uses");// "ведь достойной");        
+        Searcher.search(indexDir, "uses");        
 
         System.out.println("Done!");
     }
