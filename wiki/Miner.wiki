@@ -27,7 +27,7 @@ java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.
 
 Пример:
 
-java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
+iv@gate:~/amse-agregator/miner/ru/amse/agregator/miner$ java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
 }}}
 
 
@@ -41,9 +41,9 @@ wikilinks.txt;resources/wikipediaconfig.xml
 wikitravellinks.txt;resources/wikitravelconfig.xml
 }}}
 
-<linksfile> =  файл состоящий из ссылок, подлежащих обработке, записанных через Enter.
+_linksfile_ =  файл состоящий из ссылок, подлежащих обработке, записанных через Enter.
 
-<configfile> = конфигурационный файл, описывающий как webharvester будет обрабатывать ссылки.
+_configfile_ = конфигурационный файл, описывающий как webharvester будет обрабатывать ссылки.
 
 На данном этапе разрабатываеться версия компоненты, которая после запуска пройдеться по заданному набору ссылок, собирая и занося в БД информацию про:
 
