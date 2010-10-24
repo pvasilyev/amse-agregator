@@ -13,7 +13,7 @@
 
  Пример:
 
- javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
+iv@gate:~/amse-agregator/miner$ javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
 }}}
 
 Далее переходим на уровни ниже:
@@ -23,12 +23,27 @@
 
 Запускаем:
 {{{
-java -cp <path to class>:<path to all WebHarvester JAR's> ru.amse.agregator.miner.Main resources<filname.txt>
+java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.miner.Main   resources/<input.txt>
 
 Пример:
 
 java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
 }}}
+
+
+Во входном файле храняться пары вида Файл со ссылками, Конфиг файл под эти ресурсы.
+{{{
+<linksfile>;resources/<configfile>
+
+Пример:
+
+wikilinks.txt;resources/wikipediaconfig.xml
+wikitravellinks.txt;resources/wikitravelconfig.xml
+}}}
+
+<linksfile> =  файл состоящий из ссылок, подлежащих обработке, записанных через Enter.
+
+<configfile> = конфигурационный файл, описывающий как webharvester будет обрабатывать ссылки.
 
 На данном этапе разрабатываеться версия компоненты, которая после запуска пройдеться по заданному набору ссылок, собирая и занося в БД информацию про:
 
@@ -45,7 +60,5 @@ java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.ams
  * Фотографии 
  * Город
  * Дата основания
-
-После того, как данная компонента заработает, остальные компоненты системы смогут получить уже не тестовые, а реальные данные.
 
 Так же при выборе `WebHarvester` в качестве альтернативы, был рассмотрен вариант использовать `Visual Web Ripper`, но он оказался платным, не запускаемым под wine и не имел порта на Java.
