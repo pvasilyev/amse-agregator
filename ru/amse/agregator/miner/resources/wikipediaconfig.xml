@@ -50,19 +50,19 @@
 			</var-def>
 			
 			<var-def name="currentCityImage">
-					<xpath expression="//a[@title='Флаг']/img">
+					<xpath expression="//a[@title='Флаг']/img//@src">
 						<var name="loadedData"/>
 					</xpath>	
 			</var-def>
 			
 			<var-def name="currentCityLatitude">
-					<xpath expression="//span[@class='geo-dms']/span[@class='geo-lat']">
+					<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lat']">
 						<var name="loadedData"/>
 					</xpath>	
 			</var-def>
 			
 			<var-def name="currentCityLongitude">
-					<xpath expression="//span[@class='geo-dms']/span[@class='geo-lon']">
+					<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lon']">
 						<var name="loadedData"/>
 					</xpath>	
 			</var-def>
@@ -85,8 +85,9 @@
 				cityImages.push(currentCityImage.toString().replace("\n"," "));
 				cityLatitudes.push(currentCityLatitude.toString());
 				cityLongitudes.push(currentCityLongitude.toString());
-				cityDescriptions.push(currentCityDescription1.toString().replace("\n"," "));
-				cityDescriptions.push(currentCityDescription2.toString().replace("\n"," "));
+				cityDescriptions.push(currentCityDescription1.toString().replace("\n"," ").
+								concat(currentCityDescription2.toString().replace("\n"," ")));
+<!--				cityDescriptions.push(currentCityDescription2.toString().replace("\n"," "));-->
 			</script>			
 			
 		</body>
