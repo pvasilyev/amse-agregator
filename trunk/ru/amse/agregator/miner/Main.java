@@ -14,8 +14,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 	
 		String mainFile;
-		if(args.length == 1){
+		if(args.length == 0){
 			mainFile = args[0].toString();
+			//mainFile = "/home/iv/code/agregator/main.txt";
 		}
 		else{
 			System.out.println("Please specify an input file.");
@@ -41,8 +42,7 @@ public class Main {
 			String cityLatitudes =    scraper.getContext().get("cityLatitudesOut").toString().concat("\n");
 			String cityLongitudes =   scraper.getContext().get("cityLongitudesOut").toString().concat("\n");
 			String cityDescriptions = scraper.getContext().get("cityDescriptionsOut").toString().concat("\n");
-			
-			
+				
 			String namesArray[] = createArray(cityNames);
 			String imagesArray[] = createArray(cityImages);
 			String latArray[] = createArray(cityLatitudes);
@@ -50,34 +50,25 @@ public class Main {
 			String desArray[] = createArray(cityDescriptions);
 			
 			for(int i=0; i<namesArray.length; i++){
-				namesArray[i] = removeTags(namesArray[i]);
+				
+				namesArray[i] = clearString(namesArray[i]);
 				System.out.println(namesArray[i]);
 				
-				try{
-				imagesArray[i] = imagesArray[i].substring(imagesArray[i].indexOf("src=")+5); 
-				imagesArray[i] = imagesArray[i].substring(0, imagesArray[i].indexOf("\""));
 				System.out.println(imagesArray[i]);
-				}
-				catch(StringIndexOutOfBoundsException e){
-					System.out.println("emptyLink");
-				}
 				
-
-				latArray[i*2] = removeTags(latArray[i*2]);
-				System.out.println(latArray[i*2]);
+				latArray[i] = clearString(latArray[i]);
+				System.out.println(latArray[i]);
 				
-				lonArray[i*2] = removeTags(lonArray[i*2]);
-				System.out.println(lonArray[i*2]);
+				lonArray[i] = clearString(lonArray[i]);
+				System.out.println(lonArray[i]);
 
-				int j = i*2;
-				desArray[j] = desArray[j] + desArray[j + 1]; 
-				desArray[j].replace('\n', ' ');
-				desArray[j] = removeTags(desArray[j]);
-				desArray[j] = desArray[j].replaceAll("\t", "");
-				desArray[j] = desArray[j].replaceAll(" {2,}", " ");
-				desArray[j] = desArray[j].replaceAll(" {1,}[.]", ".");
-				desArray[j] = desArray[j].replaceAll(" {1,}[,]", ",");
-				System.out.println(desArray[j]);
+				desArray[i].replace('\n', ' ');
+				desArray[i] = clearString(desArray[i]);
+				desArray[i] = desArray[i].replaceAll("\t", "");
+				desArray[i] = desArray[i].replaceAll(" {2,}", " ");
+				desArray[i] = desArray[i].replaceAll(" {1,}[.]", ".");
+				desArray[i] = desArray[i].replaceAll(" {1,}[,]", ",");
+				System.out.println(desArray[i]);
 				
 			}
 			
@@ -87,7 +78,7 @@ public class Main {
 	}
 	
 	
-	private static String removeTags(String toClear){
+	private static String clearString(String toClear){
 		int a,b;
 		while(toClear.indexOf('<') != (-1)){
 			a = toClear.indexOf('<');
@@ -96,7 +87,11 @@ public class Main {
 				toClear = toClear.substring(0,a) + toClear.substring(b,toClear.length());
 				toClear = toClear.replaceFirst(">", " ");
 			}
-		}
+		}	
+		toClear = toClear.replaceAll("\t", "");
+		toClear = toClear.replaceAll(" {2,}", " ");
+		toClear = toClear.replaceAll(" {1,}[.]", ".");
+		toClear = toClear.replaceAll(" {1,}[,]", ",");
 		return toClear;
 	}
 	
