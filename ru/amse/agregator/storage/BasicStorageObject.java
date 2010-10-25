@@ -29,6 +29,8 @@ public abstract class BasicStorageObject extends StorageObject {
 		copyField(dbObject,FIELD_KEYWORDS);
 	}
 	
+	
+	
 	//----
 	
 	

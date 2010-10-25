@@ -2,7 +2,9 @@ package ru.amse.agregator.storage;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
@@ -55,7 +57,11 @@ public class DataBase {
 	}
 	
 	
-	
+	public static void removeCollection(String collectionName) {
+		if (myDB != null) {
+			myDB.getCollection(collectionName).drop();
+		}
+	}
 	//Print all collections of current database (myDB)
 	public static void printAll(){
 		Set<String> set = myDB.getCollectionNames();
@@ -172,14 +178,15 @@ public class DataBase {
 	
 	
 	//Add object - 'object' in collection - 'collectionName'
-	private static ObjectId addToCollection(String collectionName, DBObject object){
-		if(myDB != null){
-			return (ObjectId) myDB.getCollection(collectionName).save(object).getField("_id");
-		} else {
-			return null;
-		}
-	}
 	
+	private static ObjectId addToCollection(String collectionName, DBObject object){ 
+		if(myDB != null){ 
+		myDB.getCollection(collectionName).save(object); 
+		return (ObjectId) myDB.getCollection(collectionName).findOne(object).get("_id"); 
+		} else { 
+		return null; 
+		} 
+		}
 	//Replace in collection 'collectionName', object with id 'id' by 'newObj'
 	private static ObjectId updateInCollectionById(String collectionName, ObjectId id, DBObject newObj){
 		if(myDB != null){
@@ -204,5 +211,57 @@ public class DataBase {
 	private static DBObject findInCollectionById(String collectionName, ObjectId id){
 		return findInCollection(collectionName,"_id", id);
 	}
+	public static Vector<String> getCollectionAttributes(String collectionName){
+		Vector<String> res = new Vector<String>();
+		try{
+			Set <String> tempRes = new HashSet<String>();	
+			DBCollection coll = myDB.getCollection(collectionName);
+			DBCursor cur = coll.find();
+			while (cur.hasNext()){
+				DBObject temp= cur.next();
+				Set<String> fieldsSet = temp.keySet();
+				if ( !tempRes.containsAll(fieldsSet) ){
+					for(String fieldName : fieldsSet){
+						if (!tempRes.contains(fieldName))
+							tempRes.add(fieldName);
+					}
+				}
+			}
+			for (String v : tempRes){
+				res.add(v);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Epic Fail");
+		}
+		return res;
+	}
+	
+	public static Vector<Vector<Object>> getCollectionValues(String collectionName,Vector<String> attributs){
+		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
+		DBCollection coll = myDB.getCollection(collectionName);
+		DBCursor cur = coll.find();
+		
+		while(cur.hasNext()){
+			DBObject temp= cur.next();
+			res.add(new Vector<Object>());
+			for (Vector<Object> v : res){
+				Set<String> fieldsSet = temp.keySet();
+				for ( int i = 0; i < attributs.size();i++){
+					if ( fieldsSet.contains(attributs.get(i))){
+						v.add(temp.get(attributs.get(i)));
+					}
+					else
+						v.add(temp.get(null));
+				}
+				
+			}
+		}
+		
+		return res;
+	}
+	
+	
+	
 	
 }
