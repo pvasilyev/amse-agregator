@@ -26,41 +26,48 @@ public class Searcher {
         }
     }
 
-    public static void search(UserQuery query) {
+    public static void search(UserQuery query) throws IOException, ParseException {
         search(INDEX_DIR, query);
     }
 
-    private static void search(File indexDir, UserQuery query) {
+    private static void search(File indexDir, UserQuery query) throws IOException, ParseException {
         search(indexDir, query.getQueryExpression());
+        // todo Нужно бужет добавить реализацию для поиска с метками
     }
 
-    private static void search(File indexDir, String q) {
-        try {
-            Directory fsDirectory = new NIOFSDirectory(indexDir);
-            IndexSearcher is = new IndexSearcher(fsDirectory);
+    private static void search(File indexDir, String q) throws IOException, ParseException {
+        Directory fsDirectory = new NIOFSDirectory(indexDir);
+        IndexSearcher is = new IndexSearcher(fsDirectory);
+        String fieldForSearch = "name";
 
-             
-            QueryParser qParser = new QueryParser(Version.LUCENE_30,
-                                                  "contents", //contents //filename
-                                                  new StandardAnalyzer(Version.LUCENE_30));
-            Query query= qParser.parse(q);
-            System.out.println(query);
+        QueryParser qParser = new QueryParser(Version.LUCENE_30,
+                                              fieldForSearch,
+                                              new StandardAnalyzer(Version.LUCENE_30));
+        Query query = qParser.parse(q);
 
-            TopFieldCollector tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
+        TopFieldCollector tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-            is.search(query, tFC);
-            TopDocs docs = tFC.topDocs();
-            System.out.println(docs.getMaxScore());
-            ScoreDoc[] sDocs = docs.scoreDocs;
-            for (int i = 0; i < sDocs.length; ++i) {
-                System.out.println(is.doc(sDocs[i].doc).getField("filename"));
-            }
-            //System.out.println(is.doc(1).getField("contents"));
+        is.search(query, tFC);
+        TopDocs docs = tFC.topDocs();
+        System.out.println(docs.getMaxScore());
+        ScoreDoc[] sDocs = docs.scoreDocs;
+        for (ScoreDoc currentScoreDoc : sDocs) {
+            System.out.println(is.doc(currentScoreDoc.doc).getField("name"));
+            System.out.println(is.doc(currentScoreDoc.doc).getField("description"));
+        }
+        // Поиск по другому полю
+        fieldForSearch = "description";
+        qParser = new QueryParser(Version.LUCENE_30, fieldForSearch, new StandardAnalyzer(Version.LUCENE_30));
+        query = qParser.parse(q);
+        tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-        } catch (IOException e) {
-            System.out.println("Error in search!"); 
-        } catch (ParseException e) {
-            System.out.println("Error in parse!");
+        is.search(query, tFC);
+        docs = tFC.topDocs();
+        System.out.println(docs.getMaxScore());
+        sDocs = docs.scoreDocs;
+        for (ScoreDoc currentScoreDoc : sDocs) {
+            System.out.println(is.doc(currentScoreDoc.doc).getField("name"));
+            System.out.println(is.doc(currentScoreDoc.doc).getField("description"));
         }
     }
 }
