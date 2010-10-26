@@ -1,18 +1,26 @@
 package ru.amse.agregator.miner;
 
-
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.webharvest.definition.ScraperConfiguration;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.variables.Variable;
 
-
+import ru.amse.agregator.storage.City;
+import ru.amse.agregator.storage.DataBase;
 
 public class Main {
 
+	private static String namesArray[];
+	private static String imagesArray[];
+	private static String descripArray[];
+	private static String lonArray[];
+	private static String latArray[];
+	
 	public static void main(String[] args) throws IOException {
 	
 		String mainFile;
@@ -24,6 +32,11 @@ public class Main {
 			System.out.println("Please specify an input file.");
 			return;
 		}
+		
+		DataBase.connectToDirtyBase();
+		//DataBase.printAll();
+		DataBase.removeCollection("city");
+		//System.in.read();
 		
 		FileReader fr = new FileReader(mainFile);
 		BufferedReader br = new BufferedReader(fr);
@@ -53,11 +66,31 @@ public class Main {
 			Variable cityDescriptions  =	(Variable) scraper.getContext().get("cityDescriptionsOut");
 			
 			//clear and show mined data
-			processIncomeData(cityNames);
-			processIncomeData(cityImages);
-			processIncomeData(cityLatitudes);
-			processIncomeData(cityLongitudes);
-			processIncomeData(cityDescriptions);
+			namesArray = processIncomeData(cityNames);
+			imagesArray = processIncomeData(cityImages);
+			lonArray = processIncomeData(cityLatitudes);
+			latArray = processIncomeData(cityLongitudes);
+			descripArray = processIncomeData(cityDescriptions);
+			
+			for(int i=0; i< namesArray.length; i++){
+				
+				//create new City object and fill it fields
+				City newCity = new City();
+				newCity.setName(namesArray[i].toString());
+				newCity.setPhoto(imagesArray[i].toString());
+				newCity.setDescription(descripArray[i].toString());
+				
+				if(latArray != null && lonArray != null){
+					newCity.setCoordinates(createCoord(lonArray[i],latArray[i]));
+				}
+				
+				ArrayList<String> keywords = new ArrayList<String>();
+				keywords.add(namesArray[i].toString());
+				newCity.setKeyWordsArray(keywords);
+				
+				DataBase.add(newCity);
+				
+			}
 			
 			System.out.println("\n--- Links from: " + linksFile  + " mine complete! ---\n");
 
@@ -68,16 +101,37 @@ public class Main {
 	}
 	
 	//function where we will add data to DB, by now here we display mined data
-	private static void processIncomeData(Variable data){
-		
+	private static String[] processIncomeData(Variable data){
+		String dataArray[] = null;
 		if(data != null){
-			Object dataArray[] = data.toArray();
+			dataArray = createArray(data.toString().concat("\n"));
 			for(int i=0; i < dataArray.length; i++){
-				dataArray[i] = (Object) clearString(dataArray[i].toString());
-				System.out.println(dataArray[i]);
+				dataArray[i] = clearString(dataArray[i].toString());
+			//	System.out.println(dataArray[i]);
 			}
-		}			
+		}	
+		return dataArray;
+	}
+	
+	//function that creates gps coordinates
+	private static Point2D.Double createCoord(String lon, String lat){
+		double doubleLat, doubleLon;
+		Point2D.Double myPoint;
 		
+		doubleLon = java.lang.Double.parseDouble(lon.substring(0, lon.indexOf('°')));
+		doubleLon += java.lang.Double.parseDouble(lon.substring(lon.indexOf('°')+1,lon.indexOf('′'))) / 60;
+		
+		doubleLat = java.lang.Double.parseDouble(lat.substring(0, lat.indexOf('°')));
+		doubleLat += java.lang.Double.parseDouble(lat.substring(lat.indexOf('°')+1,lat.indexOf('′'))) / 60;
+		
+		if(lon.indexOf('с') == -1)
+			doubleLon *= -1;
+		
+		if(lat.indexOf('в') == -1)
+			doubleLat *= -1;
+		
+		myPoint = new Point2D.Double(doubleLon, doubleLat);
+		return myPoint;
 	}
 	
 	//function to clear the data from tags, unnecessary spaces, etc...
@@ -97,5 +151,26 @@ public class Main {
 		toClear = toClear.replaceAll(" {1,}[,]", ",");
 		return toClear;
 	}
+	
+    private static String[] createArray(String input){
+        int linesCounter = 0, current = 0;
+        current = input.indexOf('\n');
+        while(current != -1){
+                ++current;
+                current = input.indexOf('\n', current);
+                linesCounter++;
+        }
+        
+        String Array[] = new String[linesCounter];
+        for(int i = 0; i< linesCounter; i++){
+                Array[i] = input.substring(0, input.indexOf('\n'));
+                if(Array[i].length() == 0){
+                        Array[i] = "null";
+                }
+                input = input.substring(input.indexOf('\n')+1);
+        }
+        return Array;
+    }
+
 
 }
