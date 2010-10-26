@@ -75,7 +75,7 @@ public class DataBase {
 		}
 	}
 	
-	
+	//Get All Attractions from DataBase as ArrayList<Attraction>
 	public static ArrayList<Attraction> getAllAttractions(){
 		ArrayList<Attraction> allCollection = new ArrayList<Attraction>();
 		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find();
@@ -83,6 +83,26 @@ public class DataBase {
 			allCollection.add((Attraction)cur.next());
 		}
 		return allCollection;
+	}
+	
+	//Get All ArchitectualAttraction (only) from DataBase as ArrayList<ArchitectualAttraction>
+	public static ArrayList<ArchitectualAttraction> getAllArchitectualAttractions(){
+		ArrayList<ArchitectualAttraction> allArchitectualFromCollection = new ArrayList<ArchitectualAttraction>();		
+		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_ARCHITECTUAL_ATTRACTION));
+		while(cur.hasNext()){
+			allArchitectualFromCollection.add((ArchitectualAttraction)cur.next());
+		}
+		return allArchitectualFromCollection;
+	}
+	
+	//Get All NaturalAttraction (only) from DataBase as ArrayList<NaturalAttraction>
+	public static ArrayList<NaturalAttraction> getAllNaturalAttractions(){
+		ArrayList<NaturalAttraction> allNaturalFromCollection = new ArrayList<NaturalAttraction>();		
+		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_NATURAL_ATTRACTION));
+		while(cur.hasNext()){
+			allNaturalFromCollection.add((NaturalAttraction)cur.next());
+		}
+		return allNaturalFromCollection;
 	}
 	
 	public static ArrayList<City> getAllCities(){
