@@ -80,7 +80,7 @@ public class DataBase {
 		ArrayList<Attraction> allCollection = new ArrayList<Attraction>();
 		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find();
 		while(cur.hasNext()){
-			allCollection.add((Attraction)cur.next());
+			allCollection.add(new Attraction(cur.next()));
 		}
 		return allCollection;
 	}
@@ -90,7 +90,7 @@ public class DataBase {
 		ArrayList<ArchitectualAttraction> allArchitectualFromCollection = new ArrayList<ArchitectualAttraction>();		
 		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_ARCHITECTUAL_ATTRACTION));
 		while(cur.hasNext()){
-			allArchitectualFromCollection.add((ArchitectualAttraction)cur.next());
+			allArchitectualFromCollection.add(new ArchitectualAttraction(cur.next()));
 		}
 		return allArchitectualFromCollection;
 	}
@@ -100,7 +100,7 @@ public class DataBase {
 		ArrayList<NaturalAttraction> allNaturalFromCollection = new ArrayList<NaturalAttraction>();		
 		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_NATURAL_ATTRACTION));
 		while(cur.hasNext()){
-			allNaturalFromCollection.add((NaturalAttraction)cur.next());
+			allNaturalFromCollection.add(new NaturalAttraction(cur.next()));
 		}
 		return allNaturalFromCollection;
 	}
@@ -109,7 +109,7 @@ public class DataBase {
 		ArrayList<City> allCollection = new ArrayList<City>();
 		DBCursor cur = myDB.getCollection(COLLECTION_CITIES).find();
 		while(cur.hasNext()){
-			allCollection.add((City)cur.next());
+			allCollection.add(new City(cur.next()));
 		}
 		return allCollection;
 	}
@@ -118,7 +118,7 @@ public class DataBase {
 		ArrayList<Cafe> allCollection = new ArrayList<Cafe>();
 		DBCursor cur = myDB.getCollection(COLLECTION_CAFE).find();
 		while(cur.hasNext()){
-			allCollection.add((Cafe)cur.next());
+			allCollection.add(new Cafe(cur.next()));
 		}
 		return allCollection;
 	}
@@ -127,7 +127,7 @@ public class DataBase {
 		ArrayList<Hotel> allCollection = new ArrayList<Hotel>();
 		DBCursor cur = myDB.getCollection(COLLECTION_HOTELS).find();
 		while(cur.hasNext()){
-			allCollection.add((Hotel)cur.next());
+			allCollection.add(new Hotel(cur.next()));
 		}
 		return allCollection;
 	}
