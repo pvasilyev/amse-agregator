@@ -27,7 +27,7 @@ java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.
 
 Пример:
 
-iv@gate:~/svn/amse-agregator/miner/ru/amse/agregator/miner$ java -cp ~/svn/amse-agregator/miner/:~/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
+iv@gate:~/svn/amse-agregator/ru/amse/agregator/miner$ java -cp ~/svn/amse-agregator/miner/:~/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
 }}}
 
 
