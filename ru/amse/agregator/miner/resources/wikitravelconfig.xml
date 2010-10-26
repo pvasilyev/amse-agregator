@@ -22,7 +22,7 @@
 		<list>
 			<var-def name="URLlist">
 				<tokenize>
-					<file action="read" path="${inputFile}">
+					<file action="read" path="/home/iv/wikitravellinks.txt">
 					</file>
 				</tokenize>
 			</var-def>
@@ -62,7 +62,13 @@
 					
 			<script language="javascript">
 				cityNames.push(currentCityName.toString());
-				cityImages.push(currentCityImage.toString().replace("\n"," "));
+				var tmp = currentCityImage.toString().indexOf("\n");
+				if(tmp != -1){
+				  cityImages.push(currentCityImage.toString().substring(0,tmp));
+				}
+				else{
+				 cityImages.push(currentCityImage.toString());
+				}
 				cityDescriptions.push(currentCityDescription1.toString().replace("\n"," ").
 							concat(currentCityDescription2.toString().replace("\n"," ")));
 			</script>			
