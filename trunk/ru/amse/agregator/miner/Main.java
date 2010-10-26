@@ -36,7 +36,7 @@ public class Main {
 			
 			//configure Web-Harvester scraper 
 			ScraperConfiguration config = new ScraperConfiguration(configFile);
-			Scraper scraper = new Scraper(config, "resource/");
+			Scraper scraper = new Scraper(config, "resources/");
 			scraper.addVariableToContext("inputFile", linksFile);
 			
 			System.out.println("Processing links from: " + linksFile);
