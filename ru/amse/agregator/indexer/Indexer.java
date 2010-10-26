@@ -1,19 +1,15 @@
 package ru.amse.agregator.indexer;
 
+import org.apache.lucene.document.*;
+import org.apache.lucene.store.*;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
-import ru.amse.agregator.searcher.Searcher;
-import ru.amse.agregator.storage.City;
-import ru.amse.agregator.storage.DataBase;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import ru.amse.agregator.storage.*;
+import ru.amse.agregator.utils.ToolsForWorkWithFiles;
+
+import java.io.*;
 import java.util.ArrayList;
 
 /*
@@ -23,105 +19,103 @@ import java.util.ArrayList;
  */
 
 public class Indexer {
+    public static void makeNewIndex(File indexDir) throws Exception {
+        ToolsForWorkWithFiles.cleanDirectory(indexDir);
+        addToIndex(indexDir);
+    }
 
-    private static class DataToIndex {
-        public static void writeDataToFile(File dataDir) {
-            try {
-                //connectToDB();
-                ArrayList<City> cites = DataBase.getAllSity(); // функция будет реализована позже от хранилища
-                File cityDir = new File(dataDir.getAbsolutePath() + "/City/");
+    public static void addToIndex(File indexDir) throws Exception {
+        index(indexDir);
+    }
 
-                if (!cityDir.exists()) {
-                    if (!cityDir.mkdirs()) {
-                        System.out.println("Cann't create subdirectory /City/");
-                        return;
-                    }
-                }
-                File current;
-                String name = "Рим";
-                for (int i = 0; i < cites.size(); ++i) {
-                    current = new File(cityDir.getAbsolutePath() + name);// cites.get(i).getName());
-                    if (!current.exists()) {
-                        current.createNewFile();
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Error in writeDataToBase");                
-            }
-        }
+    private static void index(File indexDir) throws Exception {
+        Directory indexDirectory = new NIOFSDirectory(indexDir);
+        Version useVersion = Version.LUCENE_30;
+        IndexWriter writer = new IndexWriter(indexDirectory,
+                new StandardAnalyzer(useVersion),
+                IndexWriter.MaxFieldLength.LIMITED);
+        // writer.setUseCompoundFile(false);  - todo разобраться для чего
+        IndexAllObjects(writer);
+        writer.optimize();
+        writer.close();
+    }
 
-        private static void connectToDB() {
-            DataBase.connectToMainBase();
-            // TODO убрать после того, как появятся данные в базе
-            City someCity = new City();
-            someCity.setName("Rome");
-            someCity.setDescription("wqe ertty ytryertwer wertwertwete tyuerwewq rteryrty rtwert ewrtwertrwey trr");
-            someCity.setPhoto("RomeInPhoto");
-            DataBase.add(someCity);
-            // TODO до этого места
+    private static void IndexAllObjects(IndexWriter writer) throws Exception {
+        connectToDB(); // Не забыть запустить базу на компьютере!
+        indexAllCities(writer);
+        //indexAndWriteToFileAllCityElements(writer, dataDir);
+        //indexAndWriteToFileAllAttractions(writer, dataDir);
+    }
+
+    private static void connectToDB() {
+        //DataBase.connectToDirtyBase();
+    }
+
+    private static void indexAllCities(IndexWriter writer) throws Exception {
+        ArrayList<City> cites = DataBase.getAllCities();
+        //String currentDirectoryName = getCurrentDirectoryForCites(dataDir);
+        for (City currentCity : cites) {
+            Document currentDoc = getDocumentForCurrentCity(currentCity);
+            System.out.println("Indexed city with id: " + currentCity.getId());
+            writer.addDocument(currentDoc);
+            //writeCityToFile(currentCity, currentDirectoryName); решили не использовать
         }
     }
 
-    public static void makeIndex(File indexDir, File dataDir) {
-        cleanDirectory(indexDir);
-        DataToIndex.writeDataToFile(dataDir);
-        index(indexDir, dataDir);
+    private static String getCurrentDirectoryForCites(File dataDir) {
+        return dataDir.getAbsolutePath() + "/city/";
     }
 
-     private static void cleanDirectory(File indexDir) {
-        File[] files = indexDir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-            if (!files[i].isDirectory()) {
-                files[i].delete();
+    private static Document getDocumentForCurrentCity(City city) {
+        Document doc = new Document();
+
+        //String fileName = directoryName + city.getId();  не используется
+        //doc.add(new Field("filename", fileName, Field.Store.YES, Field.Index.ANALYZED));
+        String cityId = "" + city.getId();
+        doc.add(new Field("id", "1"/*cityId*/, Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field("name", "cityname"/*city.getName()*/, Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field("description", "cityname is bla-bla-bla. Text for test"/*city.getDescription()*/, Field.Store.YES, Field.Index.ANALYZED));
+        //doc.add(new Field("keywords", fileName, Field.Store.YES, Field.Index.ANALYZED));
+
+        return doc;
+    }
+
+    private static void writeCityToFile(City city, String directoryName) throws Exception {
+        // todo разобраться, что лучше передавать - файл или строку, проверить ошибки
+        File file = new File(directoryName + "/" + city.getId());
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
+        out.writeObject(city);
+        out.flush();
+        out.close();
+    }
+
+    private static void indexAndWriteToFileAllCityElements(IndexWriter writer, File dataDir) {
+        // todo Реализовать
+    }
+
+    private static void indexAndWriteToFileAllAttractions(IndexWriter writer, File dataDir) {
+        // todo Реализовать
+    }
+
+    private static void indexDirectory(IndexWriter writer, File dataDir) throws IOException {
+        File[] filesInThisDirectory = dataDir.listFiles();
+
+        for (File currentFile : filesInThisDirectory) {
+            if (currentFile.isDirectory()) {
+                indexDirectory(writer, currentFile);
             } else {
-                cleanDirectory(files[i]);
-                files[i].delete();
+                indexFile(writer, currentFile);
             }
         }
     }
-    
-    private static void index(File indexDir, File dataDir) {
-        try {
-            Searcher.setIndexDir(indexDir);                                
-            Directory indexDirectory = new NIOFSDirectory(indexDir);
-            IndexWriter writer = new IndexWriter(indexDirectory,
-                                                 new StandardAnalyzer(Version.LUCENE_30),
-                                                 IndexWriter.MaxFieldLength.LIMITED);
-            writer.setUseCompoundFile(false);
-            indexDirectory(writer, dataDir);
-            writer.optimize();
-            writer.close();
-        } catch (IOException e){
-            System.out.println("Error in index!");
-        }
-    }
 
-    private static void indexDirectory(IndexWriter writer, File dataDir) {
-        File[] files = dataDir.listFiles();
+    private static void indexFile(IndexWriter writer, File f) throws IOException {
+        System.out.println("Indexing " + f.getCanonicalPath());
+        Document doc = new Document();
 
-        //for (File f : files)
-        for (int i = 0; i < files.length; ++i) {
-            File f = files[i];
-            if (f.isDirectory()) {
-                indexDirectory(writer, f);
-            } else {
-                indexFile(writer, f);
-            }
-        }
+        doc.add(new Field("contents", new FileReader(f)));
+        doc.add(new Field("filename", f.getCanonicalPath(), Field.Store.YES, Field.Index.ANALYZED));
 
-    }
-
-    private static void indexFile(IndexWriter writer, File f) {
-        try {
-            System.out.println("Indexing " + f.getCanonicalPath());
-            Document doc = new Document();
-
-            doc.add(new Field("contents", new FileReader(f)));
-            doc.add(new Field("filename", f.getCanonicalPath(), Field.Store.YES, Field.Index.ANALYZED));
-
-            writer.addDocument(doc);
-        } catch (IOException e) {
-            System.out.println("Error in indexFile");
-        }
+        writer.addDocument(doc);
     }
 }
