@@ -43,7 +43,7 @@ _Данные классы представляют основные сущно�
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point
+ Координаты - Coordinates : Point2D.Double
  Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
 }}}
@@ -52,7 +52,7 @@ _Данные классы представляют основные сущно�
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point
+ Координаты - Coordinates : Point2D.Double
  Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Город - City : ObjectId
@@ -67,7 +67,7 @@ _Данные классы представляют основные сущно�
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point
+ Координаты - Coordinates : Point2D.Double
  Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Ближайший город - City : ObjectId
@@ -77,7 +77,7 @@ _Данные классы представляют основные сущно�
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point
+ Координаты - Coordinates : Point2D.Double
  Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Город - City : ObjectId
@@ -89,7 +89,7 @@ _Данные классы представляют основные сущно�
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point
+ Координаты - Coordinates : Point2D.Double
  Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Город - City : ObjectId
@@ -173,9 +173,15 @@ Cafe DataBase.getCafe(ObjectId id);
 Hotel DataBase.getHotel(ObjectId id);
 }}}
 
-====Получение списка из всех элементов коллекции====
+====Получение списка из всех элементов базы отдельной сущности====
 {{{
-//ArchitectualAttraction or NaturalAttraction
+//ArchitectualAttraction
+ArrayList<ArchitectualAttraction> getAllArchitectualAttractions();
+
+//NaturalAttraction
+ArrayList<NaturalAttraction> getAllNaturalAttractions();
+
+//Any Attraction
 ArrayList<Attraction> getAllAttractions();
 
 //City
@@ -205,7 +211,7 @@ import ru.amse.agregator.storage.ArchitectualAttraction;
 import ru.amse.agregator.storage.City;
 import ru.amse.agregator.storage.DataBase;
 
-import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double2D;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.types.ObjectId;
@@ -220,7 +226,7 @@ public class Example {
         
         someCity.setName("Рим");
         someCity.setPhoto("images/rim.jpg");
-        someCity.setCoordinates(new Point2D.Double(1220.32432,10.234324));
+        someCity.setCoordinates(new Point2D.Double2D.Double(1220.32432,10.234324));
         someCity.setDescription("Описание Рима");
         //ключевые слова
         ArrayList<String> stringsArray = new ArrayList<String>();
@@ -251,7 +257,7 @@ public class Example {
         someArchAttr.setCityById(someCityId);
         //someArchAttr.setCityByName("Рим"); - так тоже можно. но если известно id то лучше через него.
         
-        someArchAttr.setCoordinates(new Point2D.Double(10.324234,1022.24234));
+        someArchAttr.setCoordinates(new Point2D.Double2D.Double(10.324234,1022.24234));
         someArchAttr.setDescription("Kolizey description");
         
         //ключевые слова
