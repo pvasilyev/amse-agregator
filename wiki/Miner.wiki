@@ -7,7 +7,7 @@
 ===Как компилить и запускать Miner===
 Для компиляции Miner'a потребуются JAR-файлы web-harvestera. [http://web-harvest.sourceforge.net/download/webharvest2b1-bin.zip Ссылка для скачивания]
 
-После checkout идем в папку amse-agregator и компилим командой:
+Идем в папку amse-agregator и компилим командой:
 {{{
  javac -cp <full path to webharvest_2.jar> ru/amse/agregator/miner/Main.java
 
