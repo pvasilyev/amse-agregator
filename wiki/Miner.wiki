@@ -1,4 +1,4 @@
-#на этой странице будет собираться информация про Miner
+#summary All information about Miner
 
 = Miner =
 Являеться компонентом системы ответственным за сбор информации из Сети и ее сохранение в БД. Информация получаемая на выходе программы - унифицированные записи в Сырой БД.
@@ -7,13 +7,13 @@
 ===Как компилить и запускать Miner===
 Для компиляции Miner'a потребуются JAR-файлы web-harvestera. [http://web-harvest.sourceforge.net/download/webharvest2b1-bin.zip Ссылка для скачивания]
 
-После checkout идем в папку amse-agregator/miner и компилим командой:
+После checkout идем в папку amse-agregator и компилим командой:
 {{{
  javac -cp <full path to webharvest_2.jar> ru/amse/agregator/miner/Main.java
 
  Пример:
 
-iv@gate:~/amse-agregator/miner$ javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
+iv@gate:~/svn/amse-agregator$ javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
 }}}
 
 Далее переходим на уровни ниже:
@@ -27,7 +27,7 @@ java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.
 
 Пример:
 
-iv@gate:~/amse-agregator/miner/ru/amse/agregator/miner$ java -cp /home/iv/amse-agregator/miner/:/home/iv/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
+iv@gate:~/svn/amse-agregator/miner/ru/amse/agregator/miner$ java -cp ~/svn/amse-agregator/miner/:~/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
 }}}
 
 
@@ -47,9 +47,10 @@ _linksfile_ =  файл состоящий из ссылок, подлежащи
 
 _configfile_ = конфигурационный файл, описывающий как webharvester будет обрабатывать ссылки.
 
-На данный момент в репозиториях лежит конфиг файл для сбора информации про города из википедии (_wikipedia.config_), и файлик (_wikilinks.txt_) куда пишуться интересующие нас города на википедии.   Так же там лежит файл(_main.txt_):
+На данный момент в репозиториях лежат конфиг файлы для сбора информации про города из _wikipedia_ и _wikitravel_(wikipediaconfig, wikitravelconfig), и файлики (wikilinks.txt, wikitravellinkst.txt) куда пишуться интересующие нас города на этих ресурсах.   Так же там лежит файл(_main.txt_):
 {{{
 wikilinks.txt;resources/wikipediaconfig.xml
+wikitravellinks.txt;resources/wikitravelconfig.xml
 }}}
 который и скармливаеться java-программе.
 
@@ -59,9 +60,9 @@ java-программа на выходе выдает информацию ви
  * Координаты
  * Ссылка на изображение
 
-_Ближайший план:_ Написать config файлы для других ресурсов(_wikitravel.org,_ _archive.travel.ru, ..._)
-Написать конфиги таким образом, чтобы код на ява программе обрабатывал входные данные единообразно(поступающие данные обрабатывались одними и теми же методами).
+_Ближайший план:_ Написать config файлы для других ресурсов(_archive.travel.ru, ..._)
 
+Конфиг файлы пишутся таким образом, чтобы программа обрабатывала поступающие данные единым образом; так если мы захотим добавить к обработке еще 1 ресурс, все что нам требуеться это добавить запись в main.txt указав там файлик с ссылками и конфиг файл, саму программу перекомпилировать при этом не требуеться.
 
 
 Так же при выборе `WebHarvester` в качестве альтернативы, был рассмотрен вариант использовать `Visual Web Ripper`, но он оказался платным, не запускаемым под wine и не имел порта на Java.
