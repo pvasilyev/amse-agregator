@@ -90,7 +90,9 @@ public class DataBase {
 		ArrayList<ArchitectualAttraction> allArchitectualFromCollection = new ArrayList<ArchitectualAttraction>();		
 		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_ARCHITECTUAL_ATTRACTION));
 		while(cur.hasNext()){
-			allArchitectualFromCollection.add(new ArchitectualAttraction(cur.next()));
+			DBObject oo = cur.next();
+			allArchitectualFromCollection.add(new ArchitectualAttraction(oo));
+			//System.out.println(oo);
 		}
 		return allArchitectualFromCollection;
 	}
@@ -280,8 +282,4 @@ public class DataBase {
 		
 		return res;
 	}
-	
-	
-	
-	
 }

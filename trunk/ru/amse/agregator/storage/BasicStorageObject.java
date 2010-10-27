@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public abstract class BasicStorageObject extends StorageObject {
+public class BasicStorageObject extends StorageObject {
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_DESC = "decription";
 	public static final String FIELD_COORDS = "coordinates";
@@ -14,14 +14,16 @@ public abstract class BasicStorageObject extends StorageObject {
 	
 	BasicStorageObject(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 	}
 	
 	public BasicStorageObject() {
 		this(new BasicDBObject());
 	}	
 	
+	@Override
 	public void setAllFromDBObject(DBObject dbObject){
+		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_NAME);
 		copyField(dbObject,FIELD_DESC);
 		copyField(dbObject,FIELD_COORDS);

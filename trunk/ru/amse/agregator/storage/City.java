@@ -8,7 +8,7 @@ public class City extends BasicStorageObject {
 	public City(DBObject dbObject){
 		super(dbObject);
 		//если добавятся свои поля то нужно добавить собственную функцию:
-		//this.setAllFromDBObject(dbObject);
+		//setAllFromDBObject(dbObject);
 	}
 	
 	public City(){

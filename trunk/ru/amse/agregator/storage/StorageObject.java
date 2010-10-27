@@ -5,12 +5,13 @@ import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public abstract class StorageObject {
+public class StorageObject {
 	protected BasicDBObject myDBObj;
 	
 	StorageObject(DBObject dbObject){
+		//System.out.println("kl" + dbObject);
 		myDBObj = new BasicDBObject();
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 	}
 	
 	StorageObject(){
@@ -18,11 +19,14 @@ public abstract class StorageObject {
 	}
 	
 	public void setAllFromDBObject(DBObject dbObject){
+		//System.out.println("kl23" + myDBObj);
 		copyField(dbObject,"_id");
 	}
 	
 	protected void copyField(DBObject dbObj, String key){
 		myDBObj.put(key,dbObj.get(key));
+		//System.out.println("kl2" + myDBObj);
+		//System.out.println("kl2" + key);
 	}
 	
 	public ObjectId getId(){
