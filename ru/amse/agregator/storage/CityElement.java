@@ -18,6 +18,7 @@ public class CityElement extends BasicStorageObject {
 		this(new BasicDBObject());
 	}
 	
+	@Override
 	public void setAllFromDBObject(DBObject dbObject){
 		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_WEBSITE);

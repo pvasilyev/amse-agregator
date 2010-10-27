@@ -39,10 +39,10 @@ public class StorageTester {
 		x2.setKeyWordsArray(new ArrayList<String>());
 		DataBase.add(x2);
 
-		//DataBase.printAll();
+		DataBase.printAll();
 		///*
-		ArrayList<ArchitectualAttraction> cities21 = DataBase.getAllArchitectualAttractions();
-		for(ArchitectualAttraction city : cities21){
+		ArrayList<Attraction> cities21 = DataBase.getAllAttractions();
+		for(Attraction city : cities21){
 			System.out.println(city.toDBObject());
 		}
 		

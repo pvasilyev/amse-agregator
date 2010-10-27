@@ -16,6 +16,7 @@ public class Hotel extends CityElement {
 		this(new BasicDBObject());
 	}
 	
+	@Override
 	public void setAllFromDBObject(DBObject dbObject){
 		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_ROOMS);

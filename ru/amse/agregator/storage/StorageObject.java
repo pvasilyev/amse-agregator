@@ -9,7 +9,7 @@ public class StorageObject {
 	protected BasicDBObject myDBObj;
 	
 	StorageObject(DBObject dbObject){
-		//System.out.println("kl" + dbObject);
+		//myDBObj = (BasicDBObject) dbObject;
 		myDBObj = new BasicDBObject();
 		setAllFromDBObject(dbObject);
 	}
@@ -19,14 +19,11 @@ public class StorageObject {
 	}
 	
 	public void setAllFromDBObject(DBObject dbObject){
-		//System.out.println("kl23" + myDBObj);
 		copyField(dbObject,"_id");
 	}
 	
 	protected void copyField(DBObject dbObj, String key){
 		myDBObj.put(key,dbObj.get(key));
-		//System.out.println("kl2" + myDBObj);
-		//System.out.println("kl2" + key);
 	}
 	
 	public ObjectId getId(){
@@ -34,6 +31,10 @@ public class StorageObject {
 	}
 	
 	public DBObject toDBObject(){
-		return new BasicDBObject(myDBObj);
+		return (DBObject) myDBObj.clone();
+	}
+	
+	public String toString(){
+		return myDBObj.toString();
 	}
 }
