@@ -1,2 +1,2 @@
-wikilinks.txt;amse-agregator/ru/amse/agregator/miner/resources/wikipediaconfig.xml
-wikitravellinks.txt;amse-agregator/ru/amse/agregator/miner/resources/wikitravelconfig.xml
+wikilinks.txt;wikipediaconfig.xml
+wikitravellinks.txt;wikitravelconfig.xml

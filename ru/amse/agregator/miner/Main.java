@@ -14,7 +14,8 @@ import ru.amse.agregator.storage.City;
 import ru.amse.agregator.storage.DataBase;
 
 public class Main {
-
+	
+	private static final String path = "amse-agregator/ru/amse/agregator/miner/resources/";
 	private static String namesArray[];
 	private static String imagesArray[];
 	private static String descripArray[];
@@ -48,8 +49,8 @@ public class Main {
 			String configFile = s.substring(s.indexOf(';')+1);
 			
 			//configure Web-Harvester scraper 
-			ScraperConfiguration config = new ScraperConfiguration(configFile);
-			Scraper scraper = new Scraper(config, "amse-agregator/ru/amse/agregator/miner/resources");
+			ScraperConfiguration config = new ScraperConfiguration(path + configFile);
+			Scraper scraper = new Scraper(config, path);
 			scraper.addVariableToContext("inputFile", linksFile);
 			
 			System.out.println("Processing links from: " + linksFile);
