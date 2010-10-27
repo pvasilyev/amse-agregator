@@ -33,9 +33,9 @@ public class Main {
 			return;
 		}
 		
-		DataBase.connectToDirtyBase();
-		//DataBase.printAll();
+		DataBase.connectToDirtyBase();	
 		DataBase.removeCollection("city");
+		DataBase.printAll();
 		//System.in.read();
 		
 		FileReader fr = new FileReader(mainFile);
@@ -49,7 +49,7 @@ public class Main {
 			
 			//configure Web-Harvester scraper 
 			ScraperConfiguration config = new ScraperConfiguration(configFile);
-			Scraper scraper = new Scraper(config, "resources/");
+			Scraper scraper = new Scraper(config, "amse-agregator/ru/amse/agregator/miner/resources");
 			scraper.addVariableToContext("inputFile", linksFile);
 			
 			System.out.println("Processing links from: " + linksFile);

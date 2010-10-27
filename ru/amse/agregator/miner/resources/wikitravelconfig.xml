@@ -22,7 +22,7 @@
 		<list>
 			<var-def name="URLlist">
 				<tokenize>
-					<file action="read" path="/home/iv/wikitravellinks.txt">
+					<file action="read" path="${inputFile}">
 					</file>
 				</tokenize>
 			</var-def>
