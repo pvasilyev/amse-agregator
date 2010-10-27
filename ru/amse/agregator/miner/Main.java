@@ -35,8 +35,8 @@ public class Main {
 		}
 		
 		DataBase.connectToDirtyBase();	
-		DataBase.removeCollection("city");
-		DataBase.printAll();
+		//DataBase.removeCollection("city");
+		//DataBase.printAll();
 		//System.in.read();
 		
 		FileReader fr = new FileReader(mainFile);
