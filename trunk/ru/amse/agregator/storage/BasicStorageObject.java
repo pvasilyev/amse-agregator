@@ -102,4 +102,9 @@ public class BasicStorageObject extends StorageObject {
 		return (ArrayList<String>) myDBObj.get(FIELD_PHOTOS);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getKeyWordsArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_KEYWORDS);
+	}
+	
 }
