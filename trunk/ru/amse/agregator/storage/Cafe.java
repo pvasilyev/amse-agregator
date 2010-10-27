@@ -15,6 +15,7 @@ public class Cafe extends CityElement{
 		this(new BasicDBObject());
 	}
 			
+	@Override
 	public void setAllFromDBObject(DBObject dbObject){
 		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_MUSIC);

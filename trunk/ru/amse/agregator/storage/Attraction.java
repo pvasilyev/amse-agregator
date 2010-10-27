@@ -13,13 +13,15 @@ public class Attraction extends BasicStorageObject{
 	
 	public Attraction(DBObject dbObject){
 		super(dbObject);
+		myDBObj = (BasicDBObject)dbObject;
 		setAllFromDBObject(dbObject);
 	}
 		
 	public Attraction(){
 		this(new BasicDBObject());
 	}
-		
+	
+	@Override
 	public void setAllFromDBObject(DBObject dbObject){
 		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_CITY_ID);
