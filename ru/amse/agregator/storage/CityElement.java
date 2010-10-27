@@ -5,13 +5,13 @@ import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public abstract class CityElement extends BasicStorageObject {
+public class CityElement extends BasicStorageObject {
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_CITY_ID = "city_id";
 		
 	public CityElement(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 	}
 	
 	public CityElement(){
@@ -19,6 +19,7 @@ public abstract class CityElement extends BasicStorageObject {
 	}
 	
 	public void setAllFromDBObject(DBObject dbObject){
+		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_WEBSITE);
 		copyField(dbObject,FIELD_CITY_ID);
 	}

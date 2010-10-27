@@ -8,7 +8,7 @@ public class Cafe extends CityElement{
 	
 	public Cafe(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 	}
 	
 	public Cafe(){
@@ -16,6 +16,7 @@ public class Cafe extends CityElement{
 	}
 			
 	public void setAllFromDBObject(DBObject dbObject){
+		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_MUSIC);
 	}
 	

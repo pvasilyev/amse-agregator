@@ -13,8 +13,7 @@ public class Attraction extends BasicStorageObject{
 	
 	public Attraction(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
-		myDBObj.put(FIELD_ATTRACTION_TYPE, "Attraction");
+		setAllFromDBObject(dbObject);
 	}
 		
 	public Attraction(){
@@ -22,7 +21,9 @@ public class Attraction extends BasicStorageObject{
 	}
 		
 	public void setAllFromDBObject(DBObject dbObject){
+		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_CITY_ID);
+		copyField(dbObject,FIELD_ATTRACTION_TYPE);
 	}
 	
 	//----

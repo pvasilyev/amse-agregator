@@ -9,7 +9,7 @@ public class Hotel extends CityElement {
 
 	public Hotel(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 	}
 	
 	public Hotel(){
@@ -17,6 +17,7 @@ public class Hotel extends CityElement {
 	}
 	
 	public void setAllFromDBObject(DBObject dbObject){
+		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_ROOMS);
 	}
 	

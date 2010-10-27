@@ -14,14 +14,15 @@ public class ArchitectualAttraction extends Attraction {
 	
 	public ArchitectualAttraction(DBObject dbObject){
 		super(dbObject);
-		this.setAllFromDBObject(dbObject);
+		setAllFromDBObject(dbObject);
 		myDBObj.put(FIELD_ATTRACTION_TYPE, TYPE_ARCHITECTUAL_ATTRACTION);
 	}
 		
 	public ArchitectualAttraction(){	
 		this(new BasicDBObject());
 	}
-		
+	
+	@Override	
 	public void setAllFromDBObject(DBObject dbObject){
 		super.setAllFromDBObject(dbObject);
 		copyField(dbObject,FIELD_DATE_FOUNDATION);
