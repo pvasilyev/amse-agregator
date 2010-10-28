@@ -178,18 +178,30 @@ public class DBWrapper extends StorageObject{
 	public ArrayList<Point2D.Double> getCoordsArray(){
 		ArrayList<DBObject> coordsArray = (ArrayList<DBObject>) myDBObj.get(FIELD_COORDS);
 		ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
-		for(DBObject obj : coordsArray){
-			coords.add(new Point2D.Double((Double)obj.get("x"),(Double)obj.get("y")));
-		}		
+		if(coordsArray != null){
+			for(DBObject obj : coordsArray){
+				coords.add(new Point2D.Double((Double)obj.get("x"),(Double)obj.get("y")));
+			}
+		}
 		return coords;
 	}		
 	
 	public Point2D.Double getCoords(){
-		return getCoordsArray().get(0);
+		ArrayList<Point2D.Double> coordsAr = getCoordsArray();
+		if(!coordsAr.isEmpty()){
+			return coordsAr.get(0);
+		} else {
+			return null;
+		}		
 	}
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getPhotosArray(){
 		return (ArrayList<String>) myDBObj.get(FIELD_PHOTOS);
-	}		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getKeyWordsArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_KEYWORDS);
+	}
 }
