@@ -27,6 +27,10 @@ public abstract class StorageObject {
 		myDBObj.put(key,dbObj.get(key));
 	}
 	
+	public void setId(ObjectId id){
+		myDBObj.put(FIELD_ID,id);
+	}
+	
 	public ObjectId getId(){
 		return (ObjectId) myDBObj.get(FIELD_ID);
 	}

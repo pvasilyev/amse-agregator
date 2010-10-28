@@ -104,7 +104,8 @@ public class DataBase {
 	}
 		
 	public static ObjectId add(DBWrapper storageObject){
-		return addToCollection(COLLECTION_MAIN, storageObject.toDBObject());
+		storageObject.setId(addToCollection(COLLECTION_MAIN, storageObject.toDBObject()));
+		return storageObject.getId();
 	}
 	
 	public static DBWrapper getDBObjectById(ObjectId id){
