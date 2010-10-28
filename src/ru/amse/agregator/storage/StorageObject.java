@@ -5,21 +5,22 @@ import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class StorageObject {
+public abstract class StorageObject {
 	protected BasicDBObject myDBObj;
 	
-	StorageObject(DBObject dbObject){
-		//myDBObj = (BasicDBObject) dbObject;
-		myDBObj = new BasicDBObject();
+	public static final String FIELD_ID = "_id";
+	
+	public StorageObject(DBObject dbObject){
+		//myDBObj = new BasicDBObject(dbObject.toMap());
 		setAllFromDBObject(dbObject);
 	}
 	
-	StorageObject(){
+	public StorageObject(){
 		this(new BasicDBObject());
 	}
 	
 	public void setAllFromDBObject(DBObject dbObject){
-		copyField(dbObject,"_id");
+		myDBObj = new BasicDBObject(dbObject.toMap());
 	}
 	
 	protected void copyField(DBObject dbObj, String key){
@@ -27,11 +28,11 @@ public class StorageObject {
 	}
 	
 	public ObjectId getId(){
-		return (ObjectId) myDBObj.get("_id");
+		return (ObjectId) myDBObj.get(FIELD_ID);
 	}
 	
-	public DBObject toDBObject(){
-		return (DBObject) myDBObj.clone();
+	public BasicDBObject toDBObject(){
+		return new BasicDBObject(myDBObj);
 	}
 	
 	public String toString(){
