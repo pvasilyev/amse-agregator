@@ -29,7 +29,7 @@ public class StorageTester {
         stringsArray.add("Рим");
         someCity.setKeyWordsArray(stringsArray);
         
-        //Добавляем созданный город в базу и объекту автоматически доабвляется поле id
+        //Добавляем созданный город в базу и объекту автоматически добавляется поле id
         DataBase.add(someCity);
         
         //---------------
@@ -51,6 +51,7 @@ public class StorageTester {
         someArchAttr.setPhotosArray(photosArray);
         
         //указываем город.
+        System.out.println("::::::::"+someCity.getId());
         someArchAttr.setCityById(someCity.getId());
         //someArchAttr.setCityByName("Рим"); - так тоже можно. но если известно id то лучше через него.
         
@@ -109,7 +110,7 @@ public class StorageTester {
             System.out.println("address: " + obj.getRooms());
             System.out.println("address: " + obj.getWebsite());
             System.out.println("address: " + obj.getBuildDate());
-            System.out.println("address: " + obj.getCityId());
+            System.out.println("cityId: " + obj.getCityId());
             System.out.println("address: " + obj.getKeyWordsArray());
             System.out.println("address: " + obj.getPhotosArray());
             System.out.println("address: " + obj.getCoordsArray());
