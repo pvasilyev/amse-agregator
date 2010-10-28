@@ -2,10 +2,7 @@ package ru.amse.agregator.storage;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
-
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -17,18 +14,14 @@ import com.mongodb.MongoException;
 
 public class DataBase {
 	private static Mongo myMongo = null;
-	public static DB myDB = null;
+	private static DB myDB = null;
 	
-	public static final String DB_SERVER_ADDRESS = "localhost";
-	public static final int DB_SERVER_PORT = 27017;
-	public static final String MAIN_DB_NAME = "mainDB";
-	public static final String DIRTY_DB_NAME = "dirtyDB";
+	public static final String 	DB_SERVER_ADDRESS = "localhost";
+	public static final int 	DB_SERVER_PORT = 27017;
+	public static final String 	MAIN_DB_NAME = "mainDB";
+	public static final String 	DIRTY_DB_NAME = "dirtyDB";
 	
-	public static final String COLLECTION_ATTRACTIONS = "attractions";
-	public static final String COLLECTION_CITIES = "city";
-	public static final String COLLECTION_CAFE = "cafe";
-	public static final String COLLECTION_HOTELS = "hotels";
-
+	public static final String 	COLLECTION_MAIN = "main";
 
 	//Connect to dirty database
 	public static void connectToDirtyBase(){
@@ -53,15 +46,17 @@ public class DataBase {
 	}
 	
 	public static void switchBaseTo(String dbName){
-		myDB = myMongo.getDB(dbName);
+		if(myMongo != null){
+			myDB = myMongo.getDB(dbName);
+		}
 	}
-	
-	
+		
 	public static void removeCollection(String collectionName) {
 		if (myDB != null) {
 			myDB.getCollection(collectionName).drop();
 		}
 	}
+	
 	//Print all collections of current database (myDB)
 	public static void printAll(){
 		Set<String> set = myDB.getCollectionNames();
@@ -74,212 +69,100 @@ public class DataBase {
 			}
 		}
 	}
-	
-	//Get All Attractions from DataBase as ArrayList<Attraction>
-	public static ArrayList<Attraction> getAllAttractions(){
-		ArrayList<Attraction> allCollection = new ArrayList<Attraction>();
-		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find();
-		while(cur.hasNext()){
-			allCollection.add(new Attraction(cur.next()));
+		
+	public static ArrayList<DBWrapper> getAllCities(){
+		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CITY));
+			while(cur.hasNext()){
+				allCollection.add(new DBWrapper(cur.next()));
+			}
 		}
 		return allCollection;
 	}
 	
-	//Get All ArchitectualAttraction (only) from DataBase as ArrayList<ArchitectualAttraction>
-	public static ArrayList<ArchitectualAttraction> getAllArchitectualAttractions(){
-		ArrayList<ArchitectualAttraction> allArchitectualFromCollection = new ArrayList<ArchitectualAttraction>();		
-		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_ARCHITECTUAL_ATTRACTION));
-		while(cur.hasNext()){
-			DBObject oo = cur.next();
-			allArchitectualFromCollection.add(new ArchitectualAttraction(oo));
-			//System.out.println(oo);
-		}
-		return allArchitectualFromCollection;
-	}
-	
-	//Get All NaturalAttraction (only) from DataBase as ArrayList<NaturalAttraction>
-	public static ArrayList<NaturalAttraction> getAllNaturalAttractions(){
-		ArrayList<NaturalAttraction> allNaturalFromCollection = new ArrayList<NaturalAttraction>();		
-		DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(new BasicDBObject(Attraction.FIELD_ATTRACTION_TYPE,Attraction.TYPE_NATURAL_ATTRACTION));
-		while(cur.hasNext()){
-			allNaturalFromCollection.add(new NaturalAttraction(cur.next()));
-		}
-		return allNaturalFromCollection;
-	}
-	
-	public static ArrayList<City> getAllCities(){
-		ArrayList<City> allCollection = new ArrayList<City>();
-		DBCursor cur = myDB.getCollection(COLLECTION_CITIES).find();
-		while(cur.hasNext()){
-			allCollection.add(new City(cur.next()));
+	public static ArrayList<DBWrapper> getAllDBObjects(){
+		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find();
+			while(cur.hasNext()){
+				allCollection.add(new DBWrapper(cur.next()));
+			}
 		}
 		return allCollection;
 	}
 	
-	public static ArrayList<Cafe> getAllCafes(){
-		ArrayList<Cafe> allCollection = new ArrayList<Cafe>();
-		DBCursor cur = myDB.getCollection(COLLECTION_CAFE).find();
-		while(cur.hasNext()){
-			allCollection.add(new Cafe(cur.next()));
+	public static ArrayList<DBWrapper> getAllWithType(String type){
+		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
+			while(cur.hasNext()){
+				allCollection.add(new DBWrapper(cur.next()));
+			}
 		}
 		return allCollection;
-	}
-	
-	public static ArrayList<Hotel> getAllHotels(){
-		ArrayList<Hotel> allCollection = new ArrayList<Hotel>();
-		DBCursor cur = myDB.getCollection(COLLECTION_HOTELS).find();
-		while(cur.hasNext()){
-			allCollection.add(new Hotel(cur.next()));
-		}
-		return allCollection;
-	}
-
-	
-	//Attraction
-	public static ObjectId add(Attraction storageObject){
-		return addToCollection(COLLECTION_ATTRACTIONS, storageObject.toDBObject());
-	}
-	
-	//ArchitectualAttraction
-	public static ArchitectualAttraction getArchitectualAttraction(ObjectId id){
-		return (ArchitectualAttraction) findInCollectionById(COLLECTION_ATTRACTIONS, id);
 	}
 		
-	//NaturalAttractions
-	public static NaturalAttraction getNaturalAttraction(ObjectId id){
-		return (NaturalAttraction) findInCollectionById(COLLECTION_ATTRACTIONS, id);
+	public static ObjectId add(DBWrapper storageObject){
+		return addToCollection(COLLECTION_MAIN, storageObject.toDBObject());
 	}
 	
-	//City
-	public static ObjectId add(City storageObject){
-		return addToCollection(COLLECTION_CITIES, storageObject.toDBObject());
+	public static DBWrapper getDBObjectById(ObjectId id){
+		return new DBWrapper(findInCollectionById(COLLECTION_MAIN, id));
 	}
-	public static City getCity(ObjectId id){
-		return (City) findInCollectionById(COLLECTION_CITIES, id);
-	}
+	
 	public static ObjectId getCityIdByName(String cityName){
-		DBObject obj = findInCollection(COLLECTION_CITIES,"name",cityName);
+		BasicDBObject criteria = new BasicDBObject();
+		criteria.put(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CITY);
+		criteria.put(DBWrapper.FIELD_NAME,cityName);
+		DBObject obj = findInCollection(COLLECTION_MAIN,criteria);
 		if(obj != null){
-			return (ObjectId) obj.get("_id");
+			return (ObjectId) obj.get(DBWrapper.FIELD_ID);
 		} else {
 			return null;
 		}
 	}
-	
-	//Cafes
-	public static ObjectId add(Cafe storageObject){
-		return addToCollection(COLLECTION_CAFE, storageObject.toDBObject());
-	}
-	public static Cafe getCafe(ObjectId id){
-		return (Cafe) findInCollectionById(COLLECTION_CAFE, id);
-	}
-	public static ObjectId getCafeIdByName(String name){
-		DBObject obj = findInCollection(COLLECTION_CAFE,"name",name);
-		if(obj != null){
-			return (ObjectId) obj.get("_id");
-		} else {
-			return null;
-		}
-	}
-	
-	//Hotels
-	public static ObjectId add(Hotel storageObject){
-		return addToCollection(COLLECTION_HOTELS , storageObject.toDBObject());
-	}
-	public static ObjectId getHotelIdByName(String name){
-		DBObject obj = findInCollection(COLLECTION_HOTELS,"name",name);
-		if(obj != null){
-			return (ObjectId) obj.get("_id");
-		} else {
-			return null;
-		}
-	}
-	public static Hotel getHotel(ObjectId id){
-		return (Hotel) findInCollectionById(COLLECTION_HOTELS, id);
-	}
-	
-	
-	//Add object - 'object' in collection - 'collectionName'
-	
+		
 	private static ObjectId addToCollection(String collectionName, DBObject object){ 
-		if(myDB != null){ 
-		myDB.getCollection(collectionName).save(object); 
-		return (ObjectId) myDB.getCollection(collectionName).findOne(object).get("_id"); 
+		if(myDB != null){
+			myDB.getCollection(collectionName).save(object); 
+			return (ObjectId) object.get(DBWrapper.FIELD_ID); 
 		} else { 
-		return null; 
-		} 
-		}
+			return null; 
+		}  
+	}
+	
 	//Replace in collection 'collectionName', object with id 'id' by 'newObj'
 	private static ObjectId updateInCollectionById(String collectionName, ObjectId id, DBObject newObj){
 		if(myDB != null){
-			newObj.put("_id", id);
-			return (ObjectId) myDB.getCollection(collectionName).save(newObj).getField("_id");
+			newObj.put(DBWrapper.FIELD_ID, id);
+			return (ObjectId) myDB.getCollection(collectionName).save(newObj).getField(DBWrapper.FIELD_ID);
 		} else {
 			return null;
 		}		
 	}
-		
-	//Find one object in collection 'collectionName' where field 'key' == 'value'
-	private static DBObject findInCollection(String collectionName, String key, Object value){
-		if(myDB != null){
-			BasicDBObject criteria = new BasicDBObject(key, value);
-			return myDB.getCollection(collectionName).findOne(criteria);
-		} else {
-			return null;
-		}
-	}
+	
 	
 	//Find one object in collection 'collectionName' where field id == 'id'
 	private static DBObject findInCollectionById(String collectionName, ObjectId id){
-		return findInCollection(collectionName,"_id", id);
-	}
-	public static Vector<String> getCollectionAttributes(String collectionName){
-		Vector<String> res = new Vector<String>();
-		try{
-			Set <String> tempRes = new HashSet<String>();	
-			DBCollection coll = myDB.getCollection(collectionName);
-			DBCursor cur = coll.find();
-			while (cur.hasNext()){
-				DBObject temp= cur.next();
-				Set<String> fieldsSet = temp.keySet();
-				if ( !tempRes.containsAll(fieldsSet) ){
-					for(String fieldName : fieldsSet){
-						if (!tempRes.contains(fieldName))
-							tempRes.add(fieldName);
-					}
-				}
-			}
-			for (String v : tempRes){
-				res.add(v);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Epic Fail");
-		}
-		return res;
+		return findInCollection(collectionName,DBWrapper.FIELD_ID, id);
 	}
 	
-	public static Vector<Vector<Object>> getCollectionValues(String collectionName,Vector<String> attributs){
-		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
-		DBCollection coll = myDB.getCollection(collectionName);
-		DBCursor cur = coll.find();
-		
-		while(cur.hasNext()){
-			DBObject temp= cur.next();
-			res.add(new Vector<Object>());
-			for (Vector<Object> v : res){
-				Set<String> fieldsSet = temp.keySet();
-				for ( int i = 0; i < attributs.size();i++){
-					if ( fieldsSet.contains(attributs.get(i))){
-						v.add(temp.get(attributs.get(i)));
-					}
-					else
-						v.add(temp.get(null));
-				}
-				
-			}
-		}
-		
-		return res;
+	//Find one object in collection 'collectionName' where field 'key' == 'value'
+	private static DBObject findInCollection(String collectionName, String key, Object value){
+			return findInCollection(collectionName, new BasicDBObject(key, value));
+	}
+	
+	//Find one object in collection 'collectionName' where are present fields with values as in the 'criteria' 
+	private static DBObject findInCollection(String collectionName, DBObject criteria){
+		if(myDB != null){
+			return myDB.getCollection(collectionName).findOne(criteria);
+		} else {
+			return null;
+		}	
+	}
+	
+	public static DB getDB(){
+		return myDB;
 	}
 }
