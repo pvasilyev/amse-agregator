@@ -17,13 +17,13 @@
 	<var-def name="cityDescriptionsOut">
 	</var-def>
 
-	<script language="javascript">
+<!--	<script language="javascript">
 		cityNames =  new Array();
 		cityImages = new Array();
 		cityLatitudes = new Array();
 		cityLongitudes = new Array();
 		cityDescriptions = new Array();
-	</script>
+	</script>-->
 
 	<loop item="link" index="i" filter="unique">
 
@@ -31,6 +31,7 @@
 			<var-def name="URLlist">
 				<tokenize>
 					<file action="read" path="${inputFile}">
+<!--				<file action="read" path="/home/iv/svn/src/amse-agregator/src/ru/amse/agregator/miner/resources/wikilinks.txt">-->
 					</file>
 				</tokenize>
 			</var-def>
@@ -38,9 +39,11 @@
 		
 		<body>
 			<var-def name="loadedData">
-					<html-to-xml outputtype="pretty">
-					    <http url="${link}"/>
-					</html-to-xml>		
+					<xpath expression="//div[@id='content']">
+						<html-to-xml outputtype="pretty">
+						    <http url="${link}"/>
+						</html-to-xml>
+					</xpath>		
 			</var-def>
 			
 			<var-def name="currentCityName">
@@ -50,7 +53,7 @@
 			</var-def>
 			
 			<var-def name="currentCityImage">
-					<xpath expression="//a[@title='Флаг']/img//@src">
+					<xpath expression="//a[@title='Герб']/img//@src">
 						<var name="loadedData"/>
 					</xpath>	
 			</var-def>
@@ -81,24 +84,34 @@
 			
 			
 			<script language="javascript">
-				cityNames.push(currentCityName.toString());
+				sys.defineVariable("cityNamesOut",currentCityName.toString(),true);
+				sys.defineVariable("cityImagesOut",currentCityImage.toString(),true);
+				sys.defineVariable("cityLatitudesOut",currentCityLatitude.toString(),true);
+				sys.defineVariable("cityLongitudesOut",currentCityLongitude.toString(),true);
+				sys.defineVariable("cityDescriptionsOut",currentCityDescription1.toString().concat(
+														currentCityDescription2.toString()),true);
+			</script>
+			<empty/>
+			
+		</body>
+	</loop>			
+<!--				cityNames.push(currentCityName.toString());
 				cityImages.push(currentCityImage.toString().replace("\n"," "));
 				cityLatitudes.push(currentCityLatitude.toString());
 				cityLongitudes.push(currentCityLongitude.toString());
 				cityDescriptions.push(currentCityDescription1.toString().replace("\n"," ").
-								concat(currentCityDescription2.toString().replace("\n"," ")));
+								concat(currentCityDescription2.toString().replace("\n"," ")));-->
 <!--				cityDescriptions.push(currentCityDescription2.toString().replace("\n"," "));-->
-			</script>			
+		
 			
-		</body>
-	</loop>
+
 	
-	<script language="javascript">
+<!--	<script language="javascript">
 		sys.defineVariable("cityNamesOut", cityNames.join('\n'), true);
 		sys.defineVariable("cityImagesOut", cityImages.join('\n'), true);
 		sys.defineVariable("cityLatitudesOut", cityLatitudes.join('\n'), true);
 		sys.defineVariable("cityLongitudesOut", cityLongitudes.join('\n'), true);
 		sys.defineVariable("cityDescriptionsOut", cityDescriptions.join('\n'), true);
-	</script>
+	</script>-->
 	
 </config>
