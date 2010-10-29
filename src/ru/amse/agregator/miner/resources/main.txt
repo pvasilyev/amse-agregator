@@ -1,2 +1,2 @@
 wikilinks.txt;wikipediaconfig.xml
-wikitravellinks.txt;wikitravelconfig.xml
+wikilinks2.txt;wikipediaconfig.xml
