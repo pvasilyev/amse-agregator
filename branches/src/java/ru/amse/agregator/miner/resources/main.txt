@@ -1,0 +1,2 @@
+wikilinks.txt;wikipediaconfig.xml
+wikilinks2.txt;wikipediaconfig.xml
