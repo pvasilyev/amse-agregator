@@ -7,7 +7,6 @@
         <xsl:apply-templates select="page/data/collection" mode="show"/>
     </xsl:template>
 
-
     <xsl:template match="collection" mode="show">
         <xsl:for-each select="attraction">
             <table>
@@ -15,7 +14,6 @@
                    <img src="{image}" class="little_image"/><br/>
                 </td>
                 <td>
-                    <xsl:variable name="market-item" select="key('item', @uid)"/>
                     <a href="attraction_description.xml" type="submit"><xsl:value-of select="name"/></a>
                     <strong><xsl:value-of select="description"/></strong><br/>
                     <strong><xsl:value-of select="image"/></strong>
@@ -24,13 +22,4 @@
        </xsl:for-each>
     </xsl:template>
 
-    <!--<xsl:template match="name" mode="show">
-        <xsl:value-of select="name"/>
-        <xsl:apply-templates/>
-    </xsl:template>
-
-    <xsl:template match="description" mode="show">
-        <xsl:value-of select="description"/>
-        <xsl:apply-templates/>
-    </xsl:template>-->
 </xsl:stylesheet>

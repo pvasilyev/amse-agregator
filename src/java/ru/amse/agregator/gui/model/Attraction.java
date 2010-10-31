@@ -4,6 +4,7 @@ public class Attraction {
     private long uid;
     private String name;
     private String description;
+    private String image;
 
     public long getUid() {
         return uid;
@@ -27,5 +28,13 @@ public class Attraction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
