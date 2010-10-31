@@ -8,8 +8,12 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
 
+import ru.amse.agregator.storage.DBWrapper;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
  * Author: Bondarev Timofey
@@ -20,22 +24,23 @@ import java.io.IOException;
 public class Searcher {
     private static File INDEX_DIR;
 
-    public static void setIndexDir(File iDir) {
-        if (iDir.exists()) {
-            INDEX_DIR = iDir;
+    public static void setIndexDir(File iDir) throws FileNotFoundException {
+        if (!iDir.exists()) {
+            throw new FileNotFoundException("Directory " + iDir.getAbsolutePath() + " is not exists");            
         }
+        INDEX_DIR = iDir;
     }
 
-    public static void search(UserQuery query) throws IOException, ParseException {
-        search(INDEX_DIR, query);
+    public static ArrayList<DBWrapper> search(UserQuery query) throws IOException, ParseException {
+        return search(INDEX_DIR, query); 
     }
 
-    private static void search(File indexDir, UserQuery query) throws IOException, ParseException {
-        search(indexDir, query.getQueryExpression());
+    private static ArrayList<DBWrapper> search(File indexDir, UserQuery query) throws IOException, ParseException {
+        return search(indexDir, query.getQueryExpression());
         // todo Нужно бужет добавить реализацию для поиска с метками
     }
 
-    private static void search(File indexDir, String q) throws IOException, ParseException {
+    private static ArrayList<DBWrapper> search(File indexDir, String q) throws IOException, ParseException {
         Directory fsDirectory = new NIOFSDirectory(indexDir);
         IndexSearcher is = new IndexSearcher(fsDirectory);
         String fieldForSearch = "name";
@@ -45,10 +50,10 @@ public class Searcher {
                                               new StandardAnalyzer(Version.LUCENE_30));
         Query query = qParser.parse(q);
 
-        TopFieldCollector tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
+        TopFieldCollector tfc = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-        is.search(query, tFC);
-        TopDocs docs = tFC.topDocs();
+        is.search(query, tfc);
+        TopDocs docs = tfc.topDocs();
         System.out.println(docs.getMaxScore());
         ScoreDoc[] sDocs = docs.scoreDocs;
         for (ScoreDoc currentScoreDoc : sDocs) {
@@ -59,15 +64,21 @@ public class Searcher {
         fieldForSearch = "description";
         qParser = new QueryParser(Version.LUCENE_30, fieldForSearch, new StandardAnalyzer(Version.LUCENE_30));
         query = qParser.parse(q);
-        tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
+        tfc = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-        is.search(query, tFC);
-        docs = tFC.topDocs();
+        is.search(query, tfc);
+        docs = tfc.topDocs();
         System.out.println(docs.getMaxScore());
         sDocs = docs.scoreDocs;
+    	ArrayList<DBWrapper> objects = new ArrayList<DBWrapper>();
+
         for (ScoreDoc currentScoreDoc : sDocs) {
-            System.out.println(is.doc(currentScoreDoc.doc).getField("name"));
-            System.out.println(is.doc(currentScoreDoc.doc).getField("description"));
-        }
+            DBWrapper object = new DBWrapper();
+            object.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
+            object.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
+            objects.add(object);
+        }        
+                        
+        return objects;
     }
 }
