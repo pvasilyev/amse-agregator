@@ -17,6 +17,10 @@
         <property name="manager" ref="manager"/>
     </bean>
 
+    <bean id="showAttractionDescriptionYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescriptionYalet">
+        <property name="manager" ref="manager"/>
+    </bean>
+
     <!--<bean id="manager" class="net.sf.xfresh.basket.model.AttractionManager"/>-->
     <bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
 </beans>

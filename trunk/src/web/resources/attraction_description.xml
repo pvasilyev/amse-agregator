@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<?xml-stylesheet type="text/xsl" href="attractions.xsl"?>
+<?xml-stylesheet type="text/xsl" href="attraction_description.xsl"?>
 <page>
     <yalet id="showAttractionDescription"/>
 </page>
-
