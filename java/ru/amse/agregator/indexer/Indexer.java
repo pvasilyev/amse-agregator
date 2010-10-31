@@ -41,81 +41,181 @@ public class Indexer {
     }
 
     private static void IndexAllObjects(IndexWriter writer) throws Exception {
-        connectToDB(); // Не забыть запустить базу на компьютере!
-        indexAllCities(writer);
-        //indexAndWriteToFileAllCityElements(writer, dataDir);
-        //indexAndWriteToFileAllAttractions(writer, dataDir);
+        connectToDB(); // необходима запущенная на компьютере база
+        ArrayList<DBWrapper> allObjects = DataBase.getAllDBObjects();
+        for (DBWrapper currentObject : allObjects) {
+            indexObject(writer, currentObject);
+        }
     }
 
     private static void connectToDB() {
-        //DataBase.connectToDirtyBase();
+        DataBase.connectToDirtyBase();
     }
 
-    private static void indexAllCities(IndexWriter writer) throws Exception {
-        ArrayList<City> cites = DataBase.getAllCities();
-        //String currentDirectoryName = getCurrentDirectoryForCites(dataDir);
-        for (City currentCity : cites) {
-            Document currentDoc = getDocumentForCurrentCity(currentCity);
-            System.out.println("Indexed city with id: " + currentCity.getId());
-            writer.addDocument(currentDoc);
-            //writeCityToFile(currentCity, currentDirectoryName); решили не использовать
+    private static void indexObject(IndexWriter writer, DBWrapper object) throws Exception {
+        System.out.println(object.getName());
+        Document documentForCurrentObject;
+        if (object.getType().equals(DBWrapper.TYPE_CITY)) {
+            documentForCurrentObject = getDocumentForCurrentCity(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_ARCH_ATTRACTION)) {
+            documentForCurrentObject = getDocumentForCurrentArchitecturalAttraction(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_NATURAL_ATTRACTION)) {
+            documentForCurrentObject = getDocumentForCurrentNaturalAttraction(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_HOTEL)) {
+            documentForCurrentObject = getDocumentForCurrentHotel(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_CAFE)) {
+            documentForCurrentObject = getDocumentForCurrentCafe(object);           
+        } else {
+            documentForCurrentObject = null;
         }
+
+        // todo дописать для всех типов
+        writer.addDocument(documentForCurrentObject);
     }
 
-    private static String getCurrentDirectoryForCites(File dataDir) {
-        return dataDir.getAbsolutePath() + "/city/";
+    private static Document getDocumentForCurrentCity(DBWrapper city) {
+        IndexDocument indexDocument = new IndexDocument(city);
+
+        indexDocument.addTypicalFields();
+
+        return indexDocument.getDocument();
     }
 
-    private static Document getDocumentForCurrentCity(City city) {
-        Document doc = new Document();
+    private static Document getDocumentForCurrentArchitecturalAttraction(DBWrapper attraction) {
+        IndexDocument indexDocument = new IndexDocument(attraction);
 
-        //String fileName = directoryName + city.getId();  не используется
-        //doc.add(new Field("filename", fileName, Field.Store.YES, Field.Index.ANALYZED));
-        String cityId = "" + city.getId();
-        doc.add(new Field("id", "1"/*cityId*/, Field.Store.YES, Field.Index.ANALYZED));
-        doc.add(new Field("name", "cityname"/*city.getName()*/, Field.Store.YES, Field.Index.ANALYZED));
-        doc.add(new Field("description", "cityname is bla-bla-bla. Text for test"/*city.getDescription()*/, Field.Store.YES, Field.Index.ANALYZED));
-        //doc.add(new Field("keywords", fileName, Field.Store.YES, Field.Index.ANALYZED));
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCity();
+        indexDocument.addObjectDate();
+        indexDocument.addObjectArchitect();
+        indexDocument.addObjectCost();
+        indexDocument.addObjectAddress();
 
-        return doc;
+        return indexDocument.getDocument();
     }
 
-    private static void writeCityToFile(City city, String directoryName) throws Exception {
-        // todo разобраться, что лучше передавать - файл или строку, проверить ошибки
-        File file = new File(directoryName + "/" + city.getId());
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
-        out.writeObject(city);
-        out.flush();
-        out.close();
+    private static Document getDocumentForCurrentNaturalAttraction(DBWrapper attraction) {
+        IndexDocument indexDocument = new IndexDocument(attraction);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCity();
+
+        return indexDocument.getDocument();
     }
 
-    private static void indexAndWriteToFileAllCityElements(IndexWriter writer, File dataDir) {
-        // todo Реализовать
+    private static Document getDocumentForCurrentHotel(DBWrapper hotel) {
+        IndexDocument indexDocument = new IndexDocument(hotel);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCity();
+        indexDocument.addObjectWebsite();
+        indexDocument.addObjectRooms();
+
+        return indexDocument.getDocument();
     }
 
-    private static void indexAndWriteToFileAllAttractions(IndexWriter writer, File dataDir) {
-        // todo Реализовать
+    private static Document getDocumentForCurrentCafe(DBWrapper cafe) {
+        IndexDocument indexDocument = new IndexDocument(cafe);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCity();
+        indexDocument.addObjectWebsite();
+        indexDocument.addObjectMusic();
+
+        return indexDocument.getDocument();
     }
 
-    private static void indexDirectory(IndexWriter writer, File dataDir) throws IOException {
-        File[] filesInThisDirectory = dataDir.listFiles();
+    private static class IndexDocument {
+        private final Document document;
+        private final DBWrapper object;
+        private final Field.Store fieldStore = Field.Store.YES;
+        private final Field.Index fieldIndex = Field.Index.ANALYZED;
 
-        for (File currentFile : filesInThisDirectory) {
-            if (currentFile.isDirectory()) {
-                indexDirectory(writer, currentFile);
-            } else {
-                indexFile(writer, currentFile);
+        IndexDocument(DBWrapper object) {
+            document = new Document();
+            this.object = object;
+        }
+
+        Document getDocument() {
+            return document;
+        }
+
+        public void addTypicalFields() {
+            addObjectId();
+            addObjectName();
+            addObjectDescription();
+            addObjectCoordinates();
+            addObjectPhotos();
+            addObjectKeyWord();
+        }
+
+        public void addObjectId() {
+            String id = "" + object.getId();
+            addField("id", id);
+        }
+
+        private void addField(String field, String value) {
+            document.add(new Field(field, value, fieldStore, fieldIndex));
+        }
+
+        public void addObjectName() {
+            String objectName = object.getName();
+            if (objectName.equals("") || objectName.isEmpty()) {
+                return;
             }
+            addField("name", objectName);
         }
-    }
 
-    private static void indexFile(IndexWriter writer, File f) throws IOException {
-        System.out.println("Indexing " + f.getCanonicalPath());
-        Document doc = new Document();
+        public void addObjectDescription() {
+            String objectDescription = object.getName();
+            if (objectDescription.equals("") || objectDescription.isEmpty()) {
+                return;
+            }
+            addField("description", object.getDescription());
+        }
 
-        doc.add(new Field("contents", new FileReader(f)));
-        doc.add(new Field("filename", f.getCanonicalPath(), Field.Store.YES, Field.Index.ANALYZED));
+        public void addObjectCoordinates() {
 
-        writer.addDocument(doc);
+        }
+
+        public void addObjectKeyWord() {
+
+        }
+
+        public void addObjectPhotos() {
+
+        }
+
+        public void addObjectCity() {
+
+        }
+
+        public void addObjectDate() {
+
+        }
+
+        public void addObjectArchitect() {
+
+        }
+
+        public void addObjectCost() {
+
+        }
+
+        public void addObjectAddress() {
+            
+        }
+
+        public void addObjectWebsite() {
+
+        }
+
+        public void addObjectRooms() {
+            
+        }
+
+        public void addObjectMusic() {
+            
+        }
     }
 }
