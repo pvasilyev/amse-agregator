@@ -24,13 +24,11 @@ public class MyListener implements ScraperRuntimeListener {
 		i = 1;
 	}
 
-	@Override
 	public void onExecutionContinued(Scraper arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void onExecutionEnd(Scraper scraper) {
 		scraper.exitExecution(null);
 		i+=50;
@@ -55,25 +53,25 @@ public class MyListener implements ScraperRuntimeListener {
 		}
 	}
 
-	@Override
+	
 	public void onExecutionError(Scraper arg0, Exception arg1) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	
 	public void onExecutionPaused(Scraper arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	
 	public void onExecutionStart(Scraper arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	
 	public void onProcessorExecutionFinished(Scraper arg0, BaseProcessor arg1,
 			Map arg2) {
 		// TODO Auto-generated method stub

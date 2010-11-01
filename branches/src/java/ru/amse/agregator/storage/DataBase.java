@@ -123,6 +123,17 @@ public class DataBase {
 			return null;
 		}
 	}
+
+	public static ArrayList<ObjectId> getAllIdByType(String type){
+		ArrayList<ObjectId> allCollection = new ArrayList<ObjectId>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type),new BasicDBObject(DBWrapper.FIELD_ID,1));
+			while(cur.hasNext()){
+				allCollection.add( (ObjectId) cur.next().get(DBWrapper.FIELD_ID));
+			}
+		}
+		return allCollection;
+	}
 		
 	private static ObjectId addToCollection(String collectionName, DBObject object){ 
 		if(myDB != null){
