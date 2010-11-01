@@ -9,6 +9,7 @@ import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /*
@@ -20,10 +21,11 @@ import java.io.IOException;
 public class Searcher {
     private static File INDEX_DIR;
 
-    public static void setIndexDir(File iDir) {
-        if (iDir.exists()) {
-            INDEX_DIR = iDir;
+    public static void setIndexDir(File iDir) throws FileNotFoundException {
+        if (!iDir.exists()) {
+            throw new FileNotFoundException("Directory " + iDir.getAbsolutePath() + " is not exists");            
         }
+        INDEX_DIR = iDir;
     }
 
     public static void search(UserQuery query) throws IOException, ParseException {
@@ -45,10 +47,10 @@ public class Searcher {
                                               new StandardAnalyzer(Version.LUCENE_30));
         Query query = qParser.parse(q);
 
-        TopFieldCollector tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
+        TopFieldCollector tfc = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-        is.search(query, tFC);
-        TopDocs docs = tFC.topDocs();
+        is.search(query, tfc);
+        TopDocs docs = tfc.topDocs();
         System.out.println(docs.getMaxScore());
         ScoreDoc[] sDocs = docs.scoreDocs;
         for (ScoreDoc currentScoreDoc : sDocs) {
@@ -59,10 +61,10 @@ public class Searcher {
         fieldForSearch = "description";
         qParser = new QueryParser(Version.LUCENE_30, fieldForSearch, new StandardAnalyzer(Version.LUCENE_30));
         query = qParser.parse(q);
-        tFC = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
+        tfc = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
 
-        is.search(query, tFC);
-        docs = tFC.topDocs();
+        is.search(query, tfc);
+        docs = tfc.topDocs();
         System.out.println(docs.getMaxScore());
         sDocs = docs.scoreDocs;
         for (ScoreDoc currentScoreDoc : sDocs) {
