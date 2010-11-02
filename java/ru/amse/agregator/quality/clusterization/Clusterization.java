@@ -7,6 +7,7 @@ import ru.amse.agregator.storage.DataBase;
 import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 import ru.amse.agregator.quality.clusterization.simgraph.*;
 import ru.amse.agregator.quality.clusterization.metric.*;
+import ru.amse.agregator.quality.clusterization.merge.*;
 import ru.amse.agregator.storage.DBWrapper;
 
 /**
@@ -22,27 +23,39 @@ final public class Clusterization {
         ClusterStorage storage = new ArrayStorage();
 
         System.out.println("Deleting main base");
+
         DataBase.connectToMainBase();
         DataBase.removeCollection(DataBase.COLLECTION_MAIN);
 
         System.out.println("Retrieving dirty base");
-        DataBase.connectToDirtyBase();
 
+        DataBase.connectToDirtyBase();
         ArrayList<ObjectId> allCities = DataBase.getAllIdByType(DBWrapper.TYPE_CITY);
 
         System.out.println("Building similarity graph");
         similatityGraph.build(allCities);
 
-        System.out.println("Resulting graph has " + String.valueOf(similatityGraph.getEdgeCount()) + " edges");
+        System.out.println("Resulting graph has "
+                + String.valueOf(similatityGraph.getEdgeCount()) + " edges");
 
         System.out.println("Performing clusterization process");
+
         clusterizer.clusterize(allCities, similatityGraph, storage);
+
 //        DataBase.connectToMainBase();
 //        DataBase.printAll();
 //        DataBase.connectToDirtyBase();
 //        DataBase.printAll();
 
-        System.out.println("Clusterisation process created " + String.valueOf(storage.getClusterCount()) + " clusters out of " + String.valueOf(allCities.size()) + " objects");
+        System.out.println("Clusterisation process created " 
+                + String.valueOf(storage.getClusterCount()) + " clusters out of "
+                + String.valueOf(allCities.size()) + " objects");
+
+        System.out.println("Merging and adding to main base");
+
+        MergeProcess.perform(new SimpleMerger(), storage);
+
+        System.out.println("Finished clusterization process");
 
     }
 
