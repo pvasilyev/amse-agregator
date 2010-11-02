@@ -117,5 +117,11 @@ public class StorageTester {
             //........
             System.out.println("-------------");
         }
+        
+        
+        System.out.println("------****************-------");
+        System.out.println(DataBase.getAllIdByType(DBWrapper.TYPE_CITY));
+        
+        
     }
 }
