@@ -25,13 +25,14 @@
 		cityDescriptions = new Array();
 	</script>-->
 
-	<loop item="link" index="i" filter="unique">
+<loop item="link" index="i" filter="${filter}">
+<!--	<loop item="link" index="i" filter="0-10">-->
 
 		<list>
 			<var-def name="URLlist">
 				<tokenize>
 					<file action="read" path="${inputFile}">
-<!--				<file action="read" path="/home/iv/svn/src/amse-agregator/src/ru/amse/agregator/miner/resources/wikilinks.txt">-->
+<!--			<file action="read" path="/home/iv/svn/src/amse-agregator/src/ru/amse/agregator/miner/resources/wikilinks.txt">-->
 					</file>
 				</tokenize>
 			</var-def>
