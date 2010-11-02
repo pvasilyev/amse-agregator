@@ -1,4 +1,4 @@
-#How to build our project with Apache Ant.
+#summary How to build our project with Apache Ant.
 
 = Сборка / Build =
 
