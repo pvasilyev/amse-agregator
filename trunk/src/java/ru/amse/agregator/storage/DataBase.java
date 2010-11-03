@@ -22,6 +22,9 @@ public class DataBase {
 	private static Mongo myMongo = null;
 	private static DB myDB = null;
 	
+	private static String myCurrentAddress;
+	private static int myCurrentPort;
+	
 	public static final String 	DB_SERVER_ADDRESS = "localhost";
 	public static final int 	DB_SERVER_PORT = 27017;
 	public static final String 	MAIN_DB_NAME = "mainDB";
@@ -41,14 +44,21 @@ public class DataBase {
 	
 	//Connect to server address:port, and database dbName
 	public static void connect(String address, int port, String dbName){
-		try {
-			myMongo = new Mongo(address, port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (MongoException e) {
-			e.printStackTrace();
+		if(!address.equals(myCurrentAddress) || myCurrentPort != port){
+			try {
+				myMongo = new Mongo(address, port);
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (MongoException e) {
+				e.printStackTrace();
+			}
+			myCurrentAddress = address;
+			myCurrentPort = port;
 		}
-		myDB = myMongo.getDB(dbName);
+		
+		if(myMongo != null){
+			myDB = myMongo.getDB(dbName);
+		}
 	}
 	
 	public static void switchBaseTo(String dbName){
@@ -110,12 +120,21 @@ public class DataBase {
 	}
 		
 	public static ObjectId add(DBWrapper storageObject){
-		storageObject.setId(addToCollection(COLLECTION_MAIN, storageObject.toDBObject()));
-		return storageObject.getId();
+		if(storageObject != null){
+			storageObject.setId(addToCollection(COLLECTION_MAIN, storageObject.toDBObject()));
+			return storageObject.getId();
+		} else {
+			return null;
+		}
 	}
 	
 	public static DBWrapper getDBObjectById(ObjectId id){
-		return new DBWrapper(findInCollectionById(COLLECTION_MAIN, id));
+		DBObject retObj = findInCollectionById(COLLECTION_MAIN, id);
+		if(retObj != null){
+			return new DBWrapper(retObj);
+		} else {
+			return null;
+		}
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){

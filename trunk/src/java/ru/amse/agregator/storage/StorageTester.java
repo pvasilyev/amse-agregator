@@ -10,6 +10,16 @@ public class StorageTester {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         DataBase.connectToDirtyBase();
+        DataBase.connectToDirtyBase();
+        DataBase.connectToMainBase();
+        DataBase.connectToDirtyBase();
+        DataBase.connectToMainBase();
+        DataBase.connectToMainBase();
+
+        DataBase.connectToDirtyBase();
+        DataBase.connectToMainBase();
+
+        DataBase.connectToDirtyBase();
 
         //Создаём новый объект-контейнер.
         DBWrapper someCity = new DBWrapper();
