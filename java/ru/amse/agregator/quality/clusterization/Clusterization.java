@@ -16,7 +16,7 @@ import ru.amse.agregator.storage.DBWrapper;
  */
 final public class Clusterization {
 
-    static public void performClusterization() {
+    static public void perform() {
         Clusterizer clusterizer = new PartitionClusterizer();
         Metric metric = new CityMetric();
         Graph similatityGraph = new ArrayGraph(metric, 0.0);
@@ -42,6 +42,25 @@ final public class Clusterization {
 
         clusterizer.clusterize(allCities, similatityGraph, storage);
 
+        System.out.println("Checking consistency");
+        storage.startIterating();
+        while (storage.hasNext()) {
+            ClusterStorage.Cluster cl = storage.getNextCluster();
+            if (cl == null) {
+                System.out.println("fail");
+            }
+            if (cl.getObjectList() == null) {
+                System.out.println("fail");
+            }
+            if (cl.getObjectList().isEmpty()) {
+                System.out.println("fail");
+            }
+            if (cl.getObjectList().get(0) == null) {
+                System.out.println("fail");
+            }
+            DataBase.getDBObjectById(cl.getObjectList().get(0));
+        }
+
 //        DataBase.connectToMainBase();
 //        DataBase.printAll();
 //        DataBase.connectToDirtyBase();
@@ -60,6 +79,6 @@ final public class Clusterization {
     }
 
     public static void main(String[] args) {
-        performClusterization();
+        perform();
     }
 }

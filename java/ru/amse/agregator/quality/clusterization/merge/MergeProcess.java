@@ -16,8 +16,7 @@ final public class MergeProcess {
 
         storage.startIterating();
         while (storage.hasNext()) {
-            
-            DataBase.add(merger.merge(storage.getNextCluster()));
+           merger.merge(storage.getNextCluster());
 
         }
     }
