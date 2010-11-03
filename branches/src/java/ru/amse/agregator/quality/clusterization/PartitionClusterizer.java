@@ -27,8 +27,10 @@ public class PartitionClusterizer extends Clusterizer {
                 = new TreeMap<ObjectId, ClusterStorage.Cluster>();
 
         //init map with single element clusters
+        System.out.println("Before:");
         for (ObjectId obj : objects) {
             clusterMap.put(obj, new ClusterStorage.Cluster(obj));
+            System.out.println(clusterMap.get(obj).getObjectList().size());
         }
 
         //iterate through the edges of graph
@@ -56,8 +58,10 @@ public class PartitionClusterizer extends Clusterizer {
                 = new HashSet<ClusterStorage.Cluster>(clusterMap.values());
 
         // add resulting clusters to storage
+        System.out.println("After:");
         for (ClusterStorage.Cluster cluster : uniqueClusters) {
             clusterStorage.addCluster(cluster);
+            System.out.println(cluster.getObjectList().size());
         }
 
     }
