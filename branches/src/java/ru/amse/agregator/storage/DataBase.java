@@ -115,7 +115,13 @@ public class DataBase {
 	}
 	
 	public static DBWrapper getDBObjectById(ObjectId id){
-		return new DBWrapper(findInCollectionById(COLLECTION_MAIN, id));
+		DBObject retObj = findInCollectionById(COLLECTION_MAIN, id);
+		if(retObj != null){
+			return new DBWrapper(retObj);
+		} else {
+			return null;
+		}
+		
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){
