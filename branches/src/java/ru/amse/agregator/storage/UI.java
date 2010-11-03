@@ -1,5 +1,7 @@
 package ru.amse.agregator.storage;
 
+
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +9,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -19,6 +20,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+
+import com.mongodb.BasicDBObject;
+import org.bson.types.ObjectId;
 
 
 public class UI extends JFrame implements TableModelListener{
@@ -39,6 +43,31 @@ public class UI extends JFrame implements TableModelListener{
 
 		
 		DataBase.connectToMainBase();
+		JMenuItem addItem = new JMenuItem("Add row");
+        addItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) {
+                        try{
+                        tableModel.addRow();
+                }catch (Exception e) {
+                        System.out.println("Epic Fail");
+                }
+                
+        }});
+
+        JMenuItem deleteItem = new JMenuItem("Delete Row");
+        deleteItem.addActionListener(new ActionListener() {
+                
+                public void actionPerformed(ActionEvent e) {
+                        tableModel.removeRow(collectionsTable.getSelectedRow());
+                }
+        });
+        
+        JMenuBar bar = new JMenuBar();
+        setJMenuBar(bar);
+        bar.add(addItem);
+        bar.add(deleteItem);
+
 		container = getContentPane();
 		container.setLayout(new BorderLayout());
 		
@@ -162,7 +191,7 @@ public class UI extends JFrame implements TableModelListener{
 	private class CollectionsTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
-
+		
 		public Vector<String> columnNames = new Vector<String>();
         public Vector<Vector<Object>> rowData = new Vector<Vector<Object>>();
         {
@@ -171,9 +200,9 @@ public class UI extends JFrame implements TableModelListener{
                 }
         }
         
-        //@Override
+        @Override
         public Class<?> getColumnClass(int columnIndex) {
-                int i = 0;
+                /*int i = 0;
                 while( (i < rowData.size())&&( getValueAt(i, columnIndex)==null)) {
                                 i++;    
                         }
@@ -182,53 +211,112 @@ public class UI extends JFrame implements TableModelListener{
                         rowData.get(0).set(columnIndex,"");
                         return getValueAt(0, columnIndex).getClass();
                 }
-                return getValueAt(i, columnIndex).getClass();
+                return getValueAt(i, columnIndex).getClass();*/ 
+        	return String.class;
         }
 
-        //@Override
         public int getColumnCount() {
                 return columnNames.size();
         }
 
-        //@Override
+        @Override
         public String getColumnName(int columnIndex) {
                 return columnNames.get(columnIndex);
         }
 
-        //@Override
         public int getRowCount() {
                 return rowData.size();
         }
 
-        //@Override
         public Object getValueAt(int rowIndex, int columnIndex) {
                 if( (columnIndex >= rowData.get(rowIndex).size()))  return ("777777");
                 return rowData.get(rowIndex).get(columnIndex);
                 
         }
 
-        //@Override
+        @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return true;
         }
 
-        //@Override
+        @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        	 Vector<Object> v = rowData.get(rowIndex);
+             v.set(columnIndex, aValue);
+             rowData.set(rowIndex, v);
+             fireTableCellUpdated(rowIndex, columnIndex);
               
         }
         
         public void addRow() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-                
+        	Vector<Object> v = new Vector<Object>();
+            
+            if (dbList.getSelectedIndex() ==0)
+                    DataBase.connectToMainBase();
+            else
+                    DataBase.connectToDirtyBase();
+            //String collectionName = collectionsList.getSelectedValue().toString();
+            int columnType = 0;
+            for ( int i = 0; i < columnNames.size();++i){
+                if (columnNames.get(i).equalsIgnoreCase(DBWrapper.FIELD_TYPE)) columnType = i;
+            }
+            ObjectId id;
+            DBWrapper some = new DBWrapper();
+            some.setType(typeList.getSelectedValue().toString());
+            id = DataBase.add( some);
+            int temp = 0;
+            for ( int i = 0; i < columnNames.size();++i){
+                    if (columnNames.get(i).equalsIgnoreCase("_id")) temp = i;
+            }
+            for ( int i = 0; i < columnNames.size(); ++i ){
+            	if ( i == temp)
+            		v.add(id);
+            	else if ( i == columnType)
+            		v.add(some.getType());
+            	else
+            		v.add(null);
+            }
+           
+            rowData.add(v);
+            
+            collectionsTable.revalidate();
+            collectionsTable.repaint();
         }
         
         public void removeRow(int index) {
+        	int temp = 0;
+            for ( int i = 0; i < columnNames.size();++i){
+                    if (columnNames.get(i).equalsIgnoreCase("_id")) temp = i;
+            }
+    
+            ObjectId id =(ObjectId )rowData.get(index).get(temp);
+            DataBase.getDB().getCollection(collectionsList.getSelectedValue().toString()).remove(new BasicDBObject("_id",id));
+            rowData.remove(index);
+            collectionsTable.revalidate();
+            collectionsTable.repaint();
+            fireTableRowsDeleted(index, index);
+    }
               
         }
 
-}
-	//@Override
-	public void tableChanged(TableModelEvent arg0) {
-		// TODO Auto-generated method stub
+
+	public void tableChanged(TableModelEvent arg0) {	
 		
+			int row = collectionsTable.getEditingRow(); 
+			int column =collectionsTable.getEditingColumn(); 
+			int temp_id = 0;
+            for ( int i = 0; i < collectionsTable.getColumnCount();++i){
+                    if (collectionsTable.getColumnName(i).equalsIgnoreCase("_id")) temp_id = i;
+            }
+			if (row > -1 && arg0.getType() == TableModelEvent.UPDATE){
+				 String temp = collectionsTable.getValueAt(row, column).toString();
+				 System.out.println(temp);
+				 System.out.println(row); 
+				 System.out.println(column);
+				 System.out.println(collectionsTable.getColumnName(column));
+				
+				 DataBase.setAttribut(collectionsTable.getColumnName(column), temp, collectionsTable.getValueAt(row, temp_id));
+			} 
+		 	
 	}
 }

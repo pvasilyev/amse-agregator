@@ -1,11 +1,12 @@
 package ru.amse.agregator.storage;
 
+
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
-
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -14,6 +15,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+
+
 
 public class DataBase {
 	private static Mongo myMongo = null;
@@ -126,7 +129,7 @@ public class DataBase {
 			return null;
 		}
 	}
-
+	
 	public static ArrayList<ObjectId> getAllIdByType(String type){
 		ArrayList<ObjectId> allCollection = new ArrayList<ObjectId>();
 		if(myDB != null){
@@ -180,7 +183,6 @@ public class DataBase {
 	public static DB getDB(){
 		return myDB;
 	}
-	
 	public static Vector<Vector<Object>> getCollectionValues(String collectionName,Vector<String> attributs){
 		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
 		DBCollection coll = myDB.getCollection(collectionName);
@@ -227,81 +229,85 @@ public class DataBase {
 	}
 	
 	
-    public static Set<String> getAttributsNames(String nameType){
-		    Set <String> tempRes = new HashSet<String>();	
-		    tempRes.add("_id");
-		    tempRes.add(DBWrapper.FIELD_TYPE);
-		    tempRes.add(DBWrapper.FIELD_NAME);
-		    tempRes.add(DBWrapper.FIELD_KEYWORDS);
-		    if (nameType.equalsIgnoreCase("User")){}
-		    else if (nameType.equalsIgnoreCase("Comment")){}
-		    else {
-			    tempRes.add(DBWrapper.FIELD_DESC);
-			    tempRes.add(DBWrapper.FIELD_COORDS);
-			    tempRes.add(DBWrapper.FIELD_PHOTOS);
-			    if (!nameType.equalsIgnoreCase("City")){
-				    tempRes.add(DBWrapper.FIELD_COST);
-				    tempRes.add(DBWrapper.FIELD_ADDRESS);
-				    tempRes.add(DBWrapper.FIELD_CITY_ID);
-				    tempRes.add(DBWrapper.FIELD_WEBSITE);
-				    if (nameType.equalsIgnoreCase("ArchAttraction")){
-					    tempRes.add(DBWrapper.FIELD_ARCHITECT);
-					    tempRes.add(DBWrapper.FIELD_DATE_FOUNDATION);
-				    }
-				    else if(nameType.equalsIgnoreCase("Cafe")){
-					    tempRes.add(DBWrapper.FIELD_MUSIC);
-				    }
-				    else if(nameType.equalsIgnoreCase("Hotel")){
-					    tempRes.add(DBWrapper.FIELD_ROOMS);
-				    }
-			    }
-		    }
+public static Set<String> getAttributsNames(String nameType){
+		Set <String> tempRes = new HashSet<String>();	
+		tempRes.add("_id");
+		tempRes.add(DBWrapper.FIELD_TYPE);
+		tempRes.add(DBWrapper.FIELD_NAME);
+		tempRes.add(DBWrapper.FIELD_KEYWORDS);
+		if (nameType.equalsIgnoreCase("User")){}
+		else if (nameType.equalsIgnoreCase("Comment")){}
+		else {
+			tempRes.add(DBWrapper.FIELD_DESC);
+			tempRes.add(DBWrapper.FIELD_COORDS);
+			tempRes.add(DBWrapper.FIELD_PHOTOS);
+			if (!nameType.equalsIgnoreCase("City")){
+				tempRes.add(DBWrapper.FIELD_COST);
+				tempRes.add(DBWrapper.FIELD_ADDRESS);
+				tempRes.add(DBWrapper.FIELD_CITY_ID);
+				tempRes.add(DBWrapper.FIELD_WEBSITE);
+				if (nameType.equalsIgnoreCase("ArchAttraction")){
+					tempRes.add(DBWrapper.FIELD_ARCHITECT);
+					tempRes.add(DBWrapper.FIELD_DATE_FOUNDATION);
+				}
+				else if(nameType.equalsIgnoreCase("Cafe")){
+					tempRes.add(DBWrapper.FIELD_MUSIC);
+				}
+				else if(nameType.equalsIgnoreCase("Hotel")){
+					tempRes.add(DBWrapper.FIELD_ROOMS);
+				}
+			}
+		}
 			
-		    return  tempRes;
-	    }
+		return  tempRes;
+	}
 	
 
-    public static Vector<Vector<Object>> getCollectionValues(String nameType, Set<String> attr){
-	    Vector<Vector<Object>> res = new Vector<Vector<Object>>();
-	    Vector<DBWrapper> allCollection = new Vector<DBWrapper>();
-	    if(myDB != null){
-		    DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
-		    while(cur.hasNext()){
-			    allCollection.add(new DBWrapper(cur.next()));
-		    }
-	    }
-	    for (int i = 0; i < allCollection.size();++i){
-		    Vector<Object> v = new Vector<Object>();
-		    for(String str1 : attr){
-		      v.add(allCollection.get(i).myDBObj.get(str1));
-		    }
-		    res.add(v);
-	    }
-	    return res;
-    }
-    public static int getTypesCount(String nameCollection){
-	    int count = 0;
-	    try{
-		    Set <String> tempRes = new HashSet<String>();	
-		    DBCollection coll = myDB.getCollection(nameCollection);
-		    DBCursor cur = coll.find();
-		    String typeName;
+public static Vector<Vector<Object>> getCollectionValues(String nameType, Set<String> attr){
+	Vector<Vector<Object>> res = new Vector<Vector<Object>>();
+	Vector<DBWrapper> allCollection = new Vector<DBWrapper>();
+	if(myDB != null){
+		DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
+		while(cur.hasNext()){
+			allCollection.add(new DBWrapper(cur.next()));
+		}
+	}
+	for (int i = 0; i < allCollection.size();++i){
+		Vector<Object> v = new Vector<Object>();
+		for(String str1 : attr){
+		  v.add(allCollection.get(i).myDBObj.get(str1));
+		}
+		res.add(v);
+	}
+	return res;
+}
+public static int getTypesCount(String nameCollection){
+	int count = 0;
+	try{
+		Set <String> tempRes = new HashSet<String>();	
+		DBCollection coll = myDB.getCollection(nameCollection);
+		DBCursor cur = coll.find();
+		String typeName;
 		
-		    while (cur.hasNext()){
-			    DBWrapper temp= (DBWrapper)cur.next();
-			    typeName = temp.getType(); 
-		        if ( !(tempRes.contains(typeName)) ){
-				    tempRes.add(typeName);
-			    }
-		    }
-		    for (String v  : tempRes){
-			    count++;
-		    }
-		    //count = tempRes.size();
-	    }
-	    catch (Exception e) {
-		    System.out.println("Epic Fail");
-	    }
-	    return count;
-    }
+		while (cur.hasNext()){
+			DBWrapper temp= (DBWrapper)cur.next();
+			typeName = temp.getType(); 
+		    if ( !(tempRes.contains(typeName)) ){
+				tempRes.add(typeName);
+			}
+		}
+		for (String v : tempRes){
+			count++;
+		}
+	}
+	catch (Exception e) {
+		System.out.println("Epic Fail");
+	}
+	return count;
+}
+public static void setAttribut(String nameAttribut, String valueAttribut, Object id){
+	DBWrapper a = getDBObjectById((ObjectId)id);
+	a.setAttribut(nameAttribut,valueAttribut);
+	myDB.getCollection(COLLECTION_MAIN).save(a.toDBObject());
+}
 }
