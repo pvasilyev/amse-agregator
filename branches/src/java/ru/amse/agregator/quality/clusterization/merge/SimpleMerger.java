@@ -11,12 +11,11 @@ import ru.amse.agregator.storage.DataBase;
 public class SimpleMerger extends Merger {
 
     public DBWrapper merge(Cluster cluster) {
-        
-        //return DataBase.getDBObjectById(cluster.getObjectList().get(0));
-        return null;
-
+        if (cluster.getObjectList().get(0) != null)  {
+            return DataBase.getDBObjectById(cluster.getObjectList().get(0));
+        } else {
+            return null;
+        }
     }
-
-
 
 }
