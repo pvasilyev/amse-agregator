@@ -1,6 +1,8 @@
 package ru.amse.agregator.storage;
 
 import java.awt.geom.Point2D;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,7 +34,96 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_HOTEL = "Hotel";
 	public static final String TYPE_USER = "User";		
 	public static final String TYPE_COMMENT = "Comment";
-			
+	public void setAttribut(String nameAttribut, String valueAttribut){
+		if (nameAttribut.equalsIgnoreCase(FIELD_TYPE)){
+			setType(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_NAME)){
+			setName(valueAttribut);
+		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_DESC)){
+			setDescription(valueAttribut);
+		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_COORDS)){
+			int i = 0;
+			ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
+			while (i < valueAttribut.length()){
+				int j = valueAttribut.indexOf(" ", i);
+				String sub ="";
+				if (j == -1) {
+					sub = valueAttribut.substring(i);
+					i = valueAttribut.length();
+					
+				}
+				else{
+					String sub1;
+					sub = valueAttribut.substring(i,j);
+					i = j+1;
+					Double x = Double.parseDouble(sub);
+					j = valueAttribut.indexOf(" ", i);
+					if ( j == -1){
+						sub1 = valueAttribut.substring(i);
+						i = valueAttribut.length();
+					}
+					else{
+						sub1 = valueAttribut.substring(i,j);
+						i = j+1;
+					}
+					Double y = Double.parseDouble(sub1);
+					Point2D.Double p = new Point2D.Double(x,y);
+					coords.add(p);
+				}
+			}
+			setCoordsArray(coords);
+		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_PHOTOS)){
+			setPhoto(valueAttribut);
+		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_KEYWORDS)){
+			ArrayList<String> keyWordsArray = new ArrayList<String>();
+			int i = 0;
+			while (i < valueAttribut.length()){
+				int j = valueAttribut.indexOf(" ", i);
+				String sub ="";
+				if (j == -1) {
+					sub = valueAttribut.substring(i);
+					i = valueAttribut.length();
+				}
+				else{
+					sub = valueAttribut.substring(i,j);
+					i = j+1;
+				}
+				keyWordsArray.add(sub);
+			}
+			setKeyWordsArray(keyWordsArray);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_DATE_FOUNDATION)){
+			//setDate(new SimpleDateFormat ().parse(valueAttribut));
+		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_ARCHITECT)){
+			setArchitect(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_COST)){
+			setCost(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_ADDRESS)){
+			setAddress(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_MUSIC)){
+			setMusic(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_WEBSITE)){
+			setWebsite(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_ROOMS)){
+			setRooms(valueAttribut);
+		}
+		if (nameAttribut.equalsIgnoreCase(FIELD_CITY_ID)){
+			//реализовать
+		}
+	
+		
+	}
 	public DBWrapper(DBObject dbObject){
 		super(dbObject);
 	}
@@ -40,7 +131,7 @@ public class DBWrapper extends StorageObject{
 	public DBWrapper() {
 		this(new BasicDBObject());
 	}	
-	
+
 	//----------
 			
 	public void setType (String type){
