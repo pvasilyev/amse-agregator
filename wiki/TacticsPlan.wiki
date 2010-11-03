@@ -10,9 +10,9 @@
 
 == ВСЕМ ==
 
-  1. Посмотреть страничку про стиль кодирования ([http://code.google.com/p/amse-agregator/wiki/CodeStyle подробнее])
-  2. Посмотреть страничку про порядок в свн ([http://code.google.com/p/amse-agregator/wiki/AboutSVN подробнее])
-  3. Отправить код на review.
+  # Посмотреть страничку про стиль кодирования ([http://code.google.com/p/amse-agregator/wiki/CodeStyle подробнее])
+  # Посмотреть страничку про порядок в свн ([http://code.google.com/p/amse-agregator/wiki/AboutSVN подробнее])
+  # Отправить код на review.
 
 -----
 
