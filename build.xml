@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Agregator" default="dist" basedir=".">
+    <description>
+        Amse Agregator!
+    </description>
+    
+    <!-- set global properties for this build -->
+    <property name="src" location="${basedir}/src/java"/>
+    <property name="build" location="${basedir}/build"/>
+    <property name="dist"  location="${basedir}/dist"/>
+    
+    <path id="libs.all">
+        <fileset dir="libs" includes="**/*.jar"/>
+    </path>
+    <property name="all_libs" refid="libs.all"/>
+    <pathconvert pathsep=" " property="all_libs_manifest" refid="libs.all"/>
+
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init"
+        description="compile the source " >
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}"
+               destdir="${build}"
+               debug="false"
+               deprecation="true"
+               optimize="true"
+               includeAntRuntime="false" >
+            <classpath refid="libs.all"/>
+        </javac>
+        <!-- Копирование необходимых файлов -->
+        <copy todir="${build}">
+            <fileset dir="${src}" includes="**/*.*" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="dist" depends="compile"
+        description="generate the distribution" >
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
+        <!-- Put everything in ${build} into the Agregator-${DSTAMP}.jar file -->
+        <jar jarfile="${dist}/miner-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/miner/**/*.*">
+            <manifest>
+                <attribute name="Built-By" value="Agregator's build.xml"/>
+                <attribute name="Main-Class" value="ru.amse.agregator.miner.Main"/>
+                <attribute name="Class-Path" value="${all_libs_manifest}"/>
+            </manifest>
+        </jar>
+        <jar jarfile="${dist}/indexer-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/indexer/**/*.*"/>
+        
+        <!-- Добавить сюда права на выполнение для джарников! -->
+        
+    </target>
+
+    <target name="clean"
+        description="clean up" >
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>
+
