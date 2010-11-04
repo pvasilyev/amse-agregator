@@ -7,7 +7,7 @@ import java.util.Iterator;
  *
  * @author pavel
  */
-public class ArrayStorage extends ClusterStorage {
+final public class ArrayStorage extends ClusterStorage {
 
     public ArrayList<Cluster> clusters = new ArrayList<Cluster>();
     private Iterator iterator = null;

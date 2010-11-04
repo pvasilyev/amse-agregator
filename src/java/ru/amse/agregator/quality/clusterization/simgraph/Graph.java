@@ -73,15 +73,5 @@ abstract public class Graph extends Object implements Serializable {
     abstract public Edge getNextEdge();
 
     abstract public int getEdgeCount();
-
-//    public void addItem(ObjectId obj) {
-//        ArrayList<Edge> newEdges = new ArrayList<Edge>();
-//
-//        startIterating();
-//        while (hasNext()) {
-//
-//        }
-//    }
-//
-//    public void addItems(ArrayList<ObjectId> objList);
+    
 }
