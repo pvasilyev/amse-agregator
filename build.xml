@@ -12,9 +12,26 @@
     <path id="libs.all">
         <fileset dir="libs" includes="**/*.jar"/>
     </path>
+    <path id="libs.miner">
+        <fileset dir="libs" includes="webharvester/**/*.jar"/>
+        <fileset dir="libs" includes="mongo*.jar"/>
+    </path>
+    <path id="libs.indexer">
+        <fileset dir="libs" includes="lucene*.jar"/>
+        <fileset dir="libs" includes="mongo*.jar"/>
+    </path>
+    <path id="libs.quality">
+        <fileset dir="libs" includes="lucene*.jar"/>
+        <fileset dir="libs" includes="mongo*.jar"/>
+    </path>
+    
     <property name="all_libs" refid="libs.all"/>
     <pathconvert pathsep=" " property="all_libs_manifest" refid="libs.all"/>
+    <pathconvert pathsep=" " property="miner_libs_manifest" refid="libs.miner"/>
+    <pathconvert pathsep=" " property="indexer_libs_manifest" refid="libs.indexer"/>
+    <pathconvert pathsep=" " property="quality_libs_manifest" refid="libs.quality"/>
 
+<!-- Targets -->
 
     <target name="init">
         <!-- Create the time stamp -->
@@ -49,12 +66,28 @@
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
                 <attribute name="Main-Class" value="ru.amse.agregator.miner.Main"/>
-                <attribute name="Class-Path" value="${all_libs_manifest}"/>
+                <attribute name="Class-Path" value="${miner_libs_manifest} ${build}/"/>
             </manifest>
         </jar>
-        <jar jarfile="${dist}/indexer-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/indexer/**/*.*"/>
+        <jar jarfile="${dist}/indexer-${DSTAMP}.jar" basedir="${build}">
+            <include name="ru/amse/agregator/indexer/**/*.*"/>
+            <include name="ru/amse/agregator/bondarev/**/*.*"/>
+            <manifest>
+                <attribute name="Built-By" value="Agregator's build.xml"/>
+                <attribute name="Main-Class" value="ru.amse.agregator.bondarev.Main"/>
+                <attribute name="Class-Path" value="${indexer_libs_manifest} ${build}/"/>
+            </manifest>
+        </jar>
+        <jar jarfile="${dist}/quality-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/quality/**/*.*">
+            <manifest>
+                <attribute name="Built-By" value="Agregator's build.xml"/>
+                <attribute name="Main-Class" value="ru.amse.agregator.quality.clusterization.Clusterization"/>
+                <attribute name="Class-Path" value="${quality_libs_manifest} ${build}/"/>
+            </manifest>
+        </jar>
         
-        <!-- Добавить сюда права на выполнение для джарников! -->
+        <!-- Даём права на выполнение, созданным джарникам -->
+        <chmod dir="${dist}" perm="744" includes="**/*.jar"/>
         
     </target>
 
