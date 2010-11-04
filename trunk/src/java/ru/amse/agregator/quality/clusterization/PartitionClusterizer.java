@@ -7,7 +7,6 @@ import ru.amse.agregator.quality.clusterization.simgraph.Graph;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.HashSet;
 
