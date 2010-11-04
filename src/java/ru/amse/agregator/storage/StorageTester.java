@@ -1,6 +1,7 @@
 package ru.amse.agregator.storage;
 import java.util.ArrayList;
-import java.util.Date;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.awt.geom.Point2D;
 public class StorageTester {
 
@@ -9,16 +10,6 @@ public class StorageTester {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        DataBase.connectToDirtyBase();
-        DataBase.connectToDirtyBase();
-        DataBase.connectToMainBase();
-        DataBase.connectToDirtyBase();
-        DataBase.connectToMainBase();
-        DataBase.connectToMainBase();
-
-        DataBase.connectToDirtyBase();
-        DataBase.connectToMainBase();
-
         DataBase.connectToDirtyBase();
 
         //Создаём новый объект-контейнер.
@@ -78,7 +69,7 @@ public class StorageTester {
         someArchAttr.setAddress("Kolizey Street, 55");
         someArchAttr.setArchitect("Kirill K.");
         someArchAttr.setCost("100 $");
-        someArchAttr.setDate(new Date(1990,7,8));
+        someArchAttr.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("08/07/1990", new ParsePosition(0)));
         
         //добавляем в базу.
         DataBase.add(someArchAttr);
