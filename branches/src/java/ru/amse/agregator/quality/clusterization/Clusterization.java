@@ -42,27 +42,26 @@ final public class Clusterization {
 
         clusterizer.clusterize(allCities, similatityGraph, storage);
 
-        System.out.println("Checking consistency");
-        storage.startIterating();
-        while (storage.hasNext()) {
-            ClusterStorage.Cluster cl = storage.getNextCluster();
-            if (cl == null) {
-                System.out.println("fail");
-            }
-            if (cl.getObjectList() == null) {
-                System.out.println("fail");
-            }
-            if (cl.getObjectList().isEmpty()) {
-                System.out.println("fail");
-            }
-            if (cl.getObjectList().get(0) == null) {
-                System.out.println("fail");
-            }
-            DataBase.getDBObjectById(cl.getObjectList().get(0));
-        }
+//        System.out.println("Checking consistency");
+//        storage.startIterating();
+//        while (storage.hasNext()) {
+//            ClusterStorage.Cluster cl = storage.getNextCluster();
+//            if (cl == null) {
+//                System.out.println("fail");
+//            }
+//            if (cl.getObjectList() == null) {
+//                System.out.println("fail");
+//            }
+//            if (cl.getObjectList().isEmpty()) {
+//                System.out.println("fail");
+//            }
+//            if (cl.getObjectList().get(0) == null) {
+//                System.out.println("fail");
+//            }
+//            DataBase.getDBObjectById(cl.getObjectList().get(0));
+//        }
 
-//        DataBase.connectToMainBase();
-//        DataBase.printAll();
+
 //        DataBase.connectToDirtyBase();
 //        DataBase.printAll();
 
@@ -75,6 +74,10 @@ final public class Clusterization {
         MergeProcess.perform(new SimpleMerger(), storage);
 
         System.out.println("Finished clusterization process");
+
+        DataBase.switchBaseTo(DataBase.MAIN_DB_NAME);
+        DataBase.printAll();
+
 
     }
 
