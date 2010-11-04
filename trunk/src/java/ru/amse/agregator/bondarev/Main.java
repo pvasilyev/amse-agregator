@@ -9,7 +9,8 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 /*
  * Author: Bondarev Timofey
@@ -22,7 +23,7 @@ public class Main {
         File indexDir = new File("index");
 
         DataBase.connectToDirtyBase();
-        writeDateToDB();
+        //writeDateToDB();
         DataBase.printAll();
         try {
             Indexer.makeNewIndex(indexDir);
@@ -83,7 +84,7 @@ public class Main {
         someArchAttr.setAddress("Kolizey Street, 55");
         someArchAttr.setArchitect("Kirill K.");
         someArchAttr.setCost("100 $");
-        someArchAttr.setDate(new Date(1990,7,8));
+        someArchAttr.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("08/07/1990", new ParsePosition(0)));
 
         DataBase.add(someArchAttr);
     }
