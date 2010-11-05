@@ -6,7 +6,7 @@
 <var-def name="citar">
 <xpath expression="//div[@style='cursor:pointer;']/following-sibling::div[position() = 1]">
 	<html-to-xml outputtype="pretty">
-    	<http url="http://www.luxe.ru/countries/location107.htm"/>
+    	<http url="${linkToScrap}"/>
 	</html-to-xml>		
 </xpath>
 </var-def>
@@ -126,13 +126,9 @@
 	</body>
 </loop>
 		
-
-
-
+<!--
 <var name="cityImages"/>
 <var name="CityName"/>
 <var name="cityDescription"/>
-<var name="cityAtractions"/>
-
-
+<var name="cityAtractions"/>-->
 </config>
