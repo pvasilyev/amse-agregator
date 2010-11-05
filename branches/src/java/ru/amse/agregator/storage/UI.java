@@ -93,7 +93,7 @@ public class UI extends JFrame implements TableModelListener{
         collectionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableModel.addTableModelListener(this);
         container.add(collectionsTable.getTableHeader(), BorderLayout.PAGE_START);
-        container.add((collectionsTable), BorderLayout.CENTER);
+        
         
 		dbList.addListSelectionListener(
 			new ListSelectionListener(){
@@ -160,7 +160,7 @@ public class UI extends JFrame implements TableModelListener{
 					
 						collectionsTable = new JTable(tableModel);
 						collectionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-						container.add(collectionsTable, BorderLayout.CENTER);
+						container.add(new JScrollPane(collectionsTable), BorderLayout.CENTER);
 						container.add(collectionsTable.getTableHeader(), BorderLayout.PAGE_START);
 						container.repaint();
 						collectionsTable.revalidate();
@@ -177,6 +177,8 @@ public class UI extends JFrame implements TableModelListener{
 		
 		
 		container.add(controls, BorderLayout.EAST);
+		
+        container.add(new JScrollPane(collectionsTable), BorderLayout.CENTER);
 		setSize(600, 400);
 		setVisible(true);
 
