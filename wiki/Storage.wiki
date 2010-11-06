@@ -29,7 +29,7 @@ mkdir data
 
 === MongoDB & Java ===
 Для взаимодействия с сервером MongoDB из нашей Java-программы, необходимо скачать [http://github.com/mongodb/mongo-java-driver/downloads Java-драйвер].<br>
-Мы пользуемся последней на данный момент версией - [http://github.com/downloads/mongodb/mongo-java-driver/mongo-2.2.jar mongo-2.2.jar]
+Мы пользуемся последней на данный момент версией - ~~[http://github.com/downloads/mongodb/mongo-java-driver/mongo-2.2.jar mongo-2.2.jar]~~ [http://github.com/downloads/mongodb/mongo-java-driver/mongo-2.3.jar mongo-2.3.jar] - New!
 
 Затем полученный .jar файл, нужно либо положить в ваш _classpath_, либо подключить его в вашей IDE.
 
