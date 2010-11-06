@@ -1,1 +1,1 @@
-luxlink.txt;luxconfig.xml
+wikilinks.txt;wikipediaconfig.xml
