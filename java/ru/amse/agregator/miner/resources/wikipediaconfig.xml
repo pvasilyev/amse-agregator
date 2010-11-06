@@ -17,102 +17,58 @@
 	<var-def name="cityDescriptionsOut">
 	</var-def>
 
-<!--	<script language="javascript">
-		cityNames =  new Array();
-		cityImages = new Array();
-		cityLatitudes = new Array();
-		cityLongitudes = new Array();
-		cityDescriptions = new Array();
-	</script>-->
 
-<loop item="link" index="i" filter="${filter}">
-<!--	<loop item="link" index="i" filter="0-10">-->
-
-		<list>
-			<var-def name="URLlist">
-				<tokenize>
-					<file action="read" path="${inputFile}">
-<!--			<file action="read" path="/home/iv/svn/src/amse-agregator/src/ru/amse/agregator/miner/resources/wikilinks.txt">-->
-					</file>
-				</tokenize>
-			</var-def>
-		</list>
-		
-		<body>
-			<var-def name="loadedData">
-					<xpath expression="//div[@id='content']">
-						<html-to-xml outputtype="pretty">
-						    <http url="${link}"/>
-						</html-to-xml>
-					</xpath>		
-			</var-def>
-			
-			<var-def name="currentCityName">
-					<xpath expression="//h1">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			<var-def name="currentCityImage">
-					<xpath expression="//a[@title='Герб']/img//@src">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			<var-def name="currentCityLatitude">
-					<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lat']">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			<var-def name="currentCityLongitude">
-					<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lon']">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			<var-def name="currentCityDescription1">
-				<xpath expression="//div[@id='bodyContent']/p[1]">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			<var-def name="currentCityDescription2">
-				<xpath expression="//div[@id='bodyContent']/p[2]">
-						<var name="loadedData"/>
-					</xpath>	
-			</var-def>
-			
-			
-			<script language="javascript">
-				sys.defineVariable("cityNamesOut",currentCityName.toString(),true);
-				sys.defineVariable("cityImagesOut",currentCityImage.toString(),true);
-				sys.defineVariable("cityLatitudesOut",currentCityLatitude.toString(),true);
-				sys.defineVariable("cityLongitudesOut",currentCityLongitude.toString(),true);
-				sys.defineVariable("cityDescriptionsOut",currentCityDescription1.toString().concat(
-														currentCityDescription2.toString()),true);
-			</script>
-			<empty/>
-			
-		</body>
-	</loop>			
-<!--				cityNames.push(currentCityName.toString());
-				cityImages.push(currentCityImage.toString().replace("\n"," "));
-				cityLatitudes.push(currentCityLatitude.toString());
-				cityLongitudes.push(currentCityLongitude.toString());
-				cityDescriptions.push(currentCityDescription1.toString().replace("\n"," ").
-								concat(currentCityDescription2.toString().replace("\n"," ")));-->
-<!--				cityDescriptions.push(currentCityDescription2.toString().replace("\n"," "));-->
-		
-			
-
+	<var-def name="loadedData">
+			<xpath expression="//div[@id='content']">
+				<html-to-xml outputtype="pretty">
+				    <http url="${linkToScrap}"/>
+				</html-to-xml>
+			</xpath>		
+	</var-def>
 	
-<!--	<script language="javascript">
-		sys.defineVariable("cityNamesOut", cityNames.join('\n'), true);
-		sys.defineVariable("cityImagesOut", cityImages.join('\n'), true);
-		sys.defineVariable("cityLatitudesOut", cityLatitudes.join('\n'), true);
-		sys.defineVariable("cityLongitudesOut", cityLongitudes.join('\n'), true);
-		sys.defineVariable("cityDescriptionsOut", cityDescriptions.join('\n'), true);
-	</script>-->
+	<var-def name="currentCityName">
+			<xpath expression="//h1">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+	
+	<var-def name="currentCityImage">
+			<xpath expression="//a[@title='Герб']/img//@src">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+	
+	<var-def name="currentCityLatitude">
+			<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lat']">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+	
+	<var-def name="currentCityLongitude">
+			<xpath expression="//span[@class='plainlinksneverexpand']//*/span[@class='geo-dms']/span[@class='geo-lon']">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+	
+	<var-def name="currentCityDescription1">
+		<xpath expression="//div[@id='bodyContent']/p[1]">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+	
+	<var-def name="currentCityDescription2">
+		<xpath expression="//div[@id='bodyContent']/p[2]">
+				<var name="loadedData"/>
+			</xpath>	
+	</var-def>
+			
+	<script language="javascript">
+		sys.defineVariable("cityNamesOut",currentCityName.toString(),true);
+		sys.defineVariable("cityImagesOut",currentCityImage.toString(),true);
+		sys.defineVariable("cityLatitudesOut",currentCityLatitude.toString(),true);
+		sys.defineVariable("cityLongitudesOut",currentCityLongitude.toString(),true);
+		sys.defineVariable("cityDescriptionsOut",currentCityDescription1.toString().concat(
+												currentCityDescription2.toString()),true);
+	</script>
 	
 </config>
