@@ -12,23 +12,28 @@ final public class ArrayStorage extends ClusterStorage {
     public ArrayList<Cluster> clusters = new ArrayList<Cluster>();
     private Iterator iterator = null;
 
-    public void addCluster(Cluster cluster) {
+    @Override
+	public void addCluster(Cluster cluster) {
         clusters.add(cluster);
     }
 
-    public void startIterating() {
+    @Override
+	public void startIterating() {
         iterator = clusters.iterator();
     }
 
-    public Cluster getNextCluster() {
+    @Override
+	public Cluster getNextCluster() {
         return (Cluster)iterator.next();
     }
 
-    public boolean hasNext() {
+    @Override
+	public boolean hasNext() {
         return iterator.hasNext();
     }
 
-    public int getClusterCount() {
+    @Override
+	public int getClusterCount() {
         return clusters.size();
     }
 }
