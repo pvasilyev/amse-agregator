@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import ru.amse.agregator.storage.DataBase;
-import ru.amse.agregator.miner.MyCityScarper;
 
 public class Main {
 	

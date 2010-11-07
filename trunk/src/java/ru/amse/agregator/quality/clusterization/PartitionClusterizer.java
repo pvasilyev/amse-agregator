@@ -19,7 +19,8 @@ import org.bson.types.ObjectId;
 public class PartitionClusterizer extends Clusterizer {
 
     //simple implementation of partition algorithm
-    public void clusterize(ArrayList<ObjectId> objects,
+    @Override
+	public void clusterize(ArrayList<ObjectId> objects,
             Graph similarityGraph, ClusterStorage clusterStorage) {
 
         Map<ObjectId, ClusterStorage.Cluster> clusterMap
