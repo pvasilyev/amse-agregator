@@ -9,7 +9,7 @@ public class AttractionManager {
         List<Attraction> results = new ArrayList<Attraction>();
         //TODO temporary.
 
-       for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             Attraction attraction = new Attraction();
             attraction.setUid(i);
             attraction.setName("name_" + i);
@@ -17,7 +17,7 @@ public class AttractionManager {
             attraction.setImage("images/image.jpg");
             results.add(attraction);
         }
-       return results;
+        return results;
     }
 
     public List<Attraction> getSomeAttraction(String param) {
@@ -25,22 +25,38 @@ public class AttractionManager {
 
         //TODO temporary.
         if (param.equals("italy")) {
-           for (int i = 0; i < 5; ++i) {
+            for (int i = 0; i < 5; ++i) {
                 Attraction attraction = new Attraction();
                 attraction.setUid(i);
-                attraction.setName("some_name_" + i);
-                attraction.setDescription("some_description_" + i);
+                attraction.setName("имя_" + i);
+                attraction.setDescription("описание_" + i);
                 attraction.setImage("images/image.jpg");
                 results.add(attraction);
-           }
-        }  else {
+            }
+        } else {
             Attraction attraction = new Attraction();
-                attraction.setUid(0);
-                attraction.setName("РїРѕ РІР°С€РµРјСѓ Р·Р°РїСЂРѕСЃСѓ РЅРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ");
-                attraction.setDescription("");
-                attraction.setImage("images/image.jpg");
-                results.add(attraction);
+            attraction.setUid(0);
+            attraction.setName("ничего не найднео");
+            attraction.setDescription("");
+            attraction.setImage("images/image.jpg");
+            results.add(attraction);
         }
         return results;
+    }
+
+    public Attraction getSomeAttractionById(String param) {
+        if (param != null && !"".equals(param)) {
+             Attraction attraction = new Attraction();
+        attraction.setUid(66666);
+        attraction.setName("some_name_" + 666);
+        attraction.setDescription("some_description_" + 666);
+        attraction.setImage("images/image.jpg");
+        }
+        Attraction attraction = new Attraction();
+        attraction.setUid(10000000);
+        attraction.setName("some_name_" + 1000000);
+        attraction.setDescription("some_description_" + 1000000);
+        attraction.setImage("images/image.jpg");
+        return attraction;
     }
 }
