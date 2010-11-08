@@ -5,14 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import ru.amse.agregator.storage.DataBase;
-import ru.amse.agregator.miner.MyCityScarper;
+import ru.amse.agregator.miner.MyScarper;
 
 public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		
 		String mainFile;
-		MyCityScarper myScrap;
+		MyScarper myScrap;
 		
 		if(args.length == 1){
 			mainFile = args[0].toString();
@@ -22,9 +22,10 @@ public class Main {
 			return;
 		}
 		
-		DataBase.connectToDirtyBase();		
-		DataBase.removeCollection(DataBase.COLLECTION_MAIN);
-		DataBase.printAll();
+		DataBase.connectToDirtyBase();
+		System.out.println(DataBase.getAllCities().size());
+		//DataBase.removeCollection(DataBase.COLLECTION_MAIN);
+		//DataBase.printAll();
 		//System.in.read();
 		
 		FileReader fr = new FileReader(mainFile);
@@ -33,8 +34,8 @@ public class Main {
 		
 		while((s = br.readLine()) != null){
 			//links, configuration
-			myScrap = new MyCityScarper(s.substring(0, s.indexOf(';')) , s.substring(s.indexOf(';')+1) ); 
-			myScrap.execute();
+			myScrap = new MyScarper(s.substring(0, s.indexOf(';')) , s.substring(s.indexOf(';')+1) ); 
+			myScrap.minerStart();
 			
 		}
 		fr.close();
