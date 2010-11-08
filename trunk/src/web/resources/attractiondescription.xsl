@@ -14,7 +14,7 @@
                    <img src="{image}" class="little_image"/><br/>
                 </td>
                 <td>
-                    <a href="attraction_description.xml" type="submit"><xsl:value-of select="name"/></a>
+                    <a href="attractiondescription.xml" type="submit"><xsl:value-of select="name"/></a>
                     <strong><xsl:value-of select="description"/></strong><br/>
                     <strong><xsl:value-of select="image"/></strong>
                 </td>

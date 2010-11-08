@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
  "http://www.springframework.org/dtd/spring-beans.dtd">
 
@@ -13,11 +13,11 @@
     <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
 
 	<!--Yalets-->
-    <bean id="showAttractionYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
+    <bean id="showAttractionsYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
         <property name="manager" ref="manager"/>
     </bean>
 
-    <bean id="showAttractionDescriptionYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescriptionYalet">
+    <bean id="showAttractionDescYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescYalet">
         <property name="manager" ref="manager"/>
     </bean>
 

@@ -2,35 +2,33 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="windows-1251"/>
     <xsl:include href="common.xsl"/>
+    <!--<xsl:include href="yandex.xsl"/>-->
 
     <xsl:template name="main">
         <xsl:apply-templates select="page/data/collection" mode="show"/>
     </xsl:template>
 
-
     <xsl:template match="collection" mode="show">
         <xsl:for-each select="attraction">
-            <table>
-                <td>
-                   <img src="{image}" class="little_image"/><br/>
-                </td>
-                <td>
-                    <xsl:variable name="market-item" select="key('item', @uid)"/>
-                    <a href="attraction_description.xml" type="submit"><xsl:value-of select="name"/></a>
-                    <strong><xsl:value-of select="description"/></strong><br/>
-                    <strong><xsl:value-of select="image"/></strong>
-                </td>
-            </table>
-       </xsl:for-each>
-    </xsl:template>
+            <div>
+                <ol>
+                    <li>
+                        <img src="{image}" class="little_image"/>
+                        <h2 class="b-serp-item__title">
+                            <xsl:variable name="id" select="@uid"/>
 
-    <!--<xsl:template match="name" mode="show">
-        <xsl:value-of select="name"/>
-        <xsl:apply-templates/>
+                            <a class="b-serp-item__title__link" tabindex="2"
+                               href="attractiondescription.xml"
+                                    >
+                                <xsl:value-of select="name"/>
+                            </a>
+                        </h2>
+                        <div class="b-serp-item__text" name="id" value="{uid}">
+                            <xsl:value-of select="description"/>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </xsl:for-each>
     </xsl:template>
-
-    <xsl:template match="description" mode="show">
-        <xsl:value-of select="description"/>
-        <xsl:apply-templates/>
-    </xsl:template>-->
 </xsl:stylesheet>
