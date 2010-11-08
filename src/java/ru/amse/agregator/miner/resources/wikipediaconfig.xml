@@ -2,22 +2,6 @@
 
 <config scriptlang="default_script_lang">
 
-	<var-def name="cityNamesOut">
-	</var-def>
-	
-	<var-def name="cityLatitudesOut">
-	</var-def>
-	
-	<var-def name="cityLongitudesOut">
-	</var-def>
-	
-	<var-def name="cityImagesOut">
-	</var-def>
-	
-	<var-def name="cityDescriptionsOut">
-	</var-def>
-
-
 	<var-def name="loadedData">
 			<xpath expression="//div[@id='content']">
 				<html-to-xml outputtype="pretty">
@@ -33,7 +17,7 @@
 	</var-def>
 	
 	<var-def name="currentCityImage">
-			<xpath expression="//a[@title='Герб']/img//@src">
+			<xpath expression="//a/img[@class='thumbimage']//@src">
 				<var name="loadedData"/>
 			</xpath>	
 	</var-def>
@@ -70,5 +54,6 @@
 		sys.defineVariable("cityDescriptionsOut",currentCityDescription1.toString().concat(
 												currentCityDescription2.toString()),true);
 	</script>
+	</empty>
 	
 </config>
