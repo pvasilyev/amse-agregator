@@ -104,15 +104,14 @@ public class MyCityListener implements ScraperRuntimeListener {
 	public void onNewProcessorExecution(Scraper scraper, BaseProcessor arg1) {
 		
 		if(scraper.getRunningProcessor().getElementDef().getShortElementName() == "empty"){
-			Variable link = (Variable) scraper.getContext().get("linkToScrap");
+			Variable link = (Variable) scraper.getContext().get("countryLink");
 			Variable cityName = (Variable) scraper.getContext().get("CityName");
 			Variable cityImage  = (Variable) scraper.getContext().get("cityImages");
 			Variable cityDescription  = (Variable) scraper.getContext().get("cityDescription");
 			Variable cityLatitude  = (Variable) scraper.getContext().get("cityLatitudesOut");
 			Variable cityLongitude  = (Variable) scraper.getContext().get("cityLongitudesOut");
 			
-						
-			System.out.println (link);
+			System.out.println ("link");			
 			
 			String sCityName = clearString(cityName);
 			String sCityImage = clearString(cityImage);
