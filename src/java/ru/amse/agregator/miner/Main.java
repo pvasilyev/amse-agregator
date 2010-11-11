@@ -21,7 +21,7 @@ public class Main {
 			System.out.println("Please specify an input file.");
 			return;
 		}
-		
+			
 		DataBase.connectToDirtyBase();
 		System.out.println(DataBase.getAllCities().size());
 		//DataBase.removeCollection(DataBase.COLLECTION_MAIN);
@@ -30,13 +30,11 @@ public class Main {
 		
 		FileReader fr = new FileReader(mainFile);
 		BufferedReader br = new BufferedReader(fr);
-		String s;
+		String configFile;
 		
-		while((s = br.readLine()) != null){
-			//links, configuration
-			myScrap = new MyScarper(s.substring(0, s.indexOf(';')) , s.substring(s.indexOf(';')+1) ); 
+		while((configFile = br.readLine()) != null){
+			myScrap = new MyScarper(mainFile.substring(0 , mainFile.lastIndexOf('/')+1),configFile);
 			myScrap.minerStart();
-			
 		}
 		fr.close();
 	}
