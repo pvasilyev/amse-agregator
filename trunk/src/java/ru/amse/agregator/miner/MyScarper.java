@@ -9,8 +9,7 @@ import org.webharvest.runtime.Scraper;
 
 public class MyScarper {
 
-	private final String path = "src/ru/amse/agregator/miner/resources/";
-	private String linksFile;
+	private final String path; //= "ru/amse/agregator/miner/resources/";
 	private String configFile;
 		
 	FileReader linksReader;
@@ -18,35 +17,21 @@ public class MyScarper {
 	int i;
 
 	
-	public MyScarper(String inLinks, String inConfig){
-		
-		linksFile = inLinks;
-		configFile = inConfig;
+	public MyScarper(String path, String configFile){
+		this.path = path;
+		this.configFile = configFile;
 		i = 0;
 	}
 
 	public void minerStart() throws IOException{
 		
-		String tmp;
-		linksReader = new FileReader(path + linksFile);
-		linksBuffer = new BufferedReader(linksReader);
+		System.out.print(i++);										
+		ScraperConfiguration config = new ScraperConfiguration(path + configFile);
+		MyCityListener listener = new MyCityListener();
+		Scraper scraper = new Scraper(config, path);
+		scraper.addRuntimeListener(listener);
+		//scraper.getHttpClientManager().setHttpProxy("192.168.5.250", 3128);
+		scraper.execute();
 		
-		while((tmp = linksBuffer.readLine()) != null){
-		
-			System.out.print(i++);
-			
-			ScraperConfiguration config = new ScraperConfiguration(path + configFile);
-			MyCityListener listener = new MyCityListener();
-			Scraper scraper = new Scraper(config, path);
-			
-			scraper.addVariableToContext("linkToScrap", tmp);
-			scraper.addRuntimeListener(listener);
-			//scraper.getHttpClientManager().setHttpProxy("192.168.5.250", 3128);
-			
-			scraper.execute();
-			
-		}	
 	}
-
-	
 }

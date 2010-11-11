@@ -11,8 +11,8 @@
 <var-def name="countriesList">
 	<xpath expression="//a[@class='cohr_' or @class='cohr']/@href">
 		<html-to-xml>
-			<http url="${linkToScrap}"/>
-<!--			<http url="www.luxe.ru/countries"/>-->
+<!--			<http url="${linkToScrap}"/>-->
+			<http url="www.luxe.ru/countries"/>
 		</html-to-xml>
 	</xpath>
 </var-def>
