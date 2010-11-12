@@ -4,65 +4,51 @@
 Являеться компонентом системы ответственным за сбор информации из Сети и ее сохранение в БД. Информация получаемая на выходе программы - унифицированные записи в Сырой БД.
 Используемая технология: Web-Harvester.
 
-===Как компилить и запускать Miner===
-Для компиляции Miner'a потребуются JAR-файлы web-harvestera. [http://web-harvest.sourceforge.net/download/webharvest2b1-bin.zip Ссылка для скачивания]
+===Как собирать и запускать Miner===
+Miner собирается ant-овским build файлом.
+Полученному jar архиву скармливается директория где лежат конфиг файлы.
 
-Идем в папку amse-agregator и компилим командой:
+Чтобы добавить данные в базу нужно у себя в конфиг файле написать следующего вида строки:
 {{{
- javac -cp <full path to webharvest_2.jar> ru/amse/agregator/miner/Main.java
-
- Пример:
-
-iv@gate:~/svn/amse-agregator$ javac -cp /home/iv/code/webharvest2b1-bin/webharvest_2.jar ru/amse/agregator/miner/Main.java
+<var-def name="returnValue">
+  <text>Тип поля</text>
+  <template>Данные-в-строку</template>
+  ...
+  ...
+  
+  <var-def name="addToDB">1</var-def>
+</var-def>
 }}}
 
-Далее переходим на уровни ниже:
+_Типы полей:_ type, name, decription, coordinates, photos, keywords, date_foundation, architect , cost, address, city_id, music, website, rooms.
+
+Само поле _type_ может быть: {{{City, ArchAttraction, NaturalAttraction, Cafe, Hotel.}}}
+
+Поле photos может содержать много ссылок, в этом случае перечислите их разделяя точкой с запятой.
+
+Пример кода из конфиг файла который добавит структуру returnValue в базу:
 {{{
- cd ru/amse/agregator/miner/
+<var-def name="returnValue">
+
+  <text>type</text>
+  <text>City</text>
+					
+  <text>name</text>
+  <template>${CityName.toString()}</template>
+					
+  <text>photos</text>
+  <template>${cityImages.toString()}</template>
+
+  <text>decription</text>
+  <template>${cityDescription.toString()}</template>
+
+</var-def>
+						
+<var-def name="addToDB">
+	1
+</var-def>
 }}}
 
-Запускаем:
-{{{
-java -cp <path to class>:<path to all WebHarvester JAR files> ru.amse.agregator.miner.Main   resources/<inputfile>
+Строки которые попадают в структуру могут содержать теги - это не критично, они все равно позднее убираются.
 
-Пример:
-
-iv@gate:~/svn/amse-agregator/ru/amse/agregator/miner$ java -cp ~/svn/amse-agregator/miner/:~/code/webharvest2b1-bin/* ru.amse.agregator.miner.Main resources/main.txt
-}}}
-
-
-Во входном файле храняться пары вида:
-
-'Файл с ссылками;Конфиг файл под эти ресурсы'
-{{{
-<linksfile>;resources/<configfile>
-
-Пример:
-
-wikilinks.txt;resources/wikipediaconfig.xml
-wikitravellinks.txt;resources/wikitravelconfig.xml
-}}}
-
-_linksfile_ =  файл состоящий из ссылок, подлежащих обработке, записанных через Enter.
-
-_configfile_ = конфигурационный файл, описывающий как webharvester будет обрабатывать ссылки.
-
-На данный момент в репозиториях лежат конфиг файлы для сбора информации про города из _wikipedia_ и _wikitravel_(wikipediaconfig, wikitravelconfig), и файлики (wikilinks.txt, wikitravellinkst.txt) куда пишуться интересующие нас города на этих ресурсах.   Так же там лежит файл(_main.txt_):
-{{{
-wikilinks.txt;resources/wikipediaconfig.xml
-wikitravellinks.txt;resources/wikitravelconfig.xml
-}}}
-который и скармливаеться java-программе.
-
-java-программа на выходе выдает информацию вида:
- * Название города
- * Описание
- * Координаты
- * Ссылка на изображение
-
-_Ближайший план:_ Написать config файлы для других ресурсов(_archive.travel.ru, ..._)
-
-Конфиг файлы пишутся таким образом, чтобы программа обрабатывала поступающие данные единым образом; Так, если мы захотим добавить к обработке еще 1 ресурс, все что нам потребуется - это добавить запись в main.txt указав там файлик с ссылками и конфиг файл, саму программу перекомпилировать при этом не требуеться.
-
-
-Так же при выборе `WebHarvester` в качестве альтернативы, был рассмотрен вариант использовать `Visual Web Ripper`, но он оказался платным, не запускаемым под wine и не имел порта на Java.
+В качестве примера можно посмотреть конфиг, собирающий описание и изображение всех городов с сайта http://www.luxe.ru/countries/ тут: [http://code.google.com/p/amse-agregator/source/browse/trunk/resources/miner/luxconfig.xml]
