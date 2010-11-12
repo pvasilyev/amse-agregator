@@ -127,6 +127,10 @@ public class DBWrapper extends StorageObject{
 	public DBWrapper(DBObject dbObject){
 		super(dbObject);
 	}
+	
+	public void setKeyValue(String key, String value){
+		myDBObj.put(key,value);
+	}
 			
 	public DBWrapper() {
 		this(new BasicDBObject());
