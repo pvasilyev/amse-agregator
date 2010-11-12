@@ -1,42 +1,44 @@
 package ru.amse.agregator.miner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 
 import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.utils.XmlFileFilter;
 import ru.amse.agregator.miner.MyScarper;
 
 public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		
-		String mainFile;
-		MyScarper myScrap;
+		String mainDirectory;
 		
 		if(args.length == 1){
-			mainFile = args[0].toString();
+			mainDirectory = args[0].toString();
 		}
 		else{
-			System.out.println("Please specify an input file.");
+			System.out.println("Please specify an input directory");
 			return;
 		}
-			
+		
+		//Connect to DB
 		DataBase.connectToDirtyBase();
+		
 		System.out.println(DataBase.getAllCities().size());
-		//DataBase.removeCollection(DataBase.COLLECTION_MAIN);
-		//DataBase.printAll();
-		//System.in.read();
+		System.in.read();
+
+		//Get a list of xml files in the input directory
+		File mainDir = new File(mainDirectory);
+		File[] listOfFiles = mainDir.listFiles(new XmlFileFilter());
 		
-		FileReader fr = new FileReader(mainFile);
-		BufferedReader br = new BufferedReader(fr);
-		String configFile;
-		
-		while((configFile = br.readLine()) != null){
-			myScrap = new MyScarper(mainFile.substring(0 , mainFile.lastIndexOf('/')+1),configFile);
+		//For each xml config file create Scraper object and run it
+		for (int i = 0; i < listOfFiles.length; i++) {
+				
+			MyScarper myScrap = new MyScarper(mainDirectory,listOfFiles[i].getName());				
 			myScrap.minerStart();
-		}
-		fr.close();
+			
+		 }
+		
 	}
 }
 	
