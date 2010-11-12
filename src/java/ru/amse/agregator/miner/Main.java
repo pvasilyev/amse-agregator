@@ -25,7 +25,7 @@ public class Main {
 		DataBase.connectToDirtyBase();
 		
 		System.out.println(DataBase.getAllCities().size());
-		System.in.read();
+		//System.in.read();
 
 		//Get a list of xml files in the input directory
 		File mainDir = new File(mainDirectory);
