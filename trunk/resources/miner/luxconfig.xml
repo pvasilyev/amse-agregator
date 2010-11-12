@@ -128,7 +128,7 @@
 								i++;
 							}
 						   ]]>
-						 	sys.defineVariable("cityImages",a.join("\n"),true);
+						 	sys.defineVariable("cityImages",a.join(";"),true);
 						</script>
 					</if>
 		
@@ -164,7 +164,27 @@
 					]]>
 				</script>
 		
-				<empty/>
+				<var-def name="returnValue">
+
+					<text>type</text>
+					<text>City</text>
+					
+					<text>name</text>
+					<template>${CityName.toString()}</template>
+					
+					<text>photos</text>
+					<template>${cityImages.toString()}</template>
+
+					<text>decription</text>
+					<template>${cityDescription.toString()}</template>
+
+				</var-def>
+						
+				<var-def name="addToDB">
+					1
+				</var-def>
+				
+
 			</body>
 		</loop>
 

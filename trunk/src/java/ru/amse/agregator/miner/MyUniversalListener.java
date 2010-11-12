@@ -85,6 +85,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			
 			scr.pauseExecution();
 			Variable incomeObject = (Variable) scr.getContext().get("returnValue");
+			scr.getContext().setVar("addToDB", 0);
 			scr.continueExecution();
 			
 			List myList = incomeObject.toList();
