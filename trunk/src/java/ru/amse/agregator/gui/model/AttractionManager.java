@@ -67,7 +67,7 @@ public class AttractionManager {
 
     //Получение данных из базы
     public List<Attraction> getSearchResult(String param) {
-        Searcher.setIndexDir(new File("/home/natalia/DEVELOPMENT/JAVA/IDEA/AgregatorSource/amse-agregator/index"));
+        Searcher.setIndexDir(new File("/home/natalia/DEVELOPMENT/JAVA/IDEA/Agregator/index"));
         ArrayList<DBWrapper> dbwr = Searcher.search(new UserQuery(param));
 
         List<Attraction> result = new ArrayList<Attraction>();
