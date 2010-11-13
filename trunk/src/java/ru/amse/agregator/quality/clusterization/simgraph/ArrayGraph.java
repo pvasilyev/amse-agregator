@@ -11,8 +11,12 @@ import ru.amse.agregator.quality.clusterization.metric.Metric;
  */
 final public class ArrayGraph extends Graph {
 
-    private ArrayList<Edge> edges = new ArrayList<Edge>();
-    private Iterator iterator;
+	private static final long serialVersionUID = 1L;
+	
+	private ArrayList<Edge> edges = new ArrayList<Edge>();
+	
+	@SuppressWarnings("rawtypes")
+	private Iterator iterator;
 
     public ArrayGraph(Metric metric, double threshold) {
         super(metric, threshold);
@@ -22,27 +26,33 @@ final public class ArrayGraph extends Graph {
         super(metric, threshold, objects);
     }
 
-    protected void addEdge(Edge edge) {
+    @Override
+	protected void addEdge(Edge edge) {
         edges.add(edge);
     }
 
-    protected void addEdges(ArrayList<Edge> edges) {
+    @Override
+	protected void addEdges(ArrayList<Edge> edges) {
         this.edges.addAll(edges);
     }
 
-    public void startIterating() {
+    @Override
+	public void startIterating() {
         iterator = edges.iterator();
     }
 
-    public Edge getNextEdge() {
+    @Override
+	public Edge getNextEdge() {
         return (Edge)iterator.next();
     }
 
-    public boolean hasNext() {
+    @Override
+	public boolean hasNext() {
         return iterator.hasNext();
     }
 
-    public int getEdgeCount() {
+    @Override
+	public int getEdgeCount() {
         return edges.size();
     }
 }

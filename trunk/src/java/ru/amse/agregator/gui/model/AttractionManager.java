@@ -28,15 +28,15 @@ public class AttractionManager {
             for (int i = 0; i < 5; ++i) {
                 Attraction attraction = new Attraction();
                 attraction.setUid(i);
-                attraction.setName("имя_" + i);
-                attraction.setDescription("описание_" + i);
+                attraction.setName("РёРјСЏ_" + i);
+                attraction.setDescription("РѕРїРёСЃР°РЅРёРµ_" + i);
                 attraction.setImage("images/image.jpg");
                 results.add(attraction);
             }
         } else {
             Attraction attraction = new Attraction();
             attraction.setUid(0);
-            attraction.setName("ничего не найднео");
+            attraction.setName("РЅРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРЅРµРѕ");
             attraction.setDescription("");
             attraction.setImage("images/image.jpg");
             results.add(attraction);

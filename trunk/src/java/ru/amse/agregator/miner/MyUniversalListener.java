@@ -16,6 +16,7 @@ import ru.amse.agregator.storage.DataBase;
 
 public class MyUniversalListener implements ScraperRuntimeListener {
 		
+	@Override
 	public void onNewProcessorExecution(Scraper scraper, BaseProcessor arg1) {
 			
 			/*Variable link = (Variable) scraper.getContext().get("countryLink");
@@ -79,7 +80,8 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 	}
 
 	
-	public void onProcessorExecutionFinished(Scraper scr, BaseProcessor bp, Map arg2) {
+	@Override
+	public void onProcessorExecutionFinished(Scraper scr, BaseProcessor bp, @SuppressWarnings("rawtypes") Map arg2) {
 			
 		if (bp.getElementDef().getShortElementName().equalsIgnoreCase("var-def") && scr.getContext().getVar("addToDB").toInt() == 1){
 			
@@ -88,16 +90,17 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			scr.getContext().setVar("addToDB", 0);
 			scr.continueExecution();
 			
+			@SuppressWarnings("rawtypes")
 			List myList = incomeObject.toList();
 			System.out.println(myList.toString());
 			
 			DBWrapper newEntry = new DBWrapper();
 			for(int i=0; i<myList.size(); i+=2){
-				if(myList.get(i).toString().equals("FIELD_PHOTOS")){
+				if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
 					
 					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString())));
 					
-				}else if(myList.get(i).toString().equals("FIELD_COORDS")){
+				}else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
 					ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
 					String tmp = myList.get(i+1).toString();
@@ -106,11 +109,6 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 					lat = Double.parseDouble(tmp.substring(tmp.indexOf(';') +1 ));
 					coords.add(new Point2D.Double(lon, lat));
 					newEntry.setCoordsArray(coords);
-					
-				}else if(myList.get(i).toString().equals("FIELD_CITY_ID_BY_NAME")){
-				
-					newEntry.setCityByName(myList.get(i+1).toString());
-					
 				}
 				else{
 					newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()));
@@ -123,7 +121,12 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 	
 	private ArrayList<String> createImagesArray(String input){
 		
+		if(input == null || input.equals("")){
+			return null;
+		}
+		
 		ArrayList<String> images = new ArrayList<String>();
+		
 		int tmp;
 		if(input.indexOf(';') == -1){
 			images.add(input);
@@ -167,6 +170,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 	}
 	
 	//Create coordinates point from string
+	@SuppressWarnings("unused")
 	private Point2D.Double createCoord(String lon, String lat){
 		double doubleLat, doubleLon;
 		

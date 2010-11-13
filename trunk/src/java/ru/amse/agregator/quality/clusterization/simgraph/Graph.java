@@ -9,13 +9,16 @@ import java.util.ArrayList;
 import org.bson.types.ObjectId;
 import ru.amse.agregator.storage.DataBase;
 
+
 /**
  *
  * @author pavel
  */
 abstract public class Graph extends Object implements Serializable {
 
-    private Metric metric;
+	private static final long serialVersionUID = 1L;
+	
+	private Metric metric;
     private double threshold;
 
     public Graph(Metric met, double thresh) {
@@ -31,7 +34,9 @@ abstract public class Graph extends Object implements Serializable {
     // inner class representing an edge of a graph
     static public class Edge extends Object implements Serializable {
 
-        final public ObjectId obj1, obj2;
+		private static final long serialVersionUID = 1L;
+		
+		final public ObjectId obj1, obj2;
         final public double weight;
 
         public Edge(ObjectId objId1, ObjectId objId2, double edgeWeight) {

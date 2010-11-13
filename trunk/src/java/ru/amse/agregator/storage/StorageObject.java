@@ -39,6 +39,7 @@ public abstract class StorageObject {
 		return new BasicDBObject(myDBObj);
 	}
 	
+	@Override
 	public String toString(){
 		return myDBObj.toString();
 	}

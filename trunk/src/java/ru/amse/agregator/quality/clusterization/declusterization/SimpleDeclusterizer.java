@@ -8,7 +8,8 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
  */
 final public class SimpleDeclusterizer extends Declusterizer {
 
-    public boolean isCorrect(ClusterStorage.Cluster cluster) {
+    @Override
+	public boolean isCorrect(ClusterStorage.Cluster cluster) {
         return true;
     }
 

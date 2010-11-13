@@ -1,8 +1,6 @@
 package ru.amse.agregator.storage;
 
 import java.awt.geom.Point2D;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -23,10 +21,14 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_COST = "cost";
 	public static final String FIELD_ADDRESS = "address";
 	public static final String FIELD_CITY_ID = "city_id";
+	public static final String FIELD_CITY_NAME = "city_name";
+	public static final String FIELD_COUNTRY_ID = "country_id";
+	public static final String FIELD_COUNTRY_NAME = "country_name";
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_ROOMS = "rooms";
 	
+	public static final String TYPE_COUNTRY = "Country";
 	public static final String TYPE_CITY = "City";
 	public static final String TYPE_ARCH_ATTRACTION = "ArchAttraction";
 	public static final String TYPE_NATURAL_ATTRACTION = "NaturalAttraction";		
@@ -34,6 +36,32 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_HOTEL = "Hotel";
 	public static final String TYPE_USER = "User";		
 	public static final String TYPE_COMMENT = "Comment";
+	
+	
+
+	
+	
+	public DBWrapper(DBObject dbObject){
+		super(dbObject);
+	}
+
+			
+	public DBWrapper() {
+		this(new BasicDBObject());
+	}	
+
+	//----------
+	
+	public void setKeyValue(String key, String value){
+		if(key.equals(FIELD_CITY_NAME)){
+			setCityByName(value);
+		} else if(key.equals(FIELD_COUNTRY_NAME)){
+			setCountryByName(value);
+		} else {
+			myDBObj.put(key,value);
+		}
+	}
+	
 	public void setAttribut(String nameAttribut, String valueAttribut){
 		if (nameAttribut.equalsIgnoreCase(FIELD_TYPE)){
 			setType(valueAttribut);
@@ -52,8 +80,7 @@ public class DBWrapper extends StorageObject{
 				String sub ="";
 				if (j == -1) {
 					sub = valueAttribut.substring(i);
-					i = valueAttribut.length();
-					
+					i = valueAttribut.length();					
 				}
 				else{
 					String sub1;
@@ -120,24 +147,10 @@ public class DBWrapper extends StorageObject{
 		}
 		if (nameAttribut.equalsIgnoreCase(FIELD_CITY_ID)){
 			//реализовать
-		}
-	
-		
-	}
-	public DBWrapper(DBObject dbObject){
-		super(dbObject);
+		}	
 	}
 	
-	public void setKeyValue(String key, String value){
-		myDBObj.put(key,value);
-	}
-			
-	public DBWrapper() {
-		this(new BasicDBObject());
-	}	
-
-	//----------
-			
+	
 	public void setType (String type){
 		myDBObj.put(FIELD_TYPE,type);
 	}
@@ -214,6 +227,21 @@ public class DBWrapper extends StorageObject{
 		myDBObj.put(FIELD_CITY_ID, id);
 	}
 	
+	public void setCountryById(ObjectId id){
+		myDBObj.put(FIELD_COUNTRY_ID, id);
+	}	
+	
+	public void setCountryByName(String name){
+		ObjectId id = DataBase.getCountryIdByName(name);
+		if(id == null){
+			DBWrapper a = new DBWrapper();
+			a.setName(name);
+			a.setType(TYPE_COUNTRY);
+			id = DataBase.add(a);
+		}
+		myDBObj.put(FIELD_CITY_ID, id);
+	}
+	
 	public void setRooms(String rooms){
 		myDBObj.put(FIELD_ROOMS,rooms);
 	}
@@ -256,6 +284,29 @@ public class DBWrapper extends StorageObject{
 	public ObjectId getCityId(){
 		return (ObjectId) myDBObj.get(FIELD_CITY_ID);
 	}
+	
+	public ObjectId getCountryId(){
+		return (ObjectId) myDBObj.get(FIELD_COUNTRY_ID);
+	}
+	
+	public String getCityName(){
+		DBWrapper city = DataBase.getDBObjectById(this.getCityId());
+		if(city != null){
+			return city.getName();
+		} else {
+			return null;
+		}
+	}
+	
+	public String getCountryName(){
+		DBWrapper country = DataBase.getDBObjectById(this.getCountryId());
+		if(country != null){
+			return country.getName();
+		} else {
+			return null;
+		}
+	}
+	
 	
 	public String getWebsite(){
 		return myDBObj.getString(FIELD_WEBSITE);
