@@ -20,9 +20,9 @@ Miner собирается ant-овским build файлом.
 </var-def>
 }}}
 
-_Типы полей:_ type, name, decription, coordinates, photos, keywords, date_foundation, architect , cost, address, city_id, music, website, rooms.
+_Типы полей:_ type, name, decription, coordinates, photos, keywords, date_foundation, architect , cost, address, city_id, city_name, country_id, country_name, music, website, rooms.
 
-Само поле _type_ может быть: {{{City, ArchAttraction, NaturalAttraction, Cafe, Hotel.}}}
+Само поле _type_ может быть: {{{Country, City, ArchAttraction, NaturalAttraction, Cafe, Hotel.}}}
 
 Поле photos может содержать много ссылок, в этом случае перечислите их разделяя точкой с запятой.
 
@@ -45,10 +45,10 @@ _Типы полей:_ type, name, decription, coordinates, photos, keywords, da
 </var-def>
 						
 <var-def name="addToDB">
-	1
+  1
 </var-def>
 }}}
 
-Строки которые попадают в структуру могут содержать теги - это не критично, они все равно позднее убираются.
+Строки которые попадают в структуру могут содержать теги - это не критично, они все равно позднее убираются. - *!!!Deprecated!!!* - в описании(description) теги необходимые для разумного форматирования оставляем(например такие: `<b></b>, <i></i>, <br/>, <p></p>`) Штобы сохранилось хотябы разделение на абзацы..
 
 В качестве примера можно посмотреть конфиг, собирающий описание и изображение всех городов с сайта http://www.luxe.ru/countries/ тут: [http://code.google.com/p/amse-agregator/source/browse/trunk/resources/miner/luxconfig.xml]
