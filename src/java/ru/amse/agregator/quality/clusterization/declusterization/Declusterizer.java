@@ -1,7 +1,5 @@
 package ru.amse.agregator.quality.clusterization.declusterization;
 
-import java.util.ArrayList;
-import org.bson.types.ObjectId;
 import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
 
 /**

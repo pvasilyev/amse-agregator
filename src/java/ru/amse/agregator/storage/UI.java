@@ -29,14 +29,14 @@ public class UI extends JFrame implements TableModelListener{
 
 	private static final long serialVersionUID = 1L;
 	
-	private JTable collectionsTable;
-	private CollectionsTableModel tableModel = new CollectionsTableModel();
+	JTable collectionsTable;
+	CollectionsTableModel tableModel = new CollectionsTableModel();
 	private JPanel controls;
-	private JList dbList;
-	private JList collectionsList; 
-	private JList typeList;
+	JList dbList;
+	JList collectionsList; 
+	JList typeList;
 	
-	private Container container;
+	Container container;
 	private String[] dbNames = {DataBase.MAIN_DB_NAME, DataBase.DIRTY_DB_NAME};
 	public UI() {
 		super("Mongo DB Test");
@@ -46,7 +46,8 @@ public class UI extends JFrame implements TableModelListener{
 		JMenuItem addItem = new JMenuItem("Add row");
         addItem.addActionListener(new ActionListener() {
 
-                public void actionPerformed(ActionEvent event) {
+                @Override
+				public void actionPerformed(ActionEvent event) {
                         try{
                         tableModel.addRow();
                 }catch (Exception e) {
@@ -58,7 +59,8 @@ public class UI extends JFrame implements TableModelListener{
         JMenuItem deleteItem = new JMenuItem("Delete Row");
         deleteItem.addActionListener(new ActionListener() {
                 
-                public void actionPerformed(ActionEvent e) {
+                @Override
+				public void actionPerformed(ActionEvent e) {
                         tableModel.removeRow(collectionsTable.getSelectedRow());
                 }
         });
@@ -98,6 +100,7 @@ public class UI extends JFrame implements TableModelListener{
 		dbList.addListSelectionListener(
 			new ListSelectionListener(){
 
+			@Override
 			public void valueChanged(ListSelectionEvent event) {
 				try{	
 					if (dbList.getSelectedIndex() ==0)
@@ -123,6 +126,7 @@ public class UI extends JFrame implements TableModelListener{
 		collectionsList.addListSelectionListener(
 				new ListSelectionListener(){
 
+				@Override
 				public void valueChanged(ListSelectionEvent event) {
 					try{	
 						Vector<String> typesNames = new Vector<String>();
@@ -143,6 +147,7 @@ public class UI extends JFrame implements TableModelListener{
 		typeList.addListSelectionListener(
 				new ListSelectionListener(){
 
+				@Override
 				public void valueChanged(ListSelectionEvent event) {
 					try{	
 						container.remove(collectionsTable);
@@ -157,7 +162,7 @@ public class UI extends JFrame implements TableModelListener{
 						Vector<Vector<Object>> ss = DataBase.getCollectionValues(typeList.getSelectedValue().toString(),s);
 						tableModel.columnNames = v;
 						tableModel.rowData = ss;
-					
+					 
 						collectionsTable = new JTable(tableModel);
 						collectionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 						container.add(new JScrollPane(collectionsTable), BorderLayout.CENTER);
@@ -197,7 +202,7 @@ public class UI extends JFrame implements TableModelListener{
 		public Vector<String> columnNames = new Vector<String>();
         public Vector<Vector<Object>> rowData = new Vector<Vector<Object>>();
         {
-                for (Vector<Object> vector : rowData) {
+                for (@SuppressWarnings("unused") Vector<Object> vector : rowData) {
                         vector = new Vector<Object>();
                 }
         }
@@ -217,7 +222,8 @@ public class UI extends JFrame implements TableModelListener{
         	return String.class;
         }
 
-        public int getColumnCount() {
+        @Override
+		public int getColumnCount() {
                 return columnNames.size();
         }
 
@@ -226,11 +232,13 @@ public class UI extends JFrame implements TableModelListener{
                 return columnNames.get(columnIndex);
         }
 
-        public int getRowCount() {
+        @Override
+		public int getRowCount() {
                 return rowData.size();
         }
 
-        public Object getValueAt(int rowIndex, int columnIndex) {
+        @Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
                 if( (columnIndex >= rowData.get(rowIndex).size()))  return ("777777");
                 return rowData.get(rowIndex).get(columnIndex);
                 
@@ -302,6 +310,7 @@ public class UI extends JFrame implements TableModelListener{
         }
 
 
+	@Override
 	public void tableChanged(TableModelEvent arg0) {	
 		
 			int row = collectionsTable.getEditingRow(); 

@@ -149,6 +149,18 @@ public class DataBase {
 		}
 	}
 	
+	public static ObjectId getCountryIdByName(String countryName){
+		BasicDBObject criteria = new BasicDBObject();
+		criteria.put(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_COUNTRY);
+		criteria.put(DBWrapper.FIELD_NAME,countryName);
+		DBObject obj = findInCollection(COLLECTION_MAIN,criteria);
+		if(obj != null){
+			return (ObjectId) obj.get(DBWrapper.FIELD_ID);
+		} else {
+			return null;
+		}
+	}
+	
 	public static ArrayList<ObjectId> getAllIdByType(String type){
 		ArrayList<ObjectId> allCollection = new ArrayList<ObjectId>();
 		if(myDB != null){
@@ -170,6 +182,7 @@ public class DataBase {
 	}
 	
 	//Replace in collection 'collectionName', object with id 'id' by 'newObj'
+	@SuppressWarnings("unused")
 	private static ObjectId updateInCollectionById(String collectionName, ObjectId id, DBObject newObj){
 		if(myDB != null){
 			newObj.put(DBWrapper.FIELD_ID, id);
@@ -315,7 +328,7 @@ public static int getTypesCount(String nameCollection){
 				tempRes.add(typeName);
 			}
 		}
-		for (String v : tempRes){
+		for (@SuppressWarnings("unused") String v : tempRes){			
 			count++;
 		}
 	}

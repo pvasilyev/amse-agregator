@@ -40,7 +40,8 @@ public class Main {
         System.out.println("Done!");
     }
 
-    private static void writeDateToDB() {
+    @SuppressWarnings("unused")
+	private static void writeDateToDB() {
         DataBase.removeCollection(DataBase.COLLECTION_MAIN);
               
         DBWrapper someCity = new DBWrapper();

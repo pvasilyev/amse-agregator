@@ -5,7 +5,8 @@ import net.sf.xfresh.core.InternalResponse;
 
 public class ShowAttractionsYalet extends AbstractAgregatorYalet {
 
-    public void process(InternalRequest req, InternalResponse res) {
+    @Override
+	public void process(InternalRequest req, InternalResponse res) {
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
             res.add(manager.getSomeAttraction(tmp));

@@ -6,11 +6,13 @@ import java.util.Iterator;
 /**
  *
  * @author pavel
- */
+ */ 
 final public class ArrayStorage extends ClusterStorage {
 
     public ArrayList<Cluster> clusters = new ArrayList<Cluster>();
-    private Iterator iterator = null;
+    
+    @SuppressWarnings("rawtypes")
+	private Iterator iterator = null;
 
     @Override
 	public void addCluster(Cluster cluster) {

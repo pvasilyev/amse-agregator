@@ -112,11 +112,28 @@ public class StorageTester {
             System.out.println("address: " + obj.getWebsite());
             System.out.println("address: " + obj.getBuildDate());
             System.out.println("cityId: " + obj.getCityId());
+            System.out.println("countryId: " + obj.getCountryId());
+            System.out.println("cityName: " + obj.getCityName());
+            System.out.println("countryName: " + obj.getCountryName());
             System.out.println("address: " + obj.getKeyWordsArray());
             System.out.println("address: " + obj.getPhotosArray());
             System.out.println("address: " + obj.getCoordsArray());
             //........
             System.out.println("-------------");
+            
+            
+            System.out.println("-------------");
+            System.out.println("-------------");
+            System.out.println("-------------");
+            System.out.println("-------------");
+            System.out.println("-------------");
+            
+            
+            
+            
+            
+            
+            
         }
     }
 }
