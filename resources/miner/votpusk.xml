@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+	<var-def name='siteName'>
+		http://www.votpusk.ru/
+	</var-def>
+    <!-- <file action="write" path="out_countries.txt">  -->  		
+		<!-- Вырываем страны -->
+		<loop item="link" index="i" filter="unique">
+			<list>
+				<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
+				    <html-to-xml>
+				        <http url='${sys.fullUrl(siteName, "country.asp")}'/>
+				    </html-to-xml>
+				</xpath>
+			</list>
+			<body>
+				<empty>
+					<var-def name="countryPageContent">
+						<html-to-xml>
+					        <http url="${sys.fullUrl(siteName, link.toString())}"/>
+					    </html-to-xml>
+					</var-def>
+					<var-def name="countryDesc">
+						<text>
+							<xpath expression="//div[@class='inner']/div[1]/p[not(a)] | //div[@class='inner']/p[not(a)] | //div[@class='inner']/text() | //div[@class='inner']/span/text()">
+							    <var name="countryPageContent" />
+							</xpath>
+						</text>
+					</var-def>
+					<var-def name="countryName">
+						<text>
+							<xpath expression="//table/tbody/tr/td/font[@class = 'hdnB']/text()">
+							    <var name="countryPageContent" />
+							</xpath>
+						</text>
+					</var-def>
+					<var-def name="countryOriginalName">
+						<text>
+							<xpath expression="//table/tbody/tr/td/font[not(@class) and @color != '#000000']/text()">
+							    <var name="countryPageContent" />
+							</xpath>
+						</text>
+					</var-def>
+				</empty>
+				<var-def name="returnValue">
+	                <text>type</text>
+	                <text>Country</text>
+	                
+	                <text>name</text>
+	                <template>${countryName.toString()}</template>
+	
+	                <text>keywords</text>
+	                <template>${countryName.toString() + ";" + countryOriginalName.toString()}</template>
+	                
+					<text>decription</text>
+	                <template>${countryDesc.toString()}</template>
+	            </var-def>
+	                            
+	            <var-def name="addToDB">
+	                    1
+	            </var-def>
+
+		    </body>
+		</loop>
+    <!-- </file> -->			
+
+	
+	<var-def name="urlPart1" overwrite="true">
+		<text>
+			/country/
+		</text>
+	</var-def>
+	<var-def name="nextLinkUrl" overwrite="true">
+		<text>
+			dostoprim_s.asp
+		</text>
+	</var-def>
+	
+	<!-- Выкачиваем страницы со списком достопримечательностей -->
+	<var-def name='dostContentList'>	
+		<while condition='${!nextLinkUrl.toString().equals("")}' index="i">
+	        <empty>
+	            <var-def name="content">
+	                <html-to-xml>
+	                    <http url="${sys.fullUrl(siteName, urlPart1.toString()+nextLinkUrl.toArray()[0].toString())}"/>
+	                </html-to-xml>
+	            </var-def>
+	        	<var-def name="nextLinkUrl" overwrite="true">              		
+	                <xpath expression="//td/a[text() = '&gt;&gt;&gt;']/@href">
+                    	<var name="content"/>
+               		</xpath>
+	        	</var-def>
+	        </empty>
+	        
+            <var name="content"/>
+            
+	    </while>
+    </var-def>
+    
+    <!-- Составляем список ссылок на города -->
+    <var-def name='cityUrlList'>	
+	   	<loop item="currentContent" index="j" filter="unique">
+			<list>
+				<var name="dostContentList"/>
+			</list>
+			<body>
+				<xpath expression="//td/p[@class = 'txnn']/a[2]/@href">
+	                <var name="currentContent"/>
+	            </xpath>			
+		    </body>
+		</loop>
+    </var-def>
+    
+    <!-- Майним города -->    
+	<!--  <file action="write" path="out_cities.txt"> -->
+	   	<loop item="currentUrl" index="j" filter="unique">
+			<list>
+				<var name="cityUrlList"/>
+			</list>
+			<body>
+				<empty>
+					<var-def name="cityContent">
+						<html-to-xml>
+							<http url="${sys.fullUrl(siteName, currentUrl)}"/>
+						</html-to-xml>
+					</var-def>
+				
+					<!-- Описание города -->
+					<var-def name="cityDesc">
+						<text>
+							<xpath expression="//span[@class='tx']/div[@class = 'inner']/p/text()">
+							    <var name="cityContent"/>
+							</xpath>
+						</text>
+					</var-def>
+					
+					<!-- Имя города -->  
+					<var-def name="cityName">
+						<text>
+							<xpath expression="//td[@valign='middle']/h1/font[@class = 'hdnB']/text()">
+							    <var name="cityContent"/>
+							</xpath>
+						</text>
+					</var-def>
+				</empty>	
+
+				<!-- Добавить проверку на пустоту города и описания и не добавлять если ничгео нету.. -->
+				<var-def name="returnValue">
+	                <text>type</text>
+	                <text>City</text>
+	                
+	                <text>name</text>
+	                <template>${cityName.toString()}</template>
+	
+	                <text>keywords</text>
+	                <template>${cityName.toString()}</template>
+	                
+					<text>decription</text>
+	                <template>${cityDesc.toString()}</template>
+	            </var-def>
+	                            
+	            <var-def name="addToDB">
+	                    1
+	            </var-def>
+				
+				
+		    </body>
+		</loop>
+	<!--  </file> -->
+	
+	<!-- Щас будем майнить достопримечательности -->
+	<!-- <file action="write" path="out_dost.txt"> -->
+	<loop item="currentContent" index="j" filter="unique">
+		<list>
+			<var name="dostContentList"/>
+		</list>
+		<body>
+			<empty>
+				<var-def name="actualContent">
+					<html-to-xml>
+						<xpath expression="//p[@class = 'hdn'] | //p[@class = 'txnn']">
+			            	<var name="currentContent"/>
+			        	</xpath>
+		        	</html-to-xml>
+				</var-def>
+				
+				<var-def name="dostNameList">
+					<xpath expression="//p[@class = 'hdn']//a/@title">
+		            	<var name="actualContent"/>
+		        	</xpath>
+				</var-def>
+			</empty>
+			<loop item="currentDostName" index="j" filter="unique">
+				<list>
+					<var name="dostNameList"/>
+				</list>
+				<body>
+					<empty>
+						<var-def name="dostUrl">
+							<text>
+								<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/@href">
+					                <var name="actualContent"/>
+					            </xpath>
+				            </text>
+			            </var-def>
+		            </empty>
+		            
+		            <var-def name="dostType">
+						<text>
+							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/text()">
+				                <var name="actualContent"/>
+				            </xpath>
+			            </text>
+		            </var-def>
+		             <var-def name="dostCity">
+						<text>
+							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/a[2]/text()">
+				                <var name="actualContent"/>
+				            </xpath>
+			            </text>
+		            </var-def>
+		            <var-def name="dostCountry">
+						<text>
+							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/a[1]/text()">
+				                <var name="actualContent"/>
+				            </xpath>
+			            </text>
+		            </var-def>
+		            
+		            <!-- Идем на страницу достопримечательности за подробной инфой -->
+		            <empty>
+			            <var-def name="dostPageContent">
+			                <html-to-xml>
+			                    <http url='${sys.fullUrl(siteName, dostUrl.toString().replace("../",""))}'/>
+			                </html-to-xml>
+			            </var-def>
+		            </empty>
+		            
+		            <var-def name="dostDesc">
+							<xpath expression="//div[@class = 'inner']/text() | //div[@class = 'inner']/p/text()">
+				                <var name="dostPageContent"/>
+				            </xpath>
+		            </var-def>
+		            
+		            
+		            <!-- Проверяем есть ли картинки -->
+		            <empty>
+			            <var-def name="hasImages">
+							<text>
+								<xpath expression='//a[@href = "javascript:Preview(&apos;&apos;)"]/@href'>
+					                <var name="dostPageContent"/>
+					            </xpath>
+				            </text>
+			            </var-def>
+			            <var-def name = "imagesList" overwrite="true" >
+			            </var-def>
+					</empty>
+				    <case>
+				        <if condition='${!hasImages.toString().isEmpty()}'>
+				            <empty>
+					            <var-def name="dostIDHere">
+									<text>
+										<xpath expression="//a[@name = 'print' and @class = 'tx']/@href">
+							                <var name="dostPageContent"/>
+							            </xpath>
+						            </text>
+					            </var-def>
+					            <var-def name="dostID">
+									<script return="id" >
+										index = dostIDHere.toString().lastIndexOf("ID=");
+										if(index != -1){
+											id = dostIDHere.toString().substring(index+3);
+										} else {
+											id = "-1";
+										}
+									</script>
+					            </var-def>
+					        </empty>
+				            <case>
+				            	<if condition='${dostID.toString() != "-1"}' >				            		
+					            	<empty>
+					            		<var-def name='urlPart1' overwrite="true">
+											<text>
+												gallery/
+											</text>
+										</var-def>
+							        	<var-def name="nextLinkUrl" overwrite="true">              		
+							                <script return="&quot;foto.asp?DST=&quot;+dostID.toString()" />
+							        	</var-def>
+						        	</empty>									
+						        	<var-def name = "imagesList" overwrite="true">
+										<!-- Обходим все страницы с картинками -->
+										<while condition='${!nextLinkUrl.toString().equals("")}' >
+											<empty>
+												<var-def name = "imagePageContent">
+													<html-to-xml>
+									                    <http url='${sys.fullUrl(siteName, urlPart1.toString() + nextLinkUrl.toString())}'/>
+									                </html-to-xml>
+												</var-def>
+												<var-def name = "nextLinkUrl" overwrite="true">
+													<text>
+														<xpath expression="//a[text() = '&gt;&gt;&gt;']/@href">
+											                <var name="imagePageContent"/>
+											            </xpath>
+										            </text>
+												</var-def>
+												<var-def name = "imgSrc">
+													<text>
+														<xpath expression="//p/img[@class = 'ramka_B']/@src">
+											                <var name="imagePageContent"/>
+											            </xpath>
+										            </text>
+												</var-def>	
+											</empty>
+								            <var-def name="imgFullSrc">
+												<script return="siteName.toString() + urlPart1.toString() + imgSrc.toString() + &quot;;&quot;" />
+											</var-def>
+										</while>						        	
+						        	</var-def>
+				            	</if>
+				            	<else>
+				            		<var name="dostIDHere" />
+				            	</else>
+				            		
+				            </case>
+				            	
+				        </if>
+				        <else/>
+				    </case>
+				    
+				<var-def name="returnValue">
+	                <text>type</text>
+	                <text>ArchAttraction</text>
+	                
+	                <text>name</text>
+	                <template>${currentDostName.toString()}</template>
+	
+	                <text>keywords</text>
+	                <template>${currentDostName.toString()}</template>
+	                
+					<text>decription</text>
+	                <template>${dostDesc.toString()}</template>
+	                
+	                <text>city_name</text>
+	                <template>${dostCity.toString()}</template>
+	                
+					<text>country_name</text>
+	                <template>${dostCountry.toString()}</template>
+	                
+	                <text>photos</text>
+	                <template>${imagesList.toString()}</template>
+	                
+	            </var-def>
+	                            
+	            <var-def name="addToDB">
+	                    1
+	            </var-def>
+
+		            
+			    </body>
+			</loop>
+			
+	    </body>
+	</loop>
+	<!-- </file> -->
+			
+
+</config>
+

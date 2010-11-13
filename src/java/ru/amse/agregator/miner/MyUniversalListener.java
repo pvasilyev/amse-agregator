@@ -100,6 +100,10 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 					
 					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString())));
 					
+				} else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
+					
+					newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString())));
+					
 				}else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
 					ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
@@ -127,18 +131,28 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 		
 		ArrayList<String> images = new ArrayList<String>();
 		
-		int tmp;
 		if(input.indexOf(';') == -1){
 			images.add(input);
 		}
 		else{
-			tmp = input.indexOf(';');
-			while(tmp != -1){
-				images.add(input.substring(0, tmp));
-				input = input.substring(tmp+1);
-				tmp = input.indexOf(';');
+			int fromIndex = 0;
+			int toIndex = input.indexOf(';',fromIndex);
+			while(toIndex != -1){
+				images.add(input.substring(fromIndex, toIndex));
+				fromIndex = toIndex + 1;
+				if(fromIndex < input.length()){
+					toIndex = input.indexOf(';',fromIndex);
+				}
+				else {
+					break;
+				}
+				
 			}
-			images.add(input);
+			if(fromIndex < input.length()){
+				images.add(input.substring(fromIndex));
+			}
+			
+			
 		}
 		return images;
 	}
