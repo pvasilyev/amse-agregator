@@ -17,6 +17,7 @@
 
         <fileset id="project-libs" dir="${project.dir}">
             <include name="**/xfresh.jar/"/>
+            <include name="**/webharvester/webharvest_2.jar/"/>
             <include name="**/mongo-2.3.jar/"/>
             <include name="**/servlet-api.jar/"/>
             <include name="**/jakarta-commons/*.jar/"/>
