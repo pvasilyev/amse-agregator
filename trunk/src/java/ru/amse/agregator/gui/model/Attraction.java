@@ -1,5 +1,9 @@
 package ru.amse.agregator.gui.model;
 
+import ru.amse.agregator.storage.DBWrapper;
+
+import java.util.ArrayList;
+
 public class Attraction {
     private long uid;
     private String name;
@@ -38,3 +42,8 @@ public class Attraction {
         this.image = image;
     }
 }
+//ArrayList<DBWrapper> array = new ArrayList<DBWrapper>();
+//        DBWrapper db = new DBWrapper();
+//        db.setName("qqq");
+//        array.add(db);
+//        return array;

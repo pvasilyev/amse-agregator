@@ -3,6 +3,24 @@
     height: 20px;
 }
 
+.big_image {
+   width: 300px;
+    height: 200px;
+}
+
+.find_button {
+}
+
+.attraction_name_big {
+  font-size:24pt;
+  font-weight: bold;
+   
+}
+
+.category_list {
+    min-width: 20%;
+}
+
 body {
     min-width: 870px
 }
@@ -27,7 +45,7 @@ body {
 }
 
 .l-page__r {
-    /*position: relative;*/
+    position: relative;
     left: -270px;
     float: left;
     width: 270px;
@@ -36,7 +54,7 @@ body {
 
 body {
     font: .8em Arial, sans-serif;
-    /*position: relative;*/
+    position: relative;
     margin: 0;
     padding: 0 0 1em 0
 }
@@ -197,7 +215,7 @@ body {
 }
 
 .b-head-search {
-    /*position: relative;*/
+    position: relative;
     margin-left: -6px
 }
 
@@ -259,24 +277,21 @@ body {
 
 .b-input__text {
     font: 100% Arial, sans-serif;
-    width: 100%;
-    margin: 0
+   margin: 0
 }
 
 .b-search__input {
-    width: 100%
 }
 
 .b-search__input
                     .b-input {
-    /*position: relative;*/
+    position: relative;
     min-width: 3.2em;
     margin: 0;
     padding: 0
 }
 
 .b-search__precise {
-    /*position: relative;*/
     top: 3px
 }
 
@@ -296,7 +311,7 @@ body {
 }
 
 .b-suggest {
-    /*position: relative*/
+    position: relative
 }
 
 .b-suggest-popup {
@@ -405,14 +420,14 @@ body {
 }
 
 .b-domik__form {
-    /*position: relative;*/
+    position: relative;
     padding: 0 25px;
     text-align: center
 }
 
 .b-domik__title {
     font-size: 1.4em;
-    /*position: relative;*/
+    position: relative;
     top: -6px;
     margin-bottom: -10px
 }
@@ -424,7 +439,7 @@ body {
 }
 
 .b-domik__username, .b-domik__password {
-    /*position: relative;*/
+    position: relative;
     margin-top: 1.2em
 }
 
@@ -747,7 +762,7 @@ body {
 }
 
 .b-lang-switcher__flag {
-    /*position: relative;*/
+    position: relative;
     margin: 0 5px -1px 0
 }
 
@@ -938,10 +953,7 @@ body {
 }
 
 .b-serp-item__number {
-    font-weight: 400;
-    position: absolute;
-    left: 5px;
-    margin: .19em 0 0 0
+    position: relative;
 }
 
 .b-serp-item__favicon {
@@ -1283,7 +1295,7 @@ body {
     margin: 0 0 1.5em 3em
 }
 
-/*шаблон*/
+/*пїЅпїЅпїЅпїЅпїЅпїЅ*/
 
 .pageheadline {
     font-family: Arial, Helvetica, sans-serif;
