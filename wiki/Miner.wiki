@@ -20,11 +20,11 @@ Miner собирается ant-овским build файлом.
 </var-def>
 }}}
 
-_Типы полей:_ type, name, decription, coordinates, photos, keywords, date_foundation, architect , cost, address, city_id, city_name, country_id, country_name, music, website, rooms.
+_Типы полей:_ type, name, decription, coordinates, photos, keywords, date_foundation, architect , cost, address, city_name, country_name, music, website, rooms.
 
-Само поле _type_ может быть: {{{Country, City, ArchAttraction, NaturalAttraction, Cafe, Hotel.}}}
+Само поле _type_ может быть: {{{Country, City, ArchAttraction, NaturalAttraction, Cafe, Hotel, Museum, Entertainment, Shopping.}}}
 
-Поле photos может содержать много ссылок, в этом случае перечислите их разделяя точкой с запятой.
+Поля photos и keywords может содержать много значений, в этом случае перечислите их разделяя точкой с запятой.
 
 Пример кода из конфиг файла который добавит структуру returnValue в базу:
 {{{
