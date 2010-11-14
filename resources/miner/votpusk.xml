@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config charset="UTF-8">
+<empty>
 	<var-def name='siteName'>
 		http://www.votpusk.ru/
 	</var-def>
     <!-- <file action="write" path="out_countries.txt">  -->  		
 		<!-- Вырываем страны -->
-		<loop item="link" index="i" filter="unique">
+		<loop item="link" index="i" filter="unique" empty = "yes">
 			<list>
 				<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
 				    <html-to-xml>
@@ -43,6 +44,8 @@
 						</text>
 					</var-def>
 				</empty>
+				
+				<!-- Сохраняем страну в базу.. -->
 				<var-def name="returnValue">
 	                <text>type</text>
 	                <text>Country</text>
@@ -55,31 +58,31 @@
 	                
 					<text>decription</text>
 	                <template>${countryDesc.toString()}</template>
-	            </var-def>
-	                            
+	            </var-def>                        
 	            <var-def name="addToDB">
-	                    1
+					1
 	            </var-def>
 
 		    </body>
 		</loop>
     <!-- </file> -->			
 
-	
-	<var-def name="urlPart1" overwrite="true">
-		<text>
-			/country/
-		</text>
-	</var-def>
-	<var-def name="nextLinkUrl" overwrite="true">
-		<text>
-			dostoprim_s.asp
-		</text>
-	</var-def>
+	<empty>
+		<var-def name="urlPart1" overwrite="true">
+			<text>
+				/country/
+			</text>
+		</var-def>
+		<var-def name="nextLinkUrl" overwrite="true">
+			<text>
+				dostoprim_s.asp
+			</text>
+		</var-def>
+	</empty>
 	
 	<!-- Выкачиваем страницы со списком достопримечательностей -->
 	<var-def name='dostContentList'>	
-		<while condition='${!nextLinkUrl.toString().equals("")}' index="i">
+		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i" >
 	        <empty>
 	            <var-def name="content">
 	                <html-to-xml>
@@ -100,7 +103,7 @@
     
     <!-- Составляем список ссылок на города -->
     <var-def name='cityUrlList'>	
-	   	<loop item="currentContent" index="j" filter="unique">
+	   	<loop item="currentContent" index="j" filter="unique" >
 			<list>
 				<var name="dostContentList"/>
 			</list>
@@ -114,7 +117,7 @@
     
     <!-- Майним города -->    
 	<!--  <file action="write" path="out_cities.txt"> -->
-	   	<loop item="currentUrl" index="j" filter="unique">
+	   	<loop item="currentUrl" index="j" filter="unique" empty="yes">
 			<list>
 				<var name="cityUrlList"/>
 			</list>
@@ -129,7 +132,7 @@
 					<!-- Описание города -->
 					<var-def name="cityDesc">
 						<text>
-							<xpath expression="//span[@class='tx']/div[@class = 'inner']/p/text()">
+							<xpath expression="//span[@class='tx']/div[@class = 'inner']/p">
 							    <var name="cityContent"/>
 							</xpath>
 						</text>
@@ -146,23 +149,29 @@
 				</empty>	
 
 				<!-- Добавить проверку на пустоту города и описания и не добавлять если ничгео нету.. -->
-				<var-def name="returnValue">
-	                <text>type</text>
-	                <text>City</text>
-	                
-	                <text>name</text>
-	                <template>${cityName.toString()}</template>
-	
-	                <text>keywords</text>
-	                <template>${cityName.toString()}</template>
-	                
-					<text>decription</text>
-	                <template>${cityDesc.toString()}</template>
-	            </var-def>
-	                            
-	            <var-def name="addToDB">
-	                    1
-	            </var-def>
+				 <case>
+			        <if condition = '${!cityName.toString().isEmpty()}' >
+						<!-- Сохраняем город в базу.. -->
+						<var-def name="returnValue">
+			                <text>type</text>
+			                <text>City</text>
+			                
+			                <text>name</text>
+			                <template>${cityName.toString()}</template>
+			
+			                <text>keywords</text>
+			                <template>${cityName.toString()}</template>
+			                
+							<text>decription</text>
+			                <template>${cityDesc.toString()}</template>
+			            </var-def>			                            
+			            <var-def name="addToDB">
+			            	1
+			            </var-def>
+			        </if>
+			        <else/>			        
+			    </case>
+
 				
 				
 		    </body>
@@ -171,7 +180,7 @@
 	
 	<!-- Щас будем майнить достопримечательности -->
 	<!-- <file action="write" path="out_dost.txt"> -->
-	<loop item="currentContent" index="j" filter="unique">
+	<loop item="currentContent" index="j" filter="unique" empty="yes">
 		<list>
 			<var name="dostContentList"/>
 		</list>
@@ -191,7 +200,7 @@
 		        	</xpath>
 				</var-def>
 			</empty>
-			<loop item="currentDostName" index="j" filter="unique">
+			<loop item="currentDostName" index="j" filter="unique" empty="yes">
 				<list>
 					<var name="dostNameList"/>
 				</list>
@@ -199,7 +208,7 @@
 					<empty>
 						<var-def name="dostUrl">
 							<text>
-								<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/@href">
+								<xpath expression='//p[@class = "hdn"]//a[@title = "${currentDostName.toString()}"]/@href'>
 					                <var name="actualContent"/>
 					            </xpath>
 				            </text>
@@ -208,21 +217,21 @@
 		            
 		            <var-def name="dostType">
 						<text>
-							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/text()">
+							<xpath expression='//p[@class = "hdn"]//a[@title = "${currentDostName.toString()}"]/../../following-sibling::p[1]/text()'>
 				                <var name="actualContent"/>
 				            </xpath>
 			            </text>
 		            </var-def>
 		             <var-def name="dostCity">
 						<text>
-							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/a[2]/text()">
+							<xpath expression='//p[@class = "hdn"]//a[@title = "${currentDostName.toString()}"]/../../following-sibling::p[1]/a[2]/text()'>
 				                <var name="actualContent"/>
 				            </xpath>
 			            </text>
 		            </var-def>
 		            <var-def name="dostCountry">
 						<text>
-							<xpath expression="//p[@class = 'hdn']//a[@title = '${currentDostName.toString()}']/../../following-sibling::p[1]/a[1]/text()">
+							<xpath expression='//p[@class = "hdn"]//a[@title = "${currentDostName.toString()}"]/../../following-sibling::p[1]/a[1]/text()'>
 				                <var name="actualContent"/>
 				            </xpath>
 			            </text>
@@ -238,7 +247,7 @@
 		            </empty>
 		            
 		            <var-def name="dostDesc">
-							<xpath expression="//div[@class = 'inner']/text() | //div[@class = 'inner']/p/text()">
+							<xpath expression="//div[@class = 'inner']/text() | //div[@class = 'inner']/p">
 				                <var name="dostPageContent"/>
 				            </xpath>
 		            </var-def>
@@ -328,10 +337,30 @@
 				        </if>
 				        <else/>
 				    </case>
-				    
+				
+				
+				<!-- Определяем тип достопримечательности. -->
+			    <case>
+			        <if condition = '${dostType.toString().equals("Шопинг")}' >
+			            <var-def name="dostType"><text>Shopping</text></var-def>
+			        </if><else><case><if condition = '${dostType.toString().trim().equals("Архитектура")}' >
+			            <var-def name="dostType"><text>ArchAttraction</text></var-def>
+			        </if><else><case><if condition = '${dostType.toString().trim().equals("Природа")}' >
+			            <var-def name="dostType"><text>NaturalAttraction</text></var-def>
+			        </if><else><case><if condition = '${dostType.toString().trim().equals("Музеи, выставки")}' >
+			            <var-def name="dostType"><text>Museum</text></var-def>
+			        </if><else>
+			        	<var-def name="dostType"><text>Entertainment</text></var-def>
+			        </else>	
+			        </case></else>
+			        </case></else>
+		        	</case></else>
+			    </case>
+			    
+			    <!-- Сохраняем достопримечательность в базу.. -->
 				<var-def name="returnValue">
 	                <text>type</text>
-	                <text>ArchAttraction</text>
+	                <template>${dostType.toString()}</template>
 	                
 	                <text>name</text>
 	                <template>${currentDostName.toString()}</template>
@@ -350,14 +379,11 @@
 	                
 	                <text>photos</text>
 	                <template>${imagesList.toString()}</template>
-	                
 	            </var-def>
 	                            
 	            <var-def name="addToDB">
-	                    1
-	            </var-def>
-
-		            
+	            	1
+	            </var-def>	            
 			    </body>
 			</loop>
 			
@@ -365,6 +391,6 @@
 	</loop>
 	<!-- </file> -->
 			
-
+</empty>
 </config>
 

@@ -30,6 +30,9 @@ public class DBWrapper extends StorageObject{
 	
 	public static final String TYPE_COUNTRY = "Country";
 	public static final String TYPE_CITY = "City";
+	public static final String TYPE_SHOPPING = "Shopping";
+	public static final String TYPE_MUSEUM = "Museum";
+	public static final String TYPE_ENTERTAINMENT = "Entertainment";
 	public static final String TYPE_ARCH_ATTRACTION = "ArchAttraction";
 	public static final String TYPE_NATURAL_ATTRACTION = "NaturalAttraction";		
 	public static final String TYPE_CAFE = "Cafe";	
@@ -239,7 +242,7 @@ public class DBWrapper extends StorageObject{
 			a.setType(TYPE_COUNTRY);
 			id = DataBase.add(a);
 		}
-		myDBObj.put(FIELD_CITY_ID, id);
+		myDBObj.put(FIELD_COUNTRY_ID, id);
 	}
 	
 	public void setRooms(String rooms){
