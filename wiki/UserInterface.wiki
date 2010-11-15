@@ -1,5 +1,23 @@
 *Будут использованы следующие технологии:*
  * html
- * Описание
  * xslt-преобразование
  * framework XFrеsh http://sourceforge.net/projects/xfresh/develop
+
+*Настройка gui*
+ * необходимые библиотеки: xfresh.jar
+ * устанавливаем tomcat
+ * открываем файл build.properties в корне svn и добавляем туда путь к папке, куда только что установили tomcat
+{{{
+//например
+tomcat.dir=/home/DevTools/apache-tomcat-7.0.4
+}}}
+ * gui-часть собирается с помощью ant (см. https://code.google.com/p/amse-agregator/wiki/Build)
+{{{
+ant gui
+}}}
+ * после этого в {tomcat.dir}/webapps создается папка agregator-gui, в которую скопируются все скомпилированные .class файлы и необходимые библиотеки из libs
+ * наконец, открываем в браузере следующую страницу: 
+{{{
+localhost:8080/agregator-gui/attractions.xml 
+}}}
+(на данный момент это главная страница сайта проекта)
