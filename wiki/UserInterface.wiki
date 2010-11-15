@@ -1,4 +1,4 @@
-#summary page about gui in our project
+#summary document-page about gui
 
 *Будут использованы следующие технологии:*
  * html
