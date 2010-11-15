@@ -3,7 +3,7 @@
 *Будут использованы следующие технологии:*
  * html
  * xslt-преобразование
- * framework XFrеsh http://sourceforge.net/projects/xfresh/develop
+ * framework [http://sourceforge.net/projects/xfresh/develop XFrеsh]
 
 *Настройка gui*
  * необходимые библиотеки: xfresh.jar
@@ -13,7 +13,7 @@
 //например
 tomcat.dir=/home/DevTools/apache-tomcat-7.0.4
 }}}
- * gui-часть собирается с помощью ant (см. https://code.google.com/p/amse-agregator/wiki/Build)
+ * gui-часть собирается с помощью [http://code.google.com/p/amse-agregator/wiki/Build ant]
 {{{
 ant gui
 }}}
