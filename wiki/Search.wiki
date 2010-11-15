@@ -1,0 +1,37 @@
+#summary Использование класса Searcher
+
+Поиск производится с помощью библиотеки для java lucene 3.0.2
+
+= Поиск =
+*Поисковик* располагается в package `ru.amse.agregator.searcher`, класс `Searcher`.<br>
+
+== Использование ==
+*Для работы необходим созданный индекс*
+
+Подключить
+{{{
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.searcher.Searcher;
+}}}
+Для начала необходимо задать директорию с индексом с помощью `static` метода
+{{{
+void setIndexDir(File indexDirectory);
+}}}
+где `indexDirectory` это папка, в которой ранее был создан индекс.<br>
+После этого можно искать по индексу с помощью `static` метода 
+{{{
+ArrayList<DBWrapper> search(UserQuery query);
+}}}
+Интерфейс класса `UserQuery`:
+{{{
+class UserQuery {
+    UserQuery(String queryExpression);
+    UserQuery(String queryExpression, String[] labels);
+    setQueryExpression(String queryExpression);
+    setLabels(String[] labels);
+    addLabel(String label); // не тестировалась
+}
+}}}
+где `queryEpxression` - это то, что ввел пользователь в область ввода, а `labels` - это массив дополнительных условий, которые он отметил на странице поиска.
+
+Исключения обрабатываются внутри класса, сообщения об ошибках выводятся в стандартный вывод.
