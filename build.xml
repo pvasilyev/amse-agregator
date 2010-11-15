@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Agregator" default="dist" basedir=".">
+<project name="Agregator" default="install" basedir=".">
     <description>
         Amse Agregator!
     </description>
     
     <!-- set global properties for this build -->
-    <property name="src" location="${basedir}/src/java"/>
-    <property name="build" location="${basedir}/build"/>
-    <property name="dist"  location="${basedir}/dist"/>
     
+    <!-- User's properties from file 'build.properties' -->
+    <property file="build.properties"/>
+    
+    <property name="src.dir" location="${basedir}/src/java"/>
+    <property name="web.dir" location="${basedir}/src/web/"/>
+    <property name="build.dir" location="${basedir}/build"/>
+    <property name="dist.dir"  location="${basedir}/dist"/>
+    
+    <property name="webapp.name" value="agregator-gui"/>
+    <property name="webapp.dir" location="${tomcat.dir}/webapps/${webapp.name}"/>
+    
+    <!-- Libs -->
     <path id="libs.all">
         <fileset dir="libs" includes="**/*.jar"/>
     </path>
@@ -24,8 +33,19 @@
         <fileset dir="libs" includes="lucene*.jar"/>
         <fileset dir="libs" includes="mongo*.jar"/>
     </path>
+    <path id="libs.gui">
+        <fileset dir="libs" includes="jakarta-commons/**/*.jar"/>
+        <fileset dir="libs" includes="spring/**/*.jar"/>
+        <fileset dir="libs" includes="xalan/**/*.jar"/>
+        <fileset dir="libs" includes="servlet*.jar"/>
+        <fileset dir="libs" includes="log4j*.jar"/>
+        <fileset dir="libs" includes="xfresh.jar"/>
+        <fileset dir="libs" includes="lucene*.jar"/>
+        <fileset dir="libs" includes="mongo*.jar"/>
+    </path>
     
     <property name="all_libs" refid="libs.all"/>
+    <property name="gui_libs" refid="libs.gui"/>
     <pathconvert pathsep=" " property="all_libs_manifest" refid="libs.all"/>
     <pathconvert pathsep=" " property="miner_libs_manifest" refid="libs.miner"/>
     <pathconvert pathsep=" " property="indexer_libs_manifest" refid="libs.indexer"/>
@@ -37,14 +57,14 @@
         <!-- Create the time stamp -->
         <tstamp/>
         <!-- Create the build directory structure used by compile -->
-        <mkdir dir="${build}"/>
+        <mkdir dir="${build.dir}"/>
     </target>
 
     <target name="compile" depends="init"
         description="compile the source " >
-        <!-- Compile the java code from ${src} into ${build} -->
-        <javac srcdir="${src}"
-               destdir="${build}"
+        <!-- Compile the java code from ${src.dir} into ${build.dir} -->
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
                debug="false"
                deprecation="true"
                optimize="true"
@@ -52,50 +72,102 @@
             <classpath refid="libs.all"/>
         </javac>
         <!-- Копирование необходимых файлов -->
-        <copy todir="${build}">
-            <fileset dir="${src}" includes="**/*.*" excludes="**/*.java"/>
+        <copy todir="${build.dir}" overwrite="true">
+            <fileset dir="${src.dir}" includes="**/*.*" excludes="**/*.java"/>
         </copy>
     </target>
 
     <target name="dist" depends="compile"
         description="generate the distribution" >
         <!-- Create the distribution directory -->
-        <mkdir dir="${dist}"/>
-        <!-- Put everything in ${build} into the Agregator-${DSTAMP}.jar file -->
-        <jar jarfile="${dist}/miner-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/miner/**/*.*">
+        <mkdir dir="${dist.dir}"/>
+        
+        <jar jarfile="${dist.dir}/miner-${DSTAMP}.jar" basedir="${build.dir}" includes="ru/amse/agregator/miner/**/*.*">
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
                 <attribute name="Main-Class" value="ru.amse.agregator.miner.Main"/>
-                <attribute name="Class-Path" value="${miner_libs_manifest} ${build}/"/>
+                <attribute name="Class-Path" value="${miner_libs_manifest} ${build.dir}/"/>
             </manifest>
         </jar>
-        <jar jarfile="${dist}/indexer-${DSTAMP}.jar" basedir="${build}">
+        <jar jarfile="${dist.dir}/indexer-${DSTAMP}.jar" basedir="${build.dir}">
             <include name="ru/amse/agregator/indexer/**/*.*"/>
             <include name="ru/amse/agregator/bondarev/**/*.*"/>
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
                 <attribute name="Main-Class" value="ru.amse.agregator.bondarev.Main"/>
-                <attribute name="Class-Path" value="${indexer_libs_manifest} ${build}/"/>
+                <attribute name="Class-Path" value="${indexer_libs_manifest} ${build.dir}/"/>
             </manifest>
         </jar>
-        <jar jarfile="${dist}/quality-${DSTAMP}.jar" basedir="${build}" includes="ru/amse/agregator/quality/**/*.*">
+        <jar jarfile="${dist.dir}/quality-${DSTAMP}.jar" basedir="${build.dir}" includes="ru/amse/agregator/quality/**/*.*">
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
                 <attribute name="Main-Class" value="ru.amse.agregator.quality.clusterization.Clusterization"/>
-                <attribute name="Class-Path" value="${quality_libs_manifest} ${build}/"/>
+                <attribute name="Class-Path" value="${quality_libs_manifest} ${build.dir}/"/>
             </manifest>
         </jar>
         
         <!-- Даём права на выполнение, созданным джарникам -->
-        <chmod dir="${dist}" perm="744" includes="**/*.jar"/>
+        <chmod dir="${dist.dir}" perm="744" includes="**/*.jar"/>
         
+        <!-- Как пользоваться. -->
+        <echo level="info">
+        
+        Now, to run miner your must type:
+        java -jar "dist/miner-${DSTAMP}.jar" "resources/miner/"
+        
+        </echo>
+    </target>
+    
+    <target name="gui" depends="compile"
+        description="install gui to tomcat" >
+        
+        <!-- Create the tomcat directories -->
+        <mkdir dir="${webapp.dir}/WEB-INF/classes"/>
+        <mkdir dir="${webapp.dir}/WEB-INF/lib"/>
+        
+        <!-- Copy view -->
+        <copy todir="${webapp.dir}" overwrite="true">
+            <fileset dir="${web.dir}/resources"/>
+        </copy>
+        
+        <!-- Copy classes -->
+        <copy todir="${webapp.dir}/WEB-INF/classes" overwrite="true">
+            <fileset dir="${build.dir}" includes="**/*"/>
+        </copy>
+        
+        <!-- Copy WEB-INF -->
+        <copy todir="${webapp.dir}/WEB-INF" overwrite="true">
+            <fileset dir="${web.dir}/WEB-INF"/>
+        </copy>
+        
+        <!-- Copy gui libs -->
+        <copy todir="${webapp.dir}/WEB-INF/lib" flatten="true">
+            <path>
+                 <pathelement path="${gui_libs}"/>
+            </path>
+        </copy>
+    </target>
+    
+    <target name="install" depends="dist, gui"
+        description="install gui to tomcat" >
     </target>
 
     <target name="clean"
         description="clean up" >
-        <!-- Delete the ${build} and ${dist} directory trees -->
-        <delete dir="${build}"/>
-        <delete dir="${dist}"/>
+        <!-- Delete the ${build.dir} and ${dist.dir} directory trees -->
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+    <target name="clean-gui"
+        description="clean up gui from tomcat" >
+        <!-- Delete the ${webapp.dir} directory tree -->
+        <delete dir="${webapp.dir}"/>
+    </target>
+    
+    <target name="clean-all" depends="clean, clean-gui"
+        description="clean up all" >
+        <!-- Delete the ${build.dir}, ${dist.dir} and ${webapp.dir} directory trees -->
     </target>
 </project>
 
