@@ -1,4 +1,4 @@
-#summary Here is top use-cases / attributes / entities
+#summary Here are top use-cases / attributes / entities
 
 == User stories ==
 С помощью одной из методик разработки По, были проанализированы некоторые социальные группы.
