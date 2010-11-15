@@ -1,4 +1,4 @@
-#summary Использование класса Searcher
+#summary document-page about Searcher
 
 Поиск производится с помощью библиотеки для java lucene 3.0.2
 
