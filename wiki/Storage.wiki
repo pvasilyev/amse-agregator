@@ -1,4 +1,4 @@
-#summary All about storage and DB.
+#summary document-page about Storage and DB
 #labels Phase-Deploy,Phase-Implementation
 
 = Хранилище =
