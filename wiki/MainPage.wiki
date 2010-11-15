@@ -21,9 +21,9 @@
   * Документация [http://code.google.com/p/amse-agregator/wiki/Architecture архитектуры]
   * Документация [http://code.google.com/p/amse-agregator/wiki/Storage хранилища]
   * Документация [http://code.google.com/p/amse-agregator/wiki/Index индексатора]
+  * Документация [http://code.google.com/p/amse-agregator/wiki/Search поисковика]
   * Документация [http://code.google.com/p/amse-agregator/wiki/Clusterizer кластеризации]
   * Документация [http://code.google.com/p/amse-agregator/wiki/UserInterface public UI]
   * Документация [http://code.google.com/p/amse-agregator/wiki/Miner miner'а]
   * Документация по [http://code.google.com/p/amse-agregator/wiki/Build сборке]
   * Документация по [http://code.google.com/p/amse-agregator/wiki/JUnit JUnit]
-
