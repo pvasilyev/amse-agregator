@@ -1,3 +1,5 @@
+#summary page about gui in our project
+
 *Будут использованы следующие технологии:*
  * html
  * xslt-преобразование
