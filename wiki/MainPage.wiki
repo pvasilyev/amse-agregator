@@ -10,7 +10,7 @@
 ==Организационная информация==
 
   * Про план-стратегию написано [http://code.google.com/p/amse-agregator/wiki/StrategyPlan тут]
-  * Про текущие зидания и ход их выполнения написано [http://code.google.com/p/amse-agregator/wiki/TacticsPlan тут] и [http://code.google.com/p/amse-agregator/issues/list тут]
+  * Про текущие задания и ход их выполнения написано [http://code.google.com/p/amse-agregator/wiki/TacticsPlan тут] и [http://code.google.com/p/amse-agregator/issues/list тут]
   * Про стиль кодирования написано [http://code.google.com/p/amse-agregator/wiki/CodeStyle тут]
   * Про порядок выполнения всевозможных работ написано [http://code.google.com/p/amse-agregator/wiki/WorkStyle тут]
   * Про способ организации кода в svn написано [http://code.google.com/p/amse-agregator/wiki/AboutSVN тут]
@@ -26,6 +26,4 @@
   * Документация [http://code.google.com/p/amse-agregator/wiki/Miner miner'а]
   * Документация по [http://code.google.com/p/amse-agregator/wiki/Build сборке]
   * Документация по [http://code.google.com/p/amse-agregator/wiki/JUnit JUnit]
-
-
 
