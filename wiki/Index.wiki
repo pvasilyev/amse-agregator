@@ -6,6 +6,8 @@
 *Индексатор* располагается в package `ru.amse.agregator.indexer`, класс `Indexer`.<br> 
 
 == Использование ==
+*Для работы требуется запущенная на компьютере база данных*
+
 Подключить
 {{{
 import ru.amse.agregator.storage.*;
