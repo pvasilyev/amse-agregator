@@ -1,4 +1,4 @@
-#summary Использование класса Indexer
+#summary document-page about Indexer
 
 Индексирование производится с помощью библиотеки для java lucene 3.0.2
 
