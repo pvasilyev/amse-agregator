@@ -1,4 +1,4 @@
-#summary Информация о поиске и индексаторе
+#summary Использование класса Indexer
 
 Индексирование производится с помощью библиотеки для java lucene 3.0.2
 
@@ -8,9 +8,9 @@
 == Использование ==
 Подключить
 {{{
-package ru.amse.agregator.storage.*;
-package ru.amse.agregator.indexer.Indexer;
-package ru.amse.agregator.utils.ToolsForWorkWithFiles;
+import ru.amse.agregator.storage.*;
+import ru.amse.agregator.indexer.Indexer;
+import ru.amse.agregator.utils.ToolsForWorkWithFiles;
 }}}
 Если нужно создать индекс, используется `static` метод 
 {{{
