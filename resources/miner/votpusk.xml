@@ -6,65 +6,71 @@
 		http://www.votpusk.ru/
 	</var-def>
     <!-- <file action="write" path="out_countries.txt">  -->  		
-		<!-- Вырываем страны -->
-		<loop item="link" index="i" filter="unique" empty = "yes">
-			<list>
-				<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
-				    <html-to-xml>
-				        <http url='${sys.fullUrl(siteName, "country.asp")}'/>
+	<!-- Вырываем страны -->
+	<loop item="link" index="i" filter="unique" empty = "yes" >  <!-- maxloops="0" -->
+		<list>
+			<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
+			    <html-to-xml>
+			        <http url='${sys.fullUrl(siteName, "country.asp")}'/>
+			    </html-to-xml>
+			</xpath>
+		</list>
+		<body>
+			<empty>
+				<var-def name="countryPageContent">
+					<html-to-xml>
+				        <http url="${sys.fullUrl(siteName, link.toString())}"/>
 				    </html-to-xml>
-				</xpath>
-			</list>
-			<body>
-				<empty>
-					<var-def name="countryPageContent">
-						<html-to-xml>
-					        <http url="${sys.fullUrl(siteName, link.toString())}"/>
-					    </html-to-xml>
-					</var-def>
-					<var-def name="countryDesc">
-						<text>
-							<xpath expression="//div[@class='inner']/div[1]/p[not(a)] | //div[@class='inner']/p[not(a)] | //div[@class='inner']/text() | //div[@class='inner']/span/text()">
-							    <var name="countryPageContent" />
-							</xpath>
-						</text>
-					</var-def>
-					<var-def name="countryName">
-						<text>
-							<xpath expression="//table/tbody/tr/td/font[@class = 'hdnB']/text()">
-							    <var name="countryPageContent" />
-							</xpath>
-						</text>
-					</var-def>
-					<var-def name="countryOriginalName">
-						<text>
-							<xpath expression="//table/tbody/tr/td/font[not(@class) and @color != '#000000']/text()">
-							    <var name="countryPageContent" />
-							</xpath>
-						</text>
-					</var-def>
-				</empty>
-				
-				<!-- Сохраняем страну в базу.. -->
-				<var-def name="returnValue">
-	                <text>type</text>
-	                <text>Country</text>
-	                
-	                <text>name</text>
-	                <template>${countryName.toString()}</template>
-	
-	                <text>keywords</text>
-	                <template>${countryName.toString() + ";" + countryOriginalName.toString()}</template>
-	                
-					<text>decription</text>
-	                <template>${countryDesc.toString()}</template>
-	            </var-def>                        
-	            <var-def name="addToDB">
-					1
-	            </var-def>
+				</var-def>
+				<var-def name="countryDesc">
+					<text>
+						<xpath expression="//div[@class='inner']/div[1]/p[not(a)] | //div[@class='inner']/p[not(a)] | //div[@class='inner']/text() | //div[@class='inner']/span/text()">
+						    <var name="countryPageContent" />
+						</xpath>
+					</text>
+				</var-def>
+				<var-def name="countryName">
+					<text>
+						<xpath expression="//table/tbody/tr/td/font[@class = 'hdnB']/text()">
+						    <var name="countryPageContent" />
+						</xpath>
+					</text>
+				</var-def>
+				<var-def name="countryOriginalName">
+					<text>
+						<xpath expression="//table/tbody/tr/td/font[not(@class) and @color != '#000000']/text()">
+						    <var name="countryPageContent" />
+						</xpath>
+					</text>
+				</var-def>
+			</empty>
+			
+			<!-- Сохраняем страну в базу если удалось выцепить.-->
+			<case>
+				<if condition="${!countryName.toString().trim().isEmpty()}">
+					<var-def name="returnValue">
+		                <text>type</text>
+		                <text>Country</text>
+		                
+		                <text>name</text>
+		                <template>${countryName.toString().trim()}</template>
+		
+		                <text>keywords</text>
+		                <template>${countryName.toString().trim() + ";" + countryOriginalName.toString().trim().substring(1,countryOriginalName.toString().trim().length()-1)}</template>
+		                
+						<text>decription</text>
+		                <template>${countryDesc.toString()}</template>
+		            </var-def>                        
+		            <var-def name="addToDB">
+						1
+		            </var-def>
+				</if>
+				<else/>
+			</case>
 
-		    </body>
-		</loop>
+
+	    </body>
+	</loop>
     <!-- </file> -->			
 
 	<empty>
@@ -82,7 +88,7 @@
 	
 	<!-- Выкачиваем страницы со списком достопримечательностей -->
 	<var-def name='dostContentList'>	
-		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i" >
+		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i"> <!--  maxloops="0" -->
 	        <empty>
 	            <var-def name="content">
 	                <html-to-xml>
@@ -146,21 +152,33 @@
 							</xpath>
 						</text>
 					</var-def>
+					
+					<!-- Страна города -->  
+					<var-def name="cityCountry">
+						<text>
+							<xpath expression="//td/a[text() = 'Страны']/following-sibling::a[1]/text()">
+							    <var name="cityContent"/>
+							</xpath>
+						</text>
+					</var-def>
 				</empty>	
 
 				<!-- Добавить проверку на пустоту города и описания и не добавлять если ничгео нету.. -->
 				 <case>
-			        <if condition = '${!cityName.toString().isEmpty()}' >
+			        <if condition = '${ cityname != null &amp;&amp; !cityName.toString().isEmpty()}' >
 						<!-- Сохраняем город в базу.. -->
 						<var-def name="returnValue">
 			                <text>type</text>
 			                <text>City</text>
 			                
 			                <text>name</text>
-			                <template>${cityName.toString()}</template>
+			                <template>${cityName.toString().trim()}</template>
+			                
+			                <text>country_name</text>
+			                <template>${cityCountry.toString().trim()}</template>
 			
 			                <text>keywords</text>
-			                <template>${cityName.toString()}</template>
+			                <template>${cityName.toString().trim()}</template>
 			                
 							<text>decription</text>
 			                <template>${cityDesc.toString()}</template>
@@ -341,7 +359,7 @@
 				
 				<!-- Определяем тип достопримечательности. -->
 			    <case>
-			        <if condition = '${dostType.toString().equals("Шопинг")}' >
+			        <if condition = '${dostType.toString().trim().equals("Шопинг")}' >
 			            <var-def name="dostType"><text>Shopping</text></var-def>
 			        </if><else><case><if condition = '${dostType.toString().trim().equals("Архитектура")}' >
 			            <var-def name="dostType"><text>ArchAttraction</text></var-def>
@@ -360,22 +378,22 @@
 			    <!-- Сохраняем достопримечательность в базу.. -->
 				<var-def name="returnValue">
 	                <text>type</text>
-	                <template>${dostType.toString()}</template>
+	                <template>${dostType.toString().trim()}</template>
 	                
 	                <text>name</text>
-	                <template>${currentDostName.toString()}</template>
+	                <template>${currentDostName.toString().trim()}</template>
 	
 	                <text>keywords</text>
-	                <template>${currentDostName.toString()}</template>
+	                <template>${currentDostName.toString().trim()}</template>
 	                
 					<text>decription</text>
 	                <template>${dostDesc.toString()}</template>
 	                
 	                <text>city_name</text>
-	                <template>${dostCity.toString()}</template>
+	                <template>${dostCity.toString().trim()}</template>
 	                
 					<text>country_name</text>
-	                <template>${dostCountry.toString()}</template>
+	                <template>${dostCountry.toString().trim()}</template>
 	                
 	                <text>photos</text>
 	                <template>${imagesList.toString()}</template>
@@ -390,7 +408,276 @@
 	    </body>
 	</loop>
 	<!-- </file> -->
-			
+
+	<!-- Пришло время намайтить отелей.-->
+	
+	<var-def name="hotels">
+		hotels/
+	</var-def>
+	
+	<!-- Ищем отели по странам -->
+	<loop item="alink" index="i" filter="unique" empty = "yes" > <!-- maxloops="0"> -->
+		<list>
+			<xpath expression="//table[not(@class)]/tbody/tr/td[@class = 'tx']/a">
+			    <html-to-xml>
+			        <http url='${sys.fullUrl(siteName, hotels + "default.asp")}'/>
+			    </html-to-xml>
+			</xpath>
+		</list>
+		<body>
+			<empty>
+				<var-def name="countryLink">
+					<xpath expression="//a/@href">
+						<html-to-xml>
+					        <var name="alink"/>
+					    </html-to-xml>
+				    </xpath>
+				</var-def>
+				<var-def name="countryName">
+					<xpath expression="//a/text()">
+						<html-to-xml>
+					        <var name="alink"/>
+					    </html-to-xml>
+				    </xpath>
+				</var-def>
+				<var-def name="hotelCityPageContent">
+					<html-to-xml>
+				        <http url="${sys.fullUrl(siteName,hotels + countryLink.toString())}"/>
+				    </html-to-xml>
+				</var-def>
+			</empty>
+			<!-- Ищем отели по городам текущей страны -->
+			<loop item="aCityLink" index="i" filter="unique" empty = "yes" > <!-- maxloops="0"> -->
+				<list>
+					<xpath expression="//table[not(@class)]/tbody/tr/td[@class = 'tx']/a">
+					    <html-to-xml>
+					        <var name="hotelCityPageContent"/>
+					    </html-to-xml>
+					</xpath>
+				</list>
+				<body>
+					<empty>
+						<var-def name="cityLink">
+							<xpath expression="//a/@href">
+								<html-to-xml>
+							        <var name="aCityLink"/>
+							    </html-to-xml>
+						    </xpath>
+						</var-def>
+						<var-def name="cityName">
+							<xpath expression="//a/text()">
+								<html-to-xml>
+							        <var name="aCityLink"/>
+							    </html-to-xml>
+						    </xpath>
+						</var-def>
+						<var-def name="hotelHotelsPageContent">
+							<html-to-xml>
+						        <http url="${sys.fullUrl(siteName, hotels + cityLink.toString())}"/>
+						    </html-to-xml>
+						</var-def>
+					</empty>
+					<loop item="hotelsTable" index="i" filter="unique" empty = "yes" > <!-- maxloops="0"> -->
+						<list>
+							<xpath expression="//table/tbody/tr/td/p[@class = 'hdn']/following-sibling::table[not(@height)][node() = //table/tbody/tr/td/p[@class = 'hdn']/following-sibling::br[1]/preceding-sibling::table]">
+							    <html-to-xml>
+							        <var name="hotelHotelsPageContent"/>
+							    </html-to-xml>
+							</xpath>
+						</list>
+						<body>
+							<empty>
+								<!--  Добавить сюда нормальное взятие категории отеля!!!! -->
+								<var-def name="hotelCategory">
+									<xpath expression="//table[@height]//p[@class = 'hdn']/font/text()">
+										<html-to-xml>
+									        <var name="hotelsTable"/>
+									    </html-to-xml>
+								    </xpath>
+								</var-def>
+								<var-def name="hotelsAlinkList">
+									<xpath expression="//table[not(@height)]//td[@class = 'tx']/a">
+										<html-to-xml>
+									        <var name="hotelsTable"/>
+									    </html-to-xml>
+								    </xpath>
+								</var-def>
+							</empty>
+							<loop item="hotelAlink" index="i" filter="unique" empty = "yes" > <!-- maxloops="0"> -->
+								<list>
+									<var name="hotelsAlinkList"/>
+								</list>
+								<body>
+									<empty>
+										<var-def name="hotelName">
+											<xpath expression="//a/text()">
+												<html-to-xml>
+											        <var name="hotelAlink"/>
+											    </html-to-xml>
+										    </xpath>
+										</var-def>
+										<var-def name="hotelUrl">
+											<xpath expression="//a/@href">
+												<html-to-xml>
+											        <var name="hotelAlink"/>
+											    </html-to-xml>
+										    </xpath>
+										</var-def>
+										<var-def name="hotelPage">
+											<html-to-xml>
+										        <http url='${sys.fullUrl(siteName, hotels.toString() + hotelUrl.toString())}'/>
+										    </html-to-xml>
+										</var-def>
+										<var-def name="hotelDesc">
+											<text>
+												<xpath expression="//table/tbody/tr/td[@class = 'tx']/div[@class = 'inner']/*">
+													<html-to-xml>
+												        <var name="hotelPage"/>
+												    </html-to-xml>
+											    </xpath>
+											</text>
+										</var-def>							
+										
+										<!-- Тут будут выцепляться картинки отеля!!! -->
+										<!-- Тут будут выцепляться картинки отеля!!! -->
+										
+										<!-- Проверяем есть ли картинки -->
+
+							            <var-def name="hasImages">
+											<text>
+												<xpath expression='//a[@href = "javascript:Preview(1)"]/@href'>
+									                <var name="hotelPage"/>
+									            </xpath>
+								            </text>
+							            </var-def>
+							            <var-def name = "imagesList" overwrite="true" >
+							            </var-def>
+
+									    <case>
+									        <if condition='${!hasImages.toString().isEmpty()}'>
+									            <empty>
+										            <var-def name="hotelID">
+														<script return="id" >
+															index = hotelUrl.toString().lastIndexOf("H=");
+															if(index != -1){
+																id = hotelUrl.toString().substring(index+2);
+															} else {
+																id = "-1";
+															}
+														</script>
+										            </var-def>
+										            <var-def name="countryID">
+														<script return="id" >
+															index = countryLink.toString().lastIndexOf("CN=");
+															if(index != -1){
+																id = countryLink.toString().substring(index+3);
+															} else {
+																id = "-1";
+															}
+														</script>
+										            </var-def>
+										        </empty>
+									            <case>
+									            	<if condition='${hotelID.toString() != "-1" &amp;&amp; countryID.toString() != "-1"}' >				            		
+										            	<empty>
+												        	<var-def name="nextLinkUrl" overwrite="true">              		
+												                #1
+												        	</var-def>
+											        	</empty>									
+											        	<var-def name = "imagesList" overwrite="true">
+															<loop item="currentSrc" index="j" filter="unique" >
+																<list>
+																	<xpath expression="//div[@class = 'out']/p/a/@href">
+																		<html-to-xml>
+															            	<http cookie-policy="browser" url='${sys.fullUrl(siteName, hotels + "foto.asp?H="+hotelID.toString()+"&amp;CN="+countryID.toString() + nextLinkUrl.toString())}'/>
+															            </html-to-xml>
+														            </xpath>
+																</list>
+																<body>
+																	<var-def name="imgFullSrc">
+																		<script return="siteName.toString() + currentSrc.toString().replaceFirst(&quot;../&quot;, &quot;&quot;) + &quot;;&quot;" />
+																	</var-def>			
+															    </body>
+															</loop>					        	
+											        	</var-def>
+									            	</if>
+									            	<else/>
+									            </case>	
+									        </if>
+									        <else/>
+									    </case>
+									</empty>
+									
+									<!-- Сохраняем страну в базу если удалось выцепить.-->
+									<case>
+										<if condition="${!hotelName.toString().trim().isEmpty()}">
+											<var-def name="returnValue">
+								                <text>type</text>
+								                <text>Hotel</text>
+								                
+								                <text>name</text>
+								                <template>${hotelName.toString().trim()}</template>
+								                
+								                <!--
+								                <text>category</text>
+								                <template>${hotelCategory.toString().trim()}</template>
+								                -->
+								                
+								                <text>city_name</text>
+								                <template>${cityName.toString().trim()}</template>
+								                
+								                <text>country_name</text>
+								                <template>${countryName.toString().trim()}</template>
+								
+								                <text>keywords</text>
+								                <template>${hotelName.toString().trim() + ";"}</template>
+								                
+												<text>decription</text>
+								                <template>${hotelDesc.toString()}</template>
+								                
+								                <text>photos</text>
+								                <template>${imagesList.toString()}</template>
+								            </var-def>                        
+								            <var-def name="addToDB">
+												1
+								            </var-def>
+										</if>
+										<else/>
+									</case>
+						
+						
+							    </body>
+							</loop>
+				
+					    </body>
+					</loop>
+		
+			    </body>
+			</loop>
+
+
+	    </body>
+	</loop>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 </empty>
 </config>
+
+
+
+
+
+
+
+
+
 
