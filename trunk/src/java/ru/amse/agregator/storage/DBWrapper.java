@@ -3,9 +3,7 @@ package ru.amse.agregator.storage;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -41,7 +39,8 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_COMMENT = "Comment";
 	
 	
-
+	private String myCityName = null;
+	private String myCountryName = null;
 	
 	
 	public DBWrapper(DBObject dbObject){
@@ -51,7 +50,26 @@ public class DBWrapper extends StorageObject{
 			
 	public DBWrapper() {
 		this(new BasicDBObject());
-	}	
+	}
+	
+	
+	//---------
+	
+	public String getStaticCityName(){
+		return myCityName;
+	}
+	
+	public String getStaticCountryName(){
+		return myCountryName;
+	}
+	
+	public void setStaticCityName(String cityName){
+		myCityName = cityName;
+	}
+	
+	public void setStaticCountryName(String countryName){
+		myCountryName = countryName;
+	}
 
 	//----------
 	
@@ -220,6 +238,7 @@ public class DBWrapper extends StorageObject{
 	}	
 	
 	public void setCityByName(String name){
+		this.setStaticCityName(name);
 		ObjectId id = DataBase.getCityIdByName(name);
 		if(id == null){
 			DBWrapper a = new DBWrapper();
@@ -235,6 +254,7 @@ public class DBWrapper extends StorageObject{
 	}	
 	
 	public void setCountryByName(String name){
+		this.setStaticCountryName(name);
 		ObjectId id = DataBase.getCountryIdByName(name);
 		if(id == null){
 			DBWrapper a = new DBWrapper();
@@ -292,7 +312,7 @@ public class DBWrapper extends StorageObject{
 		return (ObjectId) myDBObj.get(FIELD_COUNTRY_ID);
 	}
 	
-	public String getCityName(){
+	public String getCityNameFromDB(){
 		DBWrapper city = DataBase.getDBObjectById(this.getCityId());
 		if(city != null){
 			return city.getName();
@@ -301,7 +321,7 @@ public class DBWrapper extends StorageObject{
 		}
 	}
 	
-	public String getCountryName(){
+	public String getCountryNameFromDB(){
 		DBWrapper country = DataBase.getDBObjectById(this.getCountryId());
 		if(country != null){
 			return country.getName();
@@ -309,8 +329,7 @@ public class DBWrapper extends StorageObject{
 			return null;
 		}
 	}
-	
-	
+			
 	public String getWebsite(){
 		return myDBObj.getString(FIELD_WEBSITE);
 	}	
