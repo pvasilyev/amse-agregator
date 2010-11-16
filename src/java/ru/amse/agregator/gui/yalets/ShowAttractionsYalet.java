@@ -13,7 +13,8 @@ import java.io.IOException;
 public class ShowAttractionsYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
-    public void process(InternalRequest req, InternalResponse res) {
+    @Override
+	public void process(InternalRequest req, InternalResponse res) {
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
             if (tmp.equals("italy")) {
