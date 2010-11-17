@@ -98,11 +98,11 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			for(int i=0; i<myList.size(); i+=2){
 				if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
 					
-					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString())));
+					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString()).trim()));
 					
 				} else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
 					
-					newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString())));
+					newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString()).trim()));
 					
 				}else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
@@ -115,7 +115,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 					newEntry.setCoordsArray(coords);
 				}
 				else{
-					newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()));
+					newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()).trim());
 				}
 			}
 			DataBase.add(newEntry);
