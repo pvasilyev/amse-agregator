@@ -3,7 +3,7 @@
 
 = Хранилище =
 ----
-*Архив с намайненной базой можно взять тут -  svn/trunk/resources/data17k_votpusk.ru.zip*
+*Архив с намайненной базой можно взять [http://amse-agregator.googlecode.com/files/data17k_votpusk.ru.zip тут]*
 ----
 == Установка и настройка MongoDB ==
 === Сервер MongoDB ===
@@ -38,64 +38,118 @@ mkdir data
 Например в _eclipse_, это можно сделать в параметрах вашего проекта:
  _Project - Properties - Java Build Path - Libraries - Add External JARs_
 ----
-== Основные классы ==
-_Данные классы представляют основные сущности объектов, хранимых в базе._
+== Типы объектов ==
+
+===Страна - `Type: Country`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Фотографии - Photos : ArrayList<String> - ?
+ Ключевые слова - KeyWords : ArrayList<String>
+}}}
 
 ===Город - `Type: City`===
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point2D.Double
- Фотографии - Photos : ArrayList<String>
+ Страна - Country : ObjectId
  Ключевые слова - KeyWords : ArrayList<String>
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
 }}}
 
 ===Архитектурная Достопримечательность - `Type: ArchAttraction`===
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point2D.Double
- Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
- Город - City : ObjectId
- Дата основания - Date : Date
- Архитектор - Architect : String
- Цена - Cost : String
- Адрес - Address : String
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Город - City : ObjectId - ?
+ Страна - Country : ObjectId - ?
+ Дата основания - Date : Date - ?
+ Архитектор - Architect : String - ?
+ Цена - Cost : String - ?
+ Адрес - Address : String - ?
 }}}
 
 ===Природная Достопримечательность - `Type: NaturalAttraction`===
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point2D.Double
- Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
- Ближайший город - City : ObjectId
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Ближайший город - City : ObjectId - ?
+ Страна - Country : ObjectId - ?
+}}}
+
+===Музей - `Type: Museum`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Страна - Country : ObjectId
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Цена - Cost : String - ?
+ Адрес - Address : String - ?
+}}}
+
+
+===Развлечения - `Type: Entertainment`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Страна - Country : ObjectId
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Цена - Cost : String - ?
+ Адрес - Address : String - ?
+}}}
+
+===Шопинг - `Type: Shopping`===
+{{{
+ Название - Name : String
+ Описание - Description : String
+ Ключевые слова - KeyWords : ArrayList<String>
+ Город - City : ObjectId
+ Страна - Country : ObjectId
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Цена - Cost : String - ?
+ Адрес - Address : String - ?
 }}}
 
 ===Отель - `Type: Hotel`===
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point2D.Double
- Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Город - City : ObjectId
- Сайт - Website : String
- Тип Номеров - Rooms : String
+ Страна - Country : ObjectId
+ Категория - Category : String - ? //Гостиница, 5* Отель и т.д.
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Сайт - Website : String - ?
+ Тип Номеров - Rooms : String - ?
 }}}
 
 ===Кафе - `Type: Cafe`===
 {{{
  Название - Name : String
  Описание - Description : String
- Координаты - Coordinates : Point2D.Double
- Фотографии - Photos : ArrayList<String>
  Ключевые слова - KeyWords : ArrayList<String>
  Город - City : ObjectId
- Сайт - Website : String
- Музыка - Music : String
+ Страна - Country : ObjectId
+ Категория - Category : String - ?
+ Координаты - Coordinates : Point2D.Double - ?
+ Фотографии - Photos : ArrayList<String> - ?
+ Сайт - Website : String - ?
+ Музыка - Music : String - ?
 }}}
 
 ----
@@ -296,5 +350,3 @@ public class Example {
 Также все что не понятно, тоже спрашивайте.
 
 _Классы хранилища еще будут неоднократно изменяться и расширяться, следите за обновлениями и используйте в своих частях последнюю версию._
-
-В скором времени появится внутренний GUI для просмотра и управления базой.
