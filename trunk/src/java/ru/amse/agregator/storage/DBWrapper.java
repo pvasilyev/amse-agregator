@@ -3,6 +3,11 @@ package ru.amse.agregator.storage;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -25,6 +30,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_ROOMS = "rooms";
+	public static final String FIELD_CATEGORY = "category";
 	
 	public static final String TYPE_COUNTRY = "Country";
 	public static final String TYPE_CITY = "City";
@@ -38,22 +44,26 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_USER = "User";		
 	public static final String TYPE_COMMENT = "Comment";
 	
-	
 	private String myCityName = null;
 	private String myCountryName = null;
-	
 	
 	public DBWrapper(DBObject dbObject){
 		super(dbObject);
 	}
-
-			
+		
 	public DBWrapper() {
 		this(new BasicDBObject());
 	}
 	
-	
 	//---------
+	
+	public void setStaticCityName(String cityName){
+		myCityName = cityName;
+	}
+	
+	public void setStaticCountryName(String countryName){
+		myCountryName = countryName;
+	}
 	
 	public String getStaticCityName(){
 		return myCityName;
@@ -63,14 +73,11 @@ public class DBWrapper extends StorageObject{
 		return myCountryName;
 	}
 	
-	public void setStaticCityName(String cityName){
-		myCityName = cityName;
+	public void initFromDB(){
+		setStaticCityName(getCityNameFromDB());
+		setStaticCountryName(getCountryNameFromDB());
 	}
 	
-	public void setStaticCountryName(String countryName){
-		myCountryName = countryName;
-	}
-
 	//----------
 	
 	public void setKeyValue(String key, String value){
@@ -83,6 +90,73 @@ public class DBWrapper extends StorageObject{
 		}
 	}
 	
+	public Object getValue(String key){
+		if(key.equals(FIELD_CITY_NAME)){
+			return getStaticCityName();
+		} else if(key.equals(FIELD_COUNTRY_NAME)){
+			return getStaticCountryName();
+		} else {
+			return myDBObj.get(key);
+		}
+	}
+	
+	public Set<String> getKeySet(){
+		Set<String> set = new HashSet<String>(myDBObj.keySet());
+		if(myCityName != null){
+			set.add(FIELD_CITY_NAME);
+		}
+		if(myCountryName != null){
+			set.add(FIELD_COUNTRY_NAME);
+		}
+		return set;
+	}
+	
+	public Set<String> getKeySetWithoutNull(){
+		Set<String> set = new HashSet<String>();
+		for(String key : myDBObj.keySet()){
+			if(myDBObj.get(key) != null){
+				set.add(key);
+			}
+		}
+		if(myCityName != null){
+			set.add(FIELD_CITY_NAME);
+		}
+		if(myCountryName != null){
+			set.add(FIELD_COUNTRY_NAME);
+		}
+		return set;
+	}
+	
+	public Map<String, Object> getMap(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(String key : this.getKeySet()){
+			map.put(key, myDBObj.get(key));
+		}
+		if(myCityName != null){
+			map.put(FIELD_CITY_NAME, myCityName);
+		}
+		if(myCountryName != null){
+			map.put(FIELD_COUNTRY_NAME, myCountryName);
+		}
+		return map;
+	}
+	
+	public Map<String, Object> getMapWithoutNull(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(String key : this.getKeySetWithoutNull()){
+			map.put(key, myDBObj.get(key));
+		}
+		if(myCityName != null){
+			map.put(FIELD_CITY_NAME, myCityName);
+		}
+		if(myCountryName != null){
+			map.put(FIELD_COUNTRY_NAME, myCountryName);
+		}
+		return map;
+	}
+
+	//----------
+
 	public void setAttribut(String nameAttribut, String valueAttribut){
 		if (nameAttribut.equalsIgnoreCase(FIELD_TYPE)){
 			setType(valueAttribut);
@@ -179,7 +253,6 @@ public class DBWrapper extends StorageObject{
 	public void setAddress(String address){
 		myDBObj.put(FIELD_ADDRESS,address);
 	}	
-	
 	
 	public void setDate(Date date){
 		myDBObj.put(FIELD_DATE_FOUNDATION, date);
