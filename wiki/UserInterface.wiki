@@ -5,7 +5,7 @@
  * xslt-преобразование
  * framework [http://sourceforge.net/projects/xfresh/develop XFrеsh]
 
-*Установка `TomCat`*
+*Установка TomCat*
 
  # Скачиваем с [http://tomcat.apache.org/download-70.cgi офицального сайта] *apache tomcat* - [http://www.sai.msu.su/apache//tomcat/tomcat-7/v7.0.4-beta/bin/apache-tomcat-7.0.4.tar.gz под линукс, версия 7].
 {{{
