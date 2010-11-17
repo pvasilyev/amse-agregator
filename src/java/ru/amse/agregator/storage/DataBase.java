@@ -16,8 +16,6 @@ import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 
-
-
 public class DataBase {
 	private static Mongo myMongo = null;
 	private static DB myDB = null;
@@ -113,10 +111,25 @@ public class DataBase {
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
 			while(cur.hasNext()){
-				allCollection.add(new DBWrapper(cur.next()));
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				allCollection.add(dbWrapper);
 			}
 		}
 		return allCollection;
+	}
+	
+	public static ArrayList<DBWrapper> getAllWithKeyValue(String key, String value){
+		ArrayList<DBWrapper> collection = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(key,value));
+			while(cur.hasNext()){
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				collection.add(dbWrapper);
+			}
+		}
+		return collection;
 	}
 		
 	public static ObjectId add(DBWrapper storageObject){
@@ -128,10 +141,12 @@ public class DataBase {
 		}
 	}
 	
-	public static DBWrapper getDBObjectById(ObjectId id){
+	public static DBWrapper getDBObjectById(ObjectId id) {
 		DBObject retObj = findInCollectionById(COLLECTION_MAIN, id);
 		if(retObj != null){
-			return new DBWrapper(retObj);
+			DBWrapper dbWrapper = new DBWrapper(retObj);
+			dbWrapper.initFromDB();
+			return dbWrapper;
 		} else {
 			return null;
 		}
@@ -261,7 +276,7 @@ public class DataBase {
 	}
 	
 	
-public static Set<String> getAttributsNames(String nameType){
+	public static Set<String> getAttributsNames(String nameType){
 		Set <String> tempRes = new HashSet<String>();	
 		tempRes.add("_id");
 		tempRes.add(DBWrapper.FIELD_TYPE);
@@ -295,51 +310,51 @@ public static Set<String> getAttributsNames(String nameType){
 	}
 	
 
-public static Vector<Vector<Object>> getCollectionValues(String nameType, Set<String> attr){
-	Vector<Vector<Object>> res = new Vector<Vector<Object>>();
-	Vector<DBWrapper> allCollection = new Vector<DBWrapper>();
-	if(myDB != null){
-		DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
-		while(cur.hasNext()){
-			allCollection.add(new DBWrapper(cur.next()));
-		}
-	}
-	for (int i = 0; i < allCollection.size();++i){
-		Vector<Object> v = new Vector<Object>();
-		for(String str1 : attr){
-		  v.add(allCollection.get(i).myDBObj.get(str1));
-		}
-		res.add(v);
-	}
-	return res;
-}
-public static int getTypesCount(String nameCollection){
-	int count = 0;
-	try{
-		Set <String> tempRes = new HashSet<String>();	
-		DBCollection coll = myDB.getCollection(nameCollection);
-		DBCursor cur = coll.find();
-		String typeName;
-		
-		while (cur.hasNext()){
-			DBWrapper temp= (DBWrapper)cur.next();
-			typeName = temp.getType(); 
-		    if ( !(tempRes.contains(typeName)) ){
-				tempRes.add(typeName);
+	public static Vector<Vector<Object>> getCollectionValues(String nameType, Set<String> attr){
+		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
+		Vector<DBWrapper> allCollection = new Vector<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
+			while(cur.hasNext()){
+				allCollection.add(new DBWrapper(cur.next()));
 			}
 		}
-		for (@SuppressWarnings("unused") String v : tempRes){			
-			count++;
+		for (int i = 0; i < allCollection.size();++i){
+			Vector<Object> v = new Vector<Object>();
+			for(String str1 : attr){
+			  v.add(allCollection.get(i).myDBObj.get(str1));
+			}
+			res.add(v);
 		}
+		return res;
 	}
-	catch (Exception e) {
-		System.out.println("Epic Fail");
+	public static int getTypesCount(String nameCollection){
+		int count = 0;
+		try{
+			Set <String> tempRes = new HashSet<String>();	
+			DBCollection coll = myDB.getCollection(nameCollection);
+			DBCursor cur = coll.find();
+			String typeName;
+			
+			while (cur.hasNext()){
+				DBWrapper temp= (DBWrapper)cur.next();
+				typeName = temp.getType(); 
+			    if ( !(tempRes.contains(typeName)) ){
+					tempRes.add(typeName);
+				}
+			}
+			for (@SuppressWarnings("unused") String v : tempRes){			
+				count++;
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Epic Fail");
+		}
+		return count;
 	}
-	return count;
-}
-public static void setAttribut(String nameAttribut, String valueAttribut, Object id){
-	DBWrapper a = getDBObjectById((ObjectId)id);
-	a.setAttribut(nameAttribut,valueAttribut);
-	myDB.getCollection(COLLECTION_MAIN).save(a.toDBObject());
-}
+	public static void setAttribut(String nameAttribut, String valueAttribut, Object id){
+		DBWrapper a = getDBObjectById((ObjectId)id);
+		a.setAttribut(nameAttribut,valueAttribut);
+		myDB.getCollection(COLLECTION_MAIN).save(a.toDBObject());
+	}
 }
