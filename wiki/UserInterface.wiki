@@ -5,9 +5,37 @@
  * xslt-преобразование
  * framework [http://sourceforge.net/projects/xfresh/develop XFrеsh]
 
+*Установка TomCat*
+
+ # Скачиваем с [http://tomcat.apache.org/download-70.cgi офицального сайта] *apache tomcat* - [http://www.sai.msu.su/apache//tomcat/tomcat-7/v7.0.4-beta/bin/apache-tomcat-7.0.4.tar.gz под линукс, версия 7].
+{{{
+wget -O tomcat7.tgz http://www.sai.msu.su/apache//tomcat/tomcat-7/v7.0.4-beta/bin/apache-tomcat-7.0.4.tar.gz
+}}}
+ # Распаковываем содержимое архива.
+{{{
+tar xzf tomcat7.tgz
+}}}
+ # Переходим в распакованную папку.
+{{{
+cd apache-tomcat-7.0.4
+}}}
+ # Запускаем сервер tomcat
+{{{
+./bin/startup.sh
+}}}
+ По умолчанию сервер будет на порту 8080, т.е. теперь вы на него можете попасть так - [http://localhost:8080/]
+
+ * Для остановки сервера выполните
+{{{
+./bin/shutdown.sh
+}}}
+ * Для рестарта соответсвенно *(перезапуск сервера необходим после каждого добавления/изменения файлов, иначе не увидите их.)*
+{{{
+./bin/shutdown.sh && ./bin/startup.sh
+}}}
+
 *Настройка gui*
  * необходимые библиотеки: xfresh.jar
- * устанавливаем tomcat
  * открываем файл build.properties в корне svn и добавляем туда путь к папке, куда только что установили tomcat
 {{{
 //например
