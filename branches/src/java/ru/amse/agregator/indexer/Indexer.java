@@ -71,7 +71,7 @@ public class Indexer {
     }
 
     private static void indexObject(IndexWriter writer, DBWrapper object) throws IOException {
-        System.out.println("\nIndexed object " + object.getName());
+        //System.out.println("\nIndexed object " + object.getName());
         Document documentForCurrentObject;
         if (object.getType().equals(DBWrapper.TYPE_CITY)) {
             documentForCurrentObject = getDocumentForCurrentCity(object);
@@ -91,7 +91,7 @@ public class Indexer {
             writer.addDocument(documentForCurrentObject);
             countIndexedFiles++;
         } else {
-            System.out.println("Error in object. Object isn't indexed.");
+            //System.out.println("Error in object. Object isn't indexed.");
         }
     }
 
@@ -203,7 +203,7 @@ public class Indexer {
                 return;
             }
             document.add(new Field(field, value, fieldStore, fieldIndex));
-            System.out.println(value);
+            //System.out.println(value);
         }
 
         public void addObjectName() {
@@ -235,6 +235,10 @@ public class Indexer {
 
         public void addObjectKeyWord() {
             ArrayList<String> keyWords = object.getKeyWordsArray();
+            if (keyWords == null) {
+                return;
+            }
+            
             StringBuffer allKeyWords = new StringBuffer();
             for (String currentWord : keyWords) {
                 allKeyWords.append(currentWord);
@@ -246,6 +250,10 @@ public class Indexer {
 
         public void addObjectPhotos() {
             ArrayList<String> photos = object.getPhotosArray();
+            if (photos == null) {
+                return;
+            }
+
             StringBuffer allPhotos = new StringBuffer();
             for (String currentPhoto : photos) {
                 allPhotos.append(currentPhoto);
@@ -261,7 +269,7 @@ public class Indexer {
         }
 
         public void addObjectDate() {
-            String date = object.getBuildDate().toString();
+            String date = "" + object.getBuildDate();
             addField(FIELD_DATE, date);
         }
 
