@@ -1,0 +1,86 @@
+﻿<project name="agregator-gui" default="build">
+    <target name="init">
+        <property file="local.build.properties"/>
+        <property file="build.properties"/>
+
+        <property name="src.dir" location="${project.dir}/src/java"/>
+
+        <property name="webapp.name" value="agregator-gui"/>
+        <property name="webapp.dir" location="${tomcat.dir}/webapps/${webapp.name}"/>
+
+        <property name="build.dir" location="${project.dir}/build"/>
+        <property name="build.classes.dir" location="${build.dir}/classes"/>
+
+        <fileset id="index" dir="index">
+            <include name="*.*"/>
+        </fileset>
+
+        <fileset id="libs" dir="libs">
+            <include name="xfresh.jar"/>
+        </fileset>
+
+        <fileset id="project-libs" dir="${project.dir}">
+            <include name="**/xfresh.jar/"/>
+            <include name="**/webharvester/webharvest_2.jar/"/>
+            <include name="**/mongo-2.3.jar/"/>
+            <include name="**/servlet-api.jar/"/>
+            <include name="**/jakarta-commons/*.jar/"/>
+            <include name="**/log4j-1.2.13.jar/"/>
+            <include name="**/lucene-core-3.0.2.jar/"/>
+            <include name="**/xalan/*.jar/"/>
+            <include name="**/junit-4.0.jar/"/>
+            <include name="**/spring/*.jar/"/>
+        </fileset>
+
+        <path id="project.classpath">
+            <fileset refid="libs"/>
+            <fileset refid="project-libs"/>
+        </path>
+
+        <property name="src.web.dir" location="${project.dir}/src/web"/>
+        <property name="resources.dir" location="src/web/resources"/>
+
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+
+    </target>
+
+    <target name="build" depends="copy-classes, copy-view, copy-config, copy-jars"/>
+
+    <target name="compile" depends="init">
+        <javac destdir="${build.classes.dir}"
+               classpathref="project.classpath"
+               debug="on"
+               srcdir="${src.dir}">
+        </javac>
+    </target>
+
+    <target name="copy-view" depends="init">
+        <copy todir="${webapp.dir}" overwrite="true">
+            <fileset dir="${project.dir}/src/web/resources"/>
+        </copy>
+    </target>
+
+    <target name="copy-classes" depends="compile">
+        <copy todir="${webapp.dir}/WEB-INF/classes">
+            <fileset dir="${build.classes.dir}"/>
+        </copy>
+    </target>
+
+    <target name="copy-config" depends="init">
+        <copy todir="${webapp.dir}/WEB-INF" overwrite="true">
+            <fileset dir="${project.dir}/src/web/WEB-INF"/>
+        </copy>
+    </target>
+
+    <target name="copy-jars" depends="init">
+        <copy todir="${webapp.dir}/WEB-INF/lib" flatten="true">
+            <fileset refid="libs"/>
+            <fileset refid="project-libs"/>
+        </copy>
+        <copy todir="${webapp.dir}/WEB-INF/index" flatten="true">
+            <fileset dir="index"/>
+        </copy>
+    </target>
+
+</project>
