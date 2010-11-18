@@ -13,9 +13,12 @@
     <property name="web.dir" location="${basedir}/src/web/"/>
     <property name="build.dir" location="${basedir}/build"/>
     <property name="dist.dir"  location="${basedir}/dist"/>
+    <property name="resources.dir"  location="${basedir}/resources"/>
     
     <property name="webapp.name" value="agregator-gui"/>
     <property name="webapp.dir" location="${tomcat.dir}/webapps/${webapp.name}"/>
+    
+    <property name="index.dir" location="${resources.dir}/index"/>
     
     <!-- Libs -->
     <path id="libs.all">
@@ -145,6 +148,10 @@
             <path>
                  <pathelement path="${gui_libs}"/>
             </path>
+        </copy>
+        <!-- Copy index dir -->
+        <copy todir="${webapp.dir}/WEB-INF/index" flatten="true">
+            <fileset dir="${index.dir}"/>
         </copy>
     </target>
     
