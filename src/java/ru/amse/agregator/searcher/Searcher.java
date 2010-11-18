@@ -35,10 +35,10 @@ public class Searcher {
     public static void setIndexDir(File iDir) {
         try {
             if (!iDir.exists()) {
+                System.out.println("DIRECTORY:" + iDir.getAbsolutePath());
                 throw new FileNotFoundException("Directory " + iDir.getAbsolutePath() + " is not exists");
             }
             INDEX_DIR = iDir;
-            System.out.println("DIRECTORY:" + iDir.getAbsolutePath());
         } catch (Exception e) {
             System.out.println("Exception! Message " + e.getMessage());
         }
