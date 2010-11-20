@@ -8,7 +8,7 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
  *
  * @author pavel
  */
-final public class Declusterization {
+final public class DeclusterizationProcess {
 
     static public ArrayList<ObjectId> perform(Declusterizer declusterizer, ClusterStorage storage) {
         //@TODO work on the declusterizer

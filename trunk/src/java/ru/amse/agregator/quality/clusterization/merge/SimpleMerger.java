@@ -11,7 +11,7 @@ import ru.amse.agregator.storage.DataBase;
 public class SimpleMerger extends Merger {
 
     @Override
-	public DBWrapper merge(Cluster cluster) {
+    public DBWrapper merge(Cluster cluster) {
         return DataBase.getDBObjectById(cluster.getObjectList().get(0));
     }
 }

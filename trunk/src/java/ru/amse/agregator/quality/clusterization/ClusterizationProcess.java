@@ -14,7 +14,7 @@ import ru.amse.agregator.storage.DBWrapper;
  *
  * @author pavel
  */
-final public class Clusterization {
+final public class ClusterizationProcess {
 
     static public void perform() {
         Clusterizer clusterizer = new PartitionClusterizer();
