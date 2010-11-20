@@ -1,5 +1,10 @@
 package ru.amse.agregator.searcher;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Vector;
+
 /*
  * Author: Bondarev Timofey
  * Date: Oct 24, 2010
@@ -8,36 +13,35 @@ package ru.amse.agregator.searcher;
 
 public class UserQuery {
     private String query;
-    private String[] labels;
+    private Vector<String> labels;
 
     public UserQuery(String queryExpression) {
         query = queryExpression;
-        labels = new String[0];
+        labels = new Vector<String>();
     }
 
-    public UserQuery(String queryExpression, String[] labels) {
+    public UserQuery(String queryExpression, Vector<String> labels) {
         query = queryExpression;
-        System.arraycopy(this.labels, 0, labels, 0, labels.length);
-        System.out.println(this.labels[3]);
+        this.labels = new Vector<String>(labels);
     }
 
     public void setQueryExpression(String queryExpression) {
         query = queryExpression;
     }
 
-    public void setLabels(String[] labels) {
+    public void setLabels(Vector<String> labels) {
         this.labels = labels;
     }
 
     public void addLabel(String label) {
-        labels[labels.length + 1] = label;
+        labels.add(label);
     }
 
     public String getQueryExpression() {
         return query;
     }
 
-    public String[] getLabels() {
+    public Vector<String> getLabels() {
         return labels;
     }
 }
