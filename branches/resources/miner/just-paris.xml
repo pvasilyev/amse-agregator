@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+	
+<var-def name="urlSite">
+	http://www.just-paris.ru
+</var-def>
+
+<!--Begin build sights list-->
+<var-def name="sightsList">
+	<xpath expression="//li[@id='current']/ul/li/a/@href">
+		<html-to-xml>
+			<http url="http://www.just-paris.ru/sights"/>
+		</html-to-xml>
+	</xpath>
+</var-def>
+<!--End build sights list-->
+
+<!--Begin cycle by mined sights-->
+<loop item="sightsUrl" index="i" filter="unique">
+	
+	<list>
+		<var name="sightsList"/>
+	</list>
+	
+	<body>
+		
+		<var-def name="loadedData">
+			<html-to-xml outputtype="pretty">
+				<http url="${sys.fullUrl(urlSite, sightsUrl);}"/>
+			</html-to-xml>
+		</var-def>
+		
+		<!--Begin mining sight's images-->
+		<var-def name="sightImages">
+			<xpath expression="//div[@class='vsig_thumb']/a/@onclick">
+				<html-to-xml>
+					<var name="loadedData"/>
+				</html-to-xml>
+			</xpath>
+		</var-def>
+		<!--End mining sight's images-->
+				
+		<!--Begin mining sight's description -->
+		<var-def name="sightDescription">
+			<xpath expression="//span[@class='caps']/parent::*">
+				<html-to-xml>
+					<var name="loadedData"/>
+				</html-to-xml>
+			</xpath>
+		</var-def>
+		<!--End mining sight's description -->
+		
+		<!--Begin mining sight's info -->
+		<var-def name="sightInfo">
+			<xpath expression="//div[@class='info']">
+				<html-to-xml>
+					<var name="loadedData"/>
+				</html-to-xml>
+			</xpath>
+		</var-def>
+		<!--End mining sight's info -->		
+		
+		<!--Begin processing sight's images links-->
+		<case>
+			<if condition="${!sightImages.isEmpty()}">
+				<script language="javascript">
+					<![CDATA[
+						var links = sightImages.toArray();
+						var i = 0;
+						var result = new Array();
+						var string;
+						while ( i < links.length ) {
+							var httpIndex = links[i].toString().indexOf("http");
+							string = links[i].toString().substring(httpIndex, links[i].toString().length());
+							var quotIndex = string.indexOf("\"");
+							string = string.substring(0, quotIndex);							
+							result.push(string);
+							i++;
+						}
+					]]>
+					sys.defineVariable("resultImageLinks", result.join(";"), true);
+				</script>
+			</if>
+		</case>
+		<!--End processing sight's images links-->		
+
+		<!--Begin processing sight's info-->
+		<case>
+			<if condition="${!sightInfo.isEmpty()}">
+				<script language="javascript">
+					<![CDATA[
+						var description = sightInfo.toArray();
+						var i = 0;
+						var j;
+						var result;
+						var string;
+						var bCont = true;
+						var site_;
+						var address;
+						
+						var strFind = "<strong>Адрес:</strong>";
+						j = description[i].toString().indexOf(strFind);
+						
+						while (bCont && i < description.length) {
+							
+							var restFind;
+							if (j != -1) {
+								bCont = false;
+								restFind = description[i].toString().substring(j + strFind.length);
+								if (restFind.indexOf("(посмотреть") != -1) {
+									if (restFind.indexOf("(посмотреть") < restFind.indexOf("<br")) {
+										var address = restFind.substring(0, restFind.indexOf("(посмотреть") - 1);
+									} else {
+										if (restFind.indexOf("<br") != -1) {
+											var address = restFind.substring(0, restFind.indexOf("<br"));
+										} else {
+											var address = restFind.substring(0);
+										}
+									}
+								} else {
+									var address = restFind;
+								}
+							}
+
+							i++;
+						}
+
+						bCont = true;
+						i = 0;
+
+						strFind = "<strong>Сайт:</strong>";
+						j = description[i].toString().indexOf(strFind);
+						var site_;
+						
+						while (bCont && i < description.length) {
+							if (j != -1) {
+								restFind = description[i].toString().substring(j + strFind.length);
+								bCont = false;
+							}	
+							i++;
+						}
+						i--;
+						restFind = description[i].toString().substring(j + strFind.length);						
+						if (!bCont && i < description.length) {
+							var iHttp = restFind.indexOf("http");
+							var restFind = restFind.substring(iHttp);
+							var site_ = restFind.substring(0, restFind.indexOf('"'));
+						}
+					]]>
+					sys.defineVariable("resultAddress", address, true);
+					sys.defineVariable("resultOffSite", site_, true);
+					//sys.defineVariable("resultOffSite", iMap, true);
+				</script>
+			</if>
+		</case>
+		<!--End processing sight's info-->		
+		
+		<!--Begin processing sight's description-->
+		<case>
+			<if condition="${!sightDescription.isEmpty()}">
+				<script language="javascript">
+					<![CDATA[
+						var description = sightDescription.toArray();
+						var i = 0;
+						var result = new Array();
+						
+						while (i < description.length) {
+							var current = description[i].toString();
+							while (current.indexOf(">") != -1) {
+								current = current.substring(0, current.indexOf("<")) + current.substring(current.indexOf(">") + 1);
+							}
+							result.push(current);
+							i++;
+						}
+					]]>						
+					sys.defineVariable("resultDescription", result.join("."), true);
+				</script>
+			</if>
+		</case>
+		<!--End processing sight's description-->		
+
+
+		<var-def name="returnValue">
+			<text>photos</text>
+			<template>${resultImageLinks.toString()}</template>
+			
+			<text>address</text>
+			<template>${resultAddress.toString()}</template>
+			
+			<text>site</text>
+			<template>${resultOffSite.toString()}</template>
+			
+			<text>description</text>
+			<template>${resultDescription.toString()}</template>
+			
+		</var-def>
+		
+		<var-def name="addToBD">1</var-def>
+	</body>
+</loop>
+<!--End cycle by mined sights-->
+
+</config>
