@@ -25,11 +25,13 @@ ArrayList<DBWrapper> search(UserQuery query);
 Интерфейс класса `UserQuery`:
 {{{
 class UserQuery {
-    UserQuery(String queryExpression);
-    UserQuery(String queryExpression, String[] labels);
-    setQueryExpression(String queryExpression);
-    setLabels(String[] labels);
-    addLabel(String label); // не тестировалась
+    void UserQuery(String queryExpression);
+    void UserQuery(String queryExpression, Vector<String> labels);
+    void setQueryExpression(String queryExpression);
+    void setLabels(Vector<String> labels);
+    void addLabel(String label);
+    String getQueryExpression();
+    Vector<String> getLabels();
 }
 }}}
 где `queryEpxression` - это то, что ввел пользователь в область ввода, а `labels` - это массив дополнительных условий, которые он отметил на странице поиска.
