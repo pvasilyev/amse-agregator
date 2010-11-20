@@ -20,8 +20,8 @@ public class PartitionClusterizer extends Clusterizer {
 
     //simple implementation of partition algorithm
     @Override
-	public void clusterize(ArrayList<ObjectId> objects,
-            Graph similarityGraph, ClusterStorage clusterStorage) {
+    public void clusterize(ArrayList<ObjectId> objects,
+        Graph similarityGraph, ClusterStorage clusterStorage) {
 
         Map<ObjectId, ClusterStorage.Cluster> clusterMap
                 = new TreeMap<ObjectId, ClusterStorage.Cluster>();
@@ -42,7 +42,7 @@ public class PartitionClusterizer extends Clusterizer {
             ObjectId obj1 = e.obj1;
             ObjectId obj2 = e.obj2;
 
-            //retrieve corresponding cluster from map
+            //retrieve corresponding clusters from map
             ClusterStorage.Cluster cluster1 = clusterMap.get(obj1);
             ClusterStorage.Cluster cluster2 = clusterMap.get(obj2);
 
@@ -53,16 +53,13 @@ public class PartitionClusterizer extends Clusterizer {
             clusterMap.put(obj2, mergedCluster);
         }
 
-        //eleminate duplicate and get unique clusters from our map
+        //eleminate duplicates and get unique clusters from our map
         Set<ClusterStorage.Cluster> uniqueClusters
                 = new HashSet<ClusterStorage.Cluster>(clusterMap.values());
 
         // add resulting clusters to storage
-        //System.out.println("After:");
         for (ClusterStorage.Cluster cluster : uniqueClusters) {
             clusterStorage.addCluster(cluster);
-            //System.out.println(cluster.getObjectList().size());
         }
-
     }
 }

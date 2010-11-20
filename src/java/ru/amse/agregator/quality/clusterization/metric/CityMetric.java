@@ -9,7 +9,7 @@ import ru.amse.agregator.storage.DBWrapper;
 public class CityMetric extends Metric {
 
     @Override
-	public double compute(DBWrapper obj1, DBWrapper obj2) {
+    public double compute(DBWrapper obj1, DBWrapper obj2) {
         if ((obj1.getName() == null) || (obj2.getName() == null)) {
             return 1.0;
         }
