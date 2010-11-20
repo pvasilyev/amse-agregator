@@ -1,8 +1,5 @@
 package ru.amse.agregator.searcher;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Vector;
 
 /*
