@@ -18,7 +18,22 @@ public class StorageTester {
     	
    
         DataBase.connectToDirtyBase();  
-          
+
+        ArrayList<DBWrapper> continents = DataBase.getAllContinents();
+        for(DBWrapper continent : continents){
+        	System.out.println(continent.getName() + " айдишник: " + continent.getId());
+        	//вывели список континентов с сылочками в которых хранится айдишник.
+        }
+        
+        //выводим список стран первого континента
+        DBWrapper continentPerviy = continents.get(0);
+       System.out.println(continentPerviy.getId());
+        ArrayList<DBWrapper> countries = DataBase.getAllCountriesByContinent(continentPerviy.getId());
+        for(DBWrapper country : countries){
+        	System.out.println(country.getName() + " айдишник: " + country.getId());
+        	//вывели список стран первого континента с сылочками в которых хранится айдишник.
+        }
+        
 //    	DBWrapper wr = new DBWrapper();
 //    	wr.setType(DBWrapper.TYPE_CONTINENT);
 //    	wr.setName("Австралия и Океания");
@@ -45,7 +60,7 @@ public class StorageTester {
         //System.out.println(DataBase.getAllObjectOfSelectedTypeInCity(new ObjectId("4ce1c0ae078edf4cf9b87cfc"), DBWrapper.TYPE_MUSEUM));
         
         
-        DataBase.printAll();
+        //DataBase.printAll();
         //System.out.println(DataBase.getAllTypesOfObjectByCity(new ObjectId("4ce1c096078edf4cd5b87cfc")));
     }
 }

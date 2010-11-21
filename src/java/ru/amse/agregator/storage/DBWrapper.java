@@ -27,7 +27,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_CITY_NAME = "city_name";
 	public static final String FIELD_COUNTRY_ID = "country_id";
 	public static final String FIELD_COUNTRY_NAME = "country_name";
-	public static final String FIELD_CONTINENT_ID = "continentId";
+	public static final String FIELD_CONTINENT_ID = "continent_id";
 	public static final String FIELD_CONTINENT_NAME = "continent_name";
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
