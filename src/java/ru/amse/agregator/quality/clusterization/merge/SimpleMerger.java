@@ -12,6 +12,6 @@ public class SimpleMerger extends Merger {
 
     @Override
     public DBWrapper merge(Cluster cluster) {
-        return DataBase.getDBObjectById(cluster.getObjectList().get(0));
+        return DataBase.getAttractionById(cluster.getObjectList().get(0));
     }
 }
