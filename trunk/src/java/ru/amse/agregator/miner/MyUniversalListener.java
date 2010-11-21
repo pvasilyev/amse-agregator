@@ -96,30 +96,29 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			
 			DBWrapper newEntry = new DBWrapper();
 			for(int i=0; i<myList.size(); i+=2){
-				if(myList.get(i+1) == null){
-					continue;
-				}
+				if(myList.get(i) != null && myList.get(i+1) != null){
 				
-				if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
+				    if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
 					
-					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString()).trim()));
+					    newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString())));
 					
-				} else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
+				    } else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
 					
-					newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString()).trim()));
+					    newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString())));
 					
-				}else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
+				    }else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
-					ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
-					String tmp = myList.get(i+1).toString();
-					double lon, lat;
-					lon = Double.parseDouble(tmp.substring(0, tmp.indexOf(';')));
-					lat = Double.parseDouble(tmp.substring(tmp.indexOf(';') +1 ));
-					coords.add(new Point2D.Double(lon, lat));
-					newEntry.setCoordsArray(coords);
-				}
-				else{
-					newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()).trim());
+					    ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
+					    String tmp = myList.get(i+1).toString();
+					    double lon, lat;
+					    lon = Double.parseDouble(tmp.substring(0, tmp.indexOf(';')));
+					    lat = Double.parseDouble(tmp.substring(tmp.indexOf(';') +1 ));
+					    coords.add(new Point2D.Double(lon, lat));
+					    newEntry.setCoordsArray(coords);
+				    }
+				    else{
+					    newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()));
+				    }
 				}
 			}
 			DataBase.add(newEntry);
@@ -182,7 +181,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			incomed = incomed.replaceAll(" {2,}", " ");
 			incomed = incomed.replaceAll(" {1,}[.]", ".");
 			incomed = incomed.replaceAll(" {1,}[,]", ",");
-			return incomed;
+			return incomed.trim();
 		}
 		else
 			return null;
