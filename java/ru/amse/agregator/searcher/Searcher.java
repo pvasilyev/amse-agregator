@@ -67,9 +67,12 @@ public class Searcher {
         for (ScoreDoc currentScoreDoc : sDocs) {
             DBWrapper wrapper = new DBWrapper();
             wrapper.setType(DBWrapper.TYPE_CITY);
-            wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
-            wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
-            //wrapper.setAddress(is.doc(currentScoreDoc.doc).getField("address").stringValue());
+            if (is.doc(currentScoreDoc.doc).getField("name") != null) {
+                wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
+            }
+            if (is.doc(currentScoreDoc.doc).getField("description") != null) {
+                wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
+            }
             list.add(wrapper);
         }
         return list;
