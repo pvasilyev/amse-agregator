@@ -35,8 +35,6 @@
 
     <!--Yalets-->
 
-    <bean id="simpleAnswerYalet" class=" net.footiebets.yalets.SimpleAnswerYalet"/>
-
     <bean id="showAttractionsYalet" class=" ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
         <property name="manager" ref="manager"/>
 	</bean>
