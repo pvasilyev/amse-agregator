@@ -58,6 +58,8 @@ public class DataBase {
 	public static void connectToMainBase(){
 		connect(DB_SERVER_ADDRESS, DB_SERVER_PORT,MAIN_DB_NAME);
 	}
+	public static void addCountryWithoutId(){
+	}
 	
 	//Connect to server address:port, and database dbName
 	public static void connect(String address, int port, String dbName){

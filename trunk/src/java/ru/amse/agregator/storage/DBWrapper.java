@@ -94,12 +94,23 @@ public class DBWrapper extends StorageObject{
 	//----------
 	
 	public void setKeyValue(String key, String value){
+		String name ="";
 		if(key.equals(FIELD_CITY_NAME)){
 			setCityByName(value);
 		} else if(key.equals(FIELD_COUNTRY_NAME)){
+			name = value;
 			setCountryByName(value);
 		} else if(key.equals(FIELD_CONTINENT_NAME)){
-			setContinentByName(value);
+			if ( value == null){
+				if ( DataBase.getDBObjectByIdAndType(DataBase.getCountryIdByName(name), "Country") != null){
+					setContinentByName(DataBase.getDBObjectByIdAndType(DataBase.getCountryIdByName(name), "Country").getCountryNameFromDB());
+				}
+				else {
+					return;
+				}
+			}
+			else
+				setContinentByName(value);
 		} else {
 			myDBObj.put(key,value);
 		}
