@@ -45,7 +45,7 @@ public class StorageTester {
         //System.out.println(DataBase.getAllObjectOfSelectedTypeInCity(new ObjectId("4ce1c0ae078edf4cf9b87cfc"), DBWrapper.TYPE_MUSEUM));
         
         
-        //DataBase.printAll();
+        DataBase.printAll();
         //System.out.println(DataBase.getAllTypesOfObjectByCity(new ObjectId("4ce1c096078edf4cd5b87cfc")));
     }
 }

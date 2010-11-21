@@ -28,11 +28,12 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_COUNTRY_ID = "country_id";
 	public static final String FIELD_COUNTRY_NAME = "country_name";
 	public static final String FIELD_CONTINENT_ID = "continentId";
-	public static final String FIELD_CONTINENT_NAME = "continentId";
+	public static final String FIELD_CONTINENT_NAME = "continent_name";
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_ROOMS = "rooms";
 	public static final String FIELD_CATEGORY = "category";
+	public static final String FIELD_SOURCE_URL = "source_url";
 	
 	public static final String TYPE_CONTINENT = "Continent";
 	public static final String TYPE_COUNTRY = "Country";
