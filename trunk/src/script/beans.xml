@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+    <!--Spring helpers-->
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+    <!--Jetty beans-->
+    <bean id="serverInitializer" class="net.sf.xfresh.jetty.JettyServerInitializer">
+        <property name="port" value="8080"/>
+        <property name="maxThreads" value="10"/>
+        <property name="handlers">
+            <list>
+                <bean class="net.sf.xfresh.jetty.YaletXmlPageHandler">
+                    <property name="resourceBase" value="./view"/>
+                </bean>
+                <bean class="org.mortbay.jetty.handler.ResourceHandler">
+                    <property name="resourceBase" value="./view"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--Fresh core beans-->
+    <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
+        <property name="encoding" value="utf-8"/>
+    </bean>
+
+    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
+
+    <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
+
+    <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
+
+    <!--Yalets-->
+
+    <bean id="simpleAnswerYalet" class=" net.footiebets.yalets.SimpleAnswerYalet"/>
+
+    <bean id="showAttractionsYalet" class=" ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
+        <property name="manager" ref="manager"/>
+	</bean>
+
+   <bean id="showAttractionDescYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescYalet">
+        <property name="manager" ref="manager"/>
+    </bean>
+
+	<bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
+    
+</beans>
