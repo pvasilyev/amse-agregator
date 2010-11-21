@@ -42,14 +42,14 @@ public class Indexer {
 
     private static void IndexAllObjects(IndexWriter writer) throws Exception {
         connectToDB(); // необходима запущенная на компьютере база
-        ArrayList<DBWrapper> allObjects = DataBase.getAllDBObjects();
+        ArrayList<DBWrapper> allObjects = Database.getAllDBObjects();
         for (DBWrapper currentObject : allObjects) {
             indexObject(writer, currentObject);
         }
     }
 
     private static void connectToDB() {
-        DataBase.connectToDirtyBase();
+        Database.connectToDirtyBase();
     }
 
     private static void indexObject(IndexWriter writer, DBWrapper object) throws Exception {

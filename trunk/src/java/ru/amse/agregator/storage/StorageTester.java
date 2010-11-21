@@ -17,9 +17,9 @@ public class StorageTester {
         // TODO Auto-generated method stub
     	
    
-        DataBase.connectToDirtyBase();  
+        Database.connectToDirtyBase();
 
-        ArrayList<DBWrapper> continents = DataBase.getAllContinents();
+        ArrayList<DBWrapper> continents = Database.getAllContinents();
         for(DBWrapper continent : continents){
         	System.out.println(continent.getName() + " айдишник: " + continent.getId());
         	//вывели список континентов с сылочками в которых хранится айдишник.
@@ -28,7 +28,7 @@ public class StorageTester {
         //выводим список стран первого континента
         DBWrapper continentPerviy = continents.get(0);
        System.out.println(continentPerviy.getId());
-        ArrayList<DBWrapper> countries = DataBase.getAllCountriesByContinent(continentPerviy.getId());
+        ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continentPerviy.getId());
         for(DBWrapper country : countries){
         	System.out.println(country.getName() + " айдишник: " + country.getId());
         	//вывели список стран первого континента с сылочками в которых хранится айдишник.
@@ -37,31 +37,31 @@ public class StorageTester {
 //    	DBWrapper wr = new DBWrapper();
 //    	wr.setType(DBWrapper.TYPE_CONTINENT);
 //    	wr.setName("Австралия и Океания");
-//    	DataBase.add(wr);
+//    	Database.add(wr);
 //    	wr.setName("Азия");
 //    	wr.removeId();
-//    	DataBase.add(wr);
+//    	Database.add(wr);
 //    	wr.setName("Африка");
 //    	wr.removeId();
-//    	DataBase.add(wr);
+//    	Database.add(wr);
 //    	wr.setName("Европа");
 //    	wr.removeId();
-//    	DataBase.add(wr);
+//    	Database.add(wr);
 //    	wr.setName("Северная Америка");
 //    	wr.removeId();
-//    	DataBase.add(wr);
+//    	Database.add(wr);
 //    	wr.setName("Южная Америка");
 //    	wr.removeId();
-//    	DataBase.add(wr);
+//    	Database.add(wr);
         
         
-        //System.out.println(DataBase.getAllContinents());
-        //System.out.println(DataBase.getAllCountriesByContinent(continentId)());
-        //System.out.println(DataBase.getAllObjectOfSelectedTypeInCity(new ObjectId("4ce1c0ae078edf4cf9b87cfc"), DBWrapper.TYPE_MUSEUM));
+        //System.out.println(Database.getAllContinents());
+        //System.out.println(Database.getAllCountriesByContinent(continentId)());
+        //System.out.println(Database.getAllObjectOfSelectedTypeInCity(new ObjectId("4ce1c0ae078edf4cf9b87cfc"), DBWrapper.TYPE_MUSEUM));
         
         
-        //DataBase.printAll();
-        //System.out.println(DataBase.getAllTypesOfObjectByCity(new ObjectId("4ce1c096078edf4cd5b87cfc")));
+        //Database.printAll();
+        //System.out.println(Database.getAllTypesOfObjectByCity(new ObjectId("4ce1c096078edf4cd5b87cfc")));
     }
 }
 

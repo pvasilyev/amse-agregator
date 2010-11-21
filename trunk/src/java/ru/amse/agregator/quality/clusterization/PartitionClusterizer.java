@@ -1,16 +1,18 @@
 package ru.amse.agregator.quality.clusterization;
 
 
-import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
+import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 import ru.amse.agregator.quality.clusterization.simgraph.Graph;
 
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
 
-import org.bson.types.ObjectId;
 
 /**
  *
@@ -20,16 +22,17 @@ public class PartitionClusterizer extends Clusterizer {
 
     //simple implementation of partition algorithm
     @Override
-    public void clusterize(ArrayList<ObjectId> objects,
-        Graph similarityGraph, ClusterStorage clusterStorage) {
+    public void clusterize(final ArrayList<DBWrapper> objects,
+        final Graph similarityGraph, ClusterStorage clusterStorage) {
 
-        Map<ObjectId, ClusterStorage.Cluster> clusterMap
-                = new TreeMap<ObjectId, ClusterStorage.Cluster>();
+        Map<UniqueId, Cluster> clusterMap
+                = new HashMap<UniqueId, Cluster>();
 
         //init map with single element clusters
         //System.out.println("Before:");
-        for (ObjectId obj : objects) {
-            clusterMap.put(obj, new ClusterStorage.Cluster(obj));
+        for (DBWrapper obj : objects) {
+            UniqueId id = obj.getUniqueId();
+            clusterMap.put(id, new Cluster(id));
             //System.out.println(clusterMap.get(obj).getObjectList().size());
         }
 
@@ -39,26 +42,26 @@ public class PartitionClusterizer extends Clusterizer {
             Graph.Edge e = similarityGraph.getNextEdge();
 
             //get objects
-            ObjectId obj1 = e.obj1;
-            ObjectId obj2 = e.obj2;
+            UniqueId obj1 = e.obj1;
+            UniqueId obj2 = e.obj2;
 
             //retrieve corresponding clusters from map
-            ClusterStorage.Cluster cluster1 = clusterMap.get(obj1);
-            ClusterStorage.Cluster cluster2 = clusterMap.get(obj2);
+            Cluster cluster1 = clusterMap.get(obj1);
+            Cluster cluster2 = clusterMap.get(obj2);
 
             //merge clusters
-            ClusterStorage.Cluster mergedCluster
-                    = ClusterStorage.Cluster.mergeClusters(cluster1, cluster2);
+            Cluster mergedCluster
+                    = Cluster.mergeClusters(cluster1, cluster2);
             clusterMap.put(obj1, mergedCluster);
             clusterMap.put(obj2, mergedCluster);
         }
 
         //eleminate duplicates and get unique clusters from our map
-        Set<ClusterStorage.Cluster> uniqueClusters
-                = new HashSet<ClusterStorage.Cluster>(clusterMap.values());
+        Set<Cluster> uniqueClusters
+                = new HashSet<Cluster>(clusterMap.values());
 
         // add resulting clusters to storage
-        for (ClusterStorage.Cluster cluster : uniqueClusters) {
+        for (Cluster cluster : uniqueClusters) {
             clusterStorage.addCluster(cluster);
         }
     }

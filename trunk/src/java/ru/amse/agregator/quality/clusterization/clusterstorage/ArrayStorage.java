@@ -38,4 +38,9 @@ final public class ArrayStorage extends ClusterStorage {
 	public int getClusterCount() {
         return clusters.size();
     }
+
+    @Override
+    public void finishIterating() {
+        iterator = null;
+    }
 }

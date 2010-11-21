@@ -1,6 +1,6 @@
 package ru.amse.agregator.quality.clusterization.declusterization;
 
-import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
+import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 
 /**
  *
@@ -12,6 +12,6 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
  */
 abstract public class Declusterizer {
 
-    abstract public boolean isCorrect(ClusterStorage.Cluster cluster);
+    abstract public boolean isCorrect(Cluster cluster);
 
 }
