@@ -34,6 +34,8 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_ROOMS = "rooms";
 	public static final String FIELD_CATEGORY = "category";
 	public static final String FIELD_SOURCE_URL = "source_url";
+    // this field is used in clusterization module to address the object in the whole database
+    public static final String FIELD_UNIQUE_ID = "unique_id";
 	
 	public static final String TYPE_CONTINENT = "Continent";
 	public static final String TYPE_COUNTRY = "Country";
@@ -102,8 +104,8 @@ public class DBWrapper extends StorageObject{
 			setCountryByName(value);
 		} else if(key.equals(FIELD_CONTINENT_NAME)){
 			if ( value == null){
-				if ( DataBase.getDBObjectByIdAndType(DataBase.getCountryIdByName(name), "Country") != null){
-					setContinentByName(DataBase.getDBObjectByIdAndType(DataBase.getCountryIdByName(name), "Country").getCountryNameFromDB());
+				if ( Database.getDBObjectByIdAndType(Database.getCountryIdByName(name), "Country") != null){
+					setContinentByName(Database.getDBObjectByIdAndType(Database.getCountryIdByName(name), "Country").getCountryNameFromDB());
 				}
 				else {
 					return;
@@ -343,12 +345,12 @@ public class DBWrapper extends StorageObject{
 	
 	public void setCityByName(String name){
 		this.setStaticCityName(name);
-		ObjectId id = DataBase.getCityIdByName(name);
+		ObjectId id = Database.getCityIdByName(name);
 		if(id == null){
 			DBWrapper a = new DBWrapper();
 			a.setName(name);
 			a.setType(TYPE_CITY);
-			id = DataBase.add(a);
+			id = Database.add(a);
 		}
 		myDBObj.put(FIELD_CITY_ID, id);
 	}
@@ -359,12 +361,12 @@ public class DBWrapper extends StorageObject{
 	
 	public void setCountryByName(String name){
 		this.setStaticCountryName(name);
-		ObjectId id = DataBase.getCountryIdByName(name);
+		ObjectId id = Database.getCountryIdByName(name);
 		if(id == null){
 			DBWrapper a = new DBWrapper();
 			a.setName(name);
 			a.setType(TYPE_COUNTRY);
-			id = DataBase.add(a);
+			id = Database.add(a);
 		}
 		myDBObj.put(FIELD_COUNTRY_ID, id);
 	}
@@ -375,12 +377,12 @@ public class DBWrapper extends StorageObject{
 	
 	public void setContinentByName(String name){
 		this.setStaticContinentName(name);
-		ObjectId id = DataBase.getContinentIdByName(name);
+		ObjectId id = Database.getContinentIdByName(name);
 		if(id == null){
 			DBWrapper a = new DBWrapper();
 			a.setName(name);
 			a.setType(TYPE_CONTINENT);
-			id = DataBase.add(a);
+			id = Database.add(a);
 		}
 		myDBObj.put(FIELD_CONTINENT_ID, id);
 	}
@@ -437,7 +439,7 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getCityNameFromDB(){
-		DBWrapper city = DataBase.getDBObjectByIdAndType(this.getCityId(),TYPE_CITY);
+		DBWrapper city = Database.getDBObjectByIdAndType(this.getCityId(),TYPE_CITY);
 		if(city != null){
 			return city.getName();
 		} else {
@@ -446,7 +448,7 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getCountryNameFromDB(){
-		DBWrapper country = DataBase.getDBObjectByIdAndType(this.getCountryId(),TYPE_COUNTRY);
+		DBWrapper country = Database.getDBObjectByIdAndType(this.getCountryId(),TYPE_COUNTRY);
 		if(country != null){
 			return country.getName();
 		} else {
@@ -455,7 +457,7 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getContientNameFromDB(){
-		DBWrapper continent = DataBase.getDBObjectByIdAndType(this.getCountryId(),TYPE_CONTINENT);
+		DBWrapper continent = Database.getDBObjectByIdAndType(this.getCountryId(),TYPE_CONTINENT);
 		if(continent != null){
 			return continent.getName();
 		} else {
@@ -505,4 +507,39 @@ public class DBWrapper extends StorageObject{
 	public ArrayList<String> getKeyWordsArray(){
 		return (ArrayList<String>) myDBObj.get(FIELD_KEYWORDS);
 	}
+
+    public void setUniqueId(UniqueId val) {
+        myDBObj.put(FIELD_UNIQUE_ID, val);
+    }
+
+    public UniqueId getUniqueId() {
+        return (UniqueId)myDBObj.get(FIELD_UNIQUE_ID);
+    }
+
+    //sets an attribute represented by a listed of strings
+    public void setListAttribute(final String attributeName, ArrayList<String> values) {
+        // @todo Нельзя чтобы было можно портить важные поля этим методом
+        myDBObj.put(attributeName, values);
+    }
+
+    public static ArrayList<String> getTypeNames() {
+
+        ArrayList<String> typeNames = new ArrayList<String>();
+        
+        typeNames.add(TYPE_ARCH_ATTRACTION);
+        typeNames.add(TYPE_CAFE);
+        typeNames.add(TYPE_CITY);
+        typeNames.add(TYPE_COMMENT);
+        typeNames.add(TYPE_CONTINENT);
+        typeNames.add(TYPE_COUNTRY);
+        typeNames.add(TYPE_ENTERTAINMENT);
+        typeNames.add(TYPE_HOTEL);
+        typeNames.add(TYPE_MUSEUM);
+        typeNames.add(TYPE_NATURAL_ATTRACTION);
+        typeNames.add(TYPE_SHOPPING);
+        typeNames.add(TYPE_USER);
+
+        return typeNames;
+    }
+
 }

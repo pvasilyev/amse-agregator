@@ -6,8 +6,7 @@ import ru.amse.agregator.storage.DBWrapper;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.bson.types.ObjectId;
-import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.storage.UniqueId;
 
 
 /**
@@ -26,7 +25,7 @@ abstract public class Graph extends Object implements Serializable {
         threshold = thresh;
     }
 
-    public Graph(Metric met, double thresh, ArrayList<ObjectId> objs) {
+    public Graph(Metric met, double thresh, ArrayList<DBWrapper> objs) {
         this(met, thresh);
         build(objs);
     }
@@ -36,34 +35,39 @@ abstract public class Graph extends Object implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
-		final public ObjectId obj1, obj2;
+		final public UniqueId obj1, obj2;
         final public double weight;
 
-        public Edge(ObjectId objId1, ObjectId objId2, double edgeWeight) {
+        public Edge(UniqueId objId1, UniqueId objId2, double edgeWeight) {
+            assert(objId1 != null);
+            assert(objId2 != null);
             obj1 = objId1;
             obj2 = objId2;
             weight = edgeWeight;
         }
     }
 
-    final public void build(ArrayList<ObjectId> objects) {
+    final public void build(final ArrayList<DBWrapper> objects) {
         //compare all pairs of objects and put in the graph those under the threshold
         int i = 0;
-        for (ObjectId id1 : objects) {
-            DBWrapper object1 = DataBase.getAttractionById(id1);
+        for (DBWrapper obj1 : objects) {
             int j = 0;
-            for (ObjectId id2 : objects) {
-                if (j >= i) {
-                    break;
+            for (DBWrapper obj2 : objects) {
+                
+                if (j <= i) {
+                    ++j;
+                    continue;
                 }
-                DBWrapper object2 = DataBase.getAttractionById(id2);
-                double distance = metric.compute(object1, object2);
-                if (distance < threshold) {
-                    addEdge(new Edge(id1, id2, distance));
+                double distance = metric.compute(obj1, obj2);
+                if (distance <= threshold) {
+                    addEdge(new Edge(obj1.getUniqueId(), obj2.getUniqueId(), distance));
                 }
                 ++j;
             }
             ++i;
+            if (i % 100 == 0) {
+                System.out.println(i);
+            }
         }
     }
 

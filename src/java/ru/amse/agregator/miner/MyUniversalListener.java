@@ -11,7 +11,7 @@ import org.webharvest.runtime.processors.BaseProcessor;
 import org.webharvest.runtime.variables.Variable;
 
 import ru.amse.agregator.storage.DBWrapper;
-import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.storage.Database;
 
 
 public class MyUniversalListener implements ScraperRuntimeListener {
@@ -48,7 +48,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			keywords.add(sCityName);
 			newCity.setKeyWordsArray(keywords);
 
-			DataBase.add(newCity);*/
+			Database.add(newCity);*/
 		
 		
 	}
@@ -123,7 +123,7 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 				    }
 				}
 			}
-			DataBase.add(newEntry);
+			Database.add(newEntry);
 
 		}
 	}

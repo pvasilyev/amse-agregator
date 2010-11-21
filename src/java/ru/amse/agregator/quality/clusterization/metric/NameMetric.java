@@ -6,7 +6,7 @@ import ru.amse.agregator.storage.DBWrapper;
  *
  * @author pavel
  */
-public class CityMetric extends Metric {
+public class NameMetric extends Metric {
 
     @Override
     public double compute(DBWrapper obj1, DBWrapper obj2) {

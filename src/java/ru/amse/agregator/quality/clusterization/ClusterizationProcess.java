@@ -1,14 +1,14 @@
 package ru.amse.agregator.quality.clusterization;
 
-
 import java.util.ArrayList;
-import org.bson.types.ObjectId;
-import ru.amse.agregator.storage.DataBase;
+
+import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 import ru.amse.agregator.quality.clusterization.simgraph.*;
 import ru.amse.agregator.quality.clusterization.metric.*;
 import ru.amse.agregator.quality.clusterization.merge.*;
 import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
 
 /**
  *
@@ -17,68 +17,66 @@ import ru.amse.agregator.storage.DBWrapper;
 final public class ClusterizationProcess {
 
     static public void perform() {
-        Clusterizer clusterizer = new PartitionClusterizer();
-        Metric metric = new CityMetric();
-        Graph similatityGraph = new ArrayGraph(metric, 0.0);
-        ClusterStorage storage = new ArrayStorage();
+
+        double threshold = 0.0;
 
         System.out.println("Deleting main base");
 
-        DataBase.connectToMainBase();
-        DataBase.removeCollection(DataBase.COLLECTION_MAIN);
+        Database.connectToMainBase();
+        Database.removeAllCollections();
 
-        System.out.println("Retrieving dirty base");
+        ArrayList<String> types = DBWrapper.getTypeNames();
 
-        DataBase.connectToDirtyBase();
-        ArrayList<ObjectId> allCities = DataBase.getAllIdByType(DBWrapper.TYPE_CITY);
+        for (String type : types) {
 
-        System.out.println("Building similarity graph");
-        similatityGraph.build(allCities);
+            Clusterizer clusterizer = new PartitionClusterizer();
+            Metric metric = new NameMetric();
+            Graph similatityGraph = new ArrayGraph(metric, threshold);
+            ClusterStorage storage = new ArrayStorage();
 
-        System.out.println("Resulting graph has "
-                + String.valueOf(similatityGraph.getEdgeCount()) + " edges");
+            System.out.println("**************\n\nProcessing " + type + "s");
+            System.out.println("Retrieving data from dirty base");
 
-        System.out.println("Performing clusterization process");
+            Database.connectToDirtyBase();
 
-        clusterizer.clusterize(allCities, similatityGraph, storage);
+            ArrayList<DBWrapper> allOfType = Database.
+                    getAllWithType(type);
+            setUniqueIdsForObjects(allOfType, Database.DIRTY_DB_NAME);
 
-//        System.out.println("Checking consistency");
-//        storage.startIterating();
-//        while (storage.hasNext()) {
-//            ClusterStorage.Cluster cl = storage.getNextCluster();
-//            if (cl == null) {
-//                System.out.println("fail");
-//            }
-//            if (cl.getObjectList() == null) {
-//                System.out.println("fail");
-//            }
-//            if (cl.getObjectList().isEmpty()) {
-//                System.out.println("fail");
-//            }
-//            if (cl.getObjectList().get(0) == null) {
-//                System.out.println("fail");
-//            }
-//            DataBase.getDBObjectById(cl.getObjectList().get(0));
-//        }
+            System.out.println("There are " + allOfType.size() + " " + type + "s in dirty base");
 
+            System.out.println("Building similarity graph\nObjects processed:");
+            similatityGraph.build(allOfType);
 
-//        DataBase.connectToDirtyBase();
-//        DataBase.printAll();
+            System.out.println(String.valueOf(allOfType.size()));
 
-        System.out.println("Clusterisation process created " 
-                + String.valueOf(storage.getClusterCount()) + " clusters out of "
-                + String.valueOf(allCities.size()) + " objects");
+            System.out.println("Resulting graph has "
+                    + String.valueOf(similatityGraph.getEdgeCount()) + " edges");
 
-        System.out.println("Merging and adding to main base");
+            System.out.println("Performing clusterization process");
 
-        MergeProcess.perform(new SimpleMerger(), storage);
+            clusterizer.clusterize(allOfType, similatityGraph, storage);
 
-        System.out.println("Finished clusterization process");
+            System.out.println(String.valueOf(allOfType.size()));
+            
+            System.out.println("Clusterisation process created "
+                    + String.valueOf(storage.getClusterCount()) + " clusters out of "
+                    + String.valueOf(allOfType.size()) + " objects");
 
-        DataBase.switchBaseTo(DataBase.MAIN_DB_NAME);
-        DataBase.printAll();
+            System.out.println("Merging and adding to main base");
 
+            MergeProcess.perform(new ObjectMerger(), storage);
+        }
+  
+       System.out.println("Finished clusterization process successfully");
+    }
 
+    public static void setUniqueIdsForObjects(ArrayList<DBWrapper> objects,
+            final String databaseName) {
+        for (DBWrapper obj : objects) {
+            obj.setUniqueId(new UniqueId(obj, databaseName));
+        }
+        
     }
 
     public static void main(String[] args) {

@@ -11,11 +11,11 @@ public class SimpleMenuYalet implements Yalet{
 
 	public void process(InternalRequest req, InternalResponse res) {
 		
-		DataBase.connectToDirtyBase();
-		ArrayList<DBWrapper> continents = DataBase.getAllContinents();
+		Database.connectToDirtyBase();
+		ArrayList<DBWrapper> continents = Database.getAllContinents();
 		
 		for(DBWrapper continent : continents){
-			ArrayList<DBWrapper> countrytmp = DataBase.getAllCountriesByContinent(continent.getId());
+			ArrayList<DBWrapper> countrytmp = Database.getAllCountriesByContinent(continent.getId());
 			
 			ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
 			menuItems.add(new MenuItem(continent.getName(),null));

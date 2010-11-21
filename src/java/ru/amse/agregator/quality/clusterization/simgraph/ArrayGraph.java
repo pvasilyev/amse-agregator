@@ -2,8 +2,10 @@ package ru.amse.agregator.quality.clusterization.simgraph;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.bson.types.ObjectId;
+
 import ru.amse.agregator.quality.clusterization.metric.Metric;
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
 
 /**
  *
@@ -22,7 +24,7 @@ final public class ArrayGraph extends Graph {
         super(metric, threshold);
     }
 
-    public ArrayGraph(Metric metric, double threshold, ArrayList<ObjectId> objects) {
+    public ArrayGraph(Metric metric, double threshold, ArrayList<DBWrapper> objects) {
         super(metric, threshold, objects);
     }
 

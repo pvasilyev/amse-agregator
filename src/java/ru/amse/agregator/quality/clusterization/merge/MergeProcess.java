@@ -1,9 +1,10 @@
 package ru.amse.agregator.quality.clusterization.merge;
 
+import ru.amse.agregator.quality.clusterization.clusterstorage.Cluster;
 import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
 import ru.amse.agregator.storage.DBWrapper;
 
-import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.storage.Database;
 
 /**
  *
@@ -11,16 +12,24 @@ import ru.amse.agregator.storage.DataBase;
  */
 final public class MergeProcess {
 
-    static public void perform(Merger merger, ClusterStorage storage) {
+    static public void perform(ClusterMerger merger, ClusterStorage storage) {
 
         storage.startIterating();
         while (storage.hasNext()) {
             //use merging algorithm to create single object out of cluster
-            DataBase.connectToDirtyBase();
-            DBWrapper obj = merger.merge(storage.getNextCluster());
+            Database.connectToDirtyBase();
+            Cluster cluster = storage.getNextCluster();
+
+            //logging error
+            if (cluster.getObjectList().isEmpty()) {
+                System.err.println("Encountered empty cluster while merging");
+                continue;
+            }
+
+            DBWrapper obj = merger.mergeCluster(cluster);
             //put it in the storage
-            DataBase.connectToMainBase();
-            DataBase.add(obj);
+            Database.connectToMainBase();
+            Database.add(obj);
         }
     }
 }

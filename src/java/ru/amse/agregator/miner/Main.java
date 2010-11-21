@@ -3,7 +3,7 @@ package ru.amse.agregator.miner;
 import java.io.File;
 import java.io.IOException;
 
-import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.utils.XmlFileFilter;
 import ru.amse.agregator.miner.MyScarper;
 
@@ -22,9 +22,9 @@ public class Main {
 		}
 		
 		//Connect to DB
-		DataBase.connectToDirtyBase();
+		Database.connectToDirtyBase();
 		
-		System.out.println(DataBase.getAllCities().size());
+		System.out.println(Database.getAllCities().size());
 		//System.in.read();
 
 		//Get a list of xml files in the input directory

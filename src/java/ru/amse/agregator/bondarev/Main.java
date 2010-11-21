@@ -22,9 +22,9 @@ public class Main {
     public static void main(String[] args) {
         File indexDir = new File("index");
 
-        DataBase.connectToDirtyBase();
+        Database.connectToDirtyBase();
         //writeDateToDB();
-        DataBase.printAll();
+        Database.printAll();
         try {
             Indexer.makeNewIndex(indexDir);
             Searcher.setIndexDir(indexDir);
@@ -42,7 +42,7 @@ public class Main {
 
     @SuppressWarnings("unused")
 	private static void writeDateToDB() {
-        DataBase.removeCollection(DataBase.COLLECTION_MAIN);
+        Database.removeCollection(Database.COLLECTION_MAIN);
               
         DBWrapper someCity = new DBWrapper();
 
@@ -59,7 +59,7 @@ public class Main {
         stringsArray.add("Рим");
         someCity.setKeyWordsArray(stringsArray);
 
-        DataBase.add(someCity);
+        Database.add(someCity);
 
         DBWrapper someArchAttr = new DBWrapper();
         someArchAttr.setType(DBWrapper.TYPE_ARCH_ATTRACTION);
@@ -87,7 +87,7 @@ public class Main {
         someArchAttr.setCost("100 $");
         someArchAttr.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("08/07/1990", new ParsePosition(0)));
 
-        DataBase.add(someArchAttr);
+        Database.add(someArchAttr);
     }
 }
 

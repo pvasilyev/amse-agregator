@@ -1,6 +1,6 @@
 package ru.amse.agregator.quality.clusterization.declusterization;
 
-import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
+import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 
 /**
  *
@@ -9,7 +9,7 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
 final public class SimpleDeclusterizer extends Declusterizer {
 
     @Override
-	public boolean isCorrect(ClusterStorage.Cluster cluster) {
+	public boolean isCorrect(Cluster cluster) {
         return true;
     }
 

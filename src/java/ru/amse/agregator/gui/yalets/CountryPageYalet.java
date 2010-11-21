@@ -10,24 +10,24 @@ import org.bson.types.ObjectId;
 import ru.amse.agregator.gui.model.DescriptionModel;
 import ru.amse.agregator.gui.model.MenuItem;
 import ru.amse.agregator.storage.DBWrapper;
-import ru.amse.agregator.storage.DataBase;
+import ru.amse.agregator.storage.Database;
 
 public class CountryPageYalet implements Yalet {
 
 	public void process(InternalRequest req, InternalResponse res) {
 		
-		DataBase.connectToDirtyBase();
+		Database.connectToDirtyBase();
 		String id = req.getParameter("id");
 		ObjectId selectedCountry = new ObjectId(id);
 		
-		DBWrapper country = DataBase.getDBObjectByIdAndType(selectedCountry, DBWrapper.TYPE_COUNTRY);
+		DBWrapper country = Database.getDBObjectByIdAndType(selectedCountry, DBWrapper.TYPE_COUNTRY);
 		
 		DescriptionModel response = new DescriptionModel();
 		response.setName(country.getName());
 		response.setDescription(country.getDescription());
 		response.setImages(country.getPhotosArray());
 		
-		ArrayList<DBWrapper> cities = DataBase.getAllCitiesByCountry(country.getId());
+		ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
 		ArrayList<MenuItem> citiesInfo = new ArrayList<MenuItem>();
 		
 		for(DBWrapper city : cities){

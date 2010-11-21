@@ -2,7 +2,7 @@ package ru.amse.agregator.quality.clusterization.declusterization;
 
 import java.util.ArrayList;
 import org.bson.types.ObjectId;
-import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
+import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 
 /**
  *
@@ -15,7 +15,7 @@ final public class DeclusterizationProcess {
 
         storage.startIterating();
         while (storage.hasNext()) {
-            ClusterStorage.Cluster cluster = storage.getNextCluster();
+            Cluster cluster = storage.getNextCluster();
             if (!declusterizer.isCorrect(cluster)) {
                 //remove cluster from storage, divide the cluster and add objects to the resulting arraylist
             }

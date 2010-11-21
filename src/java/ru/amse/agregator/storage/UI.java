@@ -37,12 +37,12 @@ public class UI extends JFrame implements TableModelListener{
 	JList typeList;
 	
 	Container container;
-	private String[] dbNames = {DataBase.MAIN_DB_NAME, DataBase.DIRTY_DB_NAME};
+	private String[] dbNames = {Database.MAIN_DB_NAME, Database.DIRTY_DB_NAME};
 	public UI() {
 		super("Mongo DB Test");
 
 		
-		DataBase.connectToMainBase();
+		Database.connectToMainBase();
 		JMenuItem addItem = new JMenuItem("Add row");
         addItem.addActionListener(new ActionListener() {
 
@@ -104,11 +104,11 @@ public class UI extends JFrame implements TableModelListener{
 			public void valueChanged(ListSelectionEvent event) {
 				try{	
 					if (dbList.getSelectedIndex() ==0)
-						DataBase.connectToMainBase();
+						Database.connectToMainBase();
 					else
-						DataBase.connectToDirtyBase();
+						Database.connectToDirtyBase();
 					Vector<String> collectionsNames = new Vector<String>();
-					Set<String> collectionsNamesSet = DataBase.getDB().getCollectionNames();
+					Set<String> collectionsNamesSet = Database.getDB().getCollectionNames();
 					for (String collectionName : collectionsNamesSet) {
 						collectionsNames.add(collectionName);
 					}
@@ -130,7 +130,7 @@ public class UI extends JFrame implements TableModelListener{
 				public void valueChanged(ListSelectionEvent event) {
 					try{	
 						Vector<String> typesNames = new Vector<String>();
-						Set<String> typesNamesSet = DataBase.getTypesNames(collectionsList.getSelectedValue().toString());
+						Set<String> typesNamesSet = Database.getTypesNames(collectionsList.getSelectedValue().toString());
 						for (String typeName : typesNamesSet) {
 							typesNames.add(typeName);
 						}
@@ -154,12 +154,12 @@ public class UI extends JFrame implements TableModelListener{
 						container.remove(collectionsTable.getTableHeader());
 						container.repaint();
 						
-						Set<String> s = DataBase.getAttributsNames(typeList.getSelectedValue().toString());
+						Set<String> s = Database.getAttributsNames(typeList.getSelectedValue().toString());
 						Vector<String> v = new Vector<String>();
 						for (String str : s){
 							v.add(str);
 						}
-						Vector<Vector<Object>> ss = DataBase.getCollectionValues(typeList.getSelectedValue().toString(),s);
+						Vector<Vector<Object>> ss = Database.getCollectionValues(typeList.getSelectedValue().toString(),s);
 						tableModel.columnNames = v;
 						tableModel.rowData = ss;
 					 
@@ -262,9 +262,9 @@ public class UI extends JFrame implements TableModelListener{
         	Vector<Object> v = new Vector<Object>();
             
             if (dbList.getSelectedIndex() ==0)
-                    DataBase.connectToMainBase();
+                    Database.connectToMainBase();
             else
-                    DataBase.connectToDirtyBase();
+                    Database.connectToDirtyBase();
             //String collectionName = collectionsList.getSelectedValue().toString();
             int columnType = 0;
             for ( int i = 0; i < columnNames.size();++i){
@@ -273,7 +273,7 @@ public class UI extends JFrame implements TableModelListener{
             ObjectId id;
             DBWrapper some = new DBWrapper();
             some.setType(typeList.getSelectedValue().toString());
-            id = DataBase.add( some);
+            id = Database.add( some);
             int temp = 0;
             for ( int i = 0; i < columnNames.size();++i){
                     if (columnNames.get(i).equalsIgnoreCase("_id")) temp = i;
@@ -300,7 +300,7 @@ public class UI extends JFrame implements TableModelListener{
             }
     
             ObjectId id =(ObjectId )rowData.get(index).get(temp);
-            DataBase.getDB().getCollection(collectionsList.getSelectedValue().toString()).remove(new BasicDBObject("_id",id));
+            Database.getDB().getCollection(collectionsList.getSelectedValue().toString()).remove(new BasicDBObject("_id",id));
             rowData.remove(index);
             collectionsTable.revalidate();
             collectionsTable.repaint();
@@ -326,7 +326,7 @@ public class UI extends JFrame implements TableModelListener{
 				 System.out.println(column);
 				 System.out.println(collectionsTable.getColumnName(column));
 				
-				// DataBase.setAttribut(collectionsTable.getColumnName(column), temp, collectionsTable.getValueAt(row, temp_id));
+				// Database.setAttribut(collectionsTable.getColumnName(column), temp, collectionsTable.getValueAt(row, temp_id));
 			} 
 		 	
 	}
