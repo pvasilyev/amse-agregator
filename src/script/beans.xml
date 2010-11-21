@@ -35,6 +35,10 @@
 
     <!--Yalets-->
 
+    <bean id="simpleMenuYalet" class=" ru.amse.agregator.gui.yalets.SimpleMenuYalet"/>
+    <bean id="countryPageYalet" class=" ru.amse.agregator.gui.yalets.CountryPageYalet"/>
+    <bean id="cityPageYalet" class=" ru.amse.agregator.gui.yalets.CityPageYalet"/>
+
     <bean id="showAttractionsYalet" class=" ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
         <property name="manager" ref="manager"/>
 	</bean>
