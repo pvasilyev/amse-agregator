@@ -155,7 +155,7 @@
         </copy>
     </target>
     
-    <target name="install" depends="dist, gui"
+    <target name="install" depends="dist"
         description="install gui to tomcat" >
     </target>
 

@@ -7,7 +7,7 @@
 	</var-def>
     <!-- <file action="write" path="out_countries.txt">  -->  		
 	<!-- Вырываем страны -->
-	<loop item="link" index="i" filter="unique" empty = "yes" >  <!-- maxloops="0" -->
+	<loop item="link" index="i" filter="unique" empty = "yes" maxloops="0">  <!-- -->
 		<list>
 			<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
 			    <html-to-xml>
@@ -43,6 +43,13 @@
 						</xpath>
 					</text>
 				</var-def>
+				<var-def name="countryContinentName">
+					<text>
+						<xpath expression="/html/body/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr/td/a[3]/text()">
+						    <var name="countryPageContent" />
+						</xpath>
+					</text>
+				</var-def>
 			</empty>
 			
 			<!-- Сохраняем страну в базу если удалось выцепить.-->
@@ -60,6 +67,12 @@
 		                
 						<text>decription</text>
 		                <template>${countryDesc.toString()}</template>
+		                
+		                <text>continent_name</text>
+		                <template>${countryContinentName.toString().trim()}</template>
+		                
+		                <text>source_url</text>
+		                <template>${siteName.toString()}</template>
 		            </var-def>                        
 		            <var-def name="addToDB">
 						1
@@ -109,7 +122,7 @@
     
     <!-- Составляем список ссылок на города -->
     <var-def name='cityUrlList'>	
-	   	<loop item="currentContent" index="j" filter="unique" >
+	   	<loop item="currentContent" index="j" filter="unique" maxloops ="0">
 			<list>
 				<var name="dostContentList"/>
 			</list>
@@ -182,6 +195,9 @@
 			                
 							<text>decription</text>
 			                <template>${cityDesc.toString()}</template>
+			                		                
+		                	<text>source_url</text>
+		                	<template>${siteName.toString()}</template>
 			            </var-def>			                            
 			            <var-def name="addToDB">
 			            	1
@@ -397,6 +413,9 @@
 	                
 	                <text>photos</text>
 	                <template>${imagesList.toString()}</template>
+	                		                
+		            <text>source_url</text>
+		            <template>${siteName.toString()}</template>
 	            </var-def>
 	                            
 	            <var-def name="addToDB">
@@ -637,7 +656,10 @@
 								                
 								                <text>photos</text>
 								                <template>${imagesList.toString()}</template>
-								            </var-def>                        
+								                		                
+		                						<text>source_url</text>
+		               							<template>${siteName.toString()}</template>
+									        </var-def>                        
 								            <var-def name="addToDB">
 												1
 								            </var-def>
