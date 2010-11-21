@@ -7,7 +7,7 @@
 	</var-def>
     <!-- <file action="write" path="out_countries.txt">  -->  		
 	<!-- Вырываем страны -->
-	<loop item="link" index="i" filter="unique" empty = "yes" maxloops="0">  <!-- -->
+	<loop item="link" index="i" filter="unique" empty = "yes" >  <!-- maxloops="20"-->
 		<list>
 			<xpath expression="//p[@align='center']/select[@name='menu1']/option/@value">
 			    <html-to-xml>
@@ -67,7 +67,7 @@
 		                
 						<text>decription</text>
 		                <template>${countryDesc.toString()}</template>
-		                
+
 		                <text>continent_name</text>
 		                <template>${countryContinentName.toString().trim()}</template>
 		                
@@ -101,7 +101,7 @@
 	
 	<!-- Выкачиваем страницы со списком достопримечательностей -->
 	<var-def name='dostContentList'>	
-		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i"> <!--  maxloops="0" -->
+		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i" maxloops="0"> <!--  maxloops="0" -->
 	        <empty>
 	            <var-def name="content">
 	                <html-to-xml>
@@ -435,7 +435,7 @@
 	</var-def>
 	
 	<!-- Ищем отели по странам -->
-	<loop item="alink" index="i" filter="unique" empty = "yes" > <!-- maxloops="0"> -->
+	<loop item="alink" index="i" filter="unique" empty = "yes" maxloops="0"> <!-- maxloops="0"> -->
 		<list>
 			<xpath expression="//table[not(@class)]/tbody/tr/td[@class = 'tx']/a">
 			    <html-to-xml>
