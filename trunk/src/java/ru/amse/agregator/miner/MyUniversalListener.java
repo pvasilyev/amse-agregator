@@ -118,7 +118,9 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 					    coords.add(new Point2D.Double(lon, lat));
 					    newEntry.setCoordsArray(coords);
 				    }
-				    else{
+				    else if(myList.get(i).toString().equals(DBWrapper.FIELD_DESC)){
+					    newEntry.setDescription((clearString(myList.get(i+1).toString())));
+				    } else {
 					    newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()));
 				    }
 				}

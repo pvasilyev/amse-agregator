@@ -113,6 +113,9 @@ public class DBWrapper extends StorageObject{
 			}
 			else
 				setContinentByName(value);
+		} else if(key.equals(FIELD_DESC)){
+			name = value;
+			setCountryByName(value);
 		} else {
 			myDBObj.put(key,value);
 		}
@@ -308,7 +311,13 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public void setDescription(String desc){
-		myDBObj.put(FIELD_DESC,desc);
+		ArrayList<String> descArray = new ArrayList<String>();
+		descArray.add(desc);
+		setDescriptionArray(descArray);
+	}
+	
+	public void setDescriptionArray(ArrayList<String> descArray){
+		myDBObj.put(FIELD_DESC,descArray);
 	}
 	
 	public void setCoordsArray(ArrayList<Point2D.Double> coordsArray){
@@ -474,6 +483,10 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getDescription(){
+		return myDBObj.getString(FIELD_DESC);
+	}
+	
+	public String getDescriptionArray(){
 		return myDBObj.getString(FIELD_DESC);
 	}
 	
