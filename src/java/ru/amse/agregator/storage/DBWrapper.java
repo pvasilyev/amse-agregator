@@ -27,11 +27,14 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_CITY_NAME = "city_name";
 	public static final String FIELD_COUNTRY_ID = "country_id";
 	public static final String FIELD_COUNTRY_NAME = "country_name";
+	public static final String FIELD_CONTINENT_ID = "continentId";
+	public static final String FIELD_CONTINENT_NAME = "continentId";
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_ROOMS = "rooms";
 	public static final String FIELD_CATEGORY = "category";
 	
+	public static final String TYPE_CONTINENT = "Continent";
 	public static final String TYPE_COUNTRY = "Country";
 	public static final String TYPE_CITY = "City";
 	public static final String TYPE_SHOPPING = "Shopping";
@@ -46,6 +49,7 @@ public class DBWrapper extends StorageObject{
 	
 	private String myCityName = null;
 	private String myCountryName = null;
+	private String myContinentName = null;
 	
 	public DBWrapper(DBObject dbObject){
 		super(dbObject);
@@ -65,12 +69,20 @@ public class DBWrapper extends StorageObject{
 		myCountryName = countryName;
 	}
 	
+	public void setStaticContinentName(String continentName){
+		myContinentName = continentName;
+	}
+	
 	public String getStaticCityName(){
 		return myCityName;
 	}
 	
 	public String getStaticCountryName(){
 		return myCountryName;
+	}
+	
+	public String getStaticContinentName(){
+		return myContinentName;
 	}
 	
 	public void initFromDB(){
@@ -85,6 +97,8 @@ public class DBWrapper extends StorageObject{
 			setCityByName(value);
 		} else if(key.equals(FIELD_COUNTRY_NAME)){
 			setCountryByName(value);
+		} else if(key.equals(FIELD_CONTINENT_NAME)){
+			setContinentByName(value);
 		} else {
 			myDBObj.put(key,value);
 		}
@@ -95,7 +109,9 @@ public class DBWrapper extends StorageObject{
 			return getStaticCityName();
 		} else if(key.equals(FIELD_COUNTRY_NAME)){
 			return getStaticCountryName();
-		} else {
+		} else if(key.equals(FIELD_CONTINENT_NAME)){
+			return getStaticContinentName();
+		}else {
 			return myDBObj.get(key);
 		}
 	}
@@ -107,6 +123,9 @@ public class DBWrapper extends StorageObject{
 		}
 		if(myCountryName != null){
 			set.add(FIELD_COUNTRY_NAME);
+		}
+		if(myContinentName != null){
+			set.add(FIELD_CONTINENT_NAME);
 		}
 		return set;
 	}
@@ -338,6 +357,22 @@ public class DBWrapper extends StorageObject{
 		myDBObj.put(FIELD_COUNTRY_ID, id);
 	}
 	
+	public void setContinentById(ObjectId id){
+		myDBObj.put(FIELD_CONTINENT_ID, id);
+	}	
+	
+	public void setContinentByName(String name){
+		this.setStaticContinentName(name);
+		ObjectId id = DataBase.getContinentIdByName(name);
+		if(id == null){
+			DBWrapper a = new DBWrapper();
+			a.setName(name);
+			a.setType(TYPE_CONTINENT);
+			id = DataBase.add(a);
+		}
+		myDBObj.put(FIELD_CONTINENT_ID, id);
+	}
+	
 	public void setRooms(String rooms){
 		myDBObj.put(FIELD_ROOMS,rooms);
 	}
@@ -385,8 +420,12 @@ public class DBWrapper extends StorageObject{
 		return (ObjectId) myDBObj.get(FIELD_COUNTRY_ID);
 	}
 	
+	public ObjectId getContinentId(){
+		return (ObjectId) myDBObj.get(FIELD_CONTINENT_ID);
+	}
+	
 	public String getCityNameFromDB(){
-		DBWrapper city = DataBase.getDBObjectById(this.getCityId());
+		DBWrapper city = DataBase.getDBObjectByIdAndType(this.getCityId(),TYPE_CITY);
 		if(city != null){
 			return city.getName();
 		} else {
@@ -395,9 +434,18 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getCountryNameFromDB(){
-		DBWrapper country = DataBase.getDBObjectById(this.getCountryId());
+		DBWrapper country = DataBase.getDBObjectByIdAndType(this.getCountryId(),TYPE_COUNTRY);
 		if(country != null){
 			return country.getName();
+		} else {
+			return null;
+		}
+	}
+	
+	public String getContientNameFromDB(){
+		DBWrapper continent = DataBase.getDBObjectByIdAndType(this.getCountryId(),TYPE_CONTINENT);
+		if(continent != null){
+			return continent.getName();
 		} else {
 			return null;
 		}
