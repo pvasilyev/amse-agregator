@@ -100,22 +100,16 @@ public class DBWrapper extends StorageObject{
 		if(key.equals(FIELD_CITY_NAME)){
 			setCityByName(value);
 		} else if(key.equals(FIELD_COUNTRY_NAME)){
-			name = value;
 			setCountryByName(value);
 		} else if(key.equals(FIELD_CONTINENT_NAME)){
-			if ( value == null){
-				if ( Database.getDBObjectByIdAndType(Database.getCountryIdByName(name), "Country") != null){
-					setContinentByName(Database.getDBObjectByIdAndType(Database.getCountryIdByName(name), "Country").getCountryNameFromDB());
-				}
-				else {
-					return;
-				}
+			if (value == null){
+				setContinentByName(Database.getDBObjectByIdAndType(Database.getCountryIdByName(getName()), DBWrapper.TYPE_COUNTRY).getContientNameFromDB());
 			}
-			else
+			else {
 				setContinentByName(value);
+			}
 		} else if(key.equals(FIELD_DESC)){
-			name = value;
-			setCountryByName(value);
+			setDescription(value);
 		} else {
 			myDBObj.put(key,value);
 		}
