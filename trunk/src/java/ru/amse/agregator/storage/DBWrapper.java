@@ -103,7 +103,10 @@ public class DBWrapper extends StorageObject{
 			setCountryByName(value);
 		} else if(key.equals(FIELD_CONTINENT_NAME)){
 			if (value == null){
-				setContinentByName(Database.getDBObjectByIdAndType(Database.getCountryIdByName(getName()), DBWrapper.TYPE_COUNTRY).getContientNameFromDB());
+				DBWrapper otherCountry = Database.getDBObjectByIdAndType(Database.getCountryIdByName(getName()), DBWrapper.TYPE_COUNTRY);
+				if(otherCountry != null){
+					setContinentByName(otherCountry.getContientNameFromDB());
+				}
 			}
 			else {
 				setContinentByName(value);
