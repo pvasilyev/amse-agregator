@@ -226,7 +226,7 @@ public class DataBase {
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){
-		if(cityName.equals(myLastCityName)){
+		if(cityName != null && cityName.equals(myLastCityName)){
 			return myLastCityId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
@@ -242,7 +242,7 @@ public class DataBase {
 	}
 	
 	public static ObjectId getCountryIdByName(String countryName){
-		if(countryName.equals(myLastCountryName)){
+		if(countryName != null && countryName.equals(myLastCountryName)){
 			return myLastCountryId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
@@ -258,7 +258,7 @@ public class DataBase {
 	}
 	
 	public static ObjectId getContinentIdByName(String continentName){
-		if(continentName.equals(myLastContinentName)){
+		if(continentName != null && continentName.equals(myLastContinentName)){
 			return myLastContinentId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
