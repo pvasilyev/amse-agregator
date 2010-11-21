@@ -326,7 +326,7 @@ public class UI extends JFrame implements TableModelListener{
 				 System.out.println(column);
 				 System.out.println(collectionsTable.getColumnName(column));
 				
-				 DataBase.setAttribut(collectionsTable.getColumnName(column), temp, collectionsTable.getValueAt(row, temp_id));
+				// DataBase.setAttribut(collectionsTable.getColumnName(column), temp, collectionsTable.getValueAt(row, temp_id));
 			} 
 		 	
 	}

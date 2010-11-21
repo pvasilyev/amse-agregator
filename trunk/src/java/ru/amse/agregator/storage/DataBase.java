@@ -23,13 +23,32 @@ public class DataBase {
 	private static String myCurrentAddress;
 	private static int myCurrentPort;
 	
+	private static ArrayList<String> myCollections;
+	
+	private static String myLastContinentName = null;
+	private static String myLastCityName = null;
+	private static String myLastCountryName = null;
+	private static ObjectId myLastContinentId = null;
+	private static ObjectId myLastCityId = null;
+	private static ObjectId myLastCountryId = null;
+	
 	public static final String 	DB_SERVER_ADDRESS = "localhost";
 	public static final int 	DB_SERVER_PORT = 27017;
 	public static final String 	MAIN_DB_NAME = "mainDB";
 	public static final String 	DIRTY_DB_NAME = "dirtyDB";
 	
 	public static final String 	COLLECTION_MAIN = "main";
+	public static final String 	COLLECTION_HOTELS = "hotels";
+	public static final String 	COLLECTION_CONTINENTS = "continents";
+	public static final String 	COLLECTION_COUNTRIES = "countries";
+	public static final String 	COLLECTION_CITIES = "cities";
+	public static final String 	COLLECTION_CAFE = "cafe";
+	public static final String 	COLLECTION_USERS = "users";
+	public static final String 	COLLECTION_COMMENTS = "comments";
+	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
+	
 
+	
 	//Connect to dirty database
 	public static void connectToDirtyBase(){
 		connect(DB_SERVER_ADDRESS, DB_SERVER_PORT,DIRTY_DB_NAME);
@@ -57,6 +76,14 @@ public class DataBase {
 		if(myMongo != null){
 			myDB = myMongo.getDB(dbName);
 		}
+		
+		myCollections = new ArrayList<String>();
+		myCollections.add(COLLECTION_ATTRACTIONS);
+		myCollections.add(COLLECTION_CITIES);
+		myCollections.add(COLLECTION_COUNTRIES);
+		myCollections.add(COLLECTION_CONTINENTS);
+		myCollections.add(COLLECTION_CAFE);
+		myCollections.add(COLLECTION_HOTELS);
 	}
 	
 	public static void switchBaseTo(String dbName){
@@ -85,9 +112,17 @@ public class DataBase {
 	}
 		
 	public static ArrayList<DBWrapper> getAllCities(){
+		return getAllCollection(COLLECTION_CITIES);
+	}
+	
+	public static ArrayList<DBWrapper> getAllAttractions(){
+		return getAllCollection(COLLECTION_ATTRACTIONS);
+	}
+	
+	public static ArrayList<DBWrapper> getAllCollection(String collectionName){
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CITY));
+			DBCursor cur = myDB.getCollection(collectionName).find();
 			while(cur.hasNext()){
 				allCollection.add(new DBWrapper(cur.next()));
 			}
@@ -96,20 +131,22 @@ public class DataBase {
 	}
 	
 	public static ArrayList<DBWrapper> getAllDBObjects(){
-		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
+		ArrayList<DBWrapper> allObjects = new ArrayList<DBWrapper>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find();
-			while(cur.hasNext()){
-				allCollection.add(new DBWrapper(cur.next()));
+			for(String collectionName : myCollections){
+				DBCursor cur = myDB.getCollection(collectionName).find();
+				while(cur.hasNext()){
+					allObjects.add(new DBWrapper(cur.next()));
+				}	
 			}
 		}
-		return allCollection;
+		return allObjects;
 	}
 	
 	public static ArrayList<DBWrapper> getAllWithType(String type){
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
+			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
 			while(cur.hasNext()){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
@@ -119,14 +156,16 @@ public class DataBase {
 		return allCollection;
 	}
 	
-	public static ArrayList<DBWrapper> getAllWithKeyValue(String key, String value){
+	public static ArrayList<DBWrapper> getAllDBObjectsWithKeyValue(String key, String value){
 		ArrayList<DBWrapper> collection = new ArrayList<DBWrapper>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(key,value));
-			while(cur.hasNext()){
-				DBWrapper dbWrapper = new DBWrapper(cur.next());
-				dbWrapper.initFromDB();
-				collection.add(dbWrapper);
+			for(String collectionName : myCollections){
+				DBCursor cur = myDB.getCollection(collectionName).find(new BasicDBObject(key,value));
+				while(cur.hasNext()){
+					DBWrapper dbWrapper = new DBWrapper(cur.next());
+					dbWrapper.initFromDB();
+					collection.add(dbWrapper);
+				}
 			}
 		}
 		return collection;
@@ -134,15 +173,49 @@ public class DataBase {
 		
 	public static ObjectId add(DBWrapper storageObject){
 		if(storageObject != null){
-			storageObject.setId(addToCollection(COLLECTION_MAIN, storageObject.toDBObject()));
+			String collectionName = typeCollection(storageObject.getType());
+			storageObject.setId(addToCollection(collectionName, storageObject.toDBObject()));
 			return storageObject.getId();
 		} else {
 			return null;
 		}
 	}
 	
-	public static DBWrapper getDBObjectById(ObjectId id) {
-		DBObject retObj = findInCollectionById(COLLECTION_MAIN, id);
+	private static String typeCollection(String type){
+		String collectionName;
+		if(type.equals(DBWrapper.TYPE_CONTINENT)){
+			collectionName = COLLECTION_CONTINENTS;
+		} else if(type.equals(DBWrapper.TYPE_COUNTRY)) {
+			collectionName = COLLECTION_COUNTRIES;
+		} else if(type.equals(DBWrapper.TYPE_CITY)) {
+			collectionName = COLLECTION_CITIES;
+		} else if(type.equals(DBWrapper.TYPE_HOTEL)) {
+			collectionName = COLLECTION_HOTELS;
+		} else if(type.equals(DBWrapper.TYPE_CAFE)) {
+			collectionName = COLLECTION_CAFE;
+		} else if(type.equals(DBWrapper.TYPE_USER)) {
+			collectionName = COLLECTION_USERS;
+		} else if(type.equals(DBWrapper.TYPE_COMMENT)) {
+			collectionName = COLLECTION_COMMENTS;
+		} else {
+			collectionName = COLLECTION_ATTRACTIONS;
+		}
+		return collectionName;
+	}
+	
+	public static DBWrapper getDBObjectByIdAndType(ObjectId id, String type) {
+		DBObject retObj = findInCollectionById(typeCollection(type), id);
+		if(retObj != null){
+			DBWrapper dbWrapper = new DBWrapper(retObj);
+			dbWrapper.initFromDB();
+			return dbWrapper;
+		} else {
+			return null;
+		}
+	}
+	
+	public static DBWrapper getAttractionById(ObjectId id) {
+		DBObject retObj = findInCollectionById(COLLECTION_ATTRACTIONS, id);
 		if(retObj != null){
 			DBWrapper dbWrapper = new DBWrapper(retObj);
 			dbWrapper.initFromDB();
@@ -153,24 +226,48 @@ public class DataBase {
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){
+		if(cityName.equals(myLastCityName)){
+			return myLastCityId;
+		}
 		BasicDBObject criteria = new BasicDBObject();
-		criteria.put(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CITY);
 		criteria.put(DBWrapper.FIELD_NAME,cityName);
-		DBObject obj = findInCollection(COLLECTION_MAIN,criteria);
+		DBObject obj = findInCollection(COLLECTION_CITIES,criteria);
 		if(obj != null){
-			return (ObjectId) obj.get(DBWrapper.FIELD_ID);
+			myLastCityName = cityName;
+			myLastCityId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
+			return myLastCityId;
 		} else {
 			return null;
 		}
 	}
 	
 	public static ObjectId getCountryIdByName(String countryName){
+		if(countryName.equals(myLastCountryName)){
+			return myLastCountryId;
+		}
 		BasicDBObject criteria = new BasicDBObject();
-		criteria.put(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_COUNTRY);
 		criteria.put(DBWrapper.FIELD_NAME,countryName);
-		DBObject obj = findInCollection(COLLECTION_MAIN,criteria);
+		DBObject obj = findInCollection(COLLECTION_COUNTRIES,criteria);
 		if(obj != null){
-			return (ObjectId) obj.get(DBWrapper.FIELD_ID);
+			myLastCountryName = countryName;
+			myLastCountryId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
+			return myLastCountryId;
+		} else {
+			return null;
+		}
+	}
+	
+	public static ObjectId getContinentIdByName(String continentName){
+		if(continentName.equals(myLastContinentName)){
+			return myLastContinentId;
+		}
+		BasicDBObject criteria = new BasicDBObject();
+		criteria.put(DBWrapper.FIELD_NAME,continentName);
+		DBObject obj = findInCollection(COLLECTION_CONTINENTS,criteria);
+		if(obj != null){
+			myLastContinentName = continentName;
+			myLastContinentId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
+			return myLastContinentId;
 		} else {
 			return null;
 		}
@@ -179,7 +276,7 @@ public class DataBase {
 	public static ArrayList<ObjectId> getAllIdByType(String type){
 		ArrayList<ObjectId> allCollection = new ArrayList<ObjectId>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type),new BasicDBObject(DBWrapper.FIELD_ID,1));
+			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type),new BasicDBObject(DBWrapper.FIELD_ID,1));
 			while(cur.hasNext()){
 				allCollection.add( (ObjectId) cur.next().get(DBWrapper.FIELD_ID));
 			}
@@ -208,6 +305,7 @@ public class DataBase {
 	}
 	
 	
+	
 	//Find one object in collection 'collectionName' where field id == 'id'
 	private static DBObject findInCollectionById(String collectionName, ObjectId id){
 		return findInCollection(collectionName,DBWrapper.FIELD_ID, id);
@@ -227,9 +325,73 @@ public class DataBase {
 		}	
 	}
 	
+	//Find all objects in collection 'collectionName' where are present fields with values as in the 'criteria' 
+	private static ArrayList<DBWrapper> findAllInCollection(String collectionName, DBObject criteria){
+		ArrayList<DBWrapper> objects = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(collectionName).find(criteria);
+			while(cur.hasNext()){
+				objects.add(new DBWrapper(cur.next()));
+			}
+		}
+		return objects;		
+	}
+	
 	public static DB getDB(){
 		return myDB;
 	}
+	
+	//------------------------
+	//Methods for Gui
+	
+	public static ArrayList<DBWrapper> getAllContinents(){
+		return findAllInCollection(COLLECTION_CONTINENTS,new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CONTINENT));		
+	}
+	
+	public static ArrayList<DBWrapper> getAllCountriesByContinent(ObjectId continentId){
+		BasicDBObject criteria = new BasicDBObject();
+		//criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_COUNTRY);
+		criteria.put(DBWrapper.FIELD_CONTINENT_ID,continentId);
+		
+		return findAllInCollection(COLLECTION_COUNTRIES,criteria);		
+	}
+	
+	public static ArrayList<DBWrapper> getAllCitiesByCountry(ObjectId countryId){
+		BasicDBObject criteria = new BasicDBObject();
+		//criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_CITY);
+		criteria.put(DBWrapper.FIELD_COUNTRY_ID,countryId);
+		return findAllInCollection(COLLECTION_CITIES,criteria);	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<String> getAllTypesOfObjectByCity(ObjectId cityId){
+		if(myDB != null){
+			ArrayList<String> types = (ArrayList<String>) myDB.getCollection(COLLECTION_ATTRACTIONS).distinct(DBWrapper.FIELD_TYPE,new BasicDBObject(DBWrapper.FIELD_CITY_ID, cityId));
+			return types;
+		} else{
+			return null;
+		}
+	}
+	
+	public static ArrayList<DBWrapper> getAllObjectOfSelectedTypeInCity(ObjectId cityId, String type){
+		ArrayList<DBWrapper> objects = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			BasicDBObject criteria = new BasicDBObject();
+			criteria.put(DBWrapper.FIELD_CITY_ID,cityId);
+			criteria.put(DBWrapper.FIELD_TYPE,type);
+			DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(criteria);
+			while(cur.hasNext()){
+				objects.add(new DBWrapper(cur.next()));
+			}
+		}
+		return objects;	
+	}
+
+
+	
+	//------------------------
+
+	
 	public static Vector<Vector<Object>> getCollectionValues(String collectionName,Vector<String> attributs){
 		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
 		DBCollection coll = myDB.getCollection(collectionName);
@@ -314,7 +476,7 @@ public class DataBase {
 		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
 		Vector<DBWrapper> allCollection = new Vector<DBWrapper>();
 		if(myDB != null){
-			DBCursor cur = myDB.getCollection(COLLECTION_MAIN).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
+			DBCursor cur = myDB.getCollection(typeCollection(nameType)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,nameType));
 			while(cur.hasNext()){
 				allCollection.add(new DBWrapper(cur.next()));
 			}
@@ -352,9 +514,11 @@ public class DataBase {
 		}
 		return count;
 	}
+	/*
 	public static void setAttribut(String nameAttribut, String valueAttribut, Object id){
 		DBWrapper a = getDBObjectById((ObjectId)id);
 		a.setAttribut(nameAttribut,valueAttribut);
 		myDB.getCollection(COLLECTION_MAIN).save(a.toDBObject());
 	}
+	*/
 }
