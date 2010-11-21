@@ -50,13 +50,13 @@ abstract public class Graph extends Object implements Serializable {
         //compare all pairs of objects and put in the graph those under the threshold
         int i = 0;
         for (ObjectId id1 : objects) {
-            DBWrapper object1 = DataBase.getDBObjectById(id1);
+            DBWrapper object1 = DataBase.getAttractionById(id1);
             int j = 0;
             for (ObjectId id2 : objects) {
                 if (j >= i) {
                     break;
                 }
-                DBWrapper object2 = DataBase.getDBObjectById(id2);
+                DBWrapper object2 = DataBase.getAttractionById(id2);
                 double distance = metric.compute(object1, object2);
                 if (distance < threshold) {
                     addEdge(new Edge(id1, id2, distance));
