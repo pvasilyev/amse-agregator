@@ -1,6 +1,5 @@
 package ru.amse.agregator.searcher;
 
-import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -23,14 +22,6 @@ import java.util.ArrayList;
 
 public class Searcher {
     private static File INDEX_DIR;
-    private static Directory fsDirectory;
-    private static IndexSearcher is;
-    private static QueryParser qParser;
-    private static Query query;
-    private static StandardAnalyzer analyzer;
-
-    static Logger log = Logger.getLogger(Searcher.class);
-
 
     public static void setIndexDir(File iDir) {
         try {
@@ -40,7 +31,7 @@ public class Searcher {
             }
             INDEX_DIR = iDir;
         } catch (Exception e) {
-            System.out.println("Exception! Message " + e.getMessage());
+            System.out.println("Exception! Message " + e.getMessage());            
         }
     }
 
@@ -60,25 +51,29 @@ public class Searcher {
 
     private static ArrayList<DBWrapper> search(File indexDir, String q) throws IOException, ParseException {
         String fieldForSearch = "name";
-        fsDirectory = new NIOFSDirectory(indexDir);
-        is = new IndexSearcher(fsDirectory);
-        qParser = new QueryParser(Version.LUCENE_30,
+        Directory fsDirectory = new NIOFSDirectory(indexDir);
+        IndexSearcher is = new IndexSearcher(fsDirectory);
+        QueryParser qParser = new QueryParser(Version.LUCENE_30,
                                   fieldForSearch,
                                   new StandardAnalyzer(Version.LUCENE_30));
-        query = qParser.parse(q);
+        Query query = qParser.parse(q);
 
         TopFieldCollector tfc = TopFieldCollector.create(Sort.RELEVANCE, 20, true, true, true, false);
         is.search(query, tfc);
         TopDocs docs = tfc.topDocs();
 
+        System.out.println(docs.getMaxScore());
         ScoreDoc[] sDocs = docs.scoreDocs;
         ArrayList<DBWrapper> list = new ArrayList<DBWrapper>();
         for (ScoreDoc currentScoreDoc : sDocs) {
             DBWrapper wrapper = new DBWrapper();
             wrapper.setType(DBWrapper.TYPE_CITY);
-            wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
-            wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
-//            wrapper.setAddress(is.doc(currentScoreDoc.doc).getField("address").stringValue());
+            if (is.doc(currentScoreDoc.doc).getField("name") != null) {
+                wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
+            }
+            if (is.doc(currentScoreDoc.doc).getField("description") != null) {
+                wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
+            }
             list.add(wrapper);
         }
         return list;
