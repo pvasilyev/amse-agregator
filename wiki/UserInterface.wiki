@@ -3,51 +3,22 @@
 *Будут использованы следующие технологии:*
  * html
  * xslt-преобразование
- * framework [http://sourceforge.net/projects/xfresh/develop XFrеsh]
+ * framework [https://github.com/smarthoas/xfresh XFrеsh]
 
-*Установка TomCat*
-
- # Скачиваем с [http://tomcat.apache.org/download-70.cgi офицального сайта] *apache tomcat* - [http://www.sai.msu.su/apache//tomcat/tomcat-7/v7.0.4-beta/bin/apache-tomcat-7.0.4.tar.gz под линукс, версия 7].
+Мы больше не используем Tomcat.
+GUI собирается на данный момент отдельным build-файлом build-gui.xml (Скоро объединим)
+Прежде чем выполнить этот билд, выполните основной.
 {{{
-wget -O tomcat7.tgz http://www.sai.msu.su/apache//tomcat/tomcat-7/v7.0.4-beta/bin/apache-tomcat-7.0.4.tar.gz
+ ant
+ ant -file build-gui.xml
 }}}
- # Распаковываем содержимое архива.
+После этого в папке build есть скрипт start.sh который запускает сервер на порту указанном в файле beans.xml
 {{{
-tar xzf tomcat7.tgz
+ ./start.sh
 }}}
- # Переходим в распакованную папку.
+Открываем в браузере главную страницу проекта: 
 {{{
-cd apache-tomcat-7.0.4
-}}}
- # Запускаем сервер tomcat
-{{{
-./bin/startup.sh
-}}}
- По умолчанию сервер будет на порту 8080, т.е. теперь вы на него можете попасть так - [http://localhost:8080/]
-
- * Для остановки сервера выполните
-{{{
-./bin/shutdown.sh
-}}}
- * Для рестарта соответсвенно *(перезапуск сервера необходим после каждого добавления/изменения файлов, иначе не увидите их.)*
-{{{
-./bin/shutdown.sh && ./bin/startup.sh
+ localhost:8080/attractions.xml 
 }}}
 
-*Настройка gui*
- * необходимые библиотеки: xfresh.jar
- * открываем файл build.properties в корне svn и добавляем туда путь к папке, куда только что установили tomcat
-{{{
-//например
-tomcat.dir=/home/DevTools/apache-tomcat-7.0.4
-}}}
- * gui-часть собирается с помощью [http://code.google.com/p/amse-agregator/wiki/Build ant]
-{{{
-ant gui
-}}}
- * после этого в {tomcat.dir}/webapps создается папка agregator-gui, в которую скопируются все скомпилированные .class файлы и необходимые библиотеки из libs
- * наконец, открываем в браузере следующую страницу: 
-{{{
-localhost:8080/agregator-gui/attractions.xml 
-}}}
-(на данный момент это главная страница сайта проекта)
+That's all.
