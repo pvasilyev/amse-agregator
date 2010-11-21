@@ -96,6 +96,10 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			
 			DBWrapper newEntry = new DBWrapper();
 			for(int i=0; i<myList.size(); i+=2){
+				if(myList.get(i+1) == null){
+					continue;
+				}
+				
 				if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
 					
 					newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString()).trim()));
