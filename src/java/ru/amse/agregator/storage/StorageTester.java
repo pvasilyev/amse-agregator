@@ -21,19 +21,32 @@ public class StorageTester {
 
         ArrayList<DBWrapper> continents = Database.getAllContinents();
         for(DBWrapper continent : continents){
-        	System.out.println(continent.getName() + " айдишник: " + continent.getId());
+        	System.out.println(continent.getName() + " айдишник континента: " + continent.getId());
         	//вывели список континентов с сылочками в которых хранится айдишник.
         }
         
         //выводим список стран первого континента
-        DBWrapper continentPerviy = continents.get(0);
+        DBWrapper continentPerviy = continents.get(2);
        System.out.println(continentPerviy.getId());
         ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continentPerviy.getId());
         for(DBWrapper country : countries){
-        	System.out.println(country.getName() + " айдишник: " + country.getId());
+        	System.out.println("континент страны: "+ country.getStaticContinentName()+ " "+ country.getName() + " айдишник страны: " + country.getId());
         	//вывели список стран первого континента с сылочками в которых хранится айдишник.
+        	
+            //выводим список городов первой страны первого континента 
+            ArrayList<DBWrapper> cities = DataBase.getAllCitiesByCountry(country.getId());
+            System.out.println(cities);
         }
         
+        for(DBWrapper city : DataBase.getAllCities()){
+        	if(countries.get(1).getId().equals(city.getCountryId())){
+        		System.out.println(city);
+        	}
+        	//System.out.println(city.getCountryId());
+        }
+        
+        
+
 //    	DBWrapper wr = new DBWrapper();
 //    	wr.setType(DBWrapper.TYPE_CONTINENT);
 //    	wr.setName("Австралия и Океания");
