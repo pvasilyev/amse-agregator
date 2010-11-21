@@ -101,7 +101,7 @@
 	
 	<!-- Выкачиваем страницы со списком достопримечательностей -->
 	<var-def name='dostContentList'>	
-		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i" maxloops="0"> <!--  maxloops="0" -->
+		<while condition='${!nextLinkUrl.toString().isEmpty()}' index="i" > <!--  maxloops="0" -->
 	        <empty>
 	            <var-def name="content">
 	                <html-to-xml>
@@ -122,7 +122,7 @@
     
     <!-- Составляем список ссылок на города -->
     <var-def name='cityUrlList'>	
-	   	<loop item="currentContent" index="j" filter="unique" maxloops ="0">
+	   	<loop item="currentContent" index="j" filter="unique">
 			<list>
 				<var name="dostContentList"/>
 			</list>
@@ -435,7 +435,7 @@
 	</var-def>
 	
 	<!-- Ищем отели по странам -->
-	<loop item="alink" index="i" filter="unique" empty = "yes" maxloops="0"> <!-- maxloops="0"> -->
+	<loop item="alink" index="i" filter="unique" empty = "yes"> <!-- maxloops="0"> -->
 		<list>
 			<xpath expression="//table[not(@class)]/tbody/tr/td[@class = 'tx']/a">
 			    <html-to-xml>
