@@ -20,9 +20,9 @@ final public class MergeProcess {
             Database.connectToDirtyBase();
             Cluster cluster = storage.getNextCluster();
 
-            //logging error
-            if (cluster.getObjectList().isEmpty()) {
-                System.err.println("Encountered empty cluster while merging");
+            //logging an error
+            if (cluster.size() == 0) {
+                System.out.println("Encountered empty cluster while merging");
                 continue;
             }
 

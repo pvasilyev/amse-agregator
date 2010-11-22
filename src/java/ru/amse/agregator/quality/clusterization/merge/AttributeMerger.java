@@ -7,7 +7,9 @@ import ru.amse.agregator.storage.DBWrapper;
  *
  * @author pavel
  *
- * Abstract class that merges a
+ * Abstract class that merges a single attribute of the cluster
+ * and adds it to the resulting object
+ * 
  */
 abstract public class AttributeMerger {
 

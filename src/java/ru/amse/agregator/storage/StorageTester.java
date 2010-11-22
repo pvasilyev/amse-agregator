@@ -34,11 +34,11 @@ public class StorageTester {
         	//вывели список стран первого континента с сылочками в которых хранится айдишник.
         	
             //выводим список городов первой страны первого континента 
-            ArrayList<DBWrapper> cities = DataBase.getAllCitiesByCountry(country.getId());
+            ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
             System.out.println(cities);
         }
         
-        for(DBWrapper city : DataBase.getAllCities()){
+        for(DBWrapper city : Database.getAllCities()){
         	if(countries.get(1).getId().equals(city.getCountryId())){
         		System.out.println(city);
         	}

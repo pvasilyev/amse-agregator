@@ -1,6 +1,8 @@
 package ru.amse.agregator.quality.clusterization.clusterstorage;
 
 import java.util.ArrayList;
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.Database;
 
 import ru.amse.agregator.storage.UniqueId;
 
@@ -33,6 +35,18 @@ final public class Cluster {
 
     public ArrayList<UniqueId> getObjectList() {
         return objects;
+    }
+
+    public int size() {
+        return objects.size();
+    }
+
+    // prints and object to system output for testing and logging
+    public void print() {
+        for (UniqueId id : objects) {
+            DBWrapper obj = Database.getByUniqueId(id);
+            System.out.println(obj);
+        }
     }
 
     static public Cluster mergeClusters(Cluster cluster1, Cluster cluster2) {

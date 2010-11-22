@@ -23,4 +23,28 @@ abstract public class ClusterStorage {
     abstract public boolean hasNext();
 
     abstract public int getClusterCount();
+
+    public void printAllClusters() {
+
+        startIterating();
+        while (hasNext()) {
+            Cluster cluster = getNextCluster();
+            cluster.print();
+        }
+        finishIterating();
+    }
+
+    public void printNonSingleObjectClusters() {
+
+        startIterating();
+        while (hasNext()) {
+            Cluster cluster = getNextCluster();
+            if (cluster.size() > 1) {
+                cluster.print();
+                System.out.println();
+            }
+        }
+        finishIterating();
+
+    }
 }
