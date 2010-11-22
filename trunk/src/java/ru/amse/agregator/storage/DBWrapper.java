@@ -15,7 +15,7 @@ import com.mongodb.DBObject;
 public class DBWrapper extends StorageObject{	
 	public static final String FIELD_TYPE = "type";
 	public static final String FIELD_NAME = "name";
-	public static final String FIELD_DESC = "decription";
+	public static final String FIELD_DESC = "description";
 	public static final String FIELD_COORDS = "coordinates";
 	public static final String FIELD_IMAGES = "images";
 	public static final String FIELD_KEYWORDS = "keywords";
