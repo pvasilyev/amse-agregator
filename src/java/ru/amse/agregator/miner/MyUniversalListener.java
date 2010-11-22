@@ -100,9 +100,9 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 				if(myList.get(i) != null ){
 					
 				
-				    if(myList.get(i).toString().equals(DBWrapper.FIELD_PHOTOS)){
+				    if(myList.get(i).toString().equals(DBWrapper.FIELD_IMAGES)){
 					
-					    newEntry.setPhotosArray(createImagesArray(clearString(myList.get(i+1).toString())));
+					    newEntry.setImagesArray(createImagesArray(clearString(myList.get(i+1).toString())));
 					
 				    } else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
 					
