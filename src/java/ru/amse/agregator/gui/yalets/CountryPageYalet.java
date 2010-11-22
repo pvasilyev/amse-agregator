@@ -24,8 +24,8 @@ public class CountryPageYalet implements Yalet {
 		
 		DescriptionModel response = new DescriptionModel();
 		response.setName(country.getName());
-		response.setDescription(country.getDescription());
-		response.setImages(country.getPhotosArray());
+		response.setDescription(country.getDescriptionArray().get(0));
+		response.setImages(country.getImagesArray());
 		
 		ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
 		ArrayList<MenuItem> citiesInfo = new ArrayList<MenuItem>();

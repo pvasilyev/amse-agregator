@@ -25,7 +25,7 @@ public class SearchMain {
         }
         for (DBWrapper currentObject: output) {
             System.out.println(currentObject.getName());
-            System.out.println(currentObject.getDescription());
+            System.out.println(currentObject.getDescriptionArray().get(0));
         }
 
         System.out.println("Searching by " + timeForSearch + " millis") ;

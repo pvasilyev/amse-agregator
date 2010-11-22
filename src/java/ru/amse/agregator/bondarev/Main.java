@@ -42,13 +42,13 @@ public class Main {
 
     @SuppressWarnings("unused")
 	private static void writeDateToDB() {
-        Database.removeCollection(Database.COLLECTION_MAIN);
+        Database.removeCollection(Database.COLLECTION_ATTRACTIONS);
               
         DBWrapper someCity = new DBWrapper();
 
         someCity.setType(DBWrapper.TYPE_CITY);
         someCity.setName("Рим");
-        someCity.setPhoto("images/rim.jpg");
+        someCity.setImage("images/rim.jpg");
         someCity.setCoordinates(new Point2D.Double(1220.32432,10.234324));
         someCity.setDescription("Описание Рима");
 
@@ -70,7 +70,7 @@ public class Main {
         photosArray.add("images/kolizey_im2.jpg");
         photosArray.add("images/kolizey_im3.jpg");
         photosArray.add("images/kolizey_im4.jpg");
-        someArchAttr.setPhotosArray(photosArray);
+        someArchAttr.setImagesArray(photosArray);
         
         someArchAttr.setCityById(someCity.getId());
         someArchAttr.setCoordinates(new Point2D.Double(10.324234,1022.24234));

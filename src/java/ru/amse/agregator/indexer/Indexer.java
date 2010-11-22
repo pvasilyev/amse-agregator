@@ -171,7 +171,7 @@ public class Indexer {
             if (objectDescription.equals("") || objectDescription.isEmpty()) {
                 return;
             }
-            addField("description", object.getDescription());
+            addField("description", object.getDescriptionArray().get(0));
         }
 
         public void addObjectCoordinates() {

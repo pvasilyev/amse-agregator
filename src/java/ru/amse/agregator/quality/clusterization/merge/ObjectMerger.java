@@ -30,7 +30,7 @@ public class ObjectMerger extends ClusterMerger {
         attMergers = new TreeMap<String, AttributeMerger>();
 
         attMergers.put(DBWrapper.FIELD_KEYWORDS, mergeStringLists);
-        attMergers.put(DBWrapper.FIELD_PHOTOS, mergeStringLists);
+        attMergers.put(DBWrapper.FIELD_IMAGES, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_DESC, doNothing);
         attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
         attMergers.put(DBWrapper.FIELD_ID, doNothing);
