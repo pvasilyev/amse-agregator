@@ -37,7 +37,6 @@ public class Database {
 	public static final String 	MAIN_DB_NAME = "mainDB";
 	public static final String 	DIRTY_DB_NAME = "dirtyDB";
 	
-	public static final String 	COLLECTION_MAIN = "main";
 	public static final String 	COLLECTION_HOTELS = "hotels";
 	public static final String 	COLLECTION_CONTINENTS = "continents";
 	public static final String 	COLLECTION_COUNTRIES = "countries";
@@ -75,15 +74,15 @@ public class Database {
 		
 		if(myMongo != null){
 			myDB = myMongo.getDB(dbName);
+			
+			myCollections = new ArrayList<String>();
+			myCollections.add(COLLECTION_ATTRACTIONS);
+			myCollections.add(COLLECTION_CITIES);
+			myCollections.add(COLLECTION_COUNTRIES);
+			myCollections.add(COLLECTION_CONTINENTS);
+			myCollections.add(COLLECTION_CAFE);
+			myCollections.add(COLLECTION_HOTELS);
 		}
-		
-		myCollections = new ArrayList<String>();
-		myCollections.add(COLLECTION_ATTRACTIONS);
-		myCollections.add(COLLECTION_CITIES);
-		myCollections.add(COLLECTION_COUNTRIES);
-		myCollections.add(COLLECTION_CONTINENTS);
-		myCollections.add(COLLECTION_CAFE);
-		myCollections.add(COLLECTION_HOTELS);
 	}
 	
 	public static void switchBaseTo(String dbName){
@@ -139,7 +138,9 @@ public class Database {
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(collectionName).find();
 			while(cur.hasNext()){
-				allCollection.add(new DBWrapper(cur.next()));
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				allCollection.add(dbWrapper);
 			}
 		}
 		return allCollection;
@@ -151,7 +152,9 @@ public class Database {
 			for(String collectionName : myCollections){
 				DBCursor cur = myDB.getCollection(collectionName).find();
 				while(cur.hasNext()){
-					allObjects.add(new DBWrapper(cur.next()));
+					DBWrapper dbWrapper = new DBWrapper(cur.next());
+					dbWrapper.initFromDB();
+					allObjects.add(dbWrapper);
 				}	
 			}
 		}
@@ -293,7 +296,7 @@ public class Database {
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type),new BasicDBObject(DBWrapper.FIELD_ID,1));
 			while(cur.hasNext()){
-				allCollection.add( (ObjectId) cur.next().get(DBWrapper.FIELD_ID));
+				allCollection.add((ObjectId)cur.next().get(DBWrapper.FIELD_ID));
 			}
 		}
 		return allCollection;
@@ -318,8 +321,6 @@ public class Database {
 			return null;
 		}		
 	}
-	
-	
 	
 	//Find one object in collection 'collectionName' where field id == 'id'
 	private static DBObject findInCollectionById(String collectionName, ObjectId id){
@@ -346,7 +347,9 @@ public class Database {
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(collectionName).find(criteria);
 			while(cur.hasNext()){
-				objects.add(new DBWrapper(cur.next()));
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				objects.add(dbWrapper);
 			}
 		}
 		return objects;		
@@ -402,10 +405,13 @@ public class Database {
 		return objects;	
 	}
 
+	
+	//-------------------------------------------------------------
 
 	
-	//------------------------
-
+	//---------------------------------
+	//--Methods for Private GUI-start--
+	//---------------------------------
 	
 	public static Vector<Vector<Object>> getCollectionValues(String collectionName,Vector<String> attributs){
 		Vector<Vector<Object>> res = new Vector<Vector<Object>>();
@@ -464,7 +470,7 @@ public class Database {
 		else {
 			tempRes.add(DBWrapper.FIELD_DESC);
 			tempRes.add(DBWrapper.FIELD_COORDS);
-			tempRes.add(DBWrapper.FIELD_PHOTOS);
+			tempRes.add(DBWrapper.FIELD_IMAGES);
 			if (!nameType.equalsIgnoreCase("City")){
 				tempRes.add(DBWrapper.FIELD_COST);
 				tempRes.add(DBWrapper.FIELD_ADDRESS);
@@ -537,9 +543,25 @@ public class Database {
 	}
 	*/
 
+	//---------------------------------
+	//--Methods for Private GUI end----
+	//---------------------------------
+
+	//-------------------------------------------------------------
+	
+	//---------------------------------
+	//--Methods for Clasterization-----
+	//---------------------------------
+	
     public static DBWrapper getByUniqueId(UniqueId uniqueId) {
         switchBaseTo(uniqueId.getDatabaseName());
         return getDBObjectByIdAndType(uniqueId.getId(),
                 uniqueId.getCollectionName());
     }
+    
+	//---------------------------------
+	//--Methods for Clasterization end-
+	//---------------------------------
+    
+    
 }

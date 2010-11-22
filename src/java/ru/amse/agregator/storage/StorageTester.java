@@ -1,11 +1,8 @@
 package ru.amse.agregator.storage;
 import java.util.ArrayList;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 
-import org.bson.types.ObjectId;
+
 
 public class StorageTester {
 
