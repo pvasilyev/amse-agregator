@@ -10,18 +10,27 @@
 
     <xsl:template match="collection" mode="show">
         <xsl:for-each select="attraction">
+
+            <!--<xsl:if test="type != ''">-->
+
+            <!--<xsl:variable name="c">City</xsl:variable>-->
+            <!--<xsl:if test="type = 'City')">-->
+            <!--<text class="attraction_name_big">-->
+            <!--<xsl:value-of select="type"/>-->
+            <!--</text>-->
+            <!--</xsl:if>-->
+            <!--</xsl:if>-->
+
             <table>
                 <tr>
                     <td>
-                        <b class="b-serp-item__number">
-                            <img src="{image}" class="little_image"/>
-                        </b>
+
 
                     </td>
-                    <td width="80%" align="left">
+                    <td align="left">
                         <i class="b-serp-item__favicon"></i>
                         <h2 class="b-serp-item__title">
-                            <a class="b-serp-item__title__link" tabindex="2" href="attractiondescription.xml?id={@uid}">
+                            <a class="b-serp-item__title__link" href="attractiondescription.xml?id={@uid}">
                                 <xsl:value-of select="name"/>
                             </a>
 
@@ -29,19 +38,15 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="b-serp-item__text"  colspan="2">
-                        <xsl:value-of select="name"/>
-                        kdslkdsjfl slfksdj flsdlfk sldfkjsl dfksjlf
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        ksdjhk sdjskfjs dkfjskdfskfh skdfjh sd
-                        skdjhfksdjh skdjf s
+                    <td class="b-serp-item__text" colspan="2">
+                        <xsl:if test="description != '')">
+                            <xsl:value-of select="description"/>
+                        </xsl:if>
                     </td>
                 </tr>
+
             </table>
         </xsl:for-each>
     </xsl:template>
+
 </xsl:stylesheet>

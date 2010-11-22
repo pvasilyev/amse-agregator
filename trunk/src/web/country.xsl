@@ -2,13 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 
+    <xsl:include href="common.xsl"/>
+    <xsl:template name="main">
 
-    <xsl:template match="/">
-         <html>
-        <head>
-            <title><xsl:text>Simple Country</xsl:text></title>
-        </head>
-        <body>
             <table width="80%" >
                 <tr>
                     <td>
@@ -31,7 +27,6 @@
                     </td>
                 </tr>
             </table>
-        </body>
-        </html>
+        
     </xsl:template>
 </xsl:stylesheet>

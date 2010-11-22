@@ -19,7 +19,7 @@
                         <td colspan="2" width="100%" background="images/bg-header.gif" align="center">
                             <i>
                                 <b>
-                                    <font size="5" color="#FFFFFF" face="Verdana">Маленькая Мир
+                                    <font size="5" color="#FFFFFF" face="Verdana">Маленький Мир
                                     </font>
                                 </b>
                             </i>
@@ -39,11 +39,11 @@
                             <table class="b-head-tabs g-js">
                                 <tr>
                                     <td class="b-head-tabs__item b-head-tabs__tab">
-                                        <a class="b-head-tabs__link" href="attractions.xml">Главная
+                                        <a class="b-head-tabs__link" href="attractions.xml">Поиск
                                         </a>
                                     </td>
                                     <td class="b-head-tabs__item b-head-tabs__tab">
-                                        <a class="b-head-tabs__link" href="attractions.xml">Будушая корзина
+                                        <a class="b-head-tabs__link" href="menu.xml">Список всех стран и городов
                                         </a>
                                     </td>
                                 </tr>
@@ -63,42 +63,62 @@
 
                                 </tr>
                                 <tr>
+                                    <!--<xsl:include href="menu.xml"/>-->
+                                    <!--<xsl:include href="listofattractions.xml"/>-->
                                     <xsl:call-template name="menu"/>
                                 </tr>
                             </table>
 
                         </td>
-                        <td width="600px" valign="top" class="find_button">
-                            <table width="600px" valign="top">
-                                <tr>
+                        <td width="700px" valign="top" class="find_button">
+                            <table width="700px" valign="top">
+                                <tr width="700px">
                                     <xsl:call-template name="find"/>
                                 </tr>
                                 <tr align="left" width="70%">
                                     <td>
-                                        <input type="checkbox" value="0" name="cityCheckbox"/>
+                                        <input type="checkbox" name="countryCheckbox"/>
+                                        Страна
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cafeCheckbox"/>
+                                        Кафе
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cityCheckbox"/>
                                         Город
                                     </td>
+
                                     <td>
-                                        <label>
-                                            <input type="checkbox" name="sdfsdfs"/>
-                                            Река
-                                        </label>
+                                        <input type="checkbox" name="museumCheckbox"/>
+                                        Музей
                                     </td>
                                     <td>
-                                        <label>
-                                            <input type="checkbox" name="sdfsdfs"/>
-                                            Достопримечательность
-                                        </label>
+                                        <input type="checkbox" name="entertainmentCheckbox"/>
+                                        Развлечения
                                     </td>
                                     <td>
-                                        <label>
-                                            <input type="checkbox" name="sdfsdfs"/>
-                                            Страна
-                                        </label>
+                                        <input type="checkbox" name="shoppingCheckbox"/>
+                                        Шопинг
                                     </td>
+                                    <td>
+                                        <input type="checkbox" name="hotelCheckbox"/>
+                                        Отель
+                                    </td>
+
                                 </tr>
                                 <tr>
                                     <td colspan="4">
+                                        <input type="checkbox" name="archAttractionCheckbox"/>
+                                        Архитектурная достопримечательность
+                                    </td>
+                                    <td colspan="4">
+                                        <input type="checkbox" name="naturalAttractionCheckbox"/>
+                                        Природная достопримечательность
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7">
                                         <xsl:call-template name="main"/>
                                     </td>
                                 </tr>
@@ -115,7 +135,7 @@
 
     <xsl:template name="find">
         <form action="attractions.xml" method="post">
-            <td class="b-search__input" valign="top" colspan="4">
+            <td class="b-search__input" valign="top" colspan="7">
                 <div class="b-input">
                     <input size="80" tabindex="1" class="b-input__text g-js"
                            name="findTextBox"
@@ -132,45 +152,13 @@
     </xsl:template>
 
     <xsl:template name="menu">
-        <!--<form action="listofattractions.xml" method="post">
-
-        </form>-->
         <b>
             <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
+                <font size="3" face="Verdana" color="#999999">
+                    <xsl:apply-templates select="page/data/collection/continents"/>
+                </font>
             </a>
         </b>
-        <br/>
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
-            </a>
-        </b>
-        <br/>
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
-            </a>
-        </b>
-        <br/>
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
-            </a>
-        </b>
-        <br/>
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
-            </a>
-        </b>
-        <br/>
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">Колизей</font>
-            </a>
-        </b>
-
     </xsl:template>
 
 </xsl:stylesheet>
