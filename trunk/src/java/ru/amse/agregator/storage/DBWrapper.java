@@ -105,7 +105,7 @@ public class DBWrapper extends StorageObject{
 			if (value == null){
 				DBWrapper otherCountry = Database.getDBObjectByIdAndType(Database.getCountryIdByName(getName()), DBWrapper.TYPE_COUNTRY);
 				if(otherCountry != null){
-					setContinentByName(otherCountry.getContientNameFromDB());
+					setContinentByName(otherCountry.getContinentNameFromDB());
 				}
 			}
 			else {
@@ -462,7 +462,7 @@ public class DBWrapper extends StorageObject{
 		}
 	}
 	
-	public String getContientNameFromDB(){
+	public String getContinentNameFromDB(){
 		DBWrapper continent = Database.getDBObjectByIdAndType(this.getCountryId(),TYPE_CONTINENT);
 		if(continent != null){
 			return continent.getName();
@@ -535,13 +535,13 @@ public class DBWrapper extends StorageObject{
     public static ArrayList<String> getTypeNames() {
 
         ArrayList<String> typeNames = new ArrayList<String>();
-        
-        typeNames.add(TYPE_ARCH_ATTRACTION);
-        typeNames.add(TYPE_CAFE);
-        typeNames.add(TYPE_CITY);
-        typeNames.add(TYPE_COMMENT);
+
         typeNames.add(TYPE_CONTINENT);
         typeNames.add(TYPE_COUNTRY);
+        typeNames.add(TYPE_CITY);
+        typeNames.add(TYPE_ARCH_ATTRACTION);
+        typeNames.add(TYPE_CAFE);
+        typeNames.add(TYPE_COMMENT);
         typeNames.add(TYPE_ENTERTAINMENT);
         typeNames.add(TYPE_HOTEL);
         typeNames.add(TYPE_MUSEUM);

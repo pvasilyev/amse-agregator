@@ -30,7 +30,7 @@ final public class ClusterizationProcess {
         for (String type : types) {
 
             Clusterizer clusterizer = new PartitionClusterizer();
-            Metric metric = new NameMetric();
+            Metric metric = new StandardMetric();
             Graph similatityGraph = new ArrayGraph(metric, threshold);
             ClusterStorage storage = new ArrayStorage();
 
@@ -56,6 +56,21 @@ final public class ClusterizationProcess {
             System.out.println("Performing clusterization process");
 
             clusterizer.clusterize(allOfType, similatityGraph, storage);
+
+            storage.startIterating();
+            while (storage.hasNext()) {
+                Cluster cluster = storage.getNextCluster();
+                if (cluster.size() > 1) {
+                    ClusterMerger merger = new ObjectMerger();
+                    System.out.println("Cluster");
+                    cluster.print();
+                    System.out.println("Merged object:");
+
+                    DBWrapper resultingObject = merger.mergeCluster(cluster);
+                    System.out.println(resultingObject);
+                }
+            }
+            storage.finishIterating();
 
             System.out.println(String.valueOf(allOfType.size()));
             

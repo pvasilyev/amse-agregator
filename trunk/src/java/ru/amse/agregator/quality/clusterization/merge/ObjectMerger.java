@@ -18,23 +18,26 @@ import ru.amse.agregator.storage.Database;
  */
 public class ObjectMerger extends ClusterMerger {
 
-    final private Map<String, AttributeMerger> attMergers;
-    final private AttributeMerger defaultMerger;
+    final private AttributeMerger defaultMerger = new StringMerger();
 
+    final private Map<String, AttributeMerger> attMergers;
     public ObjectMerger() {
 
-        defaultMerger = new StringMerger();
+        
+        final AttributeMerger mergeStringLists = new StringListMerger();
+        final AttributeMerger doNothing = new DoNothingMerger();
 
         attMergers = new TreeMap<String, AttributeMerger>();
 
-        attMergers.put(DBWrapper.FIELD_KEYWORDS, new StringListMerger());
-        attMergers.put(DBWrapper.FIELD_PHOTOS, new StringListMerger());
-        attMergers.put(DBWrapper.FIELD_UNIQUE_ID, new DoNothingMerger());
-        attMergers.put(DBWrapper.FIELD_ID, new DoNothingMerger());
-        attMergers.put(DBWrapper.FIELD_CITY_ID, new DoNothingMerger());
-        attMergers.put(DBWrapper.FIELD_COUNTRY_ID, new DoNothingMerger());
-        attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new DoNothingMerger());
-        attMergers.put(DBWrapper.FIELD_COORDS, new DoNothingMerger());
+        attMergers.put(DBWrapper.FIELD_KEYWORDS, mergeStringLists);
+        attMergers.put(DBWrapper.FIELD_PHOTOS, mergeStringLists);
+        attMergers.put(DBWrapper.FIELD_DESC, doNothing);
+        attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
+        attMergers.put(DBWrapper.FIELD_ID, doNothing);
+        attMergers.put(DBWrapper.FIELD_CITY_ID, new CityIdMerger());
+        attMergers.put(DBWrapper.FIELD_COUNTRY_ID, new CountryIdMerger());
+        attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new ContinentiIdMerger());
+        attMergers.put(DBWrapper.FIELD_COORDS, doNothing);
     }
 
 
