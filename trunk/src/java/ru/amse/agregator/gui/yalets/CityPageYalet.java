@@ -15,6 +15,7 @@ import net.sf.xfresh.core.Yalet;
 
 public class CityPageYalet implements Yalet{
 
+	@Override
 	public void process(InternalRequest req, InternalResponse res) {
 	
 		Database.connectToDirtyBase();
@@ -25,8 +26,8 @@ public class CityPageYalet implements Yalet{
 		
 		DescriptionModel response = new DescriptionModel();
 		response.setName(city.getName());
-		response.setDescription(city.getDescription());
-		response.setImages(city.getPhotosArray());
+		response.setDescription(city.getDescriptionArray().get(0));
+		response.setImages(city.getImagesArray());
 		
 		ArrayList<String> list = Database.getAllTypesOfObjectByCity(selectedCity);
 		
