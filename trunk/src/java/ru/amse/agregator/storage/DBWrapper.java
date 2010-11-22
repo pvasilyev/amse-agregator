@@ -17,7 +17,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_DESC = "decription";
 	public static final String FIELD_COORDS = "coordinates";
-	public static final String FIELD_PHOTOS = "photos";
+	public static final String FIELD_IMAGES = "images";
 	public static final String FIELD_KEYWORDS = "keywords";
 	public static final String FIELD_DATE_FOUNDATION = "date_foundation";
 	public static final String FIELD_ARCHITECT = "architect"; 
@@ -34,8 +34,8 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_ROOMS = "rooms";
 	public static final String FIELD_CATEGORY = "category";
 	public static final String FIELD_SOURCE_URL = "source_url";
-    // this field is used in clusterization module to address the object in the whole database
-    public static final String FIELD_UNIQUE_ID = "unique_id";
+	
+	public static final String FIELD_UNIQUE_ID = "unique_id";
 	
 	public static final String TYPE_CONTINENT = "Continent";
 	public static final String TYPE_COUNTRY = "Country";
@@ -53,6 +53,10 @@ public class DBWrapper extends StorageObject{
 	private String myCityName = null;
 	private String myCountryName = null;
 	private String myContinentName = null;
+	
+    // this field is used in clusterization module to address the object in the whole database
+	private UniqueId myUniqueId = null;
+	
 	
 	public DBWrapper(DBObject dbObject){
 		super(dbObject);
@@ -76,6 +80,10 @@ public class DBWrapper extends StorageObject{
 		myContinentName = continentName;
 	}
 	
+    public void setUniqueId(UniqueId value) {
+    	myUniqueId = value;
+    }
+    
 	public String getStaticCityName(){
 		return myCityName;
 	}
@@ -87,16 +95,20 @@ public class DBWrapper extends StorageObject{
 	public String getStaticContinentName(){
 		return myContinentName;
 	}
+    
+	public UniqueId getUniqueId() {
+        return myUniqueId;
+    }
 	
 	public void initFromDB(){
 		setStaticCityName(getCityNameFromDB());
 		setStaticCountryName(getCountryNameFromDB());
+		setStaticContinentName(getContinentNameFromDB());
 	}
 	
 	//----------
 	
 	public void setKeyValue(String key, String value){
-		String name ="";
 		if(key.equals(FIELD_CITY_NAME)){
 			setCityByName(value);
 		} else if(key.equals(FIELD_COUNTRY_NAME)){
@@ -113,10 +125,17 @@ public class DBWrapper extends StorageObject{
 			}
 		} else if(key.equals(FIELD_DESC)){
 			setDescription(value);
+		} else if(key.equals(FIELD_SOURCE_URL)){
+			setSourceUrl(value);
 		} else {
 			myDBObj.put(key,value);
 		}
 	}
+	
+    //sets an attribute represented by a listed of strings
+    public void setListAttribute(final String attributeName, ArrayList<String> values) {
+        myDBObj.put(attributeName, values);
+    }
 	
 	public Object getValue(String key){
 		if(key.equals(FIELD_CITY_NAME)){
@@ -157,6 +176,9 @@ public class DBWrapper extends StorageObject{
 		if(myCountryName != null){
 			set.add(FIELD_COUNTRY_NAME);
 		}
+		if(myContinentName != null){
+			set.add(FIELD_CONTINENT_NAME);
+		}
 		return set;
 	}
 	
@@ -170,6 +192,9 @@ public class DBWrapper extends StorageObject{
 		}
 		if(myCountryName != null){
 			map.put(FIELD_COUNTRY_NAME, myCountryName);
+		}
+		if(myContinentName != null){
+			map.put(FIELD_CONTINENT_NAME, myContinentName);
 		}
 		return map;
 	}
@@ -185,11 +210,15 @@ public class DBWrapper extends StorageObject{
 		if(myCountryName != null){
 			map.put(FIELD_COUNTRY_NAME, myCountryName);
 		}
+		if(myContinentName != null){
+			map.put(FIELD_CONTINENT_NAME, myContinentName);
+		}
 		return map;
 	}
 
 	//----------
-
+	
+	@Deprecated
 	public void setAttribut(String nameAttribut, String valueAttribut){
 		if (nameAttribut.equalsIgnoreCase(FIELD_TYPE)){
 			setType(valueAttribut);
@@ -231,9 +260,9 @@ public class DBWrapper extends StorageObject{
 			}
 			setCoordsArray(coords);
 		}	
-		if (nameAttribut.equalsIgnoreCase(FIELD_PHOTOS)){
-			setPhoto(valueAttribut);
-		}	
+		if (nameAttribut.equalsIgnoreCase(FIELD_IMAGES)){
+			setImage(valueAttribut);
+		}
 		if (nameAttribut.equalsIgnoreCase(FIELD_KEYWORDS)){
 			ArrayList<String> keyWordsArray = new ArrayList<String>();
 			int i = 0;
@@ -279,6 +308,10 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	
+	//--------------------------
+	//-----Set-methods-start----
+	//--------------------------
+	
 	public void setType (String type){
 		myDBObj.put(FIELD_TYPE,type);
 	}
@@ -317,6 +350,16 @@ public class DBWrapper extends StorageObject{
 		myDBObj.put(FIELD_DESC,descArray);
 	}
 	
+	public void setSourceUrl(String source){
+		ArrayList<String> sourcesArray = new ArrayList<String>();
+		sourcesArray.add(source);
+		setSourceUrlArray(sourcesArray);
+	}
+	
+	public void setSourceUrlArray(ArrayList<String> sourcesArray){
+		myDBObj.put(FIELD_SOURCE_URL,sourcesArray);
+	}
+	
 	public void setCoordsArray(ArrayList<Point2D.Double> coordsArray){
 		ArrayList<DBObject> coords = new ArrayList<DBObject>();
 		for(Point2D.Double p : coordsArray){
@@ -331,20 +374,39 @@ public class DBWrapper extends StorageObject{
 		setCoordsArray(coordsArray);
 	}
 	
-	public void setPhotosArray(ArrayList<String> photosArray){
-		myDBObj.put(FIELD_PHOTOS,photosArray);
+	public void setImagesArray(ArrayList<String> imagesArray){
+		myDBObj.put(FIELD_IMAGES,imagesArray);
 	}
 	
-	public void setPhoto(String photo){
-		ArrayList<String> photosArray = new ArrayList<String>();
-		photosArray.add(photo);
-		setPhotosArray(photosArray);
+	public void setImage(String image){
+		ArrayList<String> imagesArray = new ArrayList<String>();
+		imagesArray.add(image);
+		setImagesArray(imagesArray);
 	}
 	
 	public void setKeyWordsArray(ArrayList<String> keyWordsArray){
 		myDBObj.put(FIELD_KEYWORDS,keyWordsArray);
 	}
 	
+	public void setRooms(String rooms){
+		myDBObj.put(FIELD_ROOMS,rooms);
+	}
+	
+	public void setMusic(String music){
+		myDBObj.put(FIELD_MUSIC,music);
+	}
+	
+	
+	//--------------------------
+	//-----Set-methods-end------
+	//--------------------------
+	
+	//-------------------------------------------------------------
+
+	//--------------------------
+	//-----XXXByIdByName start--
+	//--------------------------
+
 	public void setCityById(ObjectId id){
 		myDBObj.put(FIELD_CITY_ID, id);
 	}	
@@ -358,7 +420,7 @@ public class DBWrapper extends StorageObject{
 			a.setType(TYPE_CITY);
 			id = Database.add(a);
 		}
-		myDBObj.put(FIELD_CITY_ID, id);
+		setCityById(id);
 	}
 	
 	public void setCountryById(ObjectId id){
@@ -374,7 +436,7 @@ public class DBWrapper extends StorageObject{
 			a.setType(TYPE_COUNTRY);
 			id = Database.add(a);
 		}
-		myDBObj.put(FIELD_COUNTRY_ID, id);
+		setCountryById(id);
 	}
 	
 	public void setContinentById(ObjectId id){
@@ -390,19 +452,18 @@ public class DBWrapper extends StorageObject{
 			a.setType(TYPE_CONTINENT);
 			id = Database.add(a);
 		}
-		myDBObj.put(FIELD_CONTINENT_ID, id);
-	}
-	
-	public void setRooms(String rooms){
-		myDBObj.put(FIELD_ROOMS,rooms);
-	}
-	
-	public void setMusic(String music){
-		myDBObj.put(FIELD_MUSIC,music);
+		setContinentById(id);
 	}
 		
-	//--------
+	//--------------------------
+	//-----XXXByIdByName end----
+	//--------------------------
 	
+	//-------------------------------------------------------------
+
+	//--------------------------
+	//-----Get-methods-start----
+	//--------------------------
 	
 	public String getAddress(){
 		return myDBObj.getString(FIELD_ADDRESS);
@@ -431,6 +492,55 @@ public class DBWrapper extends StorageObject{
 	public String getType(){
 		return myDBObj.getString(FIELD_TYPE);
 	}	
+	
+	public String getWebsite(){
+		return myDBObj.getString(FIELD_WEBSITE);
+	}	
+	
+	public String getName(){
+		return myDBObj.getString(FIELD_NAME);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getDescriptionArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_DESC);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getSourceUrlArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_SOURCE_URL);
+	}
+
+	@SuppressWarnings("unchecked")		
+	public ArrayList<Point2D.Double> getCoordsArray(){
+		ArrayList<DBObject> coordsArray = (ArrayList<DBObject>) myDBObj.get(FIELD_COORDS);
+		ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
+		if(coordsArray != null){
+			for(DBObject obj : coordsArray){
+				coords.add(new Point2D.Double((Double)obj.get("x"),(Double)obj.get("y")));
+			}
+		}
+		return coords;
+	}		
+	
+	public Point2D.Double getCoords(){
+		ArrayList<Point2D.Double> coordsAr = getCoordsArray();
+		if(!coordsAr.isEmpty()){
+			return coordsAr.get(0);
+		} else {
+			return null;
+		}		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getImagesArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_IMAGES);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getKeyWordsArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_KEYWORDS);
+	}
 	
 	public ObjectId getCityId(){
 		return (ObjectId) myDBObj.get(FIELD_CITY_ID);
@@ -470,70 +580,18 @@ public class DBWrapper extends StorageObject{
 			return null;
 		}
 	}
-			
-	public String getWebsite(){
-		return myDBObj.getString(FIELD_WEBSITE);
-	}	
-	
-	public String getName(){
-		return myDBObj.getString(FIELD_NAME);
-	}
-	
-	public String getDescription(){
-		return myDBObj.getString(FIELD_DESC);
-	}
-	
-	public String getDescriptionArray(){
-		return myDBObj.getString(FIELD_DESC);
-	}
-	
-	@SuppressWarnings("unchecked")		
-	public ArrayList<Point2D.Double> getCoordsArray(){
-		ArrayList<DBObject> coordsArray = (ArrayList<DBObject>) myDBObj.get(FIELD_COORDS);
-		ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
-		if(coordsArray != null){
-			for(DBObject obj : coordsArray){
-				coords.add(new Point2D.Double((Double)obj.get("x"),(Double)obj.get("y")));
-			}
-		}
-		return coords;
-	}		
-	
-	public Point2D.Double getCoords(){
-		ArrayList<Point2D.Double> coordsAr = getCoordsArray();
-		if(!coordsAr.isEmpty()){
-			return coordsAr.get(0);
-		} else {
-			return null;
-		}		
-	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getPhotosArray(){
-		return (ArrayList<String>) myDBObj.get(FIELD_PHOTOS);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getKeyWordsArray(){
-		return (ArrayList<String>) myDBObj.get(FIELD_KEYWORDS);
-	}
 
-    public void setUniqueId(UniqueId val) {
-        myDBObj.put(FIELD_UNIQUE_ID, val);
-    }
-
-    public UniqueId getUniqueId() {
-        return (UniqueId)myDBObj.get(FIELD_UNIQUE_ID);
-    }
-
-    //sets an attribute represented by a listed of strings
-    public void setListAttribute(final String attributeName, ArrayList<String> values) {
-        // @todo Нельзя чтобы было можно портить важные поля этим методом
-        myDBObj.put(attributeName, values);
-    }
-
+	//--------------------------
+	//-----Get-methods-end----
+	//--------------------------
+	
+	//-------------------------------------------------------------
+	
+	//-----------------------------
+	//-----Static methods start----
+	//-----------------------------
+	
     public static ArrayList<String> getTypeNames() {
-
         ArrayList<String> typeNames = new ArrayList<String>();
 
         typeNames.add(TYPE_CONTINENT);
@@ -547,9 +605,12 @@ public class DBWrapper extends StorageObject{
         typeNames.add(TYPE_MUSEUM);
         typeNames.add(TYPE_NATURAL_ATTRACTION);
         typeNames.add(TYPE_SHOPPING);
-        typeNames.add(TYPE_USER);
 
         return typeNames;
     }
+    
+	//-----------------------------
+	//-----Static methods end------
+	//-----------------------------
 
 }

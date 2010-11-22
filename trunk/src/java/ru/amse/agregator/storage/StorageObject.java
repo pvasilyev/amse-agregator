@@ -35,10 +35,14 @@ public abstract class StorageObject {
 		return (ObjectId) myDBObj.get(FIELD_ID);
 	}
 	
-	public void removeId(){
-		if(myDBObj.containsField(FIELD_ID)){
-			myDBObj.removeField(FIELD_ID);
+	public void removeField(String fieldName){
+		if(myDBObj.containsField(fieldName)){
+			myDBObj.removeField(fieldName);
 		}
+	}
+	
+	public void removeId(){
+		removeField(FIELD_ID);
 	}
 	
 	public BasicDBObject toDBObject(){
