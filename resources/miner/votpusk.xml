@@ -65,7 +65,7 @@
 		                <text>keywords</text>
 		                <template>${countryName.toString().trim() + ";" + countryOriginalName.toString().trim().substring(1,countryOriginalName.toString().trim().length()-1)}</template>
 		                
-						<text>decription</text>
+						<text>description</text>
 		                <template>${countryDesc.toString()}</template>
 
 		                <text>continent_name</text>
@@ -193,7 +193,7 @@
 			                <text>keywords</text>
 			                <template>${cityName.toString().trim()}</template>
 			                
-							<text>decription</text>
+							<text>description</text>
 			                <template>${cityDesc.toString()}</template>
 			                		                
 		                	<text>source_url</text>
@@ -402,7 +402,7 @@
 	                <text>keywords</text>
 	                <template>${currentDostName.toString().trim()}</template>
 	                
-					<text>decription</text>
+					<text>description</text>
 	                <template>${dostDesc.toString()}</template>
 	                
 	                <text>city_name</text>
@@ -411,7 +411,7 @@
 					<text>country_name</text>
 	                <template>${dostCountry.toString().trim()}</template>
 	                
-	                <text>photos</text>
+	                <text>images</text>
 	                <template>${imagesList.toString()}</template>
 	                		                
 		            <text>source_url</text>
@@ -435,7 +435,7 @@
 	</var-def>
 	
 	<!-- Ищем отели по странам -->
-	<loop item="alink" index="i" filter="unique" empty = "yes"> <!-- maxloops="0"> -->
+	<loop item="alink" index="i" filter="unique" empty = "yes" maxloops="0" > <!-- maxloops="0"> -->
 		<list>
 			<xpath expression="//table[not(@class)]/tbody/tr/td[@class = 'tx']/a">
 			    <html-to-xml>
@@ -651,10 +651,10 @@
 								                <text>keywords</text>
 								                <template>${hotelName.toString().trim() + ";"}</template>
 								                
-												<text>decription</text>
+												<text>description</text>
 								                <template>${hotelDesc.toString()}</template>
 								                
-								                <text>photos</text>
+								                <text>images</text>
 								                <template>${imagesList.toString()}</template>
 								                		                
 		                						<text>source_url</text>
