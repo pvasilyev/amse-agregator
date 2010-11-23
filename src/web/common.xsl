@@ -152,7 +152,7 @@
     <xsl:template name="menulist">
         <xsl:for-each select="//collection">
                 <xsl:for-each select="left-menu-item">
-                    <a>
+                    <a class="left-menu-link">
                         <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
                         </xsl:attribute>
                         <xsl:value-of select="name"/>

@@ -1,9 +1,11 @@
 package ru.amse.agregator.gui.model;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import ru.amse.agregator.searcher.Searcher;
 import ru.amse.agregator.searcher.UserQuery;
 import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.storage.UniqueId;
 
 import javax.xml.crypto.Data;
@@ -21,7 +23,7 @@ public class AttractionManager {
     //Временный метод
     public List<Attraction> getAllAttraction() {
         List<Attraction> result = new ArrayList<Attraction>();
-        
+
 
         for (int i = 1; i < 5; i++) {
             Attraction attraction = new Attraction();
@@ -67,7 +69,7 @@ public class AttractionManager {
 
     //Получение данных из базы
     public List<Attraction> getSearchResult(String param, Vector<String> vector) {
-        Searcher.setIndexDir(new File("../index"));
+        Searcher.setIndexDir(new File("index"));
         log.error("vector - " + vector);
         ArrayList<DBWrapper> dbwr;
         if (vector.size() > 0) {
@@ -86,6 +88,8 @@ public class AttractionManager {
             attraction.setBuildDate("10/11/11");
             result.add(attraction);
             saveResult(result);
+            log.error("SECOND");
+            
             return result;
         }
 
@@ -93,7 +97,7 @@ public class AttractionManager {
             Attraction attraction = new Attraction();
             attraction.setType(dbwr.get(i).getType());
             attraction.setName(dbwr.get(i).getName());
-            attraction.setDescription(dbwr.get(i).getDescriptionArray());
+            attraction.setDescription(dbwr.get(i).getDescriptionArray().get(0));
             attraction.setAdress(dbwr.get(i).getAddress());
             attraction.setArchitect(dbwr.get(i).getArchitect());
             attraction.setType(dbwr.get(i).getCityNameFromDB());
@@ -125,7 +129,7 @@ public class AttractionManager {
             Attraction attraction = new Attraction();
             attraction.setType(dbwr.get(i).getType());
             attraction.setName(dbwr.get(i).getName());
-            attraction.setDescription(dbwr.get(i).getDescriptionArray());
+            attraction.setDescription(dbwr.get(i).getDescriptionArray().get(0));
             attraction.setAdress(dbwr.get(i).getAddress());
             attraction.setArchitect(dbwr.get(i).getArchitect());
             attraction.setType(dbwr.get(i).getCityNameFromDB());
@@ -145,10 +149,26 @@ public class AttractionManager {
         }
     }
 
-    public String writeCategory(String str) {
-        if (str.isEmpty()) {
-            return "Для ускорения поиска вы можете воспользоваться фильтром";
-        }
-        return "Поиск был осуществлен с учетом следующих фильтров: " + str;
+
+    public List<Attraction> getAttractionById(String id) {
+        Database.connectToDirtyBase();
+        ObjectId selectedCity = new ObjectId(id);
+
+        DBWrapper city = Database.getDBObjectByIdAndType(selectedCity, DBWrapper.TYPE_CITY);
+
+
+        List<Attraction> result = new ArrayList<Attraction>();
+
+        Attraction attraction = new Attraction();
+        attraction.setType(city.getType());
+        attraction.setName(city.getName());
+        attraction.setDescription(city.getDescriptionArray().get(0));
+        attraction.setAdress(city.getAddress());
+        attraction.setArchitect(city.getArchitect());
+        attraction.setType(city.getCityNameFromDB());
+        attraction.setUid(city.getUniqueId());
+        result.add(attraction);
+        return result;
+
     }
 }

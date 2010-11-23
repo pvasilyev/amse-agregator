@@ -6,9 +6,6 @@
     <xsl:template name="main">
         <xsl:apply-templates select="page/data/collection" mode="show"/>
     </xsl:template>
-    <xsl:template match="collection" mode="show">
-
-    </xsl:template>
 
 
     <xsl:template match="collection" mode="show">

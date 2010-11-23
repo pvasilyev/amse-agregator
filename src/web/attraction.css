@@ -53,12 +53,16 @@
   margin:1.2em 0 0;
 }
 
+.left-menu-link {
+   color: #666;
+}
+
 body {
     min-width: 870px
 }
 
 :link {
-    color: #0000cc
+    color: #666
 }
 
 .l-page {

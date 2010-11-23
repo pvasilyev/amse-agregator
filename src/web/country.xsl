@@ -26,8 +26,7 @@
                     Города страны: <br/>
                     <xsl:for-each select="//menu-item">
                         <a>
-                            <xsl:attribute name="href">city.xml?id=
-                                <xsl:value-of select="id"/>
+                            <xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>
                             </xsl:attribute>
                             <xsl:value-of select="name"/>
                         </a>

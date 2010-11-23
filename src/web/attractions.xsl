@@ -4,48 +4,49 @@
     <xsl:include href="common.xsl"/>
 
     <xsl:template name="main">
-        <xsl:apply-templates select="page/data/collection" mode="show"/>
-    </xsl:template>
+        <xsl:for-each select="//collection">
+            <xsl:for-each select="attraction">
 
-    <xsl:template match="collection" mode="show">
-        <xsl:for-each select="attraction">
+                <!--<xsl:if test="type != ''">-->
 
-            <!--<xsl:if test="type != ''">-->
+                <!--<xsl:variable name="c">City</xsl:variable>-->
+                <!--<xsl:if test="type = 'City')">-->
+                <!--<text class="attraction_name_big">-->
+                <!--<xsl:value-of select="type"/>-->
+                <!--</text>-->
+                <!--</xsl:if>-->
+                <!--</xsl:if>-->
 
-            <!--<xsl:variable name="c">City</xsl:variable>-->
-            <!--<xsl:if test="type = 'City')">-->
-            <!--<text class="attraction_name_big">-->
-            <!--<xsl:value-of select="type"/>-->
-            <!--</text>-->
-            <!--</xsl:if>-->
-            <!--</xsl:if>-->
+                <table>
+                    <tr>
+                        <td>
 
-            <table>
-                <tr>
-                    <td>
+                        </td>
+                        <td align="left">
+                            <i class="b-serp-item__favicon"></i>
+                            <h2 class="b-serp-item__title">
+                                <a>
+                                    <xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="name"/>
+                                </a>
+                                <br/>
 
+                            </h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="b-serp-item__text" colspan="2">
+                            <xsl:if test="description != '')">
+                                <xsl:value-of select="description"/>
+                            </xsl:if>
+                        </td>
+                    </tr>
 
-                    </td>
-                    <td align="left">
-                        <i class="b-serp-item__favicon"></i>
-                        <h2 class="b-serp-item__title">
-                            <a class="b-serp-item__title__link" href="attractiondescription.xml?id={@uid}">
-                                <xsl:value-of select="name"/>
-                            </a>
-
-                        </h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="b-serp-item__text" colspan="2">
-                        <xsl:if test="description != '')">
-                            <xsl:value-of select="description"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-
-            </table>
+                </table>
+            </xsl:for-each>
         </xsl:for-each>
+
     </xsl:template>
 
 

@@ -10,11 +10,13 @@ public class Attraction {
     private UniqueId uid;
     private String type = "";
     private String name = "";
-    private ArrayList<String> description = new ArrayList<String>();
+    private String description = "";
     private String architect = "";
     private String adress = "";
     private String buildDate = "";
     private ArrayList<String> photoArray = new ArrayList<String>();
+
+    private ArrayList<MenuItem> attactionList = new ArrayList<MenuItem>();
 
     boolean isCity = false;
 
@@ -34,11 +36,11 @@ public class Attraction {
         this.name = name;
     }
 
-    public ArrayList<String> getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(ArrayList<String> description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -80,5 +82,14 @@ public class Attraction {
 
     public void setAdress(String adress) {
         this.adress = adress;
+    }
+
+
+    public ArrayList<MenuItem> getAttactionList() {
+        return attactionList;
+    }
+
+    public void setAttactionList(ArrayList<MenuItem> attactionList) {
+        this.attactionList = attactionList;
     }
 }
