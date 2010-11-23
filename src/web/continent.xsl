@@ -3,13 +3,12 @@
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 
     <xsl:include href="common.xsl"/>
-
     <xsl:template name="main">
         <xsl:for-each select="//collection">
-            dfsdfsdfsf
             <xsl:for-each select="menu-item">
                 <a>
-                    <xsl:attribute name="href">country.xml?id=<xsl:value-of select="id"/></xsl:attribute>
+                    <xsl:attribute name="href">country.xml?id=<xsl:value-of select="id"/>
+                    </xsl:attribute>
                     <xsl:value-of select="name"/>
                 </a>
                 <br/>

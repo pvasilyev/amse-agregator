@@ -35,38 +35,6 @@ public class AttractionManager {
         return result;
     }
 
-    //Временный метод
-    public List<Attraction> getSomeAttraction(String param) {
-        List<Attraction> result = new ArrayList<Attraction>();
-
-        //TODO temporary.
-        if (param.equals("italy")) {
-            for (int i = 0; i < 5; i++) {
-                Attraction attraction = new Attraction();
-                attraction.setType("City");
-                attraction.setName("имя" + i);
-                result.add(attraction);
-            }
-        } else {
-            Attraction attraction = new Attraction();
-            attraction.setType("City");
-            attraction.setName("по вашему запросу ничего не найдено");
-            attraction.setAdress(" Санкт Петербург");
-            attraction.setBuildDate("10/11/11");
-            result.add(attraction);
-        }
-        saveResult(result);
-        return result;
-    }
-
-    //Получение attraction из загруженных
-    public List<Attraction> getSomeAttractionById(String param) {
-        List<Attraction> result = new ArrayList<Attraction>();
-        result.add(ARRAY.get(new Integer(param)));
-        saveResult(result);
-        return result;
-    }
-
     //Получение данных из базы
     public List<Attraction> getSearchResult(String param, Vector<String> vector) {
         Searcher.setIndexDir(new File("index"));

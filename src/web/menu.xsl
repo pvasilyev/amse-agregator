@@ -5,7 +5,7 @@
 
     <xsl:template name="main">
 
-            <table width="80%" >
+            <table width="100%" >
                 <tr>
                     <xsl:for-each select="//collection">
                         <td colspan="2" valign="top" width="20%">

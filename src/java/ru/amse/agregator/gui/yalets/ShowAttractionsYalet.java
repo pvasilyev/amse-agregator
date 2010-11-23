@@ -23,6 +23,8 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
         if (tmp != null && !"".equals(tmp)) {
             Vector<String> labels = setLabels(req);
             res.add(manager.getSearchResult(tmp, labels));
+            log.error(res.getData());
+            
         }
     }
 

@@ -27,7 +27,6 @@ public class SimpleMenuYalet implements Yalet {
                 menuItems.add(new MenuItem(country.getName(), country.getId().toString()));
             }
             res.add(menuItems);
-
         }
     }
 }
