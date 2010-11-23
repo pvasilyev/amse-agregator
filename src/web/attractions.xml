@@ -2,5 +2,6 @@
 <?xml-stylesheet type="text/xsl" href="attractions.xsl"?>
 <page>
     <yalet id="showAttractions"/>
+    <yalet id="leftMenu"/>
 </page>
 

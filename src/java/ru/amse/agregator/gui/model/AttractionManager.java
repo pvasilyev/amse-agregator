@@ -4,10 +4,14 @@ import org.apache.log4j.Logger;
 import ru.amse.agregator.searcher.Searcher;
 import ru.amse.agregator.searcher.UserQuery;
 import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
@@ -17,14 +21,12 @@ public class AttractionManager {
     //Временный метод
     public List<Attraction> getAllAttraction() {
         List<Attraction> result = new ArrayList<Attraction>();
-        //TODO temporary.
+        
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 1; i < 5; i++) {
             Attraction attraction = new Attraction();
-            attraction.setUid(i);
-            attraction.setName("name_" + i);
-            attraction.setDescription("description_" + i);
-            attraction.setImage("images/image.jpg");
+            attraction.setType("City");
+            attraction.setName("имя _ " + i);
             result.add(attraction);
         }
         saveResult(result);
@@ -37,20 +39,18 @@ public class AttractionManager {
 
         //TODO temporary.
         if (param.equals("italy")) {
-            for (int i = 0; i < 5; ++i) {
+            for (int i = 0; i < 5; i++) {
                 Attraction attraction = new Attraction();
-                attraction.setUid(i);
+                attraction.setType("City");
                 attraction.setName("имя" + i);
-                attraction.setDescription("описание_" + i);
-                attraction.setImage("images/image.jpg");
                 result.add(attraction);
             }
         } else {
             Attraction attraction = new Attraction();
-            attraction.setUid(0);
+            attraction.setType("City");
             attraction.setName("по вашему запросу ничего не найдено");
-            attraction.setDescription("");
-            attraction.setImage("images/image.jpg");
+            attraction.setAdress(" Санкт Петербург");
+            attraction.setBuildDate("10/11/11");
             result.add(attraction);
         }
         saveResult(result);
@@ -66,18 +66,24 @@ public class AttractionManager {
     }
 
     //Получение данных из базы
-    public List<Attraction> getSearchResult(String param) {
-        Searcher.setIndexDir(new File("../webapps/agregator-gui/WEB-INF/index"));
-        ArrayList<DBWrapper> dbwr = Searcher.search(new UserQuery(param));
+    public List<Attraction> getSearchResult(String param, Vector<String> vector) {
+        Searcher.setIndexDir(new File("../index"));
+        log.error("vector - " + vector);
+        ArrayList<DBWrapper> dbwr;
+        if (vector.size() > 0) {
+            dbwr = Searcher.search(new UserQuery(param, vector));
+        } else {
+            dbwr = Searcher.search(new UserQuery(param));
+        }
 
         List<Attraction> result = new ArrayList<Attraction>();
-
         if (dbwr.size() == 0) {
             Attraction attraction = new Attraction();
-            attraction.setUid(0);
+            attraction.setType("City");
             attraction.setName("по вашему запросу ничего не найдено");
-            attraction.setDescription("");
-            attraction.setImage("images/image.jpg");
+            attraction.setAdress(" Санкт Петербург");
+            attraction.setArchitect("sldkjfljsd");
+            attraction.setBuildDate("10/11/11");
             result.add(attraction);
             saveResult(result);
             return result;
@@ -85,23 +91,64 @@ public class AttractionManager {
 
         for (int i = 0; i < dbwr.size(); ++i) {
             Attraction attraction = new Attraction();
-            attraction.setDescription("описание");
-            attraction.setUid(i);
-            attraction.setImage("images/image.jpg");
+            attraction.setType(dbwr.get(i).getType());
             attraction.setName(dbwr.get(i).getName());
+            attraction.setDescription(dbwr.get(i).getDescriptionArray());
+            attraction.setAdress(dbwr.get(i).getAddress());
+            attraction.setArchitect(dbwr.get(i).getArchitect());
+            attraction.setType(dbwr.get(i).getCityNameFromDB());
+            attraction.setUid(dbwr.get(i).getUniqueId());
             result.add(attraction);
         }
         saveResult(result);
         return result;
     }
 
-    
+    public List<Attraction> getSearchResult(String param) {
+        Searcher.setIndexDir(new File("../index"));
+        List<DBWrapper> dbwr = Searcher.search(new UserQuery(param));
+
+        List<Attraction> result = new ArrayList<Attraction>();
+        if (dbwr.size() == 0) {
+            Attraction attraction = new Attraction();
+            attraction.setType("City");
+            attraction.setName("по вашему запросу ничего не найдено");
+            attraction.setAdress(" Санкт Петербург");
+            attraction.setArchitect("sldkjfljsd");
+            attraction.setBuildDate("10/11/11");
+            result.add(attraction);
+            saveResult(result);
+            return result;
+        }
+
+        for (int i = 0; i < dbwr.size(); ++i) {
+            Attraction attraction = new Attraction();
+            attraction.setType(dbwr.get(i).getType());
+            attraction.setName(dbwr.get(i).getName());
+            attraction.setDescription(dbwr.get(i).getDescriptionArray());
+            attraction.setAdress(dbwr.get(i).getAddress());
+            attraction.setArchitect(dbwr.get(i).getArchitect());
+            attraction.setType(dbwr.get(i).getCityNameFromDB());
+            attraction.setUid(dbwr.get(i).getUniqueId());
+            result.add(attraction);
+        }
+        saveResult(result);
+        return result;
+    }
+
 
     //Схоранение найденного, чтобы вывести по щелчку,
     private void saveResult(List<Attraction> array) {
         ARRAY = new ArrayList<Attraction>();
-        for (int i = 0; i < array.size(); ++i) {
+        for (int i = 0; i < array.size(); i++) {
             ARRAY.add(array.get(i));
         }
+    }
+
+    public String writeCategory(String str) {
+        if (str.isEmpty()) {
+            return "Для ускорения поиска вы можете воспользоваться фильтром";
+        }
+        return "Поиск был осуществлен с учетом следующих фильтров: " + str;
     }
 }

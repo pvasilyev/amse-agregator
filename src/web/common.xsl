@@ -63,16 +63,14 @@
 
                                 </tr>
                                 <tr>
-                                    <!--<xsl:include href="menu.xml"/>-->
-                                    <!--<xsl:include href="listofattractions.xml"/>-->
-                                    <xsl:call-template name="menu"/>
+                                    <xsl:call-template name="menulist"/>
                                 </tr>
                             </table>
 
                         </td>
                         <td width="700px" valign="top" class="find_button">
                             <table width="700px" valign="top">
-                                <tr width="700px">
+                                <tr>
                                     <xsl:call-template name="find"/>
                                 </tr>
                                 <tr align="left" width="70%">
@@ -135,9 +133,9 @@
 
     <xsl:template name="find">
         <form action="attractions.xml" method="post">
-            <td class="b-search__input" valign="top" colspan="7">
-                <div class="b-input">
-                    <input size="80" tabindex="1" class="b-input__text g-js"
+            <td valign="top" colspan="7">
+                <div>
+                    <input class="input"
                            name="findTextBox"
                            value=""
                            maxlength="100"/>
@@ -151,14 +149,18 @@
         </form>
     </xsl:template>
 
-    <xsl:template name="menu">
-        <b>
-            <a href="" target="_blank">
-                <font size="3" face="Verdana" color="#999999">
-                    <xsl:apply-templates select="page/data/collection/continents"/>
-                </font>
-            </a>
-        </b>
+    <xsl:template name="menulist">
+        <xsl:for-each select="//collection">
+                <xsl:for-each select="left-menu-item">
+                    <a>
+                        <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="name"/>
+                    </a>
+                    <br/>
+                </xsl:for-each>
+            </xsl:for-each>
+
     </xsl:template>
 
 </xsl:stylesheet>

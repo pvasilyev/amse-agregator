@@ -2,4 +2,5 @@
 <?xml-stylesheet type="text/xsl" href="country.xsl"?>
 <page>
     <yalet id="cityPage"/>
+    <yalet id="leftMenu"/>
 </page>

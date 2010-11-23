@@ -2,7 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="windows-1251"/>
     <xsl:include href="common.xsl"/>
-    <!--<xsl:include href="yandex.xsl"/>-->
 
     <xsl:template name="main">
         <xsl:apply-templates select="page/data/collection" mode="show"/>
@@ -48,5 +47,6 @@
             </table>
         </xsl:for-each>
     </xsl:template>
+
 
 </xsl:stylesheet>
