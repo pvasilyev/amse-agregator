@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 
-    <xsl:key match="/page/items/item" name="item" use="@uid"/>
+    <!--<xsl:key match="/page/items/item" name="item" use="@uid"/>-->
 
     <xsl:template match="/">
 
@@ -105,7 +105,7 @@
                                     </td>
 
                                 </tr>
-                                <tr  class="checkbox">
+                                <tr class="checkbox">
                                     <td colspan="4">
                                         <input type="checkbox" name="archAttractionCheckbox"/>
                                         Архитектурная достопримечательность
@@ -151,16 +151,19 @@
 
     <xsl:template name="menulist">
         <xsl:for-each select="//collection">
-                <xsl:for-each select="left-menu-item">
-                    <a class="left-menu-link">
-                        <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
-                        </xsl:attribute>
-                        <xsl:value-of select="name"/>
-                    </a>
-                    <br/>
-                </xsl:for-each>
+            <xsl:if test="left-menu-item !=''">
+            <xsl:for-each select="left-menu-item">
+                <a class="left-menu-link">
+                    <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="name"/>
+                </a>
+                <br/>
             </xsl:for-each>
+            </xsl:if>
+            
+        </xsl:for-each>
 
-    </xsl:template>
+</xsl:template>
 
-</xsl:stylesheet>
+        </xsl:stylesheet>

@@ -2,14 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="menulist"/>
-    </xsl:template>
-
     <xsl:template name="menulist">
-
         <xsl:for-each select="//collection">
-            <xsl:for-each select="menu-item">
+            <xsl:for-each select="left-menu-item">
 
                 <a>
                     <xsl:attribute name="href">country.xml?id=
@@ -20,6 +15,5 @@
                 <br/>
             </xsl:for-each>
         </xsl:for-each>
-
     </xsl:template>
 </xsl:stylesheet>
