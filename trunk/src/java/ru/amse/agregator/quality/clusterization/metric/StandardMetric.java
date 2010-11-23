@@ -55,7 +55,7 @@ public class StandardMetric extends Metric {
         //try to compare country names
         {
             String countryName1 = obj1.getStaticCountryName();
-            String countryName2 = obj2.getStaticCityName();
+            String countryName2 = obj2.getStaticCountryName();
             if ((countryName1 != null) &&
                 (countryName2 != null)) {
 
