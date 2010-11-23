@@ -307,6 +307,24 @@ public class DBWrapper extends StorageObject{
 			//реализовать
 		}	
 	}
+
+        @Override
+        public String toString() {
+
+            String result = myDBObj.toString();
+
+            if (myContinentName != null) {
+               result = "continent_name : " + myContinentName + ", " + result;
+            }
+            if (myCountryName != null) {
+               result = "country_name : " + myCountryName + ", " + result;
+            }
+            if (myCityName != null) {
+               result = "city_name : " + myCityName + ", " + result;
+            }
+            
+            return result;
+        }
 	
 	
 	//--------------------------
