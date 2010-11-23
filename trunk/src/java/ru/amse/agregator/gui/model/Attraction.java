@@ -1,20 +1,28 @@
 package ru.amse.agregator.gui.model;
 
 import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Attraction {
-    private long uid;
-    private String name;
-    private String description;
-    private String image;
+    private UniqueId uid;
+    private String type = "";
+    private String name = "";
+    private ArrayList<String> description = new ArrayList<String>();
+    private String architect = "";
+    private String adress = "";
+    private String buildDate = "";
+    private ArrayList<String> photoArray = new ArrayList<String>();
 
-    public long getUid() {
+    boolean isCity = false;
+
+    public UniqueId getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(UniqueId uid) {
         this.uid = uid;
     }
 
@@ -26,24 +34,51 @@ public class Attraction {
         this.name = name;
     }
 
-    public String getDescription() {
+    public ArrayList<String> getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(ArrayList<String> description) {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public String getType() {
+        return type;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBuildDate() {
+        return buildDate;
+    }
+
+    public void setBuildDate(String buildDate) {
+        this.buildDate = buildDate;
+    }
+
+    public ArrayList<String> getPhotoArray() {
+        return photoArray;
+    }
+
+    public void setPhotoArray(ArrayList<String> photoArray) {
+        this.photoArray = photoArray;
+    }
+
+    public String getArchitect() {
+        return architect;
+    }
+
+    public void setArchitect(String architect) {
+        this.architect = architect;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 }
-//ArrayList<DBWrapper> array = new ArrayList<DBWrapper>();
-//        DBWrapper db = new DBWrapper();
-//        db.setName("qqq");
-//        array.add(db);
-//        return array;

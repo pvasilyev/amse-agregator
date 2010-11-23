@@ -127,9 +127,6 @@
 
 
     <xsl:template name="menu">
-        <!--<form action="listofattractions.xml" method="post">
-
-        </form>-->
         <b>
             <a href="" target="_blank">
                 <font size="3" face="Verdana" color="#999999">Колизей</font>

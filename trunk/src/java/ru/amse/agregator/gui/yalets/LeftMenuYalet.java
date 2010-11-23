@@ -1,15 +1,17 @@
 package ru.amse.agregator.gui.yalets;
 
-import java.util.ArrayList;
-
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
 import org.apache.log4j.Logger;
+import ru.amse.agregator.gui.model.LeftMenuItem;
 import ru.amse.agregator.gui.model.MenuItem;
-import ru.amse.agregator.storage.*;
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.Database;
 
-public class SimpleMenuYalet implements Yalet {
+import java.util.ArrayList;
+
+public class LeftMenuYalet implements Yalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
 
@@ -17,17 +19,11 @@ public class SimpleMenuYalet implements Yalet {
 
         Database.connectToDirtyBase();
         ArrayList<DBWrapper> continents = Database.getAllContinents();
+        ArrayList<LeftMenuItem> leftMenuItem = new ArrayList<LeftMenuItem>();
 
         for (DBWrapper continent : continents) {
-            ArrayList<DBWrapper> countrytmp = Database.getAllCountriesByContinent(continent.getId());
-
-            ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-            menuItems.add(new MenuItem(continent.getName(), null));
-            for (DBWrapper country : countrytmp) {
-                menuItems.add(new MenuItem(country.getName(), country.getId().toString()));
-            }
-            res.add(menuItems);
-
+            leftMenuItem.add(new LeftMenuItem(continent.getName(), continent.getId().toString()));
         }
+        res.add(leftMenuItem);
     }
 }
