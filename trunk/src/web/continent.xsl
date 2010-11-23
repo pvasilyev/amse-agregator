@@ -6,6 +6,7 @@
 
     <xsl:template name="main">
         <xsl:for-each select="//collection">
+            dfsdfsdfsf
             <xsl:for-each select="menu-item">
                 <a>
                     <xsl:attribute name="href">country.xml?id=<xsl:value-of select="id"/></xsl:attribute>

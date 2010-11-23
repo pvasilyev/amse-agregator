@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class LeftMenuYalet implements Yalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
-
     public void process(InternalRequest req, InternalResponse res) {
 
         Database.connectToDirtyBase();
@@ -24,6 +23,7 @@ public class LeftMenuYalet implements Yalet {
         for (DBWrapper continent : continents) {
             leftMenuItem.add(new LeftMenuItem(continent.getName(), continent.getId().toString()));
         }
+        log.error(leftMenuItem);
         res.add(leftMenuItem);
     }
 }

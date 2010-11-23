@@ -5,28 +5,59 @@
     <xsl:include href="common.xsl"/>
     <xsl:template name="main">
 
-            <table width="80%" >
-                <tr>
-                    <td>
-                        <xsl:value-of select="//description-model/name"/>
-                    </td>
-                    <td rowspan="2" valign="top">
-                        <xsl:for-each select="//menu-item">
-                            <a>
-                                        <xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>
-                                        </xsl:attribute>
-                                        <xsl:value-of select="name"/>
-                            </a><br/>
-                        </xsl:for-each>
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td align="justify">
-                        <xsl:value-of select="//description"/>
-                    </td>
-                </tr>
-            </table>
-        
+        <table width="100%">
+            <tr>
+                <td class="title">
+                    <br/>
+                    Название страны: <br/>
+                    <xsl:value-of select="//description-model/name"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="description">
+                    <br/>
+                    Описание страны: <br/>
+                    <xsl:value-of select="//description"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br/>
+                    Города страны: <br/>
+                    <xsl:for-each select="//menu-item">
+                        <a>
+                            <xsl:attribute name="href">city.xml?id=
+                                <xsl:value-of select="id"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="name"/>
+                        </a>
+                        <br/>
+                    </xsl:for-each>
+
+                </td>
+
+            </tr>
+            <!--<tr>-->
+            <!--<td>-->
+            <!--<xsl:value-of select="//description-model/name"/>-->
+            <!--</td>-->
+            <!--<td rowspan="2" valign="top">-->
+            <!--<xsl:for-each select="//menu-item">-->
+            <!--<a>-->
+            <!--<xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>-->
+            <!--</xsl:attribute>-->
+            <!--<xsl:value-of select="name"/>-->
+            <!--</a><br/>-->
+            <!--</xsl:for-each>-->
+            <!---->
+            <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--<td align="justify">-->
+            <!--<xsl:value-of select="//description"/>-->
+            <!--</td>-->
+            <!--</tr>-->
+        </table>
+
     </xsl:template>
 </xsl:stylesheet>

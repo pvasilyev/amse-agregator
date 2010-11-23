@@ -73,7 +73,7 @@
                                 <tr>
                                     <xsl:call-template name="find"/>
                                 </tr>
-                                <tr align="left" width="70%">
+                                <tr align="left" width="70%" class="checkbox">
                                     <td>
                                         <input type="checkbox" name="countryCheckbox"/>
                                         Страна
@@ -105,7 +105,7 @@
                                     </td>
 
                                 </tr>
-                                <tr>
+                                <tr  class="checkbox">
                                     <td colspan="4">
                                         <input type="checkbox" name="archAttractionCheckbox"/>
                                         Архитектурная достопримечательность
