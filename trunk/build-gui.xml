@@ -17,10 +17,11 @@
         <fileset id="core-lib" dir="${core.dir}">
             <include name="**/*.jar"/>
         </fileset>
-    	
+
         <fileset id="xfresh-core" dir="${core.dir}" includes="*.jar"/>
         <fileset id="mongo-db-lib" dir="${project.dir}/libs" includes="mongo-2.3.jar"/>
-    	
+        <fileset id="lucene-lib" dir="${project.dir}/libs" includes="lucene-core-3.0.2.jar"/>
+
         <path id="project.classpath">
             <fileset refid="core-lib"/>
             <fileset refid="xfresh-core"/>
@@ -37,7 +38,7 @@
     <target name="compile" depends="init">
         <javac destdir="${build.classes.dir}"
                classpathref="project.classpath"
-        	   classpath="./build:./libs/lucene-core-3.0.2.jar:./libs/mongo-2.3.jar"
+                   classpath="./build:./libs/lucene-core-3.0.2.jar:./libs/mongo-2.3.jar"
                debug="on"
                srcdir="${src.java.dir}">
         </javac>
@@ -69,6 +70,7 @@
             <fileset refid="core-lib"/>
             <fileset refid="xfresh-core"/>
             <fileset refid="mongo-db-lib"/>
+            <fileset refid="lucene-lib"/>
         </copy>
     </target>
 </project>
