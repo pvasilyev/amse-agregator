@@ -402,7 +402,11 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public void incRating(){
-		setRating(getRating()+1);
+		Integer rating = getRating();
+		if(rating == null){
+			rating = 0;
+		}
+		setRating(rating+1);
 	}
 	
 	
