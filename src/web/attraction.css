@@ -29,6 +29,30 @@
     size: 400;
 }
 
+.title {
+  font-size:1.8em;
+  font-weight:normal;
+  font:1.4em Georgia,Times,serif;
+  color:#bd2026;
+  margin:1.2em 0 0;
+}
+
+.description {
+  font-size:1.0em;
+  font-weight:normal;
+  font:1.0em Georgia,Times,serif;
+  color:#666;
+  margin:1.2em 0 0;
+}
+
+.checkbox {
+  font-size:0.9em;
+  font-weight:normal;
+  font:0.9em Georgia,Times,serif;
+  color:#666;
+  margin:1.2em 0 0;
+}
+
 body {
     min-width: 870px
 }

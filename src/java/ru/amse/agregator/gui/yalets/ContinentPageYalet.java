@@ -22,10 +22,10 @@ public class ContinentPageYalet implements Yalet {
         DBWrapper continent = Database.getDBObjectByIdAndType(selectedContinent, DBWrapper.TYPE_CONTINENT);
 
         ArrayList<DBWrapper> countrytmp = Database.getAllCountriesByContinent(continent.getId());
-            ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-            for (DBWrapper country : countrytmp) {
-                menuItems.add(new MenuItem(country.getName(), country.getId().toString()));
-            }
-            res.add(menuItems);
+        ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
+        for (DBWrapper country : countrytmp) {
+            menuItems.add(new MenuItem(country.getName(), country.getId().toString()));
+        }
+        res.add(menuItems);
     }
 }
