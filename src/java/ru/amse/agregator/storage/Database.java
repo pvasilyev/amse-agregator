@@ -150,12 +150,14 @@ public class Database {
 		ArrayList<DBWrapper> allObjects = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			for(String collectionName : myCollections){
-				DBCursor cur = myDB.getCollection(collectionName).find();
-				while(cur.hasNext()){
-					DBWrapper dbWrapper = new DBWrapper(cur.next());
-					dbWrapper.initFromDB();
-					allObjects.add(dbWrapper);
-				}	
+				if (!collectionName.equals("system.indexes")) {
+					DBCursor cur = myDB.getCollection(collectionName).find();
+					while(cur.hasNext()){
+						DBWrapper dbWrapper = new DBWrapper(cur.next());
+						dbWrapper.initFromDB();
+						allObjects.add(dbWrapper);
+					}
+				}
 			}
 		}
 		return allObjects;
@@ -191,9 +193,24 @@ public class Database {
 		
 	public static ObjectId add(DBWrapper storageObject){
 		if(storageObject != null){
+			storageObject.setId(new ObjectId());
 			String collectionName = typeCollection(storageObject.getType());
 			storageObject.setId(addToCollection(collectionName, storageObject.toDBObject()));
 			return storageObject.getId();
+		} else {
+			return null;
+		}
+	}
+	
+	public static ObjectId update(DBWrapper storageObject){
+		if(storageObject != null && storageObject.getId() != null){
+			if(getDBObjectByIdAndType(storageObject.getId(),storageObject.getType()) != null){
+				String collectionName = typeCollection(storageObject.getType());
+				storageObject.setId(addToCollection(collectionName, storageObject.toDBObject()));
+				return storageObject.getId();
+			} else {
+				return null;
+			}		
 		} else {
 			return null;
 		}
@@ -221,26 +238,39 @@ public class Database {
 		return collectionName;
 	}
 	
-	public static DBWrapper getDBObjectByIdAndType(ObjectId id, String type) {
+	public static DBWrapper getDBObjectByIdAndType(ObjectId id, String type, Boolean incRatin) {
 		DBObject retObj = findInCollectionById(typeCollection(type), id);
 		if(retObj != null){
 			DBWrapper dbWrapper = new DBWrapper(retObj);
 			dbWrapper.initFromDB();
+			if(incRatin){
+				dbWrapper.incRating();
+				update(dbWrapper);
+			}
 			return dbWrapper;
 		} else {
 			return null;
 		}
 	}
 	
+	public static DBWrapper getDBObjectByIdAndType(ObjectId id, String type) {
+		return getDBObjectByIdAndType(id,type, false);
+	}
+	
+	public static DBWrapper getDBObjectByIdAndTypeAndIncRating(ObjectId id, String type) {
+		return getDBObjectByIdAndType(id,type, true);
+	}
+	
+	public static DBWrapper getAttractionById(ObjectId id, Boolean incRatin) {
+		return getDBObjectByIdAndType(id,DBWrapper.TYPE_ARCH_ATTRACTION, incRatin);
+	}
+	
 	public static DBWrapper getAttractionById(ObjectId id) {
-		DBObject retObj = findInCollectionById(COLLECTION_ATTRACTIONS, id);
-		if(retObj != null){
-			DBWrapper dbWrapper = new DBWrapper(retObj);
-			dbWrapper.initFromDB();
-			return dbWrapper;
-		} else {
-			return null;
-		}
+		return getAttractionById(id, false);
+	}
+	
+	public static DBWrapper getAttractionByIdAndIncRating(ObjectId id) {
+		return getAttractionById(id,true);
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){

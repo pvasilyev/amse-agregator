@@ -34,6 +34,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_ROOMS = "rooms";
 	public static final String FIELD_CATEGORY = "category";
 	public static final String FIELD_SOURCE_URL = "source_url";
+	public static final String FIELD_RATING = "rating";
 	
 	public static final String FIELD_UNIQUE_ID = "unique_id";
 	
@@ -396,6 +397,14 @@ public class DBWrapper extends StorageObject{
 		myDBObj.put(FIELD_MUSIC,music);
 	}
 	
+	public void setRating(Integer newRating){
+		myDBObj.put(FIELD_RATING,newRating);
+	}
+	
+	public void incRating(){
+		setRating(getRating()+1);
+	}
+	
 	
 	//--------------------------
 	//-----Set-methods-end------
@@ -487,6 +496,10 @@ public class DBWrapper extends StorageObject{
 	
 	public String getMusic(){
 		return myDBObj.getString(FIELD_MUSIC);
+	}
+
+	public Integer getRating(){
+		return (Integer) myDBObj.get(FIELD_RATING);
 	}
 	
 	public String getType(){
@@ -607,6 +620,36 @@ public class DBWrapper extends StorageObject{
         typeNames.add(TYPE_SHOPPING);
 
         return typeNames;
+    }
+    
+    public static String typeToRuName(String type) {
+    	String ruTypeName;
+    	if(type.equals(TYPE_ARCH_ATTRACTION)){
+    		ruTypeName = "Архитектура";
+    	} else if(type.equals(TYPE_CAFE)){
+    		ruTypeName = "Кафе";
+    	} else if(type.equals(TYPE_CITY)){
+    		ruTypeName = "Города";
+    	} else if(type.equals(TYPE_COMMENT)){
+    		ruTypeName = "Комментарии";
+    	} else if(type.equals(TYPE_CONTINENT)){
+    		ruTypeName = "Континенты";
+    	} else if(type.equals(TYPE_COUNTRY)){
+    		ruTypeName = "Страны";
+    	} else if(type.equals(TYPE_ENTERTAINMENT)){
+    		ruTypeName = "Развлечения";
+    	} else if(type.equals(TYPE_HOTEL)){
+    		ruTypeName = "Отели";
+    	} else if(type.equals(TYPE_MUSEUM)){
+    		ruTypeName = "Музеи";
+    	} else if(type.equals(TYPE_NATURAL_ATTRACTION)){
+    		ruTypeName = "Природа";
+    	} else if(type.equals(TYPE_SHOPPING)){
+    		ruTypeName = "Шопинг";
+    	} else {
+    		ruTypeName = type;
+    	}
+        return ruTypeName;
     }
     
 	//-----------------------------
