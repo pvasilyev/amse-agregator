@@ -7,7 +7,7 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
-import ru.amse.agregator.storage.DBWrapper;
+import org.bson.types.ObjectId;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,7 +26,6 @@ public class Searcher {
     public static void setIndexDir(File iDir) {
         try {
             if (!iDir.exists()) {
-                System.out.println("DIRECTORY:" + iDir.getAbsolutePath());
                 throw new FileNotFoundException("Directory " + iDir.getAbsolutePath() + " is not exists");
             }
             INDEX_DIR = iDir;
@@ -35,7 +34,7 @@ public class Searcher {
         }
     }
 
-    public static ArrayList<DBWrapper> search(UserQuery query) {
+    public static ArrayList<ObjectId> search(UserQuery query) {
         try {
             return search(INDEX_DIR, query);
         } catch (Exception e) {
@@ -44,13 +43,12 @@ public class Searcher {
         }
     }
 
-    private static ArrayList<DBWrapper> search(File indexDir, UserQuery query) throws IOException, ParseException {
-        return search(indexDir, query.getQueryExpression());
-        // todo Нужно бужет добавить реализацию для поиска с метками
+    private static ArrayList<ObjectId> search(File indexDir, UserQuery query) throws IOException, ParseException {
+        return search(indexDir, query.getQueryExpression(), "name");
+        // todo Нужно добавить реализацию для поиска с метками
     }
 
-    private static ArrayList<DBWrapper> search(File indexDir, String q) throws IOException, ParseException {
-        String fieldForSearch = "name";
+    private static ArrayList<ObjectId> search(File indexDir, String q, String fieldForSearch) throws IOException, ParseException {
         Directory fsDirectory = new NIOFSDirectory(indexDir);
         IndexSearcher is = new IndexSearcher(fsDirectory);
         QueryParser qParser = new QueryParser(Version.LUCENE_30,
@@ -64,18 +62,11 @@ public class Searcher {
 
         System.out.println(docs.getMaxScore());
         ScoreDoc[] sDocs = docs.scoreDocs;
-        ArrayList<DBWrapper> list = new ArrayList<DBWrapper>();
+        ArrayList<ObjectId> listOfId = new ArrayList<ObjectId>();
         for (ScoreDoc currentScoreDoc : sDocs) {
-            DBWrapper wrapper = new DBWrapper();
-            wrapper.setType(DBWrapper.TYPE_CITY);
-            if (is.doc(currentScoreDoc.doc).getField("name") != null) {
-                wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
-            }
-            if (is.doc(currentScoreDoc.doc).getField("description") != null) {
-                wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
-            }
-            list.add(wrapper);
+            ObjectId id = new ObjectId(is.doc(currentScoreDoc.doc).getField("id").stringValue());
+            listOfId.add(id);
         }
-        return list;
+        return listOfId;
     }
 }

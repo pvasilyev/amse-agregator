@@ -1,6 +1,6 @@
 package ru.amse.agregator.searcher;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /*
  * Author: Bondarev Timofey
@@ -10,23 +10,23 @@ import java.util.Vector;
 
 public class UserQuery {
     private String query;
-    private Vector<String> labels;
+    private ArrayList<String> labels;
 
     public UserQuery(String queryExpression) {
         query = queryExpression;
-        labels = new Vector<String>();
+        labels = new ArrayList<String>();
     }
 
-    public UserQuery(String queryExpression, Vector<String> labels) {
+    public UserQuery(String queryExpression, ArrayList<String> labels) {
         query = queryExpression;
-        this.labels = new Vector<String>(labels);
+        this.labels = new ArrayList<String>(labels);
     }
 
     public void setQueryExpression(String queryExpression) {
         query = queryExpression;
     }
 
-    public void setLabels(Vector<String> labels) {
+    public void setLabels(ArrayList<String> labels) {
         this.labels = labels;
     }
 
@@ -38,7 +38,7 @@ public class UserQuery {
         return query;
     }
 
-    public Vector<String> getLabels() {
+    public ArrayList<String> getLabels() {
         return labels;
     }
 }
