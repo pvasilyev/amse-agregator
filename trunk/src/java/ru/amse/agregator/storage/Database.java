@@ -191,6 +191,19 @@ public class Database {
 		}
 		return collection;
 	}
+	
+	public static ArrayList<DBWrapper> getTopNWithType(int count,String type){
+		ArrayList<DBWrapper> top = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type)).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(count);
+			while(cur.hasNext()){
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				top.add(dbWrapper);
+			}
+		}
+		return top;
+	}
 		
 	public static ObjectId add(DBWrapper storageObject){
 		if(storageObject != null){
