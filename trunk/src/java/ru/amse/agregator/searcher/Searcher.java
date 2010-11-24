@@ -8,6 +8,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
 import org.bson.types.ObjectId;
+import ru.amse.agregator.storage.DBWrapper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +35,7 @@ public class Searcher {
         }
     }
 
-    public static ArrayList<ObjectId> search(UserQuery query) {
+    public static ArrayList<DBWrapper> search(UserQuery query) {
         try {
             return search(INDEX_DIR, query, "name");
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class Searcher {
         }
     }
 
-    private static ArrayList<ObjectId> search(File indexDir, UserQuery q, String fieldForSearch) throws IOException, ParseException {
+    private static ArrayList<DBWrapper> search(File indexDir, UserQuery q, String fieldForSearch) throws IOException, ParseException {
         Directory fsDirectory = new NIOFSDirectory(indexDir);
         IndexSearcher is = new IndexSearcher(fsDirectory);
         QueryParser qParser = new QueryParser(Version.LUCENE_30,
@@ -57,10 +58,10 @@ public class Searcher {
 
         System.out.println(docs.getMaxScore());
         ScoreDoc[] sDocs = docs.scoreDocs;
-        ArrayList<ObjectId> listOfId = new ArrayList<ObjectId>();
+        
+        ArrayList<DBWrapper> listOfWrapper = new ArrayList<DBWrapper>();
         ArrayList<String> labels = q.getLabels();
         for (ScoreDoc currentScoreDoc : sDocs) {
-            ObjectId id = new ObjectId(is.doc(currentScoreDoc.doc).getField("id").stringValue());
             String type = is.doc(currentScoreDoc.doc).getField("type").stringValue();
             // [] => f
             // [t1, t2] => t && f (if contains) => add
@@ -68,8 +69,20 @@ public class Searcher {
             if (labels.size() != 0 && !labels.contains(type)) {
                 continue;
             }
-            listOfId.add(id);
+            DBWrapper wrapper = new DBWrapper();
+            wrapper.setId(new ObjectId(is.doc(currentScoreDoc.doc).getField("id").stringValue()));
+            if (is.doc(currentScoreDoc.doc).getField("name") != null) {
+                wrapper.setName(is.doc(currentScoreDoc.doc).getField("name").stringValue());
+            }
+            if (is.doc(currentScoreDoc.doc).getField("type") != null) {
+                wrapper.setType(is.doc(currentScoreDoc.doc).getField("type").stringValue());
+
+            }
+            if (is.doc(currentScoreDoc.doc).getField("description") != null) {
+                wrapper.setDescription(is.doc(currentScoreDoc.doc).getField("description").stringValue());
+            }
+            listOfWrapper.add(wrapper);
         }
-        return listOfId;
+        return listOfWrapper;
     }
 }
