@@ -19,7 +19,7 @@ public class CountryIdMerger extends AttributeMerger {
         for (UniqueId id : cluster.getObjectList())
         {
             DBWrapper obj = Database.getByUniqueId(id);
-            countryName = obj.getCountryNameFromDB();
+            countryName = obj.getStaticCountryName();
             if (countryName != null) {
                 break;
             }
@@ -30,6 +30,7 @@ public class CountryIdMerger extends AttributeMerger {
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
         resultingObject.setCountryByName(countryName);
+        resultingObject = resultingObject;
     }
 
 }

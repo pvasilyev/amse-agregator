@@ -31,6 +31,7 @@ public class Database {
 	private static ObjectId myLastContinentId = null;
 	private static ObjectId myLastCityId = null;
 	private static ObjectId myLastCountryId = null;
+	private static DB myLastDB = null;
 	
 	public static final String 	DB_SERVER_ADDRESS = "localhost";
 	public static final int 	DB_SERVER_PORT = 27017;
@@ -274,13 +275,14 @@ public class Database {
 	}
 	
 	public static ObjectId getCityIdByName(String cityName){
-		if(cityName != null && cityName.equals(myLastCityName)){
+		if(myLastDB != null && myLastDB.equals(myDB) && cityName != null && cityName.equals(myLastCityName)){
 			return myLastCityId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
 		criteria.put(DBWrapper.FIELD_NAME,cityName);
 		DBObject obj = findInCollection(COLLECTION_CITIES,criteria);
 		if(obj != null){
+			myLastDB = myDB;
 			myLastCityName = cityName;
 			myLastCityId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
 			return myLastCityId;
@@ -290,13 +292,14 @@ public class Database {
 	}
 	
 	public static ObjectId getCountryIdByName(String countryName){
-		if(countryName != null && countryName.equals(myLastCountryName)){
+		if(myLastDB != null && myLastDB.equals(myDB) && countryName != null && countryName.equals(myLastCountryName)){
 			return myLastCountryId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
 		criteria.put(DBWrapper.FIELD_NAME,countryName);
 		DBObject obj = findInCollection(COLLECTION_COUNTRIES,criteria);
 		if(obj != null){
+			myLastDB = myDB;
 			myLastCountryName = countryName;
 			myLastCountryId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
 			return myLastCountryId;
@@ -306,13 +309,14 @@ public class Database {
 	}
 	
 	public static ObjectId getContinentIdByName(String continentName){
-		if(continentName != null && continentName.equals(myLastContinentName)){
+		if(myLastDB != null && myLastDB.equals(myDB) && continentName != null && continentName.equals(myLastContinentName)){
 			return myLastContinentId;
 		}
 		BasicDBObject criteria = new BasicDBObject();
 		criteria.put(DBWrapper.FIELD_NAME,continentName);
 		DBObject obj = findInCollection(COLLECTION_CONTINENTS,criteria);
 		if(obj != null){
+			myLastDB = myDB;
 			myLastContinentName = continentName;
 			myLastContinentId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
 			return myLastContinentId;

@@ -14,7 +14,7 @@ public class StorageTester {
         // TODO Auto-generated method stub
     	
    
-        Database.connectToDirtyBase();
+        Database.connectToMainBase();
 
         ArrayList<DBWrapper> continents = Database.getAllContinents();
         for(DBWrapper continent : continents){
@@ -22,25 +22,25 @@ public class StorageTester {
         	//вывели список континентов с сылочками в которых хранится айдишник.
         }
         
-        //выводим список стран первого континента
-        DBWrapper continentPerviy = continents.get(2);
-       System.out.println(continentPerviy.getId());
-        ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continentPerviy.getId());
-        for(DBWrapper country : countries){
-        	System.out.println("континент страны: "+ country.getStaticContinentName()+ " "+ country.getName() + " айдишник страны: " + country.getId());
-        	//вывели список стран первого континента с сылочками в которых хранится айдишник.
-        	
-            //выводим список городов первой страны первого континента 
-            ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
-            System.out.println(cities);
-        }
-        
-        for(DBWrapper city : Database.getAllCities()){
-        	if(countries.get(1).getId().equals(city.getCountryId())){
-        		System.out.println(city);
-        	}
-        	//System.out.println(city.getCountryId());
-        }
+//        //выводим список стран первого континента
+//        DBWrapper continentPerviy = continents.get(2);
+//       System.out.println(continentPerviy.getId());
+//        ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continentPerviy.getId());
+//        for(DBWrapper country : countries){
+//        	System.out.println("континент страны: "+ country.getStaticContinentName()+ " "+ country.getName() + " айдишник страны: " + country.getId());
+//        	//вывели список стран первого континента с сылочками в которых хранится айдишник.
+//        	
+//            //выводим список городов первой страны первого континента 
+//            ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
+//            System.out.println(cities);
+//        }
+//        
+//        for(DBWrapper city : Database.getAllCities()){
+//        	if(countries.get(1).getId().equals(city.getCountryId())){
+//        		System.out.println(city);
+//        	}
+//        	//System.out.println(city.getCountryId());
+//        }
         
         
 

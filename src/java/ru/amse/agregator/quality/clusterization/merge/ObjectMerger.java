@@ -29,15 +29,16 @@ public class ObjectMerger extends ClusterMerger {
 
         attMergers = new TreeMap<String, AttributeMerger>();
 
+        attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new ContinentiIdMerger());
+        attMergers.put(DBWrapper.FIELD_COUNTRY_ID, new CountryIdMerger());
+        attMergers.put(DBWrapper.FIELD_CITY_ID, new CityIdMerger());
         attMergers.put(DBWrapper.FIELD_KEYWORDS, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_IMAGES, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_DESC, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_SOURCE_URL, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
-        attMergers.put(DBWrapper.FIELD_ID, doNothing);
-        attMergers.put(DBWrapper.FIELD_CITY_ID, new CityIdMerger());
-        attMergers.put(DBWrapper.FIELD_COUNTRY_ID, new CountryIdMerger());
-        attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new ContinentiIdMerger());
+        attMergers.put(DBWrapper.FIELD_ID, doNothing);     
+        
         attMergers.put(DBWrapper.FIELD_COORDS, doNothing);
     }
 
@@ -69,7 +70,7 @@ public class ObjectMerger extends ClusterMerger {
 
         for (UniqueId id : cluster.getObjectList()) {
             DBWrapper obj =  Database.getByUniqueId(id);
-            attributeNames.addAll(obj.getKeySet());
+            attributeNames.addAll(obj.getKeySetWithoutWrapperFields());
         }
 
         return new ArrayList<String>(attributeNames);
