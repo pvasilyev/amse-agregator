@@ -39,8 +39,7 @@ final public class ClusterizationProcess {
 
             Database.connectToDirtyBase();
 
-            ArrayList<DBWrapper> allOfType = Database.
-                    getAllWithType(type);
+            ArrayList<DBWrapper> allOfType = Database.getAllWithType(type);
             setUniqueIdsForObjects(allOfType, Database.DIRTY_DB_NAME);
 
             System.out.println("There are " + allOfType.size() + " " + type + "s in dirty base");

@@ -16,7 +16,6 @@ public class StringMerger extends AttributeMerger {
 
         // pick the first object and use it's value for this attribute
         DBWrapper obj = Database.getByUniqueId(cluster.getObjectList().get(0));
-
         resultingObject.setKeyValue(attributeName, (String)obj.getValue(attributeName));
 
     }

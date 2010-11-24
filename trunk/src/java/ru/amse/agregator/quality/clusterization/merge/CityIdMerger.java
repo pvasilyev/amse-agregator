@@ -15,21 +15,21 @@ public class CityIdMerger extends AttributeMerger {
     public void mergeAttributes
             (final String attributeName, final Cluster cluster, DBWrapper resultingObject) {
         //
-        String countryName = null;
+        String cityName = null;
         for (UniqueId id : cluster.getObjectList())
         {
             DBWrapper obj = Database.getByUniqueId(id);
-            countryName = obj.getCountryNameFromDB();
-            if (countryName != null) {
+            cityName = obj.getStaticCityName();
+            if (cityName != null) {
                 break;
             }
         }
 
-        assert(countryName != null);
+        assert(cityName != null);
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
-        resultingObject.setCountryByName(countryName);
+        resultingObject.setCityByName(cityName);
     }
 
 }

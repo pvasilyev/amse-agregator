@@ -151,35 +151,56 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public Set<String> getKeySet(){
+		return getKeySet(false);
+	}
+	
+	public Set<String> getKeySetWithoutWrapperFields(){
+		return getKeySet(true);
+	}
+	
+	public Set<String> getKeySet(boolean onlyDBFields){
 		Set<String> set = new HashSet<String>(myDBObj.keySet());
-		if(myCityName != null){
-			set.add(FIELD_CITY_NAME);
-		}
-		if(myCountryName != null){
-			set.add(FIELD_COUNTRY_NAME);
-		}
-		if(myContinentName != null){
-			set.add(FIELD_CONTINENT_NAME);
+		if(!onlyDBFields){
+			if(myCityName != null){
+				set.add(FIELD_CITY_NAME);
+			}
+			if(myCountryName != null){
+				set.add(FIELD_COUNTRY_NAME);
+			}
+			if(myContinentName != null){
+				set.add(FIELD_CONTINENT_NAME);
+			}
 		}
 		return set;
 	}
 	
+	public Set<String> getKeySetWithoutNullWithoutWrapperFields(){
+		return getKeySetWithoutNull(true);
+	}
+	
 	public Set<String> getKeySetWithoutNull(){
+		return getKeySetWithoutNull(false);
+	}
+	
+	public Set<String> getKeySetWithoutNull(boolean onlyDBFields){
 		Set<String> set = new HashSet<String>();
 		for(String key : myDBObj.keySet()){
 			if(myDBObj.get(key) != null){
 				set.add(key);
 			}
 		}
-		if(myCityName != null){
-			set.add(FIELD_CITY_NAME);
+		if(!onlyDBFields){
+			if(myCityName != null){
+				set.add(FIELD_CITY_NAME);
+			}
+			if(myCountryName != null){
+				set.add(FIELD_COUNTRY_NAME);
+			}
+			if(myContinentName != null){
+				set.add(FIELD_CONTINENT_NAME);
+			}
 		}
-		if(myCountryName != null){
-			set.add(FIELD_COUNTRY_NAME);
-		}
-		if(myContinentName != null){
-			set.add(FIELD_CONTINENT_NAME);
-		}
+
 		return set;
 	}
 	
@@ -608,7 +629,7 @@ public class DBWrapper extends StorageObject{
 	}
 	
 	public String getContinentNameFromDB(){
-		DBWrapper continent = Database.getDBObjectByIdAndType(this.getCountryId(),TYPE_CONTINENT);
+		DBWrapper continent = Database.getDBObjectByIdAndType(this.getContinentId(),TYPE_CONTINENT);
 		if(continent != null){
 			return continent.getName();
 		} else {

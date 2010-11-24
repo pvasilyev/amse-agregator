@@ -19,7 +19,7 @@ public class ContinentiIdMerger extends AttributeMerger {
         for (UniqueId id : cluster.getObjectList())
         {
             DBWrapper obj = Database.getByUniqueId(id);
-            continentName = obj.getContinentNameFromDB();
+            continentName = obj.getStaticContinentName();
             if (continentName != null) {
                 break;
             }
