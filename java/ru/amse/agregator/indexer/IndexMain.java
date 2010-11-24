@@ -1,7 +1,6 @@
 package ru.amse.agregator.indexer;
 
 import java.io.File;
-import java.util.Calendar;
 
 /*
  * Author: Bondarev Timofey
@@ -13,11 +12,11 @@ public class IndexMain {
     public static void main(String[] args) {
         try {
         // todo Разобрать вывод в XML файла-состояния.
-            Calendar time = Calendar.getInstance();
-            long beginIndexTime = time.getTimeInMillis();
+            long beginIndexTime = System.currentTimeMillis();
             File indexDir = null;
             boolean makeNewIndex = true;
             boolean errorInArgs = false;
+
             if (args.length <= 1) {
                 indexDir = new File("index");
                 if (args.length == 1 && args[0].equals("-n")) {
@@ -65,18 +64,17 @@ public class IndexMain {
                 return;
             } else {
                 if (makeNewIndex)  {
-                    Indexer.makeNewIndex(indexDir);
+                    OriginalIndexer.makeNewIndex(indexDir);
                 } else {
-                    Indexer.addToIndex(indexDir);
+                    OriginalIndexer.addToIndex(indexDir);
                 }
             }
-
-            time = Calendar.getInstance();
-            long endIndexTime = time.getTimeInMillis();
+// spring
+            long endIndexTime = System.currentTimeMillis();
             long timeForIndexing = endIndexTime - beginIndexTime;
-            System.out.println(Indexer.countIndexedFiles + " files indexed by " + timeForIndexing + " milli seconds.");
+            System.out.println(OriginalIndexer.getCountIndexedFiles() + " files indexed by " + timeForIndexing + " milli seconds.");
         } catch (Exception e) {
-            System.out.println("Error in function makeNewIndex. Message: " + e.getMessage());            
+            System.out.println("Error in function Indexer. Message: " + e.getMessage());            
         }
     }
 }
