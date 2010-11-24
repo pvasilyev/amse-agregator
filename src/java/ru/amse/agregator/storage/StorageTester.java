@@ -21,7 +21,12 @@ public class StorageTester {
         	System.out.println(continent.getName() + " айдишник континента: " + continent.getId());
         	//вывели список континентов с сылочками в которых хранится айдишник.
         }
-        
+        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
+        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
+        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
+
+        System.out.println(Database.getTopNWithType(4, DBWrapper.TYPE_CONTINENT));
+
 //        //выводим список стран первого континента
 //        DBWrapper continentPerviy = continents.get(2);
 //       System.out.println(continentPerviy.getId());
