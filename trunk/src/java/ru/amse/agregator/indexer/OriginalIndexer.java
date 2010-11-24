@@ -111,10 +111,7 @@ public class OriginalIndexer {
 
         indexDocument.addTypicalFields();
         indexDocument.addObjectCity();
-        indexDocument.addObjectDate();
         indexDocument.addObjectArchitect();
-        indexDocument.addObjectCost();
-        indexDocument.addObjectAddress();
 
         return indexDocument.getDocument();
     }
@@ -133,8 +130,6 @@ public class OriginalIndexer {
 
         indexDocument.addTypicalFields();
         indexDocument.addObjectCity();
-        indexDocument.addObjectWebsite();
-        indexDocument.addObjectRooms();
 
         return indexDocument.getDocument();
     }
@@ -144,7 +139,6 @@ public class OriginalIndexer {
 
         indexDocument.addTypicalFields();
         indexDocument.addObjectCity();
-        indexDocument.addObjectWebsite();
         indexDocument.addObjectMusic();
 
         return indexDocument.getDocument();
@@ -154,14 +148,10 @@ public class OriginalIndexer {
         private final String FIELD_TYPE = "type";
         private final String FIELD_ID = "id";
         private final String FIELD_NAME = "name";
+        private final String FIELD_DESCRIPTIONS = "descriptions";
         private final String FIELD_DESCRIPTION = "description";
         private final String FIELD_KEYWORDS = "keywords";
         private final String FIELD_CITY = "city";
-        private final String FIELD_DATE = "date";
-        private final String FIELD_COST = "cost";
-        private final String FIELD_ADDRESS = "address";
-        private final String FIELD_WEBSITE = "website";
-        private final String FIELD_ROOMS = "rooms";
         private final String FIELD_MUSIC = "music";
         private final String FIELD_ARCHITECT = "architect";
 
@@ -183,6 +173,7 @@ public class OriginalIndexer {
             addObjectType();
             addObjectId();
             addObjectName();
+            addObjectDescriptions();
             addObjectDescription();
             addObjectKeyWord();
         }
@@ -210,7 +201,7 @@ public class OriginalIndexer {
             addField(FIELD_NAME, objectName);
         }
 
-        public void addObjectDescription() {
+        public void addObjectDescriptions() {
             ArrayList<String> objectDescriptions = object.getDescriptionArray();
             if (objectDescriptions != null && !objectDescriptions.isEmpty()) {
                 StringBuffer objectDescription = new StringBuffer();
@@ -218,7 +209,15 @@ public class OriginalIndexer {
                     objectDescription.append(" ");
                     objectDescription.append(description);
                 }
-                addField(FIELD_DESCRIPTION, objectDescription.toString());
+                addField(FIELD_DESCRIPTIONS, objectDescription.toString());
+            }
+        }
+
+        private void addObjectDescription() {
+            ArrayList<String> objectDescriptions = object.getDescriptionArray();
+            if (objectDescriptions != null && !objectDescriptions.isEmpty()) {
+                String objectDescription = objectDescriptions.get(0);
+                addField(FIELD_DESCRIPTION, objectDescription);
             }
         }
 
@@ -248,34 +247,9 @@ public class OriginalIndexer {
             addField(FIELD_CITY, cityId);
         }
 
-        public void addObjectDate() {
-            String date = "" + object.getBuildDate();
-            addField(FIELD_DATE, date);
-        }
-
         public void addObjectArchitect() {
             String architect = object.getArchitect();
             addField(FIELD_ARCHITECT, architect);
-        }
-
-        public void addObjectCost() {
-            String cost = object.getCost();
-            addField(FIELD_COST, cost);
-        }
-
-        public void addObjectAddress() {
-            String address = object.getAddress();
-            addField(FIELD_ADDRESS, address);
-        }
-
-        public void addObjectWebsite() {
-            String website = object.getWebsite();
-            addField(FIELD_WEBSITE, website);
-        }
-
-        public void addObjectRooms() {
-            String rooms = object.getRooms();
-            addField(FIELD_ROOMS, rooms);
         }
 
         public void addObjectMusic() {
