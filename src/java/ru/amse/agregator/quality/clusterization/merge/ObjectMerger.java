@@ -1,15 +1,14 @@
 package ru.amse.agregator.quality.clusterization.merge;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import ru.amse.agregator.storage.DBWrapper;
-
 import java.util.Map;
 import java.util.TreeMap;
-import ru.amse.agregator.storage.UniqueId;
 
+import ru.amse.agregator.storage.UniqueId;
+import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.quality.clusterization.clusterstorage.Cluster;
 import ru.amse.agregator.storage.Database;
+import ru.amse.agregator.utils.Tools;
 
 
 /**
@@ -66,13 +65,14 @@ public class ObjectMerger extends ClusterMerger {
 
     ArrayList<String> getAttributeNames(Cluster cluster) {
         // hash set is used to eliminate duplicates
-        HashSet<String> attributeNames = new HashSet<String>();
+        ArrayList<String> attributeNames = new ArrayList<String>();
 
         for (UniqueId id : cluster.getObjectList()) {
             DBWrapper obj =  Database.getByUniqueId(id);
             attributeNames.addAll(obj.getKeySetWithoutWrapperFields());
         }
 
+        Tools.eliminateDuplicates(attributeNames);
         return new ArrayList<String>(attributeNames);
     }
 

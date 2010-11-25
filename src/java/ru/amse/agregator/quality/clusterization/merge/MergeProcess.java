@@ -22,6 +22,7 @@ final public class MergeProcess {
 
             //logging an error
             if (cluster.size() == 0) {
+                //not critical
                 System.out.println("Encountered empty cluster while merging");
                 continue;
             }

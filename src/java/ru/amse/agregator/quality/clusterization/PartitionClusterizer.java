@@ -1,18 +1,15 @@
 package ru.amse.agregator.quality.clusterization;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+
+import ru.amse.agregator.storage.DBWrapper;
+import ru.amse.agregator.storage.UniqueId;
+import ru.amse.agregator.utils.Tools;
 
 import ru.amse.agregator.quality.clusterization.clusterstorage.*;
 import ru.amse.agregator.quality.clusterization.simgraph.Graph;
-
-import java.util.TreeMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashSet;
-import ru.amse.agregator.storage.DBWrapper;
-import ru.amse.agregator.storage.UniqueId;
-
 
 /**
  *
@@ -57,8 +54,8 @@ public class PartitionClusterizer extends Clusterizer {
         }
 
         //eleminate duplicates and get unique clusters from our map
-        Set<Cluster> uniqueClusters
-                = new HashSet<Cluster>(clusterMap.values());
+        ArrayList<Cluster> uniqueClusters = new ArrayList<Cluster>(clusterMap.values());
+        Tools.eliminateDuplicates(uniqueClusters);
 
         // add resulting clusters to storage
         for (Cluster cluster : uniqueClusters) {

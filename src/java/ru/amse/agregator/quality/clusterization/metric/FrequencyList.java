@@ -34,10 +34,11 @@ final public class FrequencyList {
 
     // adds a word to dictionary or increases it's count in the list
     public void addWord(String word) {
-        Integer wordCount = dictionaryMap.get(word);
+        String normalizedWord = word.toLowerCase();
+        Integer wordCount = dictionaryMap.get(normalizedWord);
         if (wordCount == null) {
             // add a word to dictionary with a 1 count
-            dictionaryMap.put(word, 1);
+            dictionaryMap.put(normalizedWord, 1);
         } else {
             // increase a count
             ++wordCount;
@@ -46,7 +47,7 @@ final public class FrequencyList {
 
     // returns the word's count
     public int getCount(String word) {
-        Integer wordCount = dictionaryMap.get(word);
+        Integer wordCount = dictionaryMap.get(word.toLowerCase());
         if (wordCount == null) {
             return 0;
         } else {
@@ -67,8 +68,9 @@ final public class FrequencyList {
         }
     }
 
-    public Set<String> getVocabulary() {
-
+    // return vocabulary sorted by the frequency of the elements
+    public Set<String> getSortedVocabulary() {
+        // we assume the vocabulary is sorted because the set is taken from a tree map
         return dictionaryMap.keySet();
         
     }

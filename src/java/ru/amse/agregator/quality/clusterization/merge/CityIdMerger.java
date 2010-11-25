@@ -25,6 +25,7 @@ public class CityIdMerger extends AttributeMerger {
             }
         }
 
+        //@todo throw exception
         assert(cityName != null);
 
         //@todo care about switching databases here, may cause errors
