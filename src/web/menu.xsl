@@ -11,6 +11,7 @@
                         <td colspan="2" valign="top" width="20%">
                             <xsl:value-of select="menu-item[1]/name"/><br/>
                                 <xsl:for-each select="menu-item">
+							      <xsl:sort order="ascending" select="name"/> 
                                   <xsl:if test="position() != 1">
                                     <a>
                                         <xsl:attribute name="href">country.xml?id=<xsl:value-of select="id"/>

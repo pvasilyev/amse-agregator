@@ -23,7 +23,7 @@
                 <td>
                     <br/>
                     Достопримечательности города: <br/>
-                    <xsl:for-each select="//menu-item">
+                    <xsl:for-each select="//data[@id='cityPage']//menu-item">
                         <a>
                             <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>
                             </xsl:attribute>
