@@ -1,9 +1,11 @@
 package ru.amse.agregator.gui.yalets;
 
+import net.sf.xfresh.core.ErrorInfo;
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.ParseException;
+import ru.amse.agregator.gui.model.Attraction;
 import ru.amse.agregator.gui.model.AttractionManager;
 import ru.amse.agregator.searcher.Searcher;
 import ru.amse.agregator.storage.DBWrapper;
@@ -12,6 +14,7 @@ import ru.amse.agregator.storage.Database;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShowAttractionsYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
@@ -21,15 +24,21 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
         	ArrayList<String> labels = setLabels(req);
-            res.add(manager.getSearchResult(tmp, labels));
-            log.error(res.getData());
-            
+            log.error(req.getAllParameters());
+         
+            List<Attraction> result = manager.getSearchResult(tmp, labels);
+            log.error(result + "RESULT");
+            if (result.size() == 0) {
+                res.addError(new ErrorInfo("kajskajdhkasj"));
+            } else {
+                res.add(result);
+            }
         }
     }
 
     private ArrayList<String> setLabels(InternalRequest req) {
     	ArrayList<String> labels = new ArrayList<String>();
-        if (req.getParameter(String.valueOf("countryCheckbox")) != null) {
+        if (req.getParameter("countryCheckbox") != null) {
             labels.add("Country");
         }
         if (req.getParameter(String.valueOf("cityCheckbox")) != null) {

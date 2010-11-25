@@ -16,15 +16,11 @@ public class LeftMenuYalet extends AbstractAgregatorYalet{
         if (AbstractAgregatorYalet.menuItemArrayList.size() == 0) {
             Database.connectToMainBase();
             ArrayList<DBWrapper> continents = Database.getAllContinents();
-            log.error(continents);
 
             for (DBWrapper continent : continents) {
                 AbstractAgregatorYalet.menuItemArrayList.add(new LeftMenuItem(continent.getName(), continent.getId().toString()));
             }
         }
-          log.error(AbstractAgregatorYalet.menuItemArrayList);
         res.add(AbstractAgregatorYalet.menuItemArrayList);
-        log.error(res.getData());
-        
     }
 }

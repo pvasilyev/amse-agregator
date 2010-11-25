@@ -69,58 +69,62 @@
 
                         </td>
                         <td width="700px" valign="top" class="find_button">
-                            <table width="700px" valign="top">
-                                <tr>
-                                    <xsl:call-template name="find"/>
-                                </tr>
-                                <tr align="left" width="70%" class="checkbox">
-                                    <td>
-                                        <input type="checkbox" name="countryCheckbox"/>
-                                        Страна
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="cafeCheckbox"/>
-                                        Кафе
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="cityCheckbox"/>
-                                        Город
-                                    </td>
+                            <form action="attractions.xml" method="post">
 
-                                    <td>
-                                        <input type="checkbox" name="museumCheckbox"/>
-                                        Музей
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="entertainmentCheckbox"/>
-                                        Развлечения
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="shoppingCheckbox"/>
-                                        Шопинг
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="hotelCheckbox"/>
-                                        Отель
-                                    </td>
+                                <table width="700px" valign="top">
+                                    <tr>
+                                        <xsl:call-template name="find"/>
+                                    </tr>
+                                    <tr align="left" width="70%" class="checkbox">
+                                        <td>
+                                            <input type="checkbox" name="countryCheckbox"/>
+                                            Страна
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="cityCheckbox"/>
+                                            Город
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="cafeCheckbox"/>
+                                            Кафе
+                                        </td>
 
-                                </tr>
-                                <tr class="checkbox">
-                                    <td colspan="4">
-                                        <input type="checkbox" name="archAttractionCheckbox"/>
-                                        Архитектурная достопримечательность
-                                    </td>
-                                    <td colspan="4">
-                                        <input type="checkbox" name="naturalAttractionCheckbox"/>
-                                        Природная достопримечательность
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="7">
-                                        <xsl:call-template name="main"/>
-                                    </td>
-                                </tr>
-                            </table>
+                                        <td>
+                                            <input type="checkbox" name="entertainmentCheckbox"/>
+                                            Развлечения
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="shoppingCheckbox"/>
+                                            Шопинг
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="hotelCheckbox"/>
+                                            Отель
+                                        </td>
+
+                                    </tr>
+                                    <tr class="checkbox">
+                                        <td colspan="1">
+                                            <input type="checkbox" name="museumCheckbox"/>
+                                            Музей
+                                        </td>
+                                        <td colspan="3">
+                                            <input type="checkbox" name="archAttractionCheckbox"/>
+                                            Архитектурная достопримечательность
+                                        </td>
+                                        <td colspan="2">
+                                            <input type="checkbox" name="naturalAttractionCheckbox"/>
+                                            Природная достопримечательность
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <xsl:call-template name="main"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+
                         </td>
                     </tr>
                 </table>
@@ -151,13 +155,13 @@
 
     <xsl:template name="menulist">
         <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
-                <a class="left-menu-link">
-                    <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
-                    </xsl:attribute>
-                    <xsl:value-of select="name"/>
-                </a>
-                <br/>
-            </xsl:for-each>
-</xsl:template>
+            <a class="left-menu-link">
+                <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
+                </xsl:attribute>
+                <xsl:value-of select="name"/>
+            </a>
+            <br/>
+        </xsl:for-each>
+    </xsl:template>
 
-        </xsl:stylesheet>
+</xsl:stylesheet>

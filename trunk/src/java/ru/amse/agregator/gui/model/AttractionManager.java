@@ -45,19 +45,11 @@ public class AttractionManager {
         } else {
             dbwr = Searcher.search(new UserQuery(param));
         }
-
         List<Attraction> result = new ArrayList<Attraction>();
         if (dbwr.size() == 0) {
             Attraction attraction = new Attraction();
-            attraction.setType("City");
-            attraction.setName("по вашему запросу ничего не найдено");
-            attraction.setAdress(" Санкт Петербург");
-            attraction.setArchitect("sldkjfljsd");
-            attraction.setBuildDate("10/11/11");
+            attraction.setType("Error");
             result.add(attraction);
-            saveResult(result);
-            log.error("SECOND");
-            
             return result;
         }
 
@@ -65,49 +57,22 @@ public class AttractionManager {
             Attraction attraction = new Attraction();
             attraction.setType(dbwr.get(i).getType());
             attraction.setName(dbwr.get(i).getName());
-            attraction.setDescription(dbwr.get(i).getDescriptionArray().get(0));
+            String desc = dbwr.get(i).getDescriptionArray().get(0);
+            if (desc.length() > 300) {
+                attraction.setDescription(new String(desc.substring(0, 300) + " ..."));
+            } else {
+                attraction.setDescription(desc);
+            }
             attraction.setAdress(dbwr.get(i).getAddress());
             attraction.setArchitect(dbwr.get(i).getArchitect());
             attraction.setType(dbwr.get(i).getCityNameFromDB());
-            attraction.setUid(dbwr.get(i).getUniqueId());
+            attraction.setId(dbwr.get(i).getUniqueId());
+            log.error("Other ID = " + attraction.getId());
             result.add(attraction);
         }
         saveResult(result);
         return result;
     }
-
-    public List<Attraction> getSearchResult(String param) {
-        Searcher.setIndexDir(new File("../index"));
-        List<DBWrapper> dbwr = Searcher.search(new UserQuery(param));
-
-        List<Attraction> result = new ArrayList<Attraction>();
-        if (dbwr.size() == 0) {
-            Attraction attraction = new Attraction();
-            attraction.setType("City");
-            attraction.setName("по вашему запросу ничего не найдено");
-            attraction.setAdress(" Санкт Петербург");
-            attraction.setArchitect("sldkjfljsd");
-            attraction.setBuildDate("10/11/11");
-            result.add(attraction);
-            saveResult(result);
-            return result;
-        }
-
-        for (int i = 0; i < dbwr.size(); ++i) {
-            Attraction attraction = new Attraction();
-            attraction.setType(dbwr.get(i).getType());
-            attraction.setName(dbwr.get(i).getName());
-            attraction.setDescription(dbwr.get(i).getDescriptionArray().get(0));
-            attraction.setAdress(dbwr.get(i).getAddress());
-            attraction.setArchitect(dbwr.get(i).getArchitect());
-            attraction.setType(dbwr.get(i).getCityNameFromDB());
-            attraction.setUid(dbwr.get(i).getUniqueId());
-            result.add(attraction);
-        }
-        saveResult(result);
-        return result;
-    }
-
 
     //Схоранение найденного, чтобы вывести по щелчку,
     private void saveResult(List<Attraction> array) {
@@ -119,22 +84,21 @@ public class AttractionManager {
 
 
     public List<Attraction> getAttractionById(String id) {
-        Database.connectToDirtyBase();
-        ObjectId selectedCity = new ObjectId(id);
+        Database.connectToMainBase();
+        ObjectId selectedItem = new ObjectId(id);
 
-        DBWrapper city = Database.getDBObjectByIdAndType(selectedCity, DBWrapper.TYPE_CITY);
-
+        DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, DBWrapper.TYPE_ARCH_ATTRACTION);
 
         List<Attraction> result = new ArrayList<Attraction>();
 
         Attraction attraction = new Attraction();
-        attraction.setType(city.getType());
-        attraction.setName(city.getName());
-        attraction.setDescription(city.getDescriptionArray().get(0));
-        attraction.setAdress(city.getAddress());
-        attraction.setArchitect(city.getArchitect());
-        attraction.setType(city.getCityNameFromDB());
-        attraction.setUid(city.getUniqueId());
+        attraction.setType(dbwr.getType());
+        attraction.setName(dbwr.getName());
+        attraction.setDescription(dbwr.getDescriptionArray().get(0));
+        attraction.setAdress(dbwr.getAddress());
+        attraction.setArchitect(dbwr.getArchitect());
+        attraction.setType(dbwr.getCityNameFromDB());
+        attraction.setId(dbwr.getUniqueId());
         result.add(attraction);
         return result;
 
