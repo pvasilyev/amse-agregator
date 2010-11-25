@@ -5,9 +5,12 @@
 
     <xsl:template name="main">
         <xsl:for-each select="//collection">
-            <xsl:for-each select="attraction">
-
-                <!--<xsl:if test="type != ''">-->
+            <xsl:for-each select="//data[@id='showAttractions']//attraction">
+                <xsl:if test="type = 'Error'">
+                    <br/>
+                    По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска или воспользуйтесь нашим
+                    каталогом.
+                </xsl:if>
 
                 <!--<xsl:variable name="c">City</xsl:variable>-->
                 <!--<xsl:if test="type = 'City')">-->
@@ -26,7 +29,7 @@
                             <i class="b-serp-item__favicon"></i>
                             <h2 class="b-serp-item__title">
                                 <a>
-                                    <xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>
+                                    <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="name"/>
                                 </a>
@@ -44,6 +47,10 @@
                     </tr>
 
                 </table>
+            </xsl:for-each>
+            <xsl:for-each select="error">
+                <xsl:value-of select="name"/>
+                sdlksfljsdlf
             </xsl:for-each>
         </xsl:for-each>
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Attraction {
-    private UniqueId uid;
+    private UniqueId id;
     private String type = "";
     private String name = "";
     private String description = "";
@@ -20,12 +20,12 @@ public class Attraction {
 
     boolean isCity = false;
 
-    public UniqueId getUid() {
-        return uid;
+    public UniqueId getId() {
+        return id;
     }
 
-    public void setUid(UniqueId uid) {
-        this.uid = uid;
+    public void setId(UniqueId id) {
+        this.id = id;
     }
 
     public String getName() {

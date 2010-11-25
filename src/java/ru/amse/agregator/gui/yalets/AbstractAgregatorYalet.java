@@ -21,5 +21,6 @@ public abstract class AbstractAgregatorYalet implements Yalet {
     @Required
     public void setManager(AttractionManager manager) {
         this.manager = manager;
+      
     }
 }

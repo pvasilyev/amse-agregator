@@ -8,21 +8,21 @@
             <tr>
                 <td class="title">
                     <br/>
-                    Название города: <br/>
+                    Название: <br/>
                     <xsl:value-of select="//name"/>
                 </td>
             </tr>
             <tr>
                 <td class="description">
                     <br/>
-                    Описание города: <br/>
+                    Описание: <br/>
                     <xsl:value-of select="//description"/>
                 </td>
             </tr>
             <tr>
                 <td>
                     <br/>
-                    Достопримечательности города: <br/>
+                    Достопримечательности: <br/>
                     <xsl:for-each select="//data[@id='cityPage']//menu-item">
                         <a>
                             <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>
