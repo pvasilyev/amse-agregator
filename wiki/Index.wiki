@@ -13,7 +13,7 @@ Jar-файл лежит в папке `trunk/libs/`
 Подключить
 {{{
 import ru.amse.agregator.storage.*;
-import ru.amse.agregator.indexer.Indexer;
+import ru.amse.agregator.indexer.OriginalIndexer;
 import ru.amse.agregator.utils.ToolsForWorkWithFiles;
 }}}
 Если нужно создать индекс, используется `static` метод 
