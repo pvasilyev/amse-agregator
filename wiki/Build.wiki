@@ -38,6 +38,24 @@ export PATH=${PATH}:${ANT_HOME}/bin
 {{{
 ant
 }}}
+ # Запускаете нужный компонент.
+ Запустить майнер, на сборку с сайтов, чьи конфиг-файлы лежат в resources/miner:
+{{{
+ant run_miner
+}}}
+ Запустить кластеризатор, создаётся чистая база:
+{{{
+ant run_clusterizer
+}}}
+ Запустить индексатор на создание индекса чистой базы:
+{{{
+ant run_indexer
+}}}
+ Запустить сервер с GUI, http://localhost:8080/attractions.xml :
+{{{
+ant run_gui
+}}}
+-----
  * Так же можно:
  Только скомпилировать:
 {{{
@@ -47,7 +65,7 @@ ant compile
 {{{
 ant dist
 }}}
- Скомпилировать и настроить gui на tomcat. (директория tomcat'а задается в файле build.properties)
+ Скомпилировать и настроить gui.
 {{{
 ant gui
 }}}
@@ -59,22 +77,7 @@ ant install
 {{{
 ant clean
 }}}
- Удалить gui из tomcat'а:
+ Посмотреть хелп по запуску:
 {{{
-ant clean-gui
+ant help
 }}}
- Очистить и то и другое:
-{{{
-ant clean-all
-}}}
------
-В результате создастся папка build, внутри которой будут все скомпилированные .class файлы. А также папка dist в которой будут исполняемые .jar архивы. Также создастся папка 'agregator-gui' в ${tomcat.dir}/webapps/
-
-Как использовать созданный miner:
-{{{
-java -jar "dist/miner-${DSTAMP}.jar" "resources/miner/"
-}}}
-
-А GUI теперь находится по адресу: [http://localhost:8080/agregator-gui/attractions.xml] (незабываем перезапустить tomcat - тоже в ant добавить?)
------
-===Также всем (miner,indexer,quality,*gui*) просьба выложить мини-инструкцию по запуску вашей части и от кого вы и как зависите.===
