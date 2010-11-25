@@ -3,7 +3,7 @@ package ru.amse.agregator.test;
 import ru.amse.agregator.searcher.UserQuery;
 import org.junit.Test;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -25,7 +25,7 @@ public class UserQueryTest {
 
     @Test
     public void testSecondConstructor() {
-        Vector<String> labels = new Vector<String>();
+        ArrayList<String> labels = new ArrayList<String>();
         labels.add("0");
         labels.add("1");
         labels.add("2");
@@ -45,7 +45,7 @@ public class UserQueryTest {
 
     @Test
     public void testSetLabelsToEmptyQuery() {
-        Vector<String> labels = new Vector<String>();
+        ArrayList<String> labels = new ArrayList<String>();
         labels.add("0");
         labels.add("1");
         labels.add("2");
@@ -59,12 +59,12 @@ public class UserQueryTest {
 
     @Test
     public void testSetLabelsToNotEmptyQuery() {
-        Vector<String> labels = new Vector<String>();
+    	ArrayList<String> labels = new ArrayList<String>();
         labels.add("0");
         labels.add("1");
         labels.add("2");
         query = new UserQuery("Test", labels);
-        labels = new Vector<String>();
+        labels = new ArrayList<String>();
         labels.add("3");
         labels.add("4");
         labels.add("5");
@@ -87,7 +87,7 @@ public class UserQueryTest {
 
     @Test
     public void testAddLabelToNotEmpryQuery() {
-        Vector<String> labels = new Vector<String>();
+    	ArrayList<String> labels = new ArrayList<String>();
         labels.add("0");
         labels.add("1");
         labels.add("2");

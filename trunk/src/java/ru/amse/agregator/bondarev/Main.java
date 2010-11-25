@@ -22,22 +22,22 @@ public class Main {
     public static void main(String[] args) {
         File indexDir = new File("index");
 
-        Database.connectToDirtyBase();
-        //writeDateToDB();
-        Database.printAll();
-        try {
-            Indexer.makeNewIndex(indexDir);
-            Searcher.setIndexDir(indexDir);
-            Searcher.search(new UserQuery("Колизей"));
-        } catch (IOException e) {
-            System.out.println("IOException! Message: " + e.getMessage());
-        } catch (ParseException e) {
-            System.out.println("ParseException! Message: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Exception! Message: " + e.getMessage());
-        }
-
-        System.out.println("Done!");
+//        Database.connectToDirtyBase();
+//        //writeDateToDB();
+//        Database.printAll();
+//        try {
+//            Indexer.makeNewIndex(indexDir);
+//            Searcher.setIndexDir(indexDir);
+//            Searcher.search(new UserQuery("Колизей"));
+//        } catch (IOException e) {
+//            System.out.println("IOException! Message: " + e.getMessage());
+//        } catch (ParseException e) {
+//            System.out.println("ParseException! Message: " + e.getMessage());
+//        } catch (Exception e) {
+//            System.out.println("Exception! Message: " + e.getMessage());
+//        }
+//
+//        System.out.println("Done!");
     }
 
     @SuppressWarnings("unused")

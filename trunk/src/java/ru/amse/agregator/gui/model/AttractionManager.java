@@ -36,7 +36,7 @@ public class AttractionManager {
     }
 
     //Получение данных из базы
-    public List<Attraction> getSearchResult(String param, Vector<String> vector) {
+    public List<Attraction> getSearchResult(String param, ArrayList<String> vector) {
         Searcher.setIndexDir(new File("index"));
         log.error("vector - " + vector);
         ArrayList<DBWrapper> dbwr;
