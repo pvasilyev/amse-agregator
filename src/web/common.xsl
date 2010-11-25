@@ -150,9 +150,7 @@
     </xsl:template>
 
     <xsl:template name="menulist">
-        <xsl:for-each select="//collection">
-            <xsl:if test="left-menu-item !=''">
-            <xsl:for-each select="left-menu-item">
+        <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
                 <a class="left-menu-link">
                     <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
                     </xsl:attribute>
@@ -160,10 +158,6 @@
                 </a>
                 <br/>
             </xsl:for-each>
-            </xsl:if>
-            
-        </xsl:for-each>
-
 </xsl:template>
 
         </xsl:stylesheet>
