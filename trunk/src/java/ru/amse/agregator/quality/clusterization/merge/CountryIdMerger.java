@@ -25,12 +25,12 @@ public class CountryIdMerger extends AttributeMerger {
             }
         }
 
+        //@todo throw exception
         assert(countryName != null);
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
         resultingObject.setCountryByName(countryName);
-        resultingObject = resultingObject;
     }
 
 }

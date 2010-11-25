@@ -25,13 +25,8 @@ public class ContinentiIdMerger extends AttributeMerger {
             }
         } 
 
+        //@todo throw exception
         assert(continentName != null);
-        // @todo do some logging
-//        for (UniqueId id : cluster.getObjectList()) {
-//            if ()
-//            DBWrapper obj = Database.getByUniqueId(id);
-//
-//        }
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
