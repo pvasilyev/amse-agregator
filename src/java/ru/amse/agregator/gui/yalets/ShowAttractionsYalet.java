@@ -12,7 +12,6 @@ import ru.amse.agregator.storage.Database;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class ShowAttractionsYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
@@ -21,15 +20,15 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
     public void process(InternalRequest req, InternalResponse res) {
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
-            Vector<String> labels = setLabels(req);
+        	ArrayList<String> labels = setLabels(req);
             res.add(manager.getSearchResult(tmp, labels));
             log.error(res.getData());
             
         }
     }
 
-    private Vector<String> setLabels(InternalRequest req) {
-        Vector<String> labels = new Vector<String>();
+    private ArrayList<String> setLabels(InternalRequest req) {
+    	ArrayList<String> labels = new ArrayList<String>();
         if (req.getParameter(String.valueOf("countryCheckbox")) != null) {
             labels.add("Country");
         }
