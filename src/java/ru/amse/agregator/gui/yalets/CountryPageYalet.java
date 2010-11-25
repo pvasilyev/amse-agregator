@@ -16,7 +16,7 @@ public class CountryPageYalet implements Yalet {
 
 	public void process(InternalRequest req, InternalResponse res) {
 		
-		Database.connectToDirtyBase();
+		Database.connectToMainBase();
 		String id = req.getParameter("id");
 		ObjectId selectedCountry = new ObjectId(id);
 		
