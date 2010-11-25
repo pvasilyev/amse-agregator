@@ -14,7 +14,7 @@ public class LeftMenuYalet extends AbstractAgregatorYalet{
 
     public void process(InternalRequest req, InternalResponse res) {
         if (AbstractAgregatorYalet.menuItemArrayList.size() == 0) {
-            Database.connectToDirtyBase();
+            Database.connectToMainBase();
             ArrayList<DBWrapper> continents = Database.getAllContinents();
             log.error(continents);
 

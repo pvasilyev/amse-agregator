@@ -21,7 +21,7 @@ public class CityPageYalet implements Yalet{
 	@Override
 	public void process(InternalRequest req, InternalResponse res) {
 
-		Database.connectToDirtyBase();
+		Database.connectToMainBase();
 		String id = req.getParameter("id");
 		ObjectId selectedCity = new ObjectId(id);
 

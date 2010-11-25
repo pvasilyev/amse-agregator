@@ -16,7 +16,7 @@ public class ContinentPageYalet implements Yalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
     public void process(InternalRequest req, InternalResponse res) {
-        Database.connectToDirtyBase();
+        Database.connectToMainBase();
 
         ObjectId selectedContinent = new ObjectId(req.getParameter("id"));
         DBWrapper continent = Database.getDBObjectByIdAndType(selectedContinent, DBWrapper.TYPE_CONTINENT);
