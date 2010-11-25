@@ -111,7 +111,7 @@
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
                 <attribute name="Main-Class" value="ru.amse.agregator.quality.clusterization.ClusterizationProcess"/>
-                <attribute name="Class-Path" value="${quality_libs_manifest} ${build.dir}/"/>
+                <attribute name="Class-Path" value="${quality_libs_manifest} ${build.classes.dir}/"/>
             </manifest>
         </jar>
 
@@ -195,10 +195,10 @@
         <echo level="info">ant run_clusterizer 
 | Run clusterization on dirtyDB, and creating mainDB
         </echo>
-        <echo level="info">ant run_indexer     
+        <echo level="info">ant run_indexer
 | Run indexation on mainDB, and creating index-files in build/index
         </echo>
-        <echo level="info">ant run_gui         
+        <echo level="info">ant run_gui
 | Run gui server on port 8080
         </echo>
     </target>
