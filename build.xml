@@ -102,7 +102,7 @@
             <include name="ru/amse/agregator/indexer/**/*.*"/>
             <manifest>
                 <attribute name="Built-By" value="Agregator's build.xml"/>
-                <attribute name="Main-Class" value="ru.amse.agregator.indexer.IndexerMain"/>
+                <attribute name="Main-Class" value="ru.amse.agregator.indexer.IndexMain"/>
                 <attribute name="Class-Path" value="${indexer_libs_manifest} ${build.classes.dir}/"/>
             </manifest>
         </jar>
@@ -117,14 +117,6 @@
 
         <!-- Даём права на выполнение, созданным джарникам -->
         <chmod dir="${dist.dir}" perm="744" includes="**/*.jar"/>
-
-        <!-- Как пользоваться. -->
-        <echo level="info">
-
-            Now, to run miner your must type:
-            java -jar "${dist.dir.name}/miner.jar" "resources/miner/"
-
-        </echo>
     </target>
 
     <target name="gui" depends="compile"
@@ -163,19 +155,19 @@
     
     <target name="run_miner" depends="dist"
         description="run mining from sites, which config-files in resources/miner">
-        <java dir="${project.dir}" jar="${dist.dir}/miner.jar">
+        <java dir="${project.dir}" jar="${dist.dir}/miner.jar" fork="true">
             <arg value="resources/miner/" />
         </java>
     </target>
     
     <target name="run_clusterizer" depends="dist"
         description="run clusterization on dirtyDB, and creating mainDB">
-        <java dir="${project.dir}" jar="${dist.dir}/clusterizer.jar" />
+        <java dir="${project.dir}" jar="${dist.dir}/clusterizer.jar" fork="true"/>
     </target>
     
     <target name="run_indexer" depends="dist"
         description="run indexation on mainDB, and creating index-files in build/index">
-        <java dir="${project.dir}" jar="${dist.dir}/indexer.jar" >
+        <java dir="${project.dir}" jar="${dist.dir}/indexer.jar" fork="true">
             <arg value="-n" />
             <arg value="--dir" />
             <arg value="${index.dir}" />
@@ -193,6 +185,24 @@
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
     </target>
+    
+    <target name="help"
+        description="write help">
+        <!-- Как пользоваться. -->
+        <echo level="info">ant run_miner
+| Run mining from sites, which config-files in resources/miner
+        </echo>
+        <echo level="info">ant run_clusterizer 
+| Run clusterization on dirtyDB, and creating mainDB
+        </echo>
+        <echo level="info">ant run_indexer     
+| Run indexation on mainDB, and creating index-files in build/index
+        </echo>
+        <echo level="info">ant run_gui         
+| Run gui server on port 8080
+        </echo>
+    </target>
+
 
 </project>
 
