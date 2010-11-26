@@ -14,14 +14,29 @@ public class StorageTester {
         // TODO Auto-generated method stub
     	
    
-        Database.connectToMainBase();
+        //Database.connectToDirtyBase();  
+        //Database.createIndexes();
 
+        Database.connectToMainBase();
+        //Database.createIndexes();
+        
+        
+        
         ArrayList<DBWrapper> continents = Database.getAllContinents();
         for(DBWrapper continent : continents){
-        	System.out.println(continent.getName() + " айдишник континента: " + continent.getId());
-        	//вывели список континентов с сылочками в которых хранится айдишник.
+        	System.out.println(continent.getName() + " : " + continent.getId());
+        	
+            ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continent.getId());
+            for(DBWrapper country : countries){
+            	System.out.println(country.getName() + " : " + country.getId());   	
+            	ArrayList<DBWrapper> topCities = Database.getTopNWithKeyValue(10, DBWrapper.TYPE_CITY,DBWrapper.FIELD_COUNTRY_ID,country.getId());
+                for(DBWrapper city : topCities){
+                	System.out.println(city.getName() + " : " + city.getRating());
+                }
+                System.in.read();
+            }
+        	
         }
-        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
         Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
         Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
 
