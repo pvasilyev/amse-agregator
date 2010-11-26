@@ -19,9 +19,10 @@ public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
 
     public static enum DatabaseEnum {
-       mainDB,
-       dirtyDB
+        mainDB,
+        dirtyDB
     }
+
     public static DatabaseEnum databaseName = DatabaseEnum.mainDB;
 
     public static void connectToDatabase() {
@@ -88,7 +89,6 @@ public class AttractionManager {
         ObjectId selectedItem = new ObjectId(id);
 
         DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, type);
-        log.error("DBWR AM " + dbwr);
 
         List<Attraction> result = new ArrayList<Attraction>();
 
@@ -103,7 +103,8 @@ public class AttractionManager {
         attraction.setId(dbwr.getId().toString());
         attraction.setType(dbwr.getType());
         attraction.setName(dbwr.getName());
-        attraction.setDescription(dbwr.getDescriptionArray().get(0));
+        if (!attraction.getType().equals("Continent")) {
+           attraction.setDescription(dbwr.getDescriptionArray().get(0));
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
 //        attraction.setDate_foundation(dbwr.getBuildDate().toString());
@@ -112,25 +113,46 @@ public class AttractionManager {
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
 //        attraction.setWebsite(dbwr.getWebsite());
-//        attraction.setRooms(dbwr.getRooms());
+//        attraction.setRooms(dbwr.getRooms()); 
+        }
+
+
+        if (attraction.getType().equals("City") || attraction.getType().equals("Country") || attraction.getType().equals("Continent")) {
+            attraction.setAttractionList(addListOfAttractions(attraction));
+        }
+        result.add(attraction);
+
+        return result;
+    }
+
+    private ArrayList<MenuItem> addListOfAttractions(Attraction attraction) {
+        ArrayList<MenuItem> links = new ArrayList<MenuItem>();
 
         if (attraction.getType().equals("City")) {
             ArrayList<String> list = Database.getAllTypesOfObjectByCity(new ObjectId(attraction.getId()));
-
-            ArrayList<MenuItem> links = new ArrayList<MenuItem>();
-
             for (String tmp : list) {
-                ArrayList<DBWrapper> array = Database.getAllObjectOfSelectedTypeInCity(new ObjectId(id), tmp);
+                ArrayList<DBWrapper> array = Database.getAllObjectOfSelectedTypeInCity(new ObjectId(attraction.getId()), tmp);
                 for (DBWrapper dbwrArray : array) {
-                    MenuItem menuItem = new MenuItem(dbwrArray.getName(), dbwrArray.getId().toString());
-                    menuItem.setType(dbwrArray.getType());
-                    links.add(menuItem);
+                    links.add(new MenuItem(dbwrArray.getName(), dbwrArray.getId().toString(), dbwrArray.getType()));
                 }
             }
-            attraction.setAttractionList(links);
         }
-        result.add(attraction);
-        
-        return result;
+
+        if (attraction.getType().equals("Country")) {
+            ArrayList<DBWrapper> array = Database.getAllCitiesByCountry(new ObjectId(attraction.getId()));
+            for (DBWrapper dbwrArray : array) {
+                links.add(new MenuItem(dbwrArray.getName(), dbwrArray.getId().toString(), DBWrapper.TYPE_CITY));
+            }
+        }
+
+        if (attraction.getType().equals("Continent")) {
+            ArrayList<DBWrapper> array = Database.getAllCountriesByContinent(new ObjectId(attraction.getId()));
+            for (DBWrapper dbwrArray : array) {
+                links.add(new MenuItem(dbwrArray.getName(), dbwrArray.getId().toString(), DBWrapper.TYPE_COUNTRY));
+            }
+        }
+
+        return links;
+
     }
 }

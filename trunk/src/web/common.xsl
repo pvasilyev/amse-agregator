@@ -156,9 +156,10 @@
     <xsl:template name="menulist">
         <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
             <a class="left-menu-link">
-                <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="id"/>
-                </xsl:attribute>
-                <xsl:value-of select="name"/>
+                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
+                                </xsl:attribute>
+                    <xsl:value-of select="name"/>
             </a>
             <br/>
         </xsl:for-each>

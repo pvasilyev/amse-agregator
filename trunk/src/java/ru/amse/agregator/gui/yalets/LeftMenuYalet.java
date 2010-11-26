@@ -19,7 +19,7 @@ public class LeftMenuYalet extends AbstractAgregatorYalet{
             ArrayList<DBWrapper> continents = Database.getAllContinents();
 
             for (DBWrapper continent : continents) {
-                AbstractAgregatorYalet.menuItemArrayList.add(new LeftMenuItem(continent.getName(), continent.getId().toString()));
+                AbstractAgregatorYalet.menuItemArrayList.add(new LeftMenuItem(continent.getName(), continent.getId().toString(), DBWrapper.TYPE_CONTINENT));
             }
         }
         res.add(AbstractAgregatorYalet.menuItemArrayList);

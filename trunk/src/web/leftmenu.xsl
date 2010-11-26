@@ -7,8 +7,7 @@
             <xsl:for-each select="left-menu-item">
 
                 <a>
-                    <xsl:attribute name="href">country.xml?id=
-                        <xsl:value-of select="id"/>
+                    <xsl:attribute name="href">country.xml?id=<xsl:value-of select="id"/>
                     </xsl:attribute>
                     <xsl:value-of select="name"/>
                 </a>

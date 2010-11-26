@@ -11,9 +11,6 @@ public class ShowAttractionDescYalet extends AbstractAgregatorYalet {
    
     @Override
     public void process(InternalRequest req, InternalResponse res) {
-        String tmp = req.getParameter("id");
-        String type = req.getParameter("type");
-        res.add(manager.getAttractionById(tmp.toString(), type));
-
+        res.add(manager.getAttractionById(req.getParameter("id"), req.getParameter("type")));
     }
 }
