@@ -4,6 +4,7 @@ public class MenuItem {
 
 	private String name;
 	private String id;
+    private String type = "";
 	
 	public MenuItem(String name , String id){
 		this.name = name;
@@ -14,5 +15,12 @@ public class MenuItem {
 	public void setId(String id){ this.id = id;	}
 	public String getName() { return name; }
 	public String getId() { return id; }
-	
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

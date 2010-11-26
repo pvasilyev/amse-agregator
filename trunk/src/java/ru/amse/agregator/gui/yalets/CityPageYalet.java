@@ -30,18 +30,25 @@ public class CityPageYalet implements Yalet{
 		Attraction response = new Attraction();
 		response.setName(city.getName());
 		response.setDescription(city.getDescriptionArray().get(0));
-		response.setPhotoArray(city.getImagesArray());
+//		response.setImageArray(city.getImagesArray());
 
 		ArrayList<String> list = Database.getAllTypesOfObjectByCity(selectedCity);
 
 		ArrayList<MenuItem> links = new ArrayList<MenuItem>();
 
 		for(String tmp : list){
-			MenuItem newCity = new MenuItem(tmp , id);
-			links.add(newCity);
+            ArrayList<DBWrapper> array = Database.getAllObjectOfSelectedTypeInCity(new ObjectId(id), tmp);
+            for (DBWrapper dbwr: array) {
+                MenuItem attraction = new MenuItem(dbwr.getName(), dbwr.getId().toString());
+                attraction.setType(dbwr.getType());
+                links.add(attraction);
+            }
+//			MenuItem newCity = new MenuItem(tmp , id);
+//            newCity.setType(tmp);
+//			links.add(newCity);
 		}
-        log.error(links);
-		response.setAttactionList(links);
+//        log.error(links);
+		response.setAttractionList(links);
 		res.add(response);
 	}
 }

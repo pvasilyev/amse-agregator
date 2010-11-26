@@ -10,6 +10,10 @@
 
     <xsl:template match="collection" mode="show">
         <xsl:for-each select="attraction">
+            <xsl:if test="type = 'Error'">
+                    <br/>
+                Описание не надено. Попробуйте еще раз.
+            </xsl:if>
 
             <table>
                 <tr>
@@ -27,7 +31,7 @@
                     <!--</td>-->
                     <td width="50%" align="left">
                         <!--<xsl:if test="position() mod 2 = 0">-->
-                            <h2 class="b-serp-item__title">
+                            <h2 class="title">
                                 <text class="attraction_name_big">
                                     <xsl:value-of select="name"/>
                                 </text>
@@ -39,7 +43,7 @@
                 </tr>
 
                 <tr>
-                    <td class="b-serp-item__text" colspan="2">
+                    <td class="description" colspan="2">
                         <xsl:if test="description != ''">
                             Описание: <xsl:value-of select="description"/>
                         </xsl:if>
