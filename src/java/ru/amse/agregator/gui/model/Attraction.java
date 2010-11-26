@@ -1,31 +1,35 @@
 package ru.amse.agregator.gui.model;
 
-import ru.amse.agregator.storage.DBWrapper;
-import ru.amse.agregator.storage.UniqueId;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+
+import org.bson.types.ObjectId;
 
 public class Attraction {
-    private UniqueId id;
+    private String id = "";
     private String type = "";
-    private String name = "";
+    private String name  = "";
     private String description = "";
+    private String coordinates = "";
+    private String images = "";
+    private String keywords = "";
+    private String date_foundation = "";
     private String architect = "";
-    private String adress = "";
-    private String buildDate = "";
-    private ArrayList<String> photoArray = new ArrayList<String>();
+    private String cost = "";
+    private String address = "";
+    private String music = "";
+    private String website = "";
+    private String rooms = "";
+    private String rating = "";
+    private List<MenuItem> attractionList = new ArrayList<MenuItem>();
 
-    private ArrayList<MenuItem> attactionList = new ArrayList<MenuItem>();
-
-    boolean isCity = false;
-
-    public UniqueId getId() {
-        return id;
+    public String getType() {
+        return type;
     }
 
-    public void setId(UniqueId id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -36,36 +40,28 @@ public class Attraction {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCoordinates() {
+        return coordinates;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public String getType() {
-        return type;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
-    public String getBuildDate() {
-        return buildDate;
+    public String getDate_foundation() {
+        return date_foundation;
     }
 
-    public void setBuildDate(String buildDate) {
-        this.buildDate = buildDate;
-    }
-
-    public ArrayList<String> getPhotoArray() {
-        return photoArray;
-    }
-
-    public void setPhotoArray(ArrayList<String> photoArray) {
-        this.photoArray = photoArray;
+    public void setDate_foundation(String date_foundation) {
+        this.date_foundation = date_foundation;
     }
 
     public String getArchitect() {
@@ -76,20 +72,67 @@ public class Attraction {
         this.architect = architect;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getCost() {
+        return cost;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 
-
-    public ArrayList<MenuItem> getAttactionList() {
-        return attactionList;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAttactionList(ArrayList<MenuItem> attactionList) {
-        this.attactionList = attactionList;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMusic() {
+        return music;
+    }
+
+    public void setMusic(String music) {
+        this.music = music;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(String rooms) {
+        this.rooms = rooms;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<MenuItem> getAttractionList() {
+        return attractionList;
+    }
+
+    public void setAttractionList(List<MenuItem> attractionList) {
+        this.attractionList = attractionList;
     }
 }

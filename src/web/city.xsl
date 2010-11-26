@@ -9,14 +9,14 @@
                 <td class="title">
                     <br/>
                     Название: <br/>
-                    <xsl:value-of select="//name"/>
+                    <xsl:value-of select="//data[@id='cityPage']//name"/>
                 </td>
             </tr>
             <tr>
                 <td class="description">
                     <br/>
                     Описание: <br/>
-                    <xsl:value-of select="//description"/>
+                    <xsl:value-of select="//data[@id='cityPage']//description"/>
                 </td>
             </tr>
             <tr>
@@ -25,61 +25,15 @@
                     Достопримечательности: <br/>
                     <xsl:for-each select="//data[@id='cityPage']//menu-item">
                         <a>
-                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>
-                            </xsl:attribute>
+                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
+                                    </xsl:attribute>
                             <xsl:value-of select="name"/>
                         </a>
                         <br/>
                     </xsl:for-each>
-
                 </td>
-
             </tr>
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<xsl:value-of select="//description-model/name"/>-->
-            <!--</td>-->
-            <!--<td rowspan="2" valign="top">-->
-            <!--<xsl:for-each select="//menu-item">-->
-            <!--<a>-->
-            <!--<xsl:attribute name="href">city.xml?id=<xsl:value-of select="id"/>-->
-            <!--</xsl:attribute>-->
-            <!--<xsl:value-of select="name"/>-->
-            <!--</a><br/>-->
-            <!--</xsl:for-each>-->
-            <!---->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td align="justify">-->
-            <!--<xsl:value-of select="//description"/>-->
-            <!--</td>-->
-            <!--</tr>-->
         </table>
-
-        <!--<table width="100%">-->
-            <!--<tr>-->
-                <!--<td>-->
-                    <!--<xsl:value-of select="//name"/>-->
-                <!--</td>-->
-                <!--<td rowspan="2" valign="top">-->
-                    <!--<xsl:for-each select="//menu-item">-->
-                        <!--<a>-->
-                            <!--<xsl:attribute name="href">attr.xml?id=<xsl:value-of select="id"/>-->
-                            <!--</xsl:attribute>-->
-                            <!--<xsl:value-of select="name"/>-->
-                        <!--</a>-->
-                        <!--<br/>-->
-                    <!--</xsl:for-each>-->
-
-                <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td align="justify">-->
-                    <!--<xsl:value-of select="//description"/>-->
-                <!--</td>-->
-            <!--</tr>-->
-        <!--</table>-->
-
     </xsl:template>
 </xsl:stylesheet>

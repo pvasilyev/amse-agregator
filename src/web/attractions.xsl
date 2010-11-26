@@ -5,11 +5,10 @@
 
     <xsl:template name="main">
         <xsl:for-each select="//collection">
-            <xsl:for-each select="//data[@id='showAttractions']//attraction">
+            <xsl:for-each select="attraction">
                 <xsl:if test="type = 'Error'">
                     <br/>
-                    По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска или воспользуйтесь нашим
-                    каталогом.
+                    По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска или воспользуйтесь нашим каталогом.
                 </xsl:if>
 
                 <!--<xsl:variable name="c">City</xsl:variable>-->
@@ -29,7 +28,8 @@
                             <i class="b-serp-item__favicon"></i>
                             <h2 class="b-serp-item__title">
                                 <a>
-                                    <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>
+                                    <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="name"/>
                                 </a>

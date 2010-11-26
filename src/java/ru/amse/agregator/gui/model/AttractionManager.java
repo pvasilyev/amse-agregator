@@ -24,7 +24,6 @@ public class AttractionManager {
     public List<Attraction> getAllAttraction() {
         List<Attraction> result = new ArrayList<Attraction>();
 
-
         for (int i = 1; i < 5; i++) {
             Attraction attraction = new Attraction();
             attraction.setType("City");
@@ -63,10 +62,9 @@ public class AttractionManager {
             } else {
                 attraction.setDescription(desc);
             }
-            attraction.setAdress(dbwr.get(i).getAddress());
-            attraction.setArchitect(dbwr.get(i).getArchitect());
-            attraction.setType(dbwr.get(i).getCityNameFromDB());
-            attraction.setId(dbwr.get(i).getUniqueId());
+//            attraction.setType(dbwr.get(i).getCityNameFromDB());
+            attraction.setId(dbwr.get(i).getId().toString());
+
             log.error("Other ID = " + attraction.getId());
             result.add(attraction);
         }
@@ -83,24 +81,37 @@ public class AttractionManager {
     }
 
 
-    public List<Attraction> getAttractionById(String id) {
+    public List<Attraction> getAttractionById(String id, String type) {
         Database.connectToMainBase();
         ObjectId selectedItem = new ObjectId(id);
 
-        DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, DBWrapper.TYPE_ARCH_ATTRACTION);
+        DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, type);
+        log.error("DBWR AM " + dbwr);
 
         List<Attraction> result = new ArrayList<Attraction>();
 
+        if (dbwr == null) {
+            Attraction attraction = new Attraction();
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+
         Attraction attraction = new Attraction();
+        attraction.setId(dbwr.getId().toString());
         attraction.setType(dbwr.getType());
         attraction.setName(dbwr.getName());
         attraction.setDescription(dbwr.getDescriptionArray().get(0));
-        attraction.setAdress(dbwr.getAddress());
-        attraction.setArchitect(dbwr.getArchitect());
-        attraction.setType(dbwr.getCityNameFromDB());
-        attraction.setId(dbwr.getUniqueId());
+//        attraction.setCoordinates(dbwr.getCoords().toString());
+//        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
+//        attraction.setDate_foundation(dbwr.getBuildDate().toString());
+//        attraction.setArchitect(dbwr.getArchitect());
+//        attraction.setCost(dbwr.getCost());
+//        attraction.setAddress(dbwr.getAddress());
+//        attraction.setMusic(dbwr.getMusic());
+//        attraction.setWebsite(dbwr.getWebsite());
+//        attraction.setRooms(dbwr.getRooms());
         result.add(attraction);
         return result;
-
     }
 }
