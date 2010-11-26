@@ -11,77 +11,87 @@
     <xsl:template match="//collection" mode="show">
         <xsl:for-each select="attraction">
             <xsl:if test="type = 'Error'">
-                    <br/>
-                    <text-area class="description">Информация временно недоступна.
-                    </text-area>
-                </xsl:if>
+                <br/>
+                <text-area class="description">Информация временно недоступна.
+                </text-area>
+            </xsl:if>
 
-            <table>
+            <table width="100%">
                 <tr>
-                    <!--<td>-->
-                        <!--<b class="b-serp-item__number">-->
-                            <!--<xsl:template match="collection/attraction" mode="show">-->
-                                <!--<xsl:for-each select="photoArray">-->
-                                    <!--<img src="{photos}" class="little_image"/>-->
+                    <td width="30%">
+                        <xsl:if test="image != ''">
+                            <img src="{image}" class="big_image"/>
+                            <!--<xsl:for-each select="//data[@id='showAttractionDesc']//images-array">-->
+                                <!--<xsl:value-of select="string"/>-->
+                                <!--<xsl:for-each select="//data[@id='showAttractionDesc']//string">-->
+                                    <!--<xsl:variable name="image">-->
+                                        <!--<xsl:value-of select="//string"/>-->
+                                    <!--</xsl:variable>-->
+
+                                    <!--<img src="{$image}" class="little_image"/>-->
+
+                                    <!--<br/>-->
                                 <!--</xsl:for-each>-->
 
-                            <!--</xsl:template>-->
+                            <!--</xsl:for-each>-->
+                        </xsl:if>
 
-                        <!--</b>-->
-
-                    <!--</td>-->
-                    <td width="50%" align="left">
-                        <!--<xsl:if test="position() mod 2 = 0">-->
-                            <h2 class="title">
-                                <text class="attraction_name_big">
-                                    <xsl:value-of select="name"/>
-                                </text>
-
-                            </h2>
-                        <!--</xsl:if>-->
-
+                    </td>
+                    <td align="left" class="title">
+                         <xsl:value-of select="name"/>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="description" colspan="2">
                         <xsl:if test="description != ''">
-                            Описание: <xsl:value-of select="description"/>
+                            Описание:
+                            <xsl:value-of select="description"/>
+                        </xsl:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="copyright">
+                        <xsl:if test="website != ''">
+                            © <xsl:value-of select="website"/>
                         </xsl:if>
                     </td>
                 </tr>
                 <tr>
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="architect != ''">
-                            Архитектор: <xsl:value-of select="architect"/>
+                            Архитектор:
+                            <xsl:value-of select="architect"/>
                         </xsl:if>
                     </td>
                 </tr>
                 <tr>
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="adress != ''">
-                            Адресс: <xsl:value-of select="adress"/>
+                            Адресс:
+                            <xsl:value-of select="adress"/>
                         </xsl:if>
                     </td>
                 </tr>
                 <tr>
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="buildDate != ''">
-                            Дата постройки: <xsl:value-of select="buildDate"/>
+                            Дата постройки:
+                            <xsl:value-of select="buildDate"/>
                         </xsl:if>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td width="80%">
                         <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
-                        <a>
-                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                            <a>
+                                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                             select="type"/>
-                                    </xsl:attribute>
-                            <xsl:value-of select="name"/>
-                        </a>
-                        <br/>
-                    </xsl:for-each>
+                                </xsl:attribute>
+                                <xsl:value-of select="name"/>
+                            </a>
+                            <br/>
+                        </xsl:for-each>
                     </td>
                 </tr>
             </table>

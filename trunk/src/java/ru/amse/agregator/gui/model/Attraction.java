@@ -12,7 +12,8 @@ public class Attraction {
     private String name  = "";
     private String description = "";
     private String coordinates = "";
-    private String images = "";
+    private String image = "";
+    private ArrayList<String> imagesArray = new ArrayList<String>();
     private String keywords = "";
     private String date_foundation = "";
     private String architect = "";
@@ -134,5 +135,21 @@ public class Attraction {
 
     public void setAttractionList(List<MenuItem> attractionList) {
         this.attractionList = attractionList;
+    }
+
+    public ArrayList<String> getImagesArray() {
+        return imagesArray;
+    }
+
+    public void setImagesArray(ArrayList<String> imagesArray) {
+        this.imagesArray = imagesArray;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

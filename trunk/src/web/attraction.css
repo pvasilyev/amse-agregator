@@ -30,9 +30,10 @@
 }
 
 .title {
-  font-size:1.8em;
+  font-size:24pt;
   font-weight:normal;
-  font:1.4em Georgia,Times,serif;
+  font: Georgia,Times,serif;
+  font-weight: bold;
   color:#bd2026;
   margin:1.2em 0 0;
 }
@@ -54,6 +55,14 @@
   margin:1.2em 0 0;
   text-align: justify;
   background: #DCDCDC;
+}
+
+.copyright {
+  font-weight:normal;
+  font:0.6em Georgia,Times,serif;
+  color:#666;
+  margin:1.2em 0 0;
+  text-align: justify;
 }
 
 
