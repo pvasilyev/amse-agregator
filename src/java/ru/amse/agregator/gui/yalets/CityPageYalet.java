@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
-import ru.amse.agregator.gui.model.Attraction;
-import ru.amse.agregator.gui.model.DescriptionModel;
-import ru.amse.agregator.gui.model.MenuItem;
-import ru.amse.agregator.gui.model.UniversalModel;
+import ru.amse.agregator.gui.model.*;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 import net.sf.xfresh.core.InternalRequest;
@@ -21,6 +18,7 @@ public class CityPageYalet implements Yalet{
 	@Override
 	public void process(InternalRequest req, InternalResponse res) {
 
+        AttractionManager.connectToDatabase();
 		Database.connectToMainBase();
 		String id = req.getParameter("id");
 		ObjectId selectedCity = new ObjectId(id);

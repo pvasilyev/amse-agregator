@@ -7,6 +7,7 @@ import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
 import org.bson.types.ObjectId;
 
+import ru.amse.agregator.gui.model.AttractionManager;
 import ru.amse.agregator.gui.model.DescriptionModel;
 import ru.amse.agregator.gui.model.MenuItem;
 import ru.amse.agregator.storage.DBWrapper;
@@ -15,8 +16,8 @@ import ru.amse.agregator.storage.Database;
 public class CountryPageYalet implements Yalet {
 
 	public void process(InternalRequest req, InternalResponse res) {
-		
-		Database.connectToMainBase();
+
+        AttractionManager.connectToDatabase();
 		String id = req.getParameter("id");
 		ObjectId selectedCountry = new ObjectId(id);
 		

@@ -18,7 +18,17 @@ import java.util.Vector;
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
 
-    public static List<Attraction> ARRAY;
+    public static List<Attraction> ARRAY = new ArrayList<Attraction>();
+    public static String databaseName = "mainDB"; // or dirtyDB
+
+    //DatabaseName: dirtyDB, mainDB
+    public static void connectToDatabase() {
+        if (AttractionManager.databaseName.toLowerCase().equals("dirtydb")) {
+            Database.connectToDirtyBase();
+        } else {
+            Database.connectToMainBase();
+        }
+    }
 
     //Временный метод
     public List<Attraction> getAllAttraction() {
@@ -82,7 +92,7 @@ public class AttractionManager {
 
 
     public List<Attraction> getAttractionById(String id, String type) {
-        Database.connectToMainBase();
+        AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
 
         DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, type);
