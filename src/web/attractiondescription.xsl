@@ -8,12 +8,13 @@
     </xsl:template>
 
 
-    <xsl:template match="collection" mode="show">
+    <xsl:template match="//collection" mode="show">
         <xsl:for-each select="attraction">
             <xsl:if test="type = 'Error'">
                     <br/>
-                Описание не надено. Попробуйте еще раз.
-            </xsl:if>
+                    <text-area class="description">Информация временно недоступна.
+                    </text-area>
+                </xsl:if>
 
             <table>
                 <tr>
@@ -68,6 +69,19 @@
                         <xsl:if test="buildDate != ''">
                             Дата постройки: <xsl:value-of select="buildDate"/>
                         </xsl:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
+                        <a>
+                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
+                                    </xsl:attribute>
+                            <xsl:value-of select="name"/>
+                        </a>
+                        <br/>
+                    </xsl:for-each>
                     </td>
                 </tr>
             </table>

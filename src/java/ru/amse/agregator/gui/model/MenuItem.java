@@ -10,6 +10,12 @@ public class MenuItem {
 		this.name = name;
 		this.id = id;
 	}
+
+    public MenuItem(String name , String id, String type){
+		this.name = name;
+		this.id = id;
+        this.type = type;
+	}
 	
 	public void setName(String name){ this.name = name; }
 	public void setId(String id){ this.id = id;	}
