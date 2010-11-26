@@ -18,12 +18,15 @@ import java.util.Vector;
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
 
-    public static List<Attraction> ARRAY = new ArrayList<Attraction>();
-    public static String databaseName = "mainDB"; // or dirtyDB
+    public static enum DatabaseEnum {
+       mainDB,
+       dirtyDB
+    }
+    public static DatabaseEnum databaseName = DatabaseEnum.mainDB;
 
-    //DatabaseName: dirtyDB, mainDB
     public static void connectToDatabase() {
-        if (AttractionManager.databaseName.toLowerCase().equals("dirtydb")) {
+
+        if (AttractionManager.databaseName == DatabaseEnum.dirtyDB) {
             Database.connectToDirtyBase();
         } else {
             Database.connectToMainBase();
@@ -40,7 +43,6 @@ public class AttractionManager {
             attraction.setName("имя _ " + i);
             result.add(attraction);
         }
-        saveResult(result);
         return result;
     }
 
@@ -78,18 +80,8 @@ public class AttractionManager {
             log.error("Other ID = " + attraction.getId());
             result.add(attraction);
         }
-        saveResult(result);
         return result;
     }
-
-    //Схоранение найденного, чтобы вывести по щелчку,
-    private void saveResult(List<Attraction> array) {
-        ARRAY = new ArrayList<Attraction>();
-        for (int i = 0; i < array.size(); i++) {
-            ARRAY.add(array.get(i));
-        }
-    }
-
 
     public List<Attraction> getAttractionById(String id, String type) {
         AttractionManager.connectToDatabase();
@@ -121,7 +113,24 @@ public class AttractionManager {
 //        attraction.setMusic(dbwr.getMusic());
 //        attraction.setWebsite(dbwr.getWebsite());
 //        attraction.setRooms(dbwr.getRooms());
+
+        if (attraction.getType().equals("City")) {
+            ArrayList<String> list = Database.getAllTypesOfObjectByCity(new ObjectId(attraction.getId()));
+
+            ArrayList<MenuItem> links = new ArrayList<MenuItem>();
+
+            for (String tmp : list) {
+                ArrayList<DBWrapper> array = Database.getAllObjectOfSelectedTypeInCity(new ObjectId(id), tmp);
+                for (DBWrapper dbwrArray : array) {
+                    MenuItem menuItem = new MenuItem(dbwrArray.getName(), dbwrArray.getId().toString());
+                    menuItem.setType(dbwrArray.getType());
+                    links.add(menuItem);
+                }
+            }
+            attraction.setAttractionList(links);
+        }
         result.add(attraction);
+        
         return result;
     }
 }
