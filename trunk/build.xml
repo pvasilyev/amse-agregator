@@ -41,6 +41,9 @@
     <path id="libs.quality">
         <fileset dir="libs" includes="mongo*.jar"/>
     </path>
+    <path id="libs.storage">
+        <fileset dir="libs" includes="mongo*.jar"/>
+    </path>
     <path id="libs.gui">
         <fileset dir="${xfresh-core.dir}" includes="**/*.jar"/>
         <fileset dir="libs" includes="lucene*.jar"/>
@@ -53,6 +56,7 @@
     <pathconvert pathsep=" " property="miner_libs_manifest" refid="libs.miner"/>
     <pathconvert pathsep=" " property="indexer_libs_manifest" refid="libs.indexer"/>
     <pathconvert pathsep=" " property="quality_libs_manifest" refid="libs.quality"/>
+    <pathconvert pathsep=" " property="storage_libs_manifest" refid="libs.storage"/>
 
     <!-- Targets -->
 
@@ -114,6 +118,15 @@
                 <attribute name="Class-Path" value="${quality_libs_manifest} ${build.classes.dir}/"/>
             </manifest>
         </jar>
+        
+        <jar jarfile="${dist.dir}/mongoIndexer.jar" basedir="${build.classes.dir}"
+             includes="ru/amse/agregator/storage/**/*.*">
+            <manifest>
+                <attribute name="Built-By" value="Agregator's build.xml"/>
+                <attribute name="Main-Class" value="ru.amse.agregator.storage.MongoIndexMaker"/>
+                <attribute name="Class-Path" value="${storage_libs_manifest} ${build.classes.dir}/"/>
+            </manifest>
+        </jar>
 
         <!-- Даём права на выполнение, созданным джарникам -->
         <chmod dir="${dist.dir}" perm="744" includes="**/*.jar"/>
@@ -163,6 +176,11 @@
     <target name="run_clusterizer" depends="dist"
         description="run clusterization on dirtyDB, and creating mainDB">
         <java dir="${project.dir}" jar="${dist.dir}/clusterizer.jar" fork="true"/>
+    </target>
+    
+    <target name="run_mongoIndexer" depends="dist"
+        description="run mongo-indexation on dirty and mainDB">
+        <java dir="${project.dir}" jar="${dist.dir}/mongoIndexer.jar" fork="true" />
     </target>
     
     <target name="run_indexer" depends="dist"
