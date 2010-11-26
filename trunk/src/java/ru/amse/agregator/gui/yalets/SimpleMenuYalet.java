@@ -6,6 +6,7 @@ import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
 import org.apache.log4j.Logger;
+import ru.amse.agregator.gui.model.AttractionManager;
 import ru.amse.agregator.gui.model.MenuItem;
 import ru.amse.agregator.storage.*;
 
@@ -15,7 +16,7 @@ public class SimpleMenuYalet implements Yalet {
 
     public void process(InternalRequest req, InternalResponse res) {
 
-        Database.connectToMainBase();
+        AttractionManager.connectToDatabase();
         ArrayList<DBWrapper> continents = Database.getAllContinents();
 
         for (DBWrapper continent : continents) {

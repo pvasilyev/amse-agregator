@@ -5,6 +5,7 @@ import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
+import ru.amse.agregator.gui.model.AttractionManager;
 import ru.amse.agregator.gui.model.DescriptionModel;
 import ru.amse.agregator.gui.model.MenuItem;
 import ru.amse.agregator.storage.DBWrapper;
@@ -16,7 +17,7 @@ public class ContinentPageYalet implements Yalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
     public void process(InternalRequest req, InternalResponse res) {
-        Database.connectToMainBase();
+        AttractionManager.connectToDatabase();
 
         ObjectId selectedContinent = new ObjectId(req.getParameter("id"));
         DBWrapper continent = Database.getDBObjectByIdAndType(selectedContinent, DBWrapper.TYPE_CONTINENT);

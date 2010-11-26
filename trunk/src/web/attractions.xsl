@@ -27,6 +27,8 @@
                         <td align="left">
                             <i class="b-serp-item__favicon"></i>
                             <h2 class="b-serp-item__title">
+                                <!--<xsl:if test="position() mod 2 = 0">-->
+                                
                                 <a>
                                     <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                             select="type"/>
@@ -34,6 +36,8 @@
                                     <xsl:value-of select="name"/>
                                 </a>
                                 <br/>
+                                <!--</xsl:if>-->
+
 
                             </h2>
                         </td>

@@ -3,6 +3,7 @@ package ru.amse.agregator.gui.yalets;
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import org.apache.log4j.Logger;
+import ru.amse.agregator.gui.model.AttractionManager;
 import ru.amse.agregator.gui.model.LeftMenuItem;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
@@ -14,7 +15,7 @@ public class LeftMenuYalet extends AbstractAgregatorYalet{
 
     public void process(InternalRequest req, InternalResponse res) {
         if (AbstractAgregatorYalet.menuItemArrayList.size() == 0) {
-            Database.connectToMainBase();
+            AttractionManager.connectToDatabase();
             ArrayList<DBWrapper> continents = Database.getAllContinents();
 
             for (DBWrapper continent : continents) {
