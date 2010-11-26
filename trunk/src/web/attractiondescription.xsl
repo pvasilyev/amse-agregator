@@ -18,30 +18,25 @@
 
             <table width="100%">
                 <tr>
-                    <td width="30%">
-                        <xsl:if test="image != ''">
-                            <img src="{image}" class="big_image"/>
-                            <!--<xsl:for-each select="//data[@id='showAttractionDesc']//images-array">-->
-                                <!--<xsl:value-of select="string"/>-->
-                                <!--<xsl:for-each select="//data[@id='showAttractionDesc']//string">-->
-                                    <!--<xsl:variable name="image">-->
-                                        <!--<xsl:value-of select="//string"/>-->
-                                    <!--</xsl:variable>-->
-
-                                    <!--<img src="{$image}" class="little_image"/>-->
-
-                                    <!--<br/>-->
-                                <!--</xsl:for-each>-->
-
-                            <!--</xsl:for-each>-->
-                        </xsl:if>
-
-                    </td>
                     <td align="left" class="title">
                          <xsl:value-of select="name"/>
                     </td>
                 </tr>
+                <tr>
+                    <td width="30%">
+                        <xsl:if test="images-array != ''">
+                            <!--<img src="{image}" class="big_image"/>-->
+                            <xsl:for-each select="//data[@id='showAttractionDesc']//images-array">
+                                <xsl:for-each select="//data[@id='showAttractionDesc']//string">
+                                    <img src="{.}" class="big_image"/>
+                                   <span style="padding:0px 10px;"/>
+                                </xsl:for-each>
 
+                            </xsl:for-each>
+                        </xsl:if>
+
+                    </td>
+                </tr>
                 <tr>
                     <td class="description" colspan="2">
                         <xsl:if test="description != ''">

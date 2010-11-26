@@ -21,7 +21,6 @@
                                     <xsl:if test="position() != 1">
                                         <xsl:if test="position() mod 2 = 0">
                                             <td class="description-grey">
-
                                             <a>
                                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of
                                                         select="id"/>&amp;type=Country</xsl:attribute>
@@ -31,7 +30,6 @@
                                         </xsl:if>
                                         <xsl:if test="position() mod 2 != 0">
                                             <td class="description">
-
                                             <a>
                                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of
                                                         select="id"/>&amp;type=Country</xsl:attribute>
