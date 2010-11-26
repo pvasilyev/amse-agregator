@@ -101,10 +101,13 @@ public class AttractionManager {
 
         Attraction attraction = new Attraction();
         attraction.setId(dbwr.getId().toString());
-        attraction.setType(dbwr.getType());
+        attraction.setType(type);
         attraction.setName(dbwr.getName());
-        if (!attraction.getType().equals("Continent")) {
+        if (!type.equals("Continent")) {
            attraction.setDescription(dbwr.getDescriptionArray().get(0));
+
+            
+
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
 //        attraction.setDate_foundation(dbwr.getBuildDate().toString());
@@ -112,12 +115,20 @@ public class AttractionManager {
 //        attraction.setCost(dbwr.getCost());
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
-//        attraction.setWebsite(dbwr.getWebsite());
+        attraction.setWebsite(dbwr.getSourceUrlArray().get(0));
 //        attraction.setRooms(dbwr.getRooms()); 
         }
 
+        if (attraction.getType().equals("City")) {
+          ArrayList<String> imagesArray = dbwr.getImagesArray();
+            if (imagesArray.size() > 0) {
+                attraction.setImage(imagesArray.get(0));
+                attraction.setImagesArray(imagesArray);
+            }
+        }
 
-        if (attraction.getType().equals("City") || attraction.getType().equals("Country") || attraction.getType().equals("Continent")) {
+
+        if (type.equals("City") || type.equals("Country") || type.equals("Continent")) {
             attraction.setAttractionList(addListOfAttractions(attraction));
         }
         result.add(attraction);
