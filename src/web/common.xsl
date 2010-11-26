@@ -110,11 +110,11 @@
                                         </td>
                                         <td colspan="3">
                                             <input type="checkbox" name="archAttractionCheckbox"/>
-                                            Архитектурная достопримечательность
+                                            Архитектура
                                         </td>
                                         <td colspan="2">
                                             <input type="checkbox" name="naturalAttractionCheckbox"/>
-                                            Природная достопримечательность
+                                            Природа
                                         </td>
                                     </tr>
                                     <tr>
