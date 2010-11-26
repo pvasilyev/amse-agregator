@@ -41,6 +41,7 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_CONTINENT = "Continent";
 	public static final String TYPE_COUNTRY = "Country";
 	public static final String TYPE_CITY = "City";
+	public static final String TYPE_ATTRACTION = "Attraction";
 	public static final String TYPE_SHOPPING = "Shopping";
 	public static final String TYPE_MUSEUM = "Museum";
 	public static final String TYPE_ENTERTAINMENT = "Entertainment";
