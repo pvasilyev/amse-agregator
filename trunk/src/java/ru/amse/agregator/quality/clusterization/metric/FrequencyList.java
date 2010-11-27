@@ -3,7 +3,8 @@ package ru.amse.agregator.quality.clusterization.metric;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.StringTokenizer;
-import java.util.Set;
+import java.util.List;
+import ru.amse.agregator.utils.Tools;
 
 /**
  *
@@ -16,7 +17,7 @@ final public class FrequencyList {
     // a map representing a list
     private Map<String, Integer> dictionaryMap = null;
 
-    private final String nonCharacterSymbols = " \n\t<>''\"{}[],;:%&*^#@!?";
+    private final String nonCharacterSymbols = " \n\t<>'\"{}[],;:%&*^#@!?.()\\-«»1234567890“”–—";
 
     public FrequencyList() {
         reset();
@@ -40,8 +41,9 @@ final public class FrequencyList {
             // add a word to dictionary with a 1 count
             dictionaryMap.put(normalizedWord, 1);
         } else {
-            // increase a count
+            // increase count
             ++wordCount;
+            dictionaryMap.put(normalizedWord, wordCount);
         }
     }
 
@@ -69,9 +71,9 @@ final public class FrequencyList {
     }
 
     // return vocabulary sorted by the frequency of the elements
-    public Set<String> getSortedVocabulary() {
+    public List<String> getSortedVocabulary() {
         // we assume the vocabulary is sorted because the set is taken from a tree map
-        return dictionaryMap.keySet();
+        return Tools.getKeysSortedByValue(dictionaryMap);
         
     }
 }
