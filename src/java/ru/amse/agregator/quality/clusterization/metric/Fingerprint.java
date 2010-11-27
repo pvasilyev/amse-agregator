@@ -1,6 +1,6 @@
 package ru.amse.agregator.quality.clusterization.metric;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.Set;
 import ru.amse.agregator.utils.Tools;
@@ -20,8 +20,8 @@ final public class Fingerprint {
 
     // these values indicate what part of vocabulary is actually considered
     // "the middle"
-    private static double middleStart = 0.4;
-    private static double middleLength = 0.2;
+    private static final double middleStart = 0.8;
+    private static final double middleLength = 0.1;
 
     // fingerprint representation
     private Set<String> words;
@@ -31,7 +31,7 @@ final public class Fingerprint {
 
         words = new TreeSet<String>();
         
-        Set<String> vocabulary = list.getSortedVocabulary();
+        List<String> vocabulary = list.getSortedVocabulary();
         int vocabularySize = vocabulary.size();
         int lookedThroughCount = 0;
         //get just the part of the vocabulary
@@ -40,7 +40,7 @@ final public class Fingerprint {
             ++lookedThroughCount;
             // the word is in the middle of the dictionary
             if ((vocabularySize * middleStart <= lookedThroughCount) &&
-                (vocabularySize * (middleStart + middleLength) <= lookedThroughCount)) {
+                (vocabularySize * (middleStart + middleLength) >= lookedThroughCount)) {
                 words.add(word);
             }
         }
@@ -58,10 +58,19 @@ final public class Fingerprint {
         Set<String> allWords  = new TreeSet<String>();
         allWords.addAll(fingerprint1.words);
         allWords.addAll(fingerprint2.words);
-        double distance = (double)(fingerprint1.words.size() + fingerprint2.words.size() - allWords.size())
-                / (double)Math.abs(fingerprint1.words.size() - fingerprint2.words.size());
+        double similarity = (double)(fingerprint1.words.size() + fingerprint2.words.size() - allWords.size())
+                / (double)Math.min(fingerprint1.words.size(), fingerprint2.words.size());
 
-        return distance;
+        return 1.0 - similarity;
+    }
+
+    @Override
+    public String toString() {
+        String result = new String();
+        for (String word : words) {
+            result += word + "; ";
+        }
+        return result;
     }
 
 }
