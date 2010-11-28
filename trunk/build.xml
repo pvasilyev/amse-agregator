@@ -14,7 +14,7 @@
     <property name="src.view.dir" location="${src.dir}/web"/>
     <property name="src.script.dir" location="${src.dir}/script"/>
     
-    <property name="dist.dir.name" location="dist"/>
+    <property name="dist.dir.name" value="dist"/>
     <property name="dist.dir" location="${project.dir}/${dist.dir.name}"/>
 
 
