@@ -39,14 +39,14 @@
                     <tr>
                         <xsl:if test="position() mod 2 = 0">
                             <td class="description-grey" colspan="2">
-                                <xsl:if test="description != '')">
+                                <xsl:if test="description != ''">
                                     <xsl:value-of select="description"/>
                                 </xsl:if>
                             </td>
                         </xsl:if>
                         <xsl:if test="position() mod 2 != 0">
                             <td class="description" colspan="2">
-                                <xsl:if test="description != '')">
+                                <xsl:if test="description != ''">
                                     <xsl:value-of select="description"/>
                                 </xsl:if>
                             </td>

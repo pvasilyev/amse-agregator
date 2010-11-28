@@ -1,86 +1,38 @@
 package ru.amse.agregator.miner;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.htmlcleaner.CompactXmlSerializer;
+import org.htmlcleaner.HtmlCleaner;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.ScraperRuntimeListener;
 import org.webharvest.runtime.processors.BaseProcessor;
 import org.webharvest.runtime.variables.Variable;
-
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 
 
-public class MyUniversalListener implements ScraperRuntimeListener {
+public class MyUniversalListener implements ScraperRuntimeListener  {
 		
-	@Override
-	public void onNewProcessorExecution(Scraper scraper, BaseProcessor arg1) {
-			
-			/*Variable link = (Variable) scraper.getContext().get("countryLink");
-			Variable cityName = (Variable) scraper.getContext().get("CityName");
-			Variable cityImage  = (Variable) scraper.getContext().get("cityImages");
-			Variable cityDescription  = (Variable) scraper.getContext().get("cityDescription");
-			Variable cityLatitude  = (Variable) scraper.getContext().get("cityLatitudesOut");
-			Variable cityLongitude  = (Variable) scraper.getContext().get("cityLongitudesOut");
-			
-			System.out.println ("link");			
-			
-			String sCityName = clearString(cityName);
-			String sCityImage = clearString(cityImage);
-			String sCityLatitude = clearString(cityLatitude);
-			String sCityLongitude = clearString(cityLongitude);	
-			String sCityDescription = clearString(cityDescription);
-		
-			DBWrapper newCity = new DBWrapper();
-			newCity.setType(DBWrapper.TYPE_CITY);
-			newCity.setName(sCityName);
-			newCity.setPhoto(sCityImage);
-			newCity.setDescription(sCityDescription);
-		
-			if(sCityLatitude != null && sCityLongitude != null){
-				newCity.setCoordinates(createCoord(sCityLongitude,sCityLatitude));
-			}
-		
-			ArrayList<String> keywords = new ArrayList<String>();
-			keywords.add(sCityName);
-			newCity.setKeyWordsArray(keywords);
+	public void onNewProcessorExecution(Scraper scraper, BaseProcessor arg1) {}
+	public void onExecutionContinued(Scraper arg0) {}	
+	public void onExecutionError(Scraper arg0, Exception arg1) {}
+	public void onExecutionPaused(Scraper arg0) {}
+	public void onExecutionStart(Scraper arg0) {}
+	public void onExecutionEnd(Scraper scraper) {}
 
-			Database.add(newCity);*/
-		
-		
-	}
-
-	@Override
-	public void onExecutionContinued(Scraper arg0) {
-		// TODO Auto-generated method stub
-
-	}	
-	@Override
-	public void onExecutionError(Scraper arg0, Exception arg1) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void onExecutionPaused(Scraper arg0) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void onExecutionStart(Scraper arg0) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void onExecutionEnd(Scraper scraper) {
-				
-
-	}
 
 	
-	@Override
 	public void onProcessorExecutionFinished(Scraper scr, BaseProcessor bp, @SuppressWarnings("rawtypes") Map arg2) {
 			
 		if (bp.getElementDef().getShortElementName().equalsIgnoreCase("var-def") && scr.getContext().getVar("addToDB").toInt() == 1){
@@ -92,14 +44,13 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 			
 			@SuppressWarnings("rawtypes")
 			List myList = incomeObject.toList();
-			System.out.println(myList.toString());
+			//System.out.println(myList.toString());
 			
 			DBWrapper newEntry = new DBWrapper();
 			for(int i=0; i<myList.size(); i+=2){
 				
 				if(myList.get(i) != null ){
-					
-				
+							
 				    if(myList.get(i).toString().equals(DBWrapper.FIELD_IMAGES)){
 					    
 				    	newEntry.setImagesArray(createImagesArray(clearString(myList.get(i+1).toString())));
@@ -118,13 +69,34 @@ public class MyUniversalListener implements ScraperRuntimeListener {
 					    coords.add(new Point2D.Double(lon, lat));
 					    newEntry.setCoordsArray(coords);
 				    }
-				    else {
-					    newEntry.setKeyValue(myList.get(i).toString(),clearString(myList.get(i+1).toString()));
+				    else {			
+				    	try {
+				    		
+				    		HtmlCleaner cleaner = new HtmlCleaner();
+							CompactXmlSerializer cxs = new CompactXmlSerializer(cleaner.getProperties());
+							StringWriter sw = new StringWriter();
+							cleaner.clean(myList.get(i+1).toString()).serialize(cxs, sw);
+														
+							XMLReader xr = XMLReaderFactory.createXMLReader();
+							DataCleaner fcl = new DataCleaner();
+							xr.setContentHandler(fcl);
+							xr.setErrorHandler(fcl);
+							StringReader rdr = new StringReader(sw.toString());
+							xr.parse(new InputSource (rdr));
+							newEntry.setKeyValue(myList.get(i).toString(),fcl.getData());
+
+							System.out.println(fcl.getData());
+													
+						} catch (IOException e) {
+							e.printStackTrace();
+						} catch (SAXException e) {
+							e.printStackTrace();
+						}
+
 				    }
 				}
 			}
 			Database.add(newEntry);
-
 		}
 	}
 	
