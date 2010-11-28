@@ -7,7 +7,6 @@ import org.xml.sax.helpers.DefaultHandler;
 //This class cleans mined data
 public class DataCleaner extends DefaultHandler {
 
-	
 	private ArrayList<String> goodTags;
 	private StringBuffer result;
 	
@@ -44,5 +43,7 @@ public class DataCleaner extends DefaultHandler {
     }
 	
     public String getData(){ return result.toString(); }
+    public void clear(){ result.setLength(0); }
+    
     
 }
