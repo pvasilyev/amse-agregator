@@ -1,7 +1,14 @@
 package ru.amse.agregator.miner;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.utils.XmlFileFilter;
@@ -24,7 +31,7 @@ public class Main {
 		//Connect to DB
 		Database.connectToDirtyBase();
 		
-		System.out.println(Database.getAllCities().size());
+		//System.out.println(Database.getAllCities().size());
 		//System.in.read();
 
 		//Get a list of xml files in the input directory
