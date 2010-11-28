@@ -32,6 +32,16 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 	public void onExecutionEnd(Scraper scraper) {}
 
 
+	DataCleaner fcl;
+	HtmlCleaner cleaner;
+	CompactXmlSerializer cxs;
+	
+	public MyUniversalListener(){
+		 fcl = new DataCleaner();
+ 		 cleaner = new HtmlCleaner();
+ 		 cxs = new CompactXmlSerializer(cleaner.getProperties());
+	}
+	
 	
 	public void onProcessorExecutionFinished(Scraper scr, BaseProcessor bp, @SuppressWarnings("rawtypes") Map arg2) {
 			
@@ -71,21 +81,17 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 				    }
 				    else {			
 				    	try {
-				    		
-				    		HtmlCleaner cleaner = new HtmlCleaner();
-							CompactXmlSerializer cxs = new CompactXmlSerializer(cleaner.getProperties());
+							
 							StringWriter sw = new StringWriter();
-							cleaner.clean(myList.get(i+1).toString()).serialize(cxs, sw);
-														
-							XMLReader xr = XMLReaderFactory.createXMLReader();
-							DataCleaner fcl = new DataCleaner();
+							cleaner.clean(myList.get(i+1).toString()).serialize(cxs, sw);														
+							XMLReader xr = XMLReaderFactory.createXMLReader();							
 							xr.setContentHandler(fcl);
-							xr.setErrorHandler(fcl);
 							StringReader rdr = new StringReader(sw.toString());
 							xr.parse(new InputSource (rdr));
 							newEntry.setKeyValue(myList.get(i).toString(),fcl.getData());
 
 							System.out.println(fcl.getData());
+							fcl.clear();
 													
 						} catch (IOException e) {
 							e.printStackTrace();
