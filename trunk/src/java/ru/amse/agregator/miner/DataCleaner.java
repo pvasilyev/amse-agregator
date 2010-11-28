@@ -27,13 +27,16 @@ public class DataCleaner extends DefaultHandler {
     public void startElement(String uri, String localName, String qName,  Attributes attributes){
     		
     		if(goodTags.contains(qName.toLowerCase())){
-    			result.append("<" + qName + " class='my" + qName + "'>");
+    			if(!qName.toLowerCase().equals("br"))
+    				result.append("<" + qName + " class='my" + qName + "'>");
+    			else
+    				result.append("<" + qName + "/>");
     		}
     }
     
     public void endElement (String uri, String name, String qName){
     	
-    	if(goodTags.contains(qName.toLowerCase()))
+    	if(goodTags.contains(qName.toLowerCase()) && !qName.toLowerCase().equals("br"))
 			result.append("</" + qName + ">");
     	
     }
