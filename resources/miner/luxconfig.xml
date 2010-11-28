@@ -32,12 +32,134 @@
 			<xpath expression="//div[@style='cursor:pointer;']/following-sibling::div[position() = 1]">
 					<var-def name="pageWithCities">
 						<html-to-xml outputtype="pretty">
-							<http url="${sys.fullUrl(siteName, countryLink);}"/>
+							<http url="${sys.fullUrl(siteName, countryLink);}" charset="windows-1251"/>
 <!--							<http url="http://www.luxe.ru/countries/location5.htm"/>-->
 			    		</html-to-xml>		
 					</var-def>
 			</xpath>
 		</var-def>
+		
+		<var-def name="areThereRedBlock">
+			<xpath expression="//td[@class='content4']/div">
+				<var name="pageWithCities"/>
+			</xpath>
+		</var-def>
+		
+		<case>
+		<if condition="${areThereRedBlock.toString().isEmpty()}">
+			<var-def name="countryDescription">
+				<xpath expression="//td[@class='content4']/table[not(@class)]">
+					<var name="pageWithCities"/>
+				</xpath>
+			</var-def>
+		</if>
+		<else>
+			<var-def name="countryDescription">
+				<xpath expression="//td[@class='content4']/table[1]/following-sibling::table[not(@class)]">
+					<var name="pageWithCities"/>
+				</xpath>
+			</var-def>		
+		</else>
+			
+		
+		</case>
+		
+
+		
+		<var-def name="countryName">
+			<xpath expression="/html/body/table/tbody/tr[2]/td/table[2]/tbody/tr/td/span[3]/text()">
+				<var name="pageWithCities"/>
+			</xpath>
+		</var-def>
+		
+		<script language="javascript">
+		
+		</script>
+	
+		
+		<var-def name="countryImageLink">
+			<xpath expression="//a[@class='more']/@onclick">
+				<var name="pageWithCities"/>
+			</xpath>	
+		</var-def>
+		
+		
+		<script language="javascript">
+			var a = countryImageLink.toString();
+			if( a != ""){
+				a = a.substring(a.indexOf("\"")+1 , a.indexOf("\"",a.indexOf("\"")+1));
+				sys.defineVariable("countryImageLink","http://www.luxe.ru".concat(a),true);
+			}
+			else{
+				sys.defineVariable("countryImageLink","",true);
+			}
+		</script>	
+		
+		<var name="countryImageLink"/>
+
+		<case>	
+
+			<if condition="${!countryImageLink.isEmpty()}">				
+				<var-def name="loadedLinkData">
+					<xpath expression="//div[@id='picBox']//img/@src">
+						<html-to-xml outputtype="pretty">
+						  <http url="${countryImageLink}"/>
+				  		</html-to-xml>
+					 </xpath>
+				</var-def>
+		
+				<script language="javascript">
+					<![CDATA[
+					var b = "www.luxe.ru";
+					var l = loadedLinkData.toArray();
+					var i = 0;
+					var a = new Array();
+					while(i < l.length ){
+						a.push(b.concat(l[i].toString().replace("thumbnails","pictures")));
+						i++;
+					}
+				   ]]>
+				 	sys.defineVariable("countryImages",a.join(";"),true);
+				</script>
+			</if>
+
+			<else>
+				<var-def name="countryImages">
+					<xpath expression="//tbody/tr/td/img/@src">
+						<var name="loadedData"/>
+					</xpath>
+				</var-def>
+			</else>	
+		</case>	
+		
+
+		<var-def name="returnValue">
+
+			<text>type</text>
+			<text>Country</text>
+			
+			<text>name</text>
+			<template>${countryName.toString().trim()}</template>
+			
+			<text>description</text>
+			<template>${countryDescription.toString()}</template>
+			
+			<text>source_url</text>
+            <template>${siteName.toString()}</template>	
+            
+            <text>keywords</text>
+            <template>${countryName.toString().trim()}</template>
+            
+			<text>images</text>
+			<template>${countryImages.toString()}</template>
+            								
+		</var-def>
+				
+		<var-def name="addToDB">
+			1
+		</var-def>
+		
+		
 		
 		<case>	
 			<if condition="${!citar.isEmpty()}">	
@@ -81,7 +203,7 @@
 				</var-def>
 		
 				<var-def name="CityName">
-					<xpath expression="//td[@style='background: url(/images/tbord.gif) no-repeat left 6px; padding-left:10px;']/*">
+					<xpath expression="/html/body/table/tbody/tr[2]/td/table[3]/tbody/tr/td[2]/table/tbody/tr/td/table/tbody/tr/td/h1/text()">
 						<var name="loadedData"/>
 					</xpath>	
 				</var-def>
@@ -141,28 +263,37 @@
 					</else>	
 				</case>
 				<!--Тут заканчиваеться выдерание картинок-->
+					
+		<var-def name="areThereRedBlock2">
+			<xpath expression="//td[@class='content4']/div">
+				<var name="loadedData"/>
+			</xpath>
+		</var-def>
 		
-				<var-def name="cityDescription">
-					<xpath expression="//div[@class='info_content']">
+		<case>
+		<if condition="${areThereRedBlock2.toString().isEmpty()}">
+			<var-def name="cityDescription">
+				<xpath expression="//td[@class='content4']/table[not(@class)]">
+					<var name="loadedData"/>
+				</xpath>
+			</var-def>
+		</if>
+		<else>
+			<var-def name="cityDescription">
+				<xpath expression="//td[@class='content4']/table[1]/following-sibling::table[not(@class)]">
+					<var name="loadedData"/>
+				</xpath>
+			</var-def>		
+		</else>
+			
+		
+		</case>
+				
+				<var-def name="countryName">
+					<xpath expression="/html/body/table/tbody/tr[2]/td/table[2]/tbody/tr/td/a[3]/text()">
 						<var name="loadedData"/>
 					</xpath>	
 				</var-def>
-		
-				<script>
-					<![CDATA[
-					var description = cityDescription.toString();
-					if(!description.isEmpty()){
-						description = 	description.substring(0,description.indexOf("</div>"));
-						var hasAtractions = description.indexOf("ОСНОВНЫЕ ДОСТОПРИМЕЧАТЕЛЬНОСТИ:");
-						if(hasAtractions != -1){
-							var atr = description.substring(hasAtractions + "ОСНОВНЫЕ ДОСТОПРИМЕЧАТЕЛЬНОСТИ:".length());
-							description = description.substring(0,hasAtractions);
-							sys.defineVariable("cityAtractions",atr, true);
-						}
-						sys.defineVariable("cityDescription",description,true);
-					}
-					]]>
-				</script>
 		
 				<var-def name="returnValue">
 
@@ -177,7 +308,17 @@
 
 					<text>description</text>
 					<template>${cityDescription.toString()}</template>
-
+					
+					<text>country_name</text>
+					<template>${countryName.toString().trim()}</template>
+					
+					<text>source_url</text>
+		            <template>${siteName.toString()}</template>	
+		            
+	                <text>keywords</text>
+	                <template>${CityName.toString().trim() + ";" + countryName.toString().trim()}</template>
+		            
+		            								
 				</var-def>
 						
 				<var-def name="addToDB">
