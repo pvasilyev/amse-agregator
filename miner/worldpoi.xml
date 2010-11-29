@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config scriptlang="default_script_lang">
+
+<var-def name="site">
+	http://ru.worldpoi.info/pois
+</var-def>
+
+<!-- biuld continent list -->
+<var-def name="continentList">
+	<xpath expression="//h2/a/@href">
+		<html-to-xml>
+			<http url="http://ru.worldpoi.info/pois"/>
+		</html-to-xml>
+	</xpath>
+</var-def>
+
+<!-- begin cycle by continents -->
+<loop item="continent" index="i">
+	<list>
+		<var name="continentList"/>
+	</list>
+	<body>
+		<!-- biuld list of countries in "i" continent -->
+		<var-def name="countryList">
+			<xpath expression="//div[@class='column25perc']/h2/a/@href">
+				<html-to-xml>
+					<http url="${sys.fullUrl(site, continent);}"/>
+				</html-to-xml>				
+			</xpath>
+		</var-def>
+		
+		<!-- begin cycle by countries in "i" continent -->
+		<loop item="country" index="k">
+			<list>
+				<var name="countryList"/>
+			</list>
+			<body>
+				<!--biuld list by cities in "k" country in "i" continent-->
+				<var-def name="cityList">
+					<xpath expression="//div[@id='test']/a/@href">
+						<html-to-xml>
+							<http url="${sys.fullUrl(site, country);}"></http>
+						</html-to-xml>
+					</xpath>
+				</var-def>
+				
+				<!-- begin cycle by cities in "k" country in "i" continent -->
+				<loop item="city" index="l">
+					<list>
+						<var name="cityList"/>
+					</list>
+					
+					<body>
+						<!-- biuld list of pois in "l" city in "k" country in "i" continent -->
+						<var-def name="poiList">
+							<xpath expression="//div[@class='name']/a/@href">
+								<html-to-xml>
+									<http url='${sys.fullUrl(site, city + "pois");}'></http>
+								</html-to-xml>
+							</xpath>
+						</var-def>
+						
+						<!-- begin cycle by pois in "l" city in "k" country in "i" continent -->
+						<loop item="poi" index="m" maxloops="1">
+							<list>
+								<var name="poiList"/>
+							</list>
+							
+							<body>
+								<var-def name="coordinates">
+									<xpath expression="//div[@class='position']">
+										<html-to-xml>
+											<http url="${sys.fullUrl(site, poi);}"></http>
+										</html-to-xml>
+									</xpath>
+								</var-def>
+								
+								<var-def name="descriptionA">
+									<xpath expression="//div[@class='descrA']">
+										<html-to-xml>
+											<http url="${sys.fullUrl(site, poi);}"></http>
+										</html-to-xml>
+									</xpath>
+								</var-def>
+								
+								<var-def name="descriptionB">
+									<xpath expression="//div[@class='descrB']">
+										<html-to-xml>
+											<http url="${sys.fullUrl(site, poi);}"></http>
+										</html-to-xml>
+									</xpath>
+								</var-def>
+								
+								<var-def name="image">
+									<xpath expression="//table[@id='tMapAndImg']/tr/td/a/img/@src">
+										<html-to-xml>
+											<http url="${sys.fullUrl(site, poi);}"></http>
+										</html-to-xml>
+									</xpath>
+								</var-def>
+
+							</body>
+						</loop>
+						<!-- end cycle by pois in "l" city in "k" country in "i" continent -->
+					</body>
+				</loop>
+				<!-- end cycle by pois in "l" city in "k" country in "i" continent-->
+			</body>
+		</loop>	
+		<!-- end cycle by cities in "k" country in "i" continent -->
+	</body>
+</loop>
+<!-- end cycle by continents -->
+
+</config>
