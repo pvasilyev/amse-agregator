@@ -55,10 +55,7 @@
 
                 </table>
             </xsl:for-each>
-            <xsl:for-each select="error">
-                <xsl:value-of select="name"/>
-                sdlksfljsdlf
-            </xsl:for-each>
+            
         </xsl:for-each>
 
     </xsl:template>

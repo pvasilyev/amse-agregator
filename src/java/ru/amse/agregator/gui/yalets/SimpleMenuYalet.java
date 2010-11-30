@@ -23,8 +23,10 @@ public class SimpleMenuYalet extends AbstractAgregatorYalet {
 
             ArrayList<DBWrapper> countrytmp = Database.getAllCountriesByContinent(continent.getId());
 
+//            ArrayList<MenuItem> listOfContinents = new ArrayList<MenuItem>();
+//            listOfContinents.add(new MenuItem(continent.getName(), continent.getId().toString()));
             ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-            menuItems.add(new MenuItem(continent.getName(), null));
+            menuItems.add(new MenuItem(continent.getName(), continent.getId().toString()));
             for (DBWrapper country : countrytmp) {
                 menuItems.add(new MenuItem(country.getName(), country.getId().toString()));
             }
