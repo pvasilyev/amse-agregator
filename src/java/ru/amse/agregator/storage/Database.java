@@ -425,6 +425,11 @@ public class Database {
 		return objects;		
 	}
 	
+	
+	public static void removeAllWithKeyValue(String type, String key, Object value){
+		myDB.getCollection(typeCollection(type)).remove(new BasicDBObject(key,value));
+	}
+	
 	public static DB getDB(){
 		return myDB;
 	}

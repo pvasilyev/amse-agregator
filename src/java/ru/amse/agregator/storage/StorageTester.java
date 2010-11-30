@@ -2,6 +2,8 @@ package ru.amse.agregator.storage;
 import java.util.ArrayList;
 import java.io.IOException;
 
+import org.bson.types.ObjectId;
+
 
 
 public class StorageTester {
@@ -14,85 +16,26 @@ public class StorageTester {
         // TODO Auto-generated method stub
     	
    
-        //Database.connectToDirtyBase();  
-        //Database.createIndexes();
+        Database.connectToDirtyBase();  
 
-        Database.connectToMainBase();
-        //Database.createIndexes();
-        
-        
-        
-        ArrayList<DBWrapper> continents = Database.getAllContinents();
-        for(DBWrapper continent : continents){
-        	System.out.println(continent.getName() + " : " + continent.getId());
-        	
-            ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continent.getId());
-            for(DBWrapper country : countries){
-            	System.out.println(country.getName() + " : " + country.getId());   	
-            	ArrayList<DBWrapper> topCities = Database.getTopNWithKeyValue(10, DBWrapper.TYPE_CITY,DBWrapper.FIELD_COUNTRY_ID,country.getId());
-                for(DBWrapper city : topCities){
-                	System.out.println(city.getName() + " : " + city.getRating());
-                }
-                System.in.read();
-            }
-        	
+        ObjectId nullContinent = Database.getContinentIdByName("");
+        System.out.println(nullContinent);
+        ///*
+        ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(nullContinent);
+        for(DBWrapper country : countries){
+        	ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
+        	for(DBWrapper city : cities){
+        		Database.removeAllWithKeyValue(DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CITY_ID, city.getId());
+        	}
+    		Database.removeAllWithKeyValue(DBWrapper.TYPE_CITY, DBWrapper.FIELD_COUNTRY_ID, country.getId());
+
         }
-        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
-        Database.getDBObjectByIdAndTypeAndIncRating(continents.get(1).getId(), DBWrapper.TYPE_CONTINENT);
-
-        System.out.println(Database.getTopNWithType(4, DBWrapper.TYPE_CONTINENT));
-
-//        //выводим список стран первого континента
-//        DBWrapper continentPerviy = continents.get(2);
-//       System.out.println(continentPerviy.getId());
-//        ArrayList<DBWrapper> countries = Database.getAllCountriesByContinent(continentPerviy.getId());
-//        for(DBWrapper country : countries){
-//        	System.out.println("континент страны: "+ country.getStaticContinentName()+ " "+ country.getName() + " айдишник страны: " + country.getId());
-//        	//вывели список стран первого континента с сылочками в которых хранится айдишник.
-//        	
-//            //выводим список городов первой страны первого континента 
-//            ArrayList<DBWrapper> cities = Database.getAllCitiesByCountry(country.getId());
-//            System.out.println(cities);
-//        }
-//        
-//        for(DBWrapper city : Database.getAllCities()){
-//        	if(countries.get(1).getId().equals(city.getCountryId())){
-//        		System.out.println(city);
-//        	}
-//        	//System.out.println(city.getCountryId());
-//        }
+		Database.removeAllWithKeyValue(DBWrapper.TYPE_COUNTRY, DBWrapper.FIELD_CONTINENT_ID, nullContinent);
+		Database.removeAllWithKeyValue(DBWrapper.TYPE_CONTINENT, DBWrapper.FIELD_ID, nullContinent);
+        // */
         
         
-
-//    	DBWrapper wr = new DBWrapper();
-//    	wr.setType(DBWrapper.TYPE_CONTINENT);
-//    	wr.setName("Австралия и Океания");
-//    	Database.add(wr);
-//    	wr.setName("Азия");
-//    	wr.removeId();
-//    	Database.add(wr);
-//    	wr.setName("Африка");
-//    	wr.removeId();
-//    	Database.add(wr);
-//    	wr.setName("Европа");
-//    	wr.removeId();
-//    	Database.add(wr);
-//    	wr.setName("Северная Америка");
-//    	wr.removeId();
-//    	Database.add(wr);
-//    	wr.setName("Южная Америка");
-//    	wr.removeId();
-//    	Database.add(wr);
-        
-        
-        //System.out.println(Database.getAllContinents());
-        //System.out.println(Database.getAllCountriesByContinent(continentId)());
-        //System.out.println(Database.getAllObjectOfSelectedTypeInCity(new ObjectId("4ce1c0ae078edf4cf9b87cfc"), DBWrapper.TYPE_MUSEUM));
-        
-        
-        //Database.printAll();
-        //System.out.println(Database.getAllTypesOfObjectByCity(new ObjectId("4ce1c096078edf4cd5b87cfc")));
     }
 }
 
-//4ce1bf9b078edf4c5bb77cfc
+//4cf1e7253c65df4ca5b43186
