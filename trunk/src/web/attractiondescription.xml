@@ -2,5 +2,6 @@
 <?xml-stylesheet type="text/xsl" href="attractiondescription.xsl"?>
 <page>
     <yalet id="leftMenu"/>
+    <yalet id="rightMenu"/>    
     <yalet id="showAttractionDesc"/>
 </page>

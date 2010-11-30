@@ -6,124 +6,137 @@
 
     <xsl:template match="/">
 
-        <html>
+        <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
-                <title>
-                    <xsl:text>Агрегатор</xsl:text>
-                </title>
-                <link type="text/css" rel="stylesheet" href="attraction.css"/>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                <meta http-equiv="Content-Language" content="ru"/>
+                <title>AMSE Туризм</title>
+                <link href="style.css" type="text/css" rel="stylesheet"/>
             </head>
             <body>
-                <table width="100%" valign="top">
-                    <tr height="65px">
-                        <td colspan="2" width="100%" background="images/bg-header.gif" align="center">
-                            <i>
-                                <b>
-                                    <font size="5" color="#FFFFFF" face="Verdana">Маленький Мир
-                                    </font>
-                                </b>
-                            </i>
-                            <br/>
-                            <br/>
-                            <i>
-                                <b>
-                                    <font color="#FFFFFF" size="1" face="Verdana">Путешествуйте с
-                                        нами!
-                                    </font>
-                                </b>
-                            </i>
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td class="l-head__c" colspan="2">
-                            <table class="b-head-tabs g-js">
+                <table class="extTable">
+                    <tr>
+                        <td class="extTableTD">
+                            <table class="header">
                                 <tr>
-                                    <td class="b-head-tabs__item b-head-tabs__tab">
-                                        <a class="b-head-tabs__link" href="attractions.xml">Поиск
-                                        </a>
+                                    <td id="logo_p1">
                                     </td>
-                                    <td class="b-head-tabs__item b-head-tabs__tab">
-                                        <a class="b-head-tabs__link" href="menu.xml">Список всех стран и городов
-                                        </a>
+                                    <td colspan="2">
+                                        <table id="searchContainer">
+                                            <xsl:call-template name="find"/>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="logo_p2">
+                                    </td>
+                                    <td id="logo_p3">
+                                    </td>
+                                    <td id="linksContainer">
+                                        <table id="linksTable" align="right">
+                                            <tr>
+                                                <td>
+                                                    <a href="menu.xml">Все страны</a>
+                                                </td>
+                                                <td>
+                                                    <a href="#">Top10</a>
+                                                </td>
+                                                <td>
+                                                    <a href="hotels.xml">Отели</a>
+                                                </td>
+                                                <td>
+                                                    <a href="largefind.xml">Расширенный поиск</a>
+                                                </td>
+                                            </tr>
+                                            <!-- Добавить сюда вторую строку дял подчеркиваний ссылок. -->
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
-                        </td>
-                    </tr>
-                    <tr align="left">
-                        <td valign="top" width="200px" class="category_list" align="center">
-                            <table>
-                                <tr>
-                                    <b>
-                                        <font size="4" color="#A3CE5E" face="Verdana">
-                                            Общий список:
-                                        </font>
-                                    </b>
-                                    <br/>
 
-                                </tr>
+                            <table class="pageContainer">
+
                                 <tr>
-                                    <xsl:call-template name="menulist"/>
+                                    <td id="leftColomn">
+                                        <!-- Эту таблицу потмо разумно вынести в отдельный шаблон. !!!Популярные страны/города.!!! -->
+                                        <table class="simpleTop">
+                                            <tr>
+                                                <td class="simpleTopHeader">
+                                                    Популярные страны:
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <xsl:call-template name="leftmenulist"/>
+                                                </td>
+                                            </tr>
+
+
+                                        </table>
+
+
+                                        <!-- Этот блок потмо разумно вынести в отдельный шаблон. !!!Выбор стран по континентам!!! -->
+                                        <div class="simpleBlock">
+                                            <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0"/>
+                                            <map id="map" name="continentsMap">
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637b334fdf4ca1723c40&amp;type=Continent"
+                                                      shape="poly" coords="15,28,86,21,41,67"
+                                                      title="Северная Америка"/>
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637e334fdf4ca5723c40&amp;type=Continent"
+                                                      shape="poly"
+                                                      coords="47,67,73,81,57,113,43,80" title="Южная Америка"/>
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637c334fdf4ca2723c40&amp;type=Continent"
+                                                      shape="poly"
+                                                      coords="87,58,106,21,139,27,129,51,111,57" title="Европа"/>
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637e334fdf4ca4723c40&amp;type=Continent"
+                                                      shape="poly"
+                                                      coords="138,36,181,42,169,72,132,70,127,53,138,52" title="Азия"/>
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637d334fdf4ca3723c40&amp;type=Continent"
+                                                      shape="poly"
+                                                      coords="102,56,121,58,134,72,115,96,95,70" title="Африка"/>
+                                                <area alt="no image"
+                                                      href="attractiondescription.xml?id=4cec637f334fdf4ca6723c40&amp;type=Continent"
+                                                      shape="poly"
+                                                      coords="148,108,177,110,189,91,171,79,147,88"
+                                                      title="Австралия и Океания"/>
+                                            </map>
+                                        </div>
+
+                                    </td>
+                                    <td id="centerColomn">
+                                        <!-- Этот блок потмо разумно вынести в отдельный шаблон. !!!Города с картинками!!! -->
+                                        <xsl:call-template name="main"/>
+                                        
+                                    </td>
+                                    <td id="rightColomn">
+                                        <table class="attractionsTop">
+                                            <tr>
+                                                <td class="attractionsTopHeader">
+                                                    Популярные достопримечательности:
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <xsl:call-template name="rightmenulist"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                             </table>
 
-                        </td>
-                        <td width="700px" valign="top" class="find_button">
-                            <form action="attractions.xml" method="post">
-
-                                <table width="700px" valign="top">
-                                    <tr>
-                                        <xsl:call-template name="find"/>
-                                    </tr>
-                                    <tr align="left" width="70%" class="checkbox">
-                                        <td>
-                                            <input type="checkbox" name="countryCheckbox"/>
-                                            Страна
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" name="cityCheckbox"/>
-                                            Город
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" name="cafeCheckbox"/>
-                                            Кафе
-                                        </td>
-
-                                        <td>
-                                            <input type="checkbox" name="entertainmentCheckbox"/>
-                                            Развлечения
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" name="shoppingCheckbox"/>
-                                            Шопинг
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" name="hotelCheckbox"/>
-                                            Отель
-                                        </td>
-
-                                    </tr>
-                                    <tr class="checkbox">
-                                        <td colspan="1">
-                                            <input type="checkbox" name="museumCheckbox"/>
-                                            Музей
-                                        </td>
-                                        <td colspan="3">
-                                            <input type="checkbox" name="archAttractionCheckbox"/>
-                                            Архитектура
-                                        </td>
-                                        <td colspan="2">
-                                            <input type="checkbox" name="naturalAttractionCheckbox"/>
-                                            Природа
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6">
-                                            <xsl:call-template name="main"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
+                            <div class="copyright" align="left">
+                                Это копирайт (c)
+                                <br/>
+                                2010
+                            </div>
 
                         </td>
                     </tr>
@@ -135,35 +148,90 @@
 
     </xsl:template>
 
+    
+
     <xsl:template name="find">
-        <form action="attractions.xml" method="post">
-            <td valign="top" colspan="7">
-                <div>
-                    <input class="input"
-                           name="findTextBox"
-                           value=""
-                           maxlength="100"/>
-                </div>
-            </td>
-            <td class="b-search__button">
-                <input size="10" class="b-search__submit" type="submit"
-                       tabindex="2"
-                       value="Найти"/>
-            </td>
-        </form>
+        <!--<form action="attractions.xml" method="post">-->
+            <tr>
+                <td id="searchForm">
+                    <form id="searchForm" method="POST" action="attractions.xml">
+                        <input type="text" id="search" name="findTextBox"/>
+                    </form>
+                </td>
+                <td class="searchButtonTd">
+                    <a class="buttonLink" onclick="">Найти</a>
+                </td>
+            </tr>
+        <!--</form>-->
     </xsl:template>
 
-    <xsl:template name="menulist">
-        <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
-            <xsl:sort order="ascending" select="name"/>
-            <a class="left-menu-link">
-                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+    <xsl:template name="leftmenulist">
+        <table>
+            <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
+                <xsl:sort order="ascending" select="name"/>
+                <!-- Начало элемента -->
+                <tr>
+                    <td class="simpleTopItemTitle">
+                        <a class="left-menu-link">
+                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                        select="type"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="name"/>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="simpleTopItemContent">
+                        <a class="left-menu-link">
+                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                        select="type"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="name"/>
+                            <a class="left-menu-link">
+                                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                             select="type"/>
                                 </xsl:attribute>
-                    <xsl:value-of select="name"/>
-            </a>
-            <br/>
-        </xsl:for-each>
+                                <xsl:value-of select="name"/>
+                            </a>
+
+                        </a>
+                    </td>
+                </tr>
+                <!-- конец элемента -->
+
+                <br/>
+            </xsl:for-each>
+        </table>
+
+    </xsl:template>
+
+    <xsl:template name="rightmenulist">
+        <table class="attractionsTopItemFirst">
+            <xsl:for-each select="//data[@id='rightMenu']//right-menu-item">
+
+                <tr>
+                    <td colspan="2" class="attractionsTopItemP1">
+                        <a class="right-menu-link">
+                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                        select="type"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="name"/>
+
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/kolizey.jpg" alt="no image"/>
+                    </td>
+                    <td class="attractionsTopItemP2">
+                        <xsl:value-of select="id"/>
+                        sl djfslkjdlsj dlkjsldkfjs ldkjsl djflsdj
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table>
+
     </xsl:template>
 
 </xsl:stylesheet>

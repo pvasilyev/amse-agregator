@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="attractions.xsl"?>
+<?xml-stylesheet type="text/xsl" href="largefind.xsl"?>
 <page>
     <yalet id="leftMenu"/>
     <yalet id="rightMenu"/>
     <yalet id="showAttractions"/>
+
+    <!--<yalet id="rightMenu"/>-->
 </page>
 

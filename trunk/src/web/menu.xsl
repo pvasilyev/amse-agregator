@@ -9,7 +9,7 @@
             <tr>
                 <xsl:for-each select="//collection">
                     <xsl:sort order="ascending" select="menu-item[1]/name"/>
-                    <td valign="top" width="20%" align="left">
+                    <td valign="top" align="left">
                         <table>
                             <tr>
                                 <xsl:value-of select="menu-item[1]/name"/>
@@ -17,10 +17,10 @@
                             <xsl:for-each select="menu-item">
                                 <xsl:sort order="ascending" select="name"/>
 
-                                <tr>
+                                <tr class="simpleTopItemContent">
                                     <xsl:if test="position() != 1">
                                         <xsl:if test="position() mod 2 = 0">
-                                            <td class="description-grey">
+                                            <td class="allcountries-grey">
                                             <a>
                                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of
                                                         select="id"/>&amp;type=Country</xsl:attribute>
@@ -29,7 +29,7 @@
                                             </td>
                                         </xsl:if>
                                         <xsl:if test="position() mod 2 != 0">
-                                            <td class="description">
+                                            <td class="allcountries">
                                             <a>
                                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of
                                                         select="id"/>&amp;type=Country</xsl:attribute>
@@ -42,7 +42,6 @@
                                 </tr>
                             </xsl:for-each>
                         </table>
-                        <xsl:value-of select="menu-item[1]/name"/>
                         <br/>
 
 

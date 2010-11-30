@@ -24,6 +24,7 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
         	ArrayList<String> labels = setLabels(req);
+            
             log.error(req.getAllParameters());
          
             List<Attraction> result = manager.getSearchResult(tmp, labels);

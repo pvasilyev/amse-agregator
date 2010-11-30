@@ -37,6 +37,8 @@
 
     <bean id="simpleMenuYalet" class=" ru.amse.agregator.gui.yalets.SimpleMenuYalet"/>
     <bean id="leftMenuYalet" class=" ru.amse.agregator.gui.yalets.LeftMenuYalet"/>
+    <bean id="rightMenuYalet" class=" ru.amse.agregator.gui.yalets.RightMenuYalet"/>
+    <bean id="hotelsYalet" class=" ru.amse.agregator.gui.yalets.HotelsYalet"/>
 
     <bean id="showAttractionsYalet" class=" ru.amse.agregator.gui.yalets.ShowAttractionsYalet">
         <property name="manager" ref="manager"/>
