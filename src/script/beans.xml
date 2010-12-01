@@ -49,5 +49,7 @@
     </bean>
 
 	<bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
+
+	<bean id="topYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet"/>
     
 </beans>
