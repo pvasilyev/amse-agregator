@@ -12,7 +12,7 @@
 	<xpath expression="//a[@class='cohr_' or @class='cohr']/@href">
 		<html-to-xml>
 <!--			<http url="${linkToScrap}"/>-->
-			<http url="www.luxe.ru/countries"/>
+			<http url="http://www.luxe.ru/countries"/>
 		</html-to-xml>
 	</xpath>
 </var-def>
@@ -110,7 +110,7 @@
 		
 				<script language="javascript">
 					<![CDATA[
-					var b = "www.luxe.ru";
+					var b = "http://www.luxe.ru";
 					var l = loadedLinkData.toArray();
 					var i = 0;
 					var a = new Array();
@@ -244,7 +244,7 @@
 				
 						<script language="javascript">
 							<![CDATA[
-							var b = "www.luxe.ru";
+							var b = "http://www.luxe.ru";
 							var l = loadedLinkData.toArray();
 							var i = 0;
 							var a = new Array();
