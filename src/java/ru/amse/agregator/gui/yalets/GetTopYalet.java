@@ -12,22 +12,25 @@ import net.sf.xfresh.core.Yalet;
 public class GetTopYalet implements Yalet{
 
 	private String type;
-	private int count;
+	private String count;
 	
     public void setType(final String type) { this.type = type; }
-    public void setCount(int count){ this.count = count; }
+    public void setCount(String count){ this.count = count; }
 	
 	public void process(InternalRequest req, InternalResponse res) {
 			
-		Database.connectToMainBase();
-		ArrayList<DBWrapper> dbRes = Database.getTopNWithType(count, type);
+		Database.connectToMainBase();	
+		ArrayList<DBWrapper> dbRes = Database.getTopNWithType(Integer.parseInt(count), type);
 		ArrayList<Record> webRes = new ArrayList<Record>(); 
 		
 		for (DBWrapper tmp : dbRes) {
 			 Record newRecord = new Record();
 			 newRecord.addCell("Name", tmp.getName());
 			 newRecord.addCell("ID", tmp.getId());
-			 newRecord.addCell("imageLink", tmp.getImagesArray().get(0));
+			 if( tmp.getImagesArray().size() == 0)
+				 newRecord.addCell("imageLink", null);
+			 else
+				 newRecord.addCell("imageLink", tmp.getImagesArray().get(0));
 			 newRecord.addCell("upName", tmp.getStaticCountryName());
 			 newRecord.addCell("upId", tmp.getCountryId());
 			 webRes.add(newRecord);
