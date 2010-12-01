@@ -50,6 +50,9 @@
 
 	<bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
 
-	<bean id="topYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet"/>
+	<bean id="topYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
+       <property name="type" value="City"/>
+       <property name="count" value="9"/>
+	</bean>
     
 </beans>
