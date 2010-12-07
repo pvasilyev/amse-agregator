@@ -10,9 +10,9 @@
                 </title>
             </head>
             <body>
-                <textarea cols="40" rows="20">
+                
                     <xsl:copy-of select="page"/>
-                </textarea>
+                
             </body>
         </html>
     </xsl:template>

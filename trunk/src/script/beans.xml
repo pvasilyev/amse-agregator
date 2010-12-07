@@ -54,5 +54,14 @@
        <property name="type" value="City"/>
        <property name="count" value="9"/>
 	</bean>
+	
+	<bean id="topCityYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
+       <property name="type" value="City"/>
+       <property name="count" value="9"/>
+	</bean>
+	
+	<bean id="countryTopBlockYalet" class="ru.amse.agregator.gui.yalets.CountryTopBlockYalet"/>
+	<bean id="continentSelectBlockYalet" class="ru.amse.agregator.gui.yalets.СontinentSelectBlockYalet"/>
+	<bean id="attractionTopBlockYalet" class="ru.amse.agregator.gui.yalets.AttractionTopBlockYalet"/>
     
 </beans>

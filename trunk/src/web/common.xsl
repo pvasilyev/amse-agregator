@@ -12,6 +12,11 @@
                 <meta http-equiv="Content-Language" content="ru"/>
                 <title>AMSE Туризм</title>
                 <link href="style.css" type="text/css" rel="stylesheet"/>
+                <script type="text/javascript">
+                    function searchClicked(){
+                        document.searchForm.submit();
+                    }
+                </script>
             </head>
             <body>
                 <table class="extTable">
@@ -19,7 +24,7 @@
                         <td class="extTableTD">
                             <table class="header">
                                 <tr>
-                                    <td id="logo_p1">
+                                    <td id="logo_p1" onclick="location.href='index.xml';">
                                     </td>
                                     <td colspan="2">
                                         <table id="searchContainer">
@@ -29,9 +34,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="logo_p2">
+                                    <td id="logo_p2"  onclick="location.href='index.xml';">
                                     </td>
-                                    <td id="logo_p3">
+                                    <td id="logo_p3"  onclick="location.href='index.xml';">
                                     </td>
                                     <td id="linksContainer">
                                         <table id="linksTable" align="right">
@@ -56,83 +61,24 @@
                             </table>
 
                             <table class="pageContainer">
-
                                 <tr>
                                     <td id="leftColomn">
                                         <!-- Эту таблицу потмо разумно вынести в отдельный шаблон. !!!Популярные страны/города.!!! -->
-                                        <table class="simpleTop">
-                                            <tr>
-                                                <td class="simpleTopHeader">
-                                                    Популярные страны:
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <xsl:call-template name="leftmenulist"/>
-                                                </td>
-                                            </tr>
-
-
-                                        </table>
-
-
-                                        <!-- Этот блок потмо разумно вынести в отдельный шаблон. !!!Выбор стран по континентам!!! -->
-                                        <div class="simpleBlock">
-                                            <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0"/>
-                                            <map id="map" name="continentsMap">
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637b334fdf4ca1723c40&amp;type=Continent"
-                                                      shape="poly" coords="15,28,86,21,41,67"
-                                                      title="Северная Америка"/>
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637e334fdf4ca5723c40&amp;type=Continent"
-                                                      shape="poly"
-                                                      coords="47,67,73,81,57,113,43,80" title="Южная Америка"/>
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637c334fdf4ca2723c40&amp;type=Continent"
-                                                      shape="poly"
-                                                      coords="87,58,106,21,139,27,129,51,111,57" title="Европа"/>
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637e334fdf4ca4723c40&amp;type=Continent"
-                                                      shape="poly"
-                                                      coords="138,36,181,42,169,72,132,70,127,53,138,52" title="Азия"/>
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637d334fdf4ca3723c40&amp;type=Continent"
-                                                      shape="poly"
-                                                      coords="102,56,121,58,134,72,115,96,95,70" title="Африка"/>
-                                                <area alt="no image"
-                                                      href="attractiondescription.xml?id=4cec637f334fdf4ca6723c40&amp;type=Continent"
-                                                      shape="poly"
-                                                      coords="148,108,177,110,189,91,171,79,147,88"
-                                                      title="Австралия и Океания"/>
-                                            </map>
-                                        </div>
+                                        <xsl:call-template name="leftmenu"/>
 
                                     </td>
                                     <td id="centerColomn">
                                         <!-- Этот блок потмо разумно вынести в отдельный шаблон. !!!Города с картинками!!! -->
-                                        <xsl:call-template name="main"/>
+                                        <xsl:call-template name="main"/> 
                                         
                                     </td>
                                     <td id="rightColomn">
-                                        <table class="attractionsTop">
-                                            <tr>
-                                                <td class="attractionsTopHeader">
-                                                    Популярные достопримечательности:
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <xsl:call-template name="rightmenulist"/>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                         <xsl:call-template name="rightmenu"/>
                                     </td>
                                 </tr>
                             </table>
 
-                            <div class="copyright" align="left">
+                            <div class="klcopyright">
                                 Это копирайт (c)
                                 <br/>
                                 2010
@@ -154,22 +100,133 @@
         <!--<form action="attractions.xml" method="post">-->
             <tr>
                 <td id="searchForm">
-                    <form id="searchForm" method="POST" action="attractions.xml">
+                    <form id="searchForm" name="searchForm" method="POST" action="search.xml">
                         <input type="text" id="search" name="findTextBox"/>
                     </form>
                 </td>
                 <td class="searchButtonTd">
-                    <a class="buttonLink" onclick="">Найти</a>
+                    <a class="buttonLink" onclick="searchClicked()">Найти</a>
                 </td>
             </tr>
         <!--</form>-->
     </xsl:template>
-
+    
+    
+       <xsl:template name="countryTopBlock">
+        <table class="simpleTop">
+            <tr>
+                <td class="simpleTopHeader">
+                    Популярные страны:
+                </td>
+            </tr>
+            <xsl:for-each select="page/data[@id = 'countryTopBlock']/collection/record">
+               
+                <tr>
+                    <td class="simpleTopItemTitle">
+                        <a>
+                            <xsl:attribute name="href">attractiondescription.xml?type=Country&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
+                            <xsl:copy-of select="cells/cell[1]/value" />
+                        </a> 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="simpleTopItemContent">
+                        <xsl:for-each select="cells/cell[3]/value/record">
+                            <a>
+                                <xsl:attribute name="href">attractiondescription.xml?type=City&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
+                                <xsl:copy-of select="cells/cell[1]/value" />
+                            </a><br/>
+                        </xsl:for-each>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table>
+    </xsl:template>
+    
+    <xsl:template name="continentSelectBlock">
+        <div class="simpleBlock">
+            <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0" />
+            <map name="continentsMap" >
+                <xsl:for-each select="page/data[@id = 'continentSelectBlock']/collection/record">
+                    <area shape="poly">
+                        <xsl:attribute name="coords">
+                            <xsl:if test = "cells/cell[1]/value = 'Австралия и Океания'">
+                                148,108,177,110,189,91,171,79,147,88
+                            </xsl:if>
+                            <xsl:if test = "cells/cell[1]/value = 'Северная Америка'">
+                                15,28,86,21,41,67
+                            </xsl:if>
+                            <xsl:if test = "cells/cell[1]/value = 'Южная Америка'">
+                                47,67,73,81,57,113,43,80
+                            </xsl:if>
+                            <xsl:if test = "cells/cell[1]/value = 'Европа'">
+                                87,58,106,21,139,27,129,51,111,57
+                            </xsl:if>
+                            <xsl:if test = "cells/cell[1]/value = 'Азия'">
+                                138,36,181,42,169,72,132,70,127,53,138,52
+                            </xsl:if>
+                            <xsl:if test = "cells/cell[1]/value = 'Африка'">
+                                102,56,121,58,134,72,115,96,95,70
+                            </xsl:if>
+                        </xsl:attribute>
+                        <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:value-of select="cells/cell[1]/value"/>
+                        </xsl:attribute>
+                    </area>
+                </xsl:for-each>
+                
+            </map>
+        </div>
+    </xsl:template>
+    
+    <xsl:template name="attractionTopBlock">
+        <table class="attractionsTop">
+            <tr>
+                <td class="attractionsTopHeader">
+                    Популярные достопримечательности:
+                </td>
+            </tr>
+            <xsl:for-each select="page/data[@id = 'attractionTopBlock']/collection/record">
+                <tr>
+                    <td>
+                    <xsl:if test="position() mod 2 = 0">
+                        <xsl:attribute name="class">
+                            attractionsTopItemFirst
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="position() mod 2 != 0">
+                        <xsl:attribute name="class">
+                            attractionsTopItemSecond
+                        </xsl:attribute>
+                    </xsl:if>
+                        <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes" />
+                        <br/>
+                        <div class="attractionsTopItemP1">
+                            <a>
+                                <xsl:attribute name="href">attractiondescription.xml?type=Attraction&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
+                                <img width="66" height="55">
+                                    <xsl:attribute name="src">
+                                        <xsl:value-of select="cells/cell[4]/value"/>
+                                    </xsl:attribute>
+                                </img>
+                            </a>
+                        </div>
+                        <div class="attractionsTopItemP2">
+                            <xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes" />
+                        </div>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table> 
+    </xsl:template>
+    
+<!--
     <xsl:template name="leftmenulist">
         <table>
             <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
                 <xsl:sort order="ascending" select="name"/>
-                <!-- Начало элемента -->
+
                 <tr>
                     <td class="simpleTopItemTitle">
                         <a class="left-menu-link">
@@ -197,14 +254,15 @@
                         </a>
                     </td>
                 </tr>
-                <!-- конец элемента -->
+
 
                 <br/>
             </xsl:for-each>
         </table>
 
     </xsl:template>
-
+-->
+<!--
     <xsl:template name="rightmenulist">
         <table class="attractionsTopItemFirst">
             <xsl:for-each select="//data[@id='rightMenu']//right-menu-item">
@@ -233,5 +291,5 @@
         </table>
 
     </xsl:template>
-
+-->
 </xsl:stylesheet>

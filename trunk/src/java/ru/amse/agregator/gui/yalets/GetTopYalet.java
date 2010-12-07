@@ -20,19 +20,20 @@ public class GetTopYalet implements Yalet{
 	public void process(InternalRequest req, InternalResponse res) {
 			
 		Database.connectToMainBase();	
-		ArrayList<DBWrapper> dbRes = Database.getTopNWithType(Integer.parseInt(count), type);
+		ArrayList<DBWrapper> dbRes = Database.getTopNWithType(new Integer(count), type);
 		ArrayList<Record> webRes = new ArrayList<Record>(); 
 		
 		for (DBWrapper tmp : dbRes) {
 			 Record newRecord = new Record();
-			 newRecord.addCell("Name", tmp.getName());
-			 newRecord.addCell("ID", tmp.getId());
+			 newRecord.addCell("name", tmp.getName());
+			 newRecord.addCell("id", tmp.getId().toString());
 			 if( tmp.getImagesArray().size() == 0)
 				 newRecord.addCell("imageLink", null);
-			 else
+			 else{
 				 newRecord.addCell("imageLink", tmp.getImagesArray().get(0));
+			 }			 
 			 newRecord.addCell("upName", tmp.getStaticCountryName());
-			 newRecord.addCell("upId", tmp.getCountryId());
+			 newRecord.addCell("upId", tmp.getCountryId().toString());
 			 webRes.add(newRecord);
 		}
 		res.add(webRes);		
