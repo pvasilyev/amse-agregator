@@ -88,7 +88,7 @@ public class AttractionManager {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
 
-        DBWrapper dbwr = Database.getDBObjectByIdAndType(selectedItem, type);
+        DBWrapper dbwr = Database.getDBObjectByIdAndTypeAndIncRating(selectedItem, type);
 
         List<Attraction> result = new ArrayList<Attraction>();
 

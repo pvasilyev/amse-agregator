@@ -3,9 +3,20 @@
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="common.xsl"/>
 
+    <xsl:template name="leftmenu">
+        <!-- @todo заменить это на параметризуемый вызов блоков  -->
+        <xsl:call-template name="countryTopBlock"/>
+        <xsl:call-template name="continentSelectBlock"/>
+    </xsl:template>
+    
+    <xsl:template name="rightmenu">
+        <xsl:call-template name="attractionTopBlock"/> 
+    </xsl:template>
+
+
     <xsl:template name="main">
         <td width="100%" valign="top">
-            <form action="attractions.xml" method="post">
+            <form action="search.xml" method="post">
                <h2>Расширенный поиск</h2>
 
                 <table width="100%" valign="top">

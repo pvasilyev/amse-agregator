@@ -3,8 +3,19 @@
     <xsl:output method="html" indent="yes" encoding="windows-1251"/>
     <xsl:include href="common.xsl"/>
 
+    <xsl:template name="leftmenu">
+        <!-- @todo заменить это на параметризуемый вызов блоков  -->
+        <xsl:call-template name="countryTopBlock"/>
+        <xsl:call-template name="continentSelectBlock"/>
+    </xsl:template>
+
     <xsl:template name="main">
         <xsl:apply-templates select="page/data/collection" mode="show"/>
+    </xsl:template>
+    
+    <xsl:template name="rightmenu">
+        <!-- @todo заменить это на параметризуемый вызов блоков  -->
+        <xsl:call-template name="attractionTopBlock"/> 
     </xsl:template>
 
     <!--<xsl:template match="/">-->
@@ -20,14 +31,15 @@
         <xsl:for-each select="attraction">
             <xsl:if test="type = 'Error'">
                 <br/>
-                <text-area class="description">Информация временно недоступна.
-                </text-area>
+                <div class="description">
+                    Информация временно недоступна.
+                </div>
             </xsl:if>
 
             <table width="100%">
                 <tr>
                     <td align="left" class="title">
-                        <xsl:value-of select="name"/>
+                        <xsl:value-of select="name" disable-output-escaping="yes"/>
                     </td>
                 </tr>
                 <tr>
@@ -47,8 +59,8 @@
                 <tr>
                     <td class="description" colspan="2">
                         <xsl:if test="description != ''">
-                            Описание:
-                            <xsl:value-of select="description"/>
+                            Описание:<br/>
+                            <xsl:value-of select="description" disable-output-escaping="yes" />
                         </xsl:if>
                     </td>
                 </tr>
@@ -56,7 +68,7 @@
                     <td colspan="2" class="copyright">
                         <xsl:if test="website != ''">
                             ©
-                            <xsl:value-of select="website"/>
+                            <xsl:value-of select="website" disable-output-escaping="yes"/>
                         </xsl:if>
                     </td>
                 </tr>
@@ -64,7 +76,7 @@
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="architect != ''">
                             Архитектор:
-                            <xsl:value-of select="architect"/>
+                            <xsl:value-of select="architect" disable-output-escaping="yes"/>
                         </xsl:if>
                     </td>
                 </tr>
@@ -72,7 +84,7 @@
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="adress != ''">
                             Адресс:
-                            <xsl:value-of select="adress"/>
+                            <xsl:value-of select="adress" disable-output-escaping="yes"/>
                         </xsl:if>
                     </td>
                 </tr>
@@ -80,7 +92,7 @@
                     <td class="b-serp-item__text" colspan="2">
                         <xsl:if test="buildDate != ''">
                             Дата постройки:
-                            <xsl:value-of select="buildDate"/>
+                            <xsl:value-of select="buildDate" disable-output-escaping="yes"/>
                         </xsl:if>
                     </td>
                 </tr>
@@ -95,7 +107,7 @@
                                     <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                                 select="type"/>
                                     </xsl:attribute>
-                                    <xsl:value-of select="name"/>
+                                    <xsl:value-of select="name" disable-output-escaping="yes"/>
                                 </a>
                                 <br/>
                             </xsl:for-each>

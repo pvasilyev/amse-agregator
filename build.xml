@@ -143,11 +143,14 @@
         />
 
         <!-- Copy view -->
+
         <copy todir="${build.view.dir}" overwrite="true">
-            <fileset dir="${src.view.dir}"/>
+            <fileset dir="${src.view.dir}"/> 
         </copy>
 
+
         <!-- Copy config -->
+
         <copy todir="${build.dir}" overwrite="true">
             <fileset dir="${src.script.dir}"/>
         </copy>

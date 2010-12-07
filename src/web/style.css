@@ -61,6 +61,10 @@ form, input {
     white-space: nowrap;
 }
 
+#logo_p3, #logo_p2, #logo_p1{
+    cursor: pointer;
+}
+
 #linksContainer{
     text-align: right;
 }
@@ -212,7 +216,7 @@ a.buttonLink{
     color: #474747;
 }
 
-.copyright{
+.klcopyright{
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 10px;
