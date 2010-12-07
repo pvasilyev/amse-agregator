@@ -22,13 +22,13 @@ public class AttractionTopBlockYalet implements Yalet {
 			attrRec.addCell("name", attraction.getName());
 			attrRec.addCell("id", attraction.getId().toString());
 			ArrayList<String> desc = attraction.getDescriptionArray();
-			if(desc.size() != 0){
-				attrRec.addCell("mini-desc", desc.get(0).substring(0, 150));
+			if(desc != null && desc.size() != 0){
+				attrRec.addCell("mini-desc", desc.get(0).substring(0,desc.get(0).length()>150 ? 150: desc.get(0).length()));
 			} else {
 				attrRec.addCell("mini-desc", "...");
 			}
 			ArrayList<String> images = attraction.getImagesArray();
-			if(images.size() != 0){
+			if(images != null && images.size() != 0){
 				attrRec.addCell("image", images.get(0));
 			} else {
 				attrRec.addCell("image", "images/not_image.gif");
