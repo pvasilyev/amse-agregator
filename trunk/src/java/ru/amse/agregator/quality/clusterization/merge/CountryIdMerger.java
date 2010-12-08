@@ -30,7 +30,8 @@ public class CountryIdMerger extends AttributeMerger {
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
-        resultingObject.setCountryByName(countryName);
+        if (countryName!=null && !countryName.isEmpty())
+        	resultingObject.setCountryByName(countryName);
     }
-
+    
 }
