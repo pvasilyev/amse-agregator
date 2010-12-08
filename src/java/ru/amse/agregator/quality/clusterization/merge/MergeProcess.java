@@ -28,9 +28,13 @@ final public class MergeProcess {
             }
 
             DBWrapper obj = merger.mergeCluster(cluster);
-            //put it in the storage
-            Database.connectToMainBase();
-            Database.add(obj);
+            if(obj.getName() != null && !obj.getName().isEmpty()){
+                //put it in the storage
+                Database.connectToMainBase();
+                Database.add(obj);
+            }
+            
+
         }
     }
 }

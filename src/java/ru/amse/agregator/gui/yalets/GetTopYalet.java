@@ -25,15 +25,20 @@ public class GetTopYalet implements Yalet{
 		
 		for (DBWrapper tmp : dbRes) {
 			 Record newRecord = new Record();
+			 
 			 newRecord.addCell("name", tmp.getName());
 			 newRecord.addCell("id", tmp.getId().toString());
-			 if( tmp.getImagesArray().size() == 0)
+			 if(tmp.getImagesArray() == null || tmp.getImagesArray().size() == 0)
 				 newRecord.addCell("imageLink", null);
 			 else{
 				 newRecord.addCell("imageLink", tmp.getImagesArray().get(0));
-			 }			 
+			 }
 			 newRecord.addCell("upName", tmp.getStaticCountryName());
-			 newRecord.addCell("upId", tmp.getCountryId().toString());
+			 if(tmp.getCountryId() != null){
+				 newRecord.addCell("upId", tmp.getCountryId().toString());
+			 }
+			 
+			 //newRecord.addCell("upId", tmp.getCountryId().toString());
 			 webRes.add(newRecord);
 		}
 		res.add(webRes);		

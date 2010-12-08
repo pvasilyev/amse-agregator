@@ -162,7 +162,7 @@ public class DBWrapper extends StorageObject{
 	public Set<String> getKeySet(boolean onlyDBFields){
 		Set<String> set = new HashSet<String>(myDBObj.keySet());
 		if(!onlyDBFields){
-			if(myCityName != null){
+			if((myCityName != null)){
 				set.add(FIELD_CITY_NAME);
 			}
 			if(myCountryName != null){

@@ -30,7 +30,8 @@ public class CityIdMerger extends AttributeMerger {
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
-        resultingObject.setCityByName(cityName);
+        if ( cityName != null && !cityName.isEmpty())
+        	resultingObject.setCityByName(cityName);
     }
 
 }

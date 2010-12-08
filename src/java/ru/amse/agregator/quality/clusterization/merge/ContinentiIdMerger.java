@@ -30,7 +30,8 @@ public class ContinentiIdMerger extends AttributeMerger {
 
         //@todo care about switching databases here, may cause errors
         Database.connectToMainBase();
-        resultingObject.setContinentByName(continentName);
+        if ( continentName != null && !continentName.isEmpty())
+        	resultingObject.setContinentByName(continentName);
     }
 
 }
