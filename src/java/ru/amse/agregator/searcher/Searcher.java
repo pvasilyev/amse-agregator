@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * Author: Bondarev Timofey
@@ -36,12 +38,30 @@ public class Searcher {
     }
 
     public static ArrayList<DBWrapper> search(UserQuery query) {
+        query = addTilda(query);
         try {
             return search(INDEX_DIR, query, "name");
         } catch (Exception e) {
             System.out.println("Exception! Message: " + e.getMessage());
             return null;
         }
+    }
+
+    private static UserQuery addTilda(UserQuery query) {
+        StringBuffer expr = new StringBuffer(query.getQueryExpression().replaceAll("~", ""));
+        Pattern word = Pattern.compile("[a-zA-Zа-яА-Я]+");
+        Matcher matcher = word.matcher(expr);
+        StringBuffer endExpr = new StringBuffer();
+        int lastEnd = 0;
+
+        while (matcher.find()) {
+            endExpr.append(expr.substring(lastEnd, matcher.end() - matcher.groupCount()));
+            endExpr.append("~");
+            lastEnd = matcher.end();
+        }
+
+        query.setQueryExpression(endExpr.toString());
+        return query;
     }
 
     private static ArrayList<DBWrapper> search(File indexDir, UserQuery q, String fieldForSearch) throws IOException, ParseException {
