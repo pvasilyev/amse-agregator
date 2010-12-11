@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  *
- * @author guest
+ * @author pavel
  */
 public final class Tools {
 

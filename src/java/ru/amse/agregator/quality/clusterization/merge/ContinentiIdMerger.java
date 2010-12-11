@@ -20,18 +20,16 @@ public class ContinentiIdMerger extends AttributeMerger {
         {
             DBWrapper obj = Database.getByUniqueId(id);
             continentName = obj.getStaticContinentName();
-            if (continentName != null) {
+            if ((continentName != null) && (!continentName.isEmpty())) {
                 break;
             }
         } 
 
-        //@todo throw exception
-        assert(continentName != null);
-
         //@todo care about switching databases here, may cause errors
-        Database.connectToMainBase();
-        if ( continentName != null && !continentName.isEmpty())
+        if ((continentName != null) && (!continentName.isEmpty())) {
+            Database.connectToMainBase();
         	resultingObject.setContinentByName(continentName);
+        }
     }
 
 }

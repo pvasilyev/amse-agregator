@@ -10,8 +10,8 @@ import ru.amse.agregator.utils.Tools;
  * @author pavel
  *
  * Fingerprint represents a part of the text's frequency dictionary used to compare
- * pieces of text. This helps faster computation of metric between object's
- * descriptions and to determine near-duplicate descriptions during merge process.
+ * pieces of text. This helps (faster computation of metric between object's
+ * descriptions)(not implemented) and to determine near-duplicate descriptions during merge process.
  *
  * Current implementation basically takes the middle part of the text frequency list
  * 
@@ -20,8 +20,10 @@ final public class Fingerprint {
 
     // these values indicate what part of vocabulary is actually considered
     // "the middle"
-    private static final double middleStart = 0.8;
-    private static final double middleLength = 0.1;
+    private static final double middleStart = 0.0;
+    private static final double middleLength = 1.0;
+    // fingerprint should be constructed
+    private static final int minimumFrequency = 2;
 
     // fingerprint representation
     private Set<String> words;
@@ -31,7 +33,8 @@ final public class Fingerprint {
 
         words = new TreeSet<String>();
         
-        List<String> vocabulary = list.getSortedVocabulary();
+        List<String> vocabulary =
+                list.getSortedVocabularyOfMinimumFrequency(minimumFrequency);
         int vocabularySize = vocabulary.size();
         int lookedThroughCount = 0;
         //get just the part of the vocabulary
@@ -55,6 +58,10 @@ final public class Fingerprint {
      * between two fingerprints. 0.0 represents equal fingerprints
      */
     public static double distance(Fingerprint fingerprint1, Fingerprint fingerprint2) {
+        if (fingerprint1.words.isEmpty() || fingerprint2.words.isEmpty()) {
+            return 1.0;
+        }
+        
         Set<String> allWords  = new TreeSet<String>();
         allWords.addAll(fingerprint1.words);
         allWords.addAll(fingerprint2.words);

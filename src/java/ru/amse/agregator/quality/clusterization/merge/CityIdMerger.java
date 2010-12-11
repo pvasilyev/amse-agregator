@@ -20,18 +20,16 @@ public class CityIdMerger extends AttributeMerger {
         {
             DBWrapper obj = Database.getByUniqueId(id);
             cityName = obj.getStaticCityName();
-            if (cityName != null) {
+            if ((cityName != null) && (!cityName.isEmpty())) {
                 break;
             }
         }
 
-        //@todo throw exception
-        assert(cityName != null);
-
-        //@todo care about switching databases here, may cause errors
-        Database.connectToMainBase();
-        if ( cityName != null && !cityName.isEmpty())
+        //@todo care about switching databases here, may cause errors 
+        if ((cityName != null) && (!cityName.isEmpty())) {
+            Database.connectToMainBase();
         	resultingObject.setCityByName(cityName);
+        }
     }
 
 }
