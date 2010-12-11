@@ -1,5 +1,6 @@
 package ru.amse.agregator.quality.clusterization.metric;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.StringTokenizer;
@@ -14,7 +15,7 @@ import ru.amse.agregator.utils.Tools;
  */
 final public class FrequencyList {
 
-    // a map representing a list
+    // a map representing a list of words and their frequency
     private Map<String, Integer> dictionaryMap = null;
 
     private final String nonCharacterSymbols = " \n\t<>'\"{}[],;:%&*^#@!?.()\\-«»1234567890“”–—";
@@ -70,10 +71,23 @@ final public class FrequencyList {
         }
     }
 
-    // return vocabulary sorted by the frequency of the elements
+    // return vocabulary(list of words) sorted by the frequency of the elements
     public List<String> getSortedVocabulary() {
-        // we assume the vocabulary is sorted because the set is taken from a tree map
         return Tools.getKeysSortedByValue(dictionaryMap);
         
+    }
+
+    // return the list of words that has frequency equal or greater than specified value
+    // the output is sorted by the frequency
+    public List<String> getSortedVocabularyOfMinimumFrequency(int minimumFrequency) {
+        List<String> sortedVocabulary = Tools.getKeysSortedByValue(dictionaryMap);
+        List<String> resultingList = new ArrayList<String>();
+        for (String word : sortedVocabulary) {
+            if (getCount(word) >= minimumFrequency) {
+                resultingList.add(word);
+            }
+        }
+        // the list is sorted because the initial list was sorted
+        return resultingList;
     }
 }

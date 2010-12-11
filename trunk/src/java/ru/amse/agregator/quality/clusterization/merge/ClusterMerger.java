@@ -6,6 +6,9 @@ import ru.amse.agregator.storage.DBWrapper;
 /**
  *
  * @author pavel
+ *
+ * Abstract class that merges a single cluster and returns
+ * merged object
  */
 abstract public class ClusterMerger {
 

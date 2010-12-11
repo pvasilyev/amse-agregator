@@ -20,18 +20,16 @@ public class CountryIdMerger extends AttributeMerger {
         {
             DBWrapper obj = Database.getByUniqueId(id);
             countryName = obj.getStaticCountryName();
-            if (countryName != null) {
+            if ((countryName != null) && (!countryName.isEmpty())) {
                 break;
             }
         }
 
-        //@todo throw exception
-        assert(countryName != null);
-
-        //@todo care about switching databases here, may cause errors
-        Database.connectToMainBase();
-        if (countryName!=null && !countryName.isEmpty())
+        //@todo care about switching databases here, may cause errors     
+        if ((countryName != null) && (!countryName.isEmpty())) {
+            Database.connectToMainBase();
         	resultingObject.setCountryByName(countryName);
+        }
     }
     
 }

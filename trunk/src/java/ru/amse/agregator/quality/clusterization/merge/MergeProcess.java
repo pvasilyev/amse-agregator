@@ -36,5 +36,6 @@ final public class MergeProcess {
             
 
         }
+        storage.finishIterating();
     }
 }
