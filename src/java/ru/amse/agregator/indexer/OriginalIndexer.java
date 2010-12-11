@@ -86,6 +86,8 @@ public class OriginalIndexer {
             documentForCurrentObject = getDocumentForCurrentHotel(object);
         } else if (object.getType().equals(DBWrapper.TYPE_CAFE)) {
             documentForCurrentObject = getDocumentForCurrentCafe(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_COUNTRY)) {
+            documentForCurrentObject = getDocumentForCurrentCountry(object);
         } else {
             documentForCurrentObject = null;
         }
@@ -140,6 +142,14 @@ public class OriginalIndexer {
         indexDocument.addTypicalFields();
         indexDocument.addObjectCity();
         indexDocument.addObjectMusic();
+
+        return indexDocument.getDocument();
+    }
+
+    private static Document getDocumentForCurrentCountry(DBWrapper country) {
+        IndexDocument indexDocument = new IndexDocument(country);
+        System.out.println(country);        
+        indexDocument.addTypicalFields();
 
         return indexDocument.getDocument();
     }
