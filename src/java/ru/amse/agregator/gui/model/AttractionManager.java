@@ -52,6 +52,7 @@ public class AttractionManager {
         Searcher.setIndexDir(new File("index"));
         log.error("vector - " + vector);
         ArrayList<DBWrapper> dbwr;
+
         if (vector.size() > 0) {
             dbwr = Searcher.search(new UserQuery(param, vector));
         } else {
@@ -65,20 +66,49 @@ public class AttractionManager {
             return result;
         }
 
+        String tmp;
+        log.error("length " + dbwr.size());
         for (int i = 0; i < dbwr.size(); ++i) {
-            Attraction attraction = new Attraction();
-            attraction.setType(dbwr.get(i).getType());
-            attraction.setName(dbwr.get(i).getName());
-            String desc = dbwr.get(i).getDescriptionArray().get(0);
-            if (desc.length() > 300) {
-                attraction.setDescription(new String(desc.substring(0, 300) + " ..."));
-            } else {
-                attraction.setDescription(desc);
-            }
-//            attraction.setType(dbwr.get(i).getCityNameFromDB());
-            attraction.setId(dbwr.get(i).getId().toString());
+            log.error("number " + i);
+            log.error("name " + dbwr.get(i).getName());
+            log.error("id " + dbwr.get(i).getId());
+            log.error("type " + dbwr.get(i).getType());
 
-            log.error("Other ID = " + attraction.getId());
+            Attraction attraction = new Attraction();
+
+            tmp = String.valueOf(dbwr.get(i).getId());
+            if (tmp == null) {
+                continue;
+            }
+            attraction.setId(tmp);
+
+            tmp = dbwr.get(i).getType();
+            if (tmp == null) {
+                log.error("CONYINUE");
+                continue;
+            }
+            attraction.setType(tmp);
+
+            tmp = dbwr.get(i).getName();
+            if (tmp == null) {
+                continue;
+            }
+            attraction.setName(tmp);
+
+            if (dbwr.get(i).getDescriptionArray() == null) {
+                continue;
+            }
+
+            tmp = dbwr.get(i).getDescriptionArray().get(0);
+
+            if (tmp != null) {
+                if (tmp.length() > 300) {
+                    attraction.setDescription(new String(tmp.substring(0, 300) + " ..."));
+                } else {
+                    attraction.setDescription(tmp);
+                }
+            }
+
             result.add(attraction);
         }
         return result;
@@ -104,9 +134,8 @@ public class AttractionManager {
         attraction.setType(type);
         attraction.setName(dbwr.getName());
         if (!type.equals("Continent")) {
-           attraction.setDescription(dbwr.getDescriptionArray().get(0));
+            attraction.setDescription(dbwr.getDescriptionArray().get(0));
 
-            
 
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
@@ -115,12 +144,12 @@ public class AttractionManager {
 //        attraction.setCost(dbwr.getCost());
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
-        attraction.setWebsite(dbwr.getSourceUrlArray().get(0));
+            attraction.setWebsite(dbwr.getSourceUrlArray().get(0));
 //        attraction.setRooms(dbwr.getRooms()); 
         }
 
         if (attraction.getType().equals("City")) {
-          ArrayList<String> imagesArray = dbwr.getImagesArray();
+            ArrayList<String> imagesArray = dbwr.getImagesArray();
             if (imagesArray.size() > 0) {
                 attraction.setImage(imagesArray.get(0));
                 attraction.setImagesArray(imagesArray);

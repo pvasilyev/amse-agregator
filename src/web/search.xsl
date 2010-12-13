@@ -14,7 +14,7 @@
     </xsl:template>
 
     <xsl:template name="main">
-        <xsl:for-each select="//collection">
+        <xsl:for-each select="page/data[@id='showAttractions']//collection">
             <xsl:for-each select="attraction">
                 <xsl:if test="type = 'Error'">
                     <br/>

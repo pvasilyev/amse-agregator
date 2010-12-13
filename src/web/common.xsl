@@ -120,13 +120,13 @@
                 </td>
             </tr>
             <xsl:for-each select="page/data[@id = 'countryTopBlock']/collection/record">
-               
+
                 <tr>
                     <td class="simpleTopItemTitle">
                         <a>
                             <xsl:attribute name="href">attractiondescription.xml?type=Country&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
                             <xsl:copy-of select="cells/cell[1]/value" />
-                        </a> 
+                        </a>
                     </td>
                 </tr>
                 <tr>
@@ -142,7 +142,7 @@
             </xsl:for-each>
         </table>
     </xsl:template>
-    
+
     <xsl:template name="continentSelectBlock">
         <div class="simpleBlock">
             <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0" />
@@ -218,9 +218,19 @@
                     </td>
                 </tr>
             </xsl:for-each>
-        </table> 
+        </table>
     </xsl:template>
-    
+
+    <!--<xsl:template name="attractionTopBlock2">-->
+        <!--<xsl:apply-templates select="page/data[@id = 'attractionTopBlock']/collection/record"/>-->
+    <!--</xsl:template>-->
+
+    <xsl:template name="attractionTopBlock2" match="page/data[@id = 'attractionTopBlock']/collection/record">
+
+    </xsl:template>
+
+
+
 <!--
     <xsl:template name="leftmenulist">
         <table>
