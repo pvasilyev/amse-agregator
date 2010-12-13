@@ -42,7 +42,7 @@
                                 <xsl:attribute name="title">
                                     <xsl:value-of select="cells/cell[4]/value"/>
                                 </xsl:attribute>
-                                <xsl:attribute name="href">attractiondescription.xml?type=City&amp;id=<xsl:value-of select="cells/cell[5]/value"/></xsl:attribute>
+                                <xsl:attribute name="href">attractiondescription.xml?type=Country&amp;id=<xsl:value-of select="cells/cell[5]/value"/></xsl:attribute>
                                 <xsl:value-of select="cells/cell[4]/value" disable-output-escaping="yes"/>
                             </a>
                             ::
