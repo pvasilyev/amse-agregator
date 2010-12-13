@@ -169,7 +169,7 @@
                                 102,56,121,58,134,72,115,96,95,70
                             </xsl:if>
                         </xsl:attribute>
-                        <xsl:attribute name="href">continent.xml?id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
+                        <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="cells/cell[2]/value"/>&amp;type=Continent</xsl:attribute>
                         <xsl:attribute name="title">
                             <xsl:value-of select="cells/cell[1]/value"/>
                         </xsl:attribute>
