@@ -25,7 +25,7 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
         if (tmp != null && !"".equals(tmp)) {
             ArrayList<String> labels = setLabels(req);
 
-            log.error(req.getAllParameters());
+//            log.error(req.getAllParameters());
 
             List<Attraction> result = manager.getSearchResult(tmp, labels);
             log.error(result + "RESULT");
@@ -41,7 +41,7 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
             if (tmp != null && !"".equals(tmp)) {
                 ArrayList<String> labels = setLabels(req);
 
-                log.error(req.getAllParameters());
+//                log.error(req.getAllParameters());
 
                 List<Attraction> result = manager.getSearchResult(tmp, labels);
                 log.error(result + "RESULT");
