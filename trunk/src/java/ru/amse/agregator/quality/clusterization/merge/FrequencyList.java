@@ -1,4 +1,4 @@
-package ru.amse.agregator.quality.clusterization.metric;
+package ru.amse.agregator.quality.clusterization.merge;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,6 +12,7 @@ import ru.amse.agregator.utils.Tools;
  * @author pavel
  *
  * FrequencyList is a wrapper
+ * 
  */
 final public class FrequencyList {
 
@@ -48,6 +49,12 @@ final public class FrequencyList {
         }
     }
 
+    // removes the word from dictionary regardless of count
+    public void removeWord(String word) {
+        String normalizedWord = word.toLowerCase();
+        dictionaryMap.remove(normalizedWord);
+    }
+
     // returns the word's count
     public int getCount(String word) {
         Integer wordCount = dictionaryMap.get(word.toLowerCase());
@@ -64,6 +71,11 @@ final public class FrequencyList {
 
     // add text to list
     public void addText(String text) {
+        
+        if (text == null) {
+            return;
+        }
+
         // use tokenizer to parse the text
         StringTokenizer tokenizer = new StringTokenizer(text, nonCharacterSymbols);
         while (tokenizer.hasMoreTokens()) {

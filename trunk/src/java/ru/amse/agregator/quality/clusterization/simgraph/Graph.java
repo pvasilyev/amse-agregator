@@ -49,6 +49,8 @@ abstract public class Graph extends Object implements Serializable {
 
     final public void build(final ArrayList<DBWrapper> objects) {
         //compare all pairs of objects and put in the graph those under the threshold
+
+        //@todo rewrite
         int i = 0;
         for (DBWrapper obj1 : objects) {
             int j = 0;

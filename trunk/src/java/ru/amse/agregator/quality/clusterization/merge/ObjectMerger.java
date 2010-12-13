@@ -1,6 +1,7 @@
 package ru.amse.agregator.quality.clusterization.merge;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -9,6 +10,7 @@ import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.quality.clusterization.clusterstorage.Cluster;
 import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.utils.Tools;
+import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
 
 
 /**
@@ -18,6 +20,7 @@ import ru.amse.agregator.utils.Tools;
 public class ObjectMerger extends ClusterMerger {
 
     final private AttributeMerger defaultMerger = new StringMerger();
+    private DescriptionFingerprinter fingerprinter;
 
     final private Map<String, AttributeMerger> attMergers;
     public ObjectMerger() {
@@ -26,6 +29,7 @@ public class ObjectMerger extends ClusterMerger {
         final AttributeMerger mergeStringLists = new StringListMerger();
         final AttributeMerger doNothing = new DoNothingMerger();
 
+        fingerprinter = new DescriptionFingerprinter();
         attMergers = new TreeMap<String, AttributeMerger>();
 
         attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new ContinentiIdMerger());
@@ -37,7 +41,6 @@ public class ObjectMerger extends ClusterMerger {
         attMergers.put(DBWrapper.FIELD_SOURCE_URL, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
         attMergers.put(DBWrapper.FIELD_ID, doNothing);     
-        
         attMergers.put(DBWrapper.FIELD_COORDS, doNothing);
     }
 
@@ -76,4 +79,28 @@ public class ObjectMerger extends ClusterMerger {
         return new ArrayList<String>(attributeNames);
     }
 
+    @Override
+    public void preprocess(ClusterStorage clusters) {
+        fingerprinter.startBuildingFilter();
+        clusters.startIterating();
+        while (clusters.hasNext()) {
+            Cluster cluster = clusters.getNextCluster();
+            for (UniqueId id : cluster.getObjectList()) {
+                DBWrapper object = Database.getByUniqueId(id);
+                List<String> descriptionList = object.getDescriptionArray();
+                if (descriptionList != null) {
+                    for (String description : object.getDescriptionArray()) {
+                        fingerprinter.addSampleForFilter(description);
+                    }
+                }
+            }
+        }
+        clusters.finishIterating();
+        fingerprinter.finalizeFilter();
+    }
+
+    @Override
+    public void postprocess(ClusterStorage clusters) {
+
+    }
 }

@@ -14,6 +14,8 @@ final public class MergeProcess {
 
     static public void perform(ClusterMerger merger, ClusterStorage storage) {
 
+        merger.preprocess(storage);
+
         storage.startIterating();
         while (storage.hasNext()) {
             //use merging algorithm to create single object out of cluster
@@ -37,5 +39,7 @@ final public class MergeProcess {
 
         }
         storage.finishIterating();
+
+        merger.postprocess(storage);
     }
 }

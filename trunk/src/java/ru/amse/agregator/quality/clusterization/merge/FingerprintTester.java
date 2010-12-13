@@ -1,4 +1,4 @@
-package ru.amse.agregator.quality.clusterization.metric;
+package ru.amse.agregator.quality.clusterization.merge;
 
 /**
  *
