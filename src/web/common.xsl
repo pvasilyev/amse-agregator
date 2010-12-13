@@ -44,12 +44,12 @@
                                                 <td>
                                                     <a href="menu.xml">Все страны</a>
                                                 </td>
-                                                <td>
-                                                    <a href="#">Top10</a>
-                                                </td>
-                                                <td>
-                                                    <a href="hotels.xml">Отели</a>
-                                                </td>
+                                                <!--<td>-->
+                                                    <!--<a href="#">Top10</a>-->
+                                                <!--</td>-->
+                                                <!--<td>-->
+                                                    <!--<a href="hotels.xml">Отели</a>-->
+                                                <!--</td>-->
                                                 <td>
                                                     <a href="largefind.xml">Расширенный поиск</a>
                                                 </td>

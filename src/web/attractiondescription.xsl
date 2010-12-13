@@ -12,20 +12,11 @@
     <xsl:template name="main">
         <xsl:apply-templates select="page/data/collection" mode="show"/>
     </xsl:template>
-    
+
     <xsl:template name="rightmenu">
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
-        <xsl:call-template name="attractionTopBlock"/> 
+        <xsl:call-template name="attractionTopBlock"/>
     </xsl:template>
-
-    <!--<xsl:template match="/">-->
-    <!--<xsl:apply-templates select="//images-array/string" mode="image"/>-->
-<!--</xsl:template>-->
-<!--...-->
-<!--<xsl:template  match="string" mode="image">-->
-   <!--<img src="{.}" /> &lt;!&ndash; насчет точки не уверен. У тебя здесь используется заведомо неверный селектор, по которому сложно определить что ты хотела получить &ndash;&gt;-->
-<!--</xsl:template>-->
-
 
     <xsl:template match="//collection" mode="show">
         <xsl:for-each select="attraction">
@@ -43,24 +34,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="30%">
-                        <xsl:if test="images-array != ''">
-                            <xsl:for-each select="//data[@id='showAttractionDesc']//images-array">
-                                <xsl:for-each select="//data[@id='showAttractionDesc']//string">
-                                    <img src="{.}" class="big_image"/>
-                                    <span style="padding:0px 10px;"/>
-                                </xsl:for-each>
-
-                            </xsl:for-each>
-                        </xsl:if>
-
-                    </td>
-                </tr>
-                <tr>
                     <td class="description" colspan="2">
                         <xsl:if test="description != ''">
-                            Описание:<br/>
-                            <xsl:value-of select="description" disable-output-escaping="yes" />
+                            Описание:
+                            <br/>
+                            <xsl:value-of select="description" disable-output-escaping="yes"/>
                         </xsl:if>
                     </td>
                 </tr>
@@ -97,9 +75,36 @@
                     </td>
                 </tr>
                 <tr>
+                    <td width="30%">
+                        <xsl:if test="images-array != ''">
+                            <xsl:for-each select="//data[@id='showAttractionDesc']//images-array">
+                                <xsl:for-each select="//data[@id='showAttractionDesc']//string">
+                                    <img src="{.}" class="big_image"/>
+                                    <span style="padding:0px 10px;"/>
+                                </xsl:for-each>
+
+                            </xsl:for-each>
+                        </xsl:if>
+
+                    </td>
+                </tr>
+                <tr>
                     <td width="80%" class="description">
                         <xsl:if test="//data[@id='showAttractionDesc']//menu-item != ''">
-                            Смотрите также:
+                            <xsl:if test="type = 'City'">
+                                Достопримечательности города
+                            </xsl:if>
+                            <xsl:if test="type = 'Country'">
+                                Города страны
+                            </xsl:if>
+                            <xsl:if test="type = 'Continent'">
+                                Страны континента
+                            </xsl:if>
+                            <!--<xsl:if test="type = 'City'">-->
+                                <!--Достопримечательности города-->
+                            <!--</xsl:if>-->
+<!---->
+                            <!--Смотрите также:-->
                             <br/>
 
                             <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
@@ -115,6 +120,7 @@
 
                     </td>
                 </tr>
+
             </table>
         </xsl:for-each>
     </xsl:template>
