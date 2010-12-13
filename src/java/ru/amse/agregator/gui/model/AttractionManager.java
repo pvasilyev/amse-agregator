@@ -148,12 +148,10 @@ public class AttractionManager {
 //        attraction.setRooms(dbwr.getRooms()); 
         }
 
-        if (attraction.getType().equals("City")) {
-            ArrayList<String> imagesArray = dbwr.getImagesArray();
-            if (imagesArray.size() > 0) {
-                attraction.setImage(imagesArray.get(0));
-                attraction.setImagesArray(imagesArray);
-            }
+        ArrayList<String> imagesArray = dbwr.getImagesArray();
+        if (imagesArray.size() > 0) {
+            attraction.setImage(imagesArray.get(0));
+            attraction.setImagesArray(imagesArray);
         }
 
 
