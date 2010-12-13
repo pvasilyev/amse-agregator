@@ -138,9 +138,10 @@ public class AttractionManager {
 
             ArrayList<String> imagesArray = dbwr.getImagesArray();
             if (imagesArray != null) {
-                attraction.setImage(imagesArray.get(0));
-                attraction.setImagesArray(imagesArray);
-            }
+                if (imagesArray.size() > 0) {
+                    attraction.setImagesArray(imagesArray);
+                }
+            } 
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
 //        attraction.setDate_foundation(dbwr.getBuildDate().toString());

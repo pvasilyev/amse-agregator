@@ -91,6 +91,20 @@ form, input {
     color: #777777;
 }
 
+.search_checkbox {
+    font-family: "Arial";
+    font-size: 11pt;
+    font-weight: bold;
+    text-decoration: none;
+    color: #3a4154;
+}
+
+#searchTable td{
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
 #searchContainer{
     width: 100%;
     text-align: right;

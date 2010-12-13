@@ -29,7 +29,7 @@ public class GetTopYalet implements Yalet{
 			 newRecord.addCell("name", tmp.getName());
 			 newRecord.addCell("id", tmp.getId().toString());
 			 if(tmp.getImagesArray() == null || tmp.getImagesArray().size() == 0)
-				 newRecord.addCell("imageLink", null);
+				 newRecord.addCell("imageLink", "images/not_image.gif");
 			 else{
 				 newRecord.addCell("imageLink", tmp.getImagesArray().get(0));
 			 }

@@ -34,12 +34,31 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
                 attraction.setType("Error");
                 result.add(attraction);
             }
+            res.add(result);
+//            }
+        } else {
+            tmp = req.getParameter(String.valueOf("findTextBox1"));
+            if (tmp != null && !"".equals(tmp)) {
+                ArrayList<String> labels = setLabels(req);
+
+                log.error(req.getAllParameters());
+
+                List<Attraction> result = manager.getSearchResult(tmp, labels);
+                log.error(result + "RESULT");
+                if (result.size() == 0) {
+                    Attraction attraction = new Attraction();
+                    attraction.setType("Error");
+                    result.add(attraction);
+                }
                 res.add(result);
 //            }
+            }
         }
     }
 
-    private ArrayList<String> setLabels(InternalRequest req) {
+    private ArrayList<String> setLabels
+            (InternalRequest
+                    req) {
         ArrayList<String> labels = new ArrayList<String>();
         if (req.getParameter("countryCheckbox") != null) {
             labels.add("Country");
