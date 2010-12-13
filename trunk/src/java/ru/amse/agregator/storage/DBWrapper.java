@@ -560,6 +560,7 @@ public class DBWrapper extends StorageObject{
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getDescriptionArray(){
+
 		return (ArrayList<String>) myDBObj.get(FIELD_DESC);
 	}
 	

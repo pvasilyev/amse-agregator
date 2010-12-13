@@ -14,6 +14,7 @@ public class Main {
         AttractionManager.connectToDatabase();
         System.out.println("sdfsfdsf");
         Database.printAll();
+//        Database.getAttractionById();
     }
 }
 
