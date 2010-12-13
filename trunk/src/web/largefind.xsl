@@ -21,79 +21,84 @@
             document.searchForm1.submit();
             }
         </script>
-        <h1>Расширенный поиск</h1>
-        <table class="header">
-            <tr>
-                <td>
-                </td>
-                <td colspan="2">
-                    <table id="searchContainer">
-                        <tr>
-                            <td id="searchForm">
-                                <form id="searchForm" name="searchForm1" method="POST" action="search.xml">
+        <form id="searchForm" name="searchForm1" method="POST" action="search.xml">
+            <h1>Расширенный поиск</h1>
+            <table class="header">
+                <tr>
+                    <td>
+                    </td>
+                    <td colspan="2">
+                        <table id="searchContainer">
+                            <tr>
+                                <td id="searchForm">
                                     <input type="text" id="search" name="findTextBox1"/>
-                                </form>
-                            </td>
-                            <td class="searchButtonTd">
-                                <a class="buttonLink" onclick="searchClicked1()">Найти</a>
-                            </td>
-                        </tr>
-                    </table>
+                                </td>
+                                <td class="searchButtonTd">
+                                    <a class="buttonLink" onclick="searchClicked1()">Найти</a>
+                                </td>
+                            </tr>
+                        </table>
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td id="linksContainer" colspan="1">
-                    <table id="searchTable" align="right">
-                        <br/>
-                        <tr class="search_checkbox">
-                            <td>
-                                <input type="checkbox" name="countryCheckbox"/>
-                                Страна
-                            </td>
-                            <td>
-                                <input type="checkbox" name="cityCheckbox"/>
-                                Город
-                            </td>
-                            <td>
-                                <input type="checkbox" name="museumCheckbox"/>
-                                Музей
-                            </td>
-                            <td>
-                                <input type="checkbox" name="archAttractionCheckbox"/>
-                                Архитектура
-                            </td>
-                            <td>
-                                <input type="checkbox" name="naturalAttractionCheckbox"/>
-                                Природа
-                            </td>
-                            <td>
-                                <input type="checkbox" name="cafeCheckbox"/>
-                                Кафе
-                            </td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
 
-                            <td colspan="2">
-                                <input type="checkbox" name="entertainmentCheckbox"/>
-                                Развлечения
-                            </td>
-                            <td>
-                                <input type="checkbox" name="shoppingCheckbox"/>
-                                Шопинг
-                            </td>
-                            <td>
-                                <input type="checkbox" name="hotelCheckbox"/>
-                                Отель
-                            </td>
-                        </tr>
-                        <!-- Добавить сюда вторую строку дял подчеркиваний ссылок. -->
-                    </table>
-                </td>
-            </tr>
-        </table>
+                    <td id="linksContainer" colspan="1">
+
+                        <table id="searchTable" align="right">
+                            <br/>
+                            <tr class="search_checkbox">
+                                <td>
+                                    <input type="checkbox" name="countryCheckbox"/>
+                                    Страна
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="cityCheckbox"/>
+                                    Город
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="museumCheckbox"/>
+                                    Музей
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="archAttractionCheckbox"/>
+                                    Архитектура
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="naturalAttractionCheckbox"/>
+                                    Природа
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="cafeCheckbox"/>
+                                    Кафе
+
+                                </td>
+
+                                <td colspan="2">
+                                    <input type="checkbox" name="entertainmentCheckbox"/>
+                                    Развлечения
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="shoppingCheckbox"/>
+                                    Шопинг
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="hotelCheckbox"/>
+                                    Отель
+                                </td>
+                            </tr>
+                            <!-- Добавить сюда вторую строку дял подчеркиваний ссылок. -->
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
         <!--<td width="100%" valign="top">-->
         <!--<form action="search.xml" method="post">-->
         <!--<h2>Расширенный поиск</h2>-->
