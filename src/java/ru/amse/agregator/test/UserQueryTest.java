@@ -13,7 +13,6 @@ import static junit.framework.Assert.assertEquals;
  * Date: Nov 16, 2010
  * Time: 3:19:06 PM
  */
-
 public class UserQueryTest {
     UserQuery query;
 

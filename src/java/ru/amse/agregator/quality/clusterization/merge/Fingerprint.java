@@ -1,4 +1,4 @@
-package ru.amse.agregator.quality.clusterization.metric;
+package ru.amse.agregator.quality.clusterization.merge;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -23,7 +23,7 @@ final public class Fingerprint {
     private static final double middleStart = 0.0;
     private static final double middleLength = 1.0;
     // fingerprint should be constructed
-    private static final int minimumFrequency = 2;
+    private static final int minimumFrequency = 1;
 
     // fingerprint representation
     private Set<String> words;

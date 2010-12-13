@@ -24,7 +24,7 @@ public class ToolsForWorkWithFiles {
     private static void deleteFileOrEmptyDirectory(File deletionFileOrEmptyDirectory) throws IOException {
         boolean deleted = deletionFileOrEmptyDirectory.delete();
         if (!deleted) {
-            throw new IOException("Cann't delete file " + deletionFileOrEmptyDirectory.getAbsolutePath());
+            throw new IOException("Can't delete file " + deletionFileOrEmptyDirectory.getAbsolutePath());
         }
     }
 }

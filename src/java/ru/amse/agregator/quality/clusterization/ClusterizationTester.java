@@ -8,7 +8,7 @@ import ru.amse.agregator.quality.clusterization.simgraph.*;
 import ru.amse.agregator.quality.clusterization.metric.*;
 import ru.amse.agregator.quality.clusterization.merge.*;
 import ru.amse.agregator.storage.DBWrapper;
-import ru.amse.agregator.quality.clusterization.metric.Fingerprint;
+import ru.amse.agregator.quality.clusterization.merge.Fingerprint;
 import ru.amse.agregator.storage.UniqueId;
 
 /**
@@ -87,7 +87,7 @@ public class ClusterizationTester {
                 Cluster cluster = storage.getNextCluster();
                 if (cluster.size() > 1) {
                     ClusterMerger merger = new ObjectMerger();
-                    System.out.println("OBject:");
+//                    System.out.println("OBject:");
                     DBWrapper resultingObject = merger.mergeCluster(cluster);
                     ArrayList<String> descArray = resultingObject.getDescriptionArray();
                     for (String desc1 : descArray) {
@@ -98,7 +98,7 @@ public class ClusterizationTester {
                             Fingerprint f1 = new Fingerprint(desc1);
                             Fingerprint f2 = new Fingerprint(desc2);
                             double dist = Fingerprint.distance(f1, f2);
-                            if (dist <= 0.2) {
+                            if (dist <= 0.5) {
                                 System.out.println("Distance is " + dist);
                                 System.out.println(desc1);
                                 System.out.println(desc2);
@@ -112,6 +112,9 @@ public class ClusterizationTester {
                 }
             }
             storage.finishIterating();
+
+            //ClusterMerger merger = new ObjectMerger();
+            //MergeProcess.perform(merger, storage);
 
             System.out.println(String.valueOf(allOfType.size()));
 
