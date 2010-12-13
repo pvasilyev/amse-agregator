@@ -137,10 +137,10 @@ public class AttractionManager {
             attraction.setDescription(dbwr.getDescriptionArray().get(0));
 
             ArrayList<String> imagesArray = dbwr.getImagesArray();
-        if (imagesArray.size() > 0) {
-            attraction.setImage(imagesArray.get(0));
-            attraction.setImagesArray(imagesArray);
-        }
+            if (imagesArray != null) {
+                attraction.setImage(imagesArray.get(0));
+                attraction.setImagesArray(imagesArray);
+            }
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
 //        attraction.setDate_foundation(dbwr.getBuildDate().toString());
@@ -151,8 +151,6 @@ public class AttractionManager {
             attraction.setWebsite(dbwr.getSourceUrlArray().get(0));
 //        attraction.setRooms(dbwr.getRooms()); 
         }
-
-
 
 
         if (type.equals("City") || type.equals("Country") || type.equals("Continent")) {
