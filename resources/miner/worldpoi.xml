@@ -267,7 +267,7 @@
 									<text>poiName</text>
 									<template>${returnPoiName.toString()}</template>
 									
-									<text>coordiantes</text>
+									<text>coordinates</text>
 									<template>${returnCoordinates.toString()}</template>
 			
 									<text>description</text>
@@ -280,7 +280,7 @@
 									<template>${sys.fullUrl(site, poi).toString()}</template>
 								</var-def>
 		
-								<var-def name="addToBD">1</var-def>
+								<var-def name="addToDB">1</var-def>
 								</body>
 							
 								<catch>
