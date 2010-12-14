@@ -10,7 +10,7 @@ import ru.amse.agregator.storage.UniqueId;
 public class DescriptionMerger extends AttributeMerger {
 
     // parameter that adjusts how similar descriptions should be to be merged in one
-    static final double DEFAULT_MIN_SIMILARITY = 0.4;
+    static final double DEFAULT_MIN_SIMILARITY = 0.5;
     
     final double minSimilarity;
     private DescriptionFingerprinter fingerprinter;
