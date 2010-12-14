@@ -20,7 +20,7 @@ Miner собирается ant-овским build файлом.
 </var-def>
 }}}
 
-_Типы полей:_ type, name, description, coordinates, photos, keywords, date_foundation, architect , cost, address, city_name, country_name, music, website, rooms.
+_Типы полей:_ type, name, description, coordinates, images, keywords, date_foundation, architect , cost, address, city_name, country_name, music, website, rooms.
 
 Само поле _type_ может быть: {{{Country, City, ArchAttraction, NaturalAttraction, Cafe, Hotel, Museum, Entertainment, Shopping.}}}
 
