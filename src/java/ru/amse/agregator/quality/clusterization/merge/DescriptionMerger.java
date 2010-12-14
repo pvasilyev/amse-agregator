@@ -33,7 +33,11 @@ public class DescriptionMerger extends AttributeMerger {
 
         for (UniqueId id : cluster.getObjectList()) {
             DBWrapper obj = Database.getByUniqueId(id);
-            descriptionList.addAll(obj.getDescriptionArray());
+
+            ArrayList<String> descriptions = obj.getDescriptionArray();
+            if (descriptions != null) {
+                descriptionList.addAll(obj.getDescriptionArray());
+            }
         }
 
         // use fingerprinter to create prints for all descriptions
@@ -60,15 +64,22 @@ public class DescriptionMerger extends AttributeMerger {
                 Fingerprint fingerprintI = fingerprintList.get(i);
                 Fingerprint fingerprintJ = fingerprintList.get(j);
                 if (Fingerprint.distance(fingerprintI, fingerprintJ) < minSimilarity) {
+                    //output similar descriptions
+//                    System.out.println("Dist: " + Fingerprint.distance(fingerprintI, fingerprintJ));
+//                    System.out.println(descriptionList.get(i));
+//                    System.out.println(fingerprintI);
+//                    System.out.println(descriptionList.get(j));
+//                    System.out.println(fingerprintJ);
+
                     //discard one of the descriptions
                     String descriptionI = descriptionList.get(i);
                     String descriptionJ = descriptionList.get(j);
                     if (descriptionI.length() > descriptionJ.length()) {
                         // discard jth description
-                        indexes.remove(j);
+                        indexes.remove(new Integer(j));
                     } else {
                         // discard ith description
-                        indexes.remove(i);
+                        indexes.remove(new Integer(i));
                     }
                 }
             }

@@ -81,37 +81,37 @@ public class ClusterizationTester {
     //        }
     //        storage.finishIterating();
 
-            System.out.println("Testing comparison:");
-            storage.startIterating();
-            while (storage.hasNext()) {
-                Cluster cluster = storage.getNextCluster();
-                if (cluster.size() > 1) {
-                    ClusterMerger merger = new ObjectMerger();
-//                    System.out.println("OBject:");
-                    DBWrapper resultingObject = merger.mergeCluster(cluster);
-                    ArrayList<String> descArray = resultingObject.getDescriptionArray();
-                    for (String desc1 : descArray) {
-                        for (String desc2 : descArray) {
-                            if (desc1 == desc2) {
-                                continue;
-                            }
-                            Fingerprint f1 = new Fingerprint(desc1);
-                            Fingerprint f2 = new Fingerprint(desc2);
-                            double dist = Fingerprint.distance(f1, f2);
-                            if (dist <= 0.5) {
-                                System.out.println("Distance is " + dist);
-                                System.out.println(desc1);
-                                System.out.println(desc2);
-                                System.out.println(f1);
-                                System.out.println(f2);
-                            }
-                        }
-                    }
-
-                    System.out.println(resultingObject);
-                }
-            }
-            storage.finishIterating();
+//            System.out.println("Testing comparison:");
+//            storage.startIterating();
+//            while (storage.hasNext()) {
+//                Cluster cluster = storage.getNextCluster();
+//                if (cluster.size() > 1) {
+//                    ClusterMerger merger = new ObjectMerger();
+////                    System.out.println("OBject:");
+//                    DBWrapper resultingObject = merger.mergeCluster(cluster);
+//                    ArrayList<String> descArray = resultingObject.getDescriptionArray();
+//                    for (String desc1 : descArray) {
+//                        for (String desc2 : descArray) {
+//                            if (desc1 == desc2) {
+//                                continue;
+//                            }
+//                            Fingerprint f1 = new Fingerprint(desc1);
+//                            Fingerprint f2 = new Fingerprint(desc2);
+//                            double dist = Fingerprint.distance(f1, f2);
+//                            if (dist <= 0.5) {
+//                                System.out.println("Distance is " + dist);
+//                                System.out.println(desc1);
+//                                System.out.println(desc2);
+//                                System.out.println(f1);
+//                                System.out.println(f2);
+//                            }
+//                        }
+//                    }
+//
+//                    System.out.println(resultingObject);
+//                }
+//            }
+//            storage.finishIterating();
 
             //ClusterMerger merger = new ObjectMerger();
             //MergeProcess.perform(merger, storage);
@@ -122,6 +122,8 @@ public class ClusterizationTester {
                     + String.valueOf(storage.getClusterCount()) + " clusters out of "
                     + String.valueOf(allOfType.size()) + " objects");
 
+
+            MergeProcess.perform(new ObjectMerger(), storage);
         }
     }
 

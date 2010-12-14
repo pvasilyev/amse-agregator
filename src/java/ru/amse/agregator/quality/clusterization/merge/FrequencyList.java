@@ -19,7 +19,7 @@ final public class FrequencyList {
     // a map representing a list of words and their frequency
     private Map<String, Integer> dictionaryMap = null;
 
-    private final String nonCharacterSymbols = " \n\t<>'\"{}[],;:%&*^#@!?.()\\-«»1234567890“”–—";
+    private final String nonCharacterSymbols = " \n\t<>'\"{}[],;:%&*^#@!?.()\\-«»1234567890„“”–—";
 
     public FrequencyList() {
         reset();
