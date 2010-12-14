@@ -43,9 +43,10 @@ final public class DescriptionFingerprinter extends TextFingerprinter {
             ++lookedThroughCount;
             //get the last percentage of the list
             if (vocabularySize * (1.0 - percentage) <= lookedThroughCount) {
-                System.out.print(lookedThroughCount);
-                System.out.print(" ");
-                System.out.println(word);
+                // output 
+//                System.out.print(lookedThroughCount);
+//                System.out.print(" ");
+//                System.out.println(word);
                 filter.add(word);
             }
         }
