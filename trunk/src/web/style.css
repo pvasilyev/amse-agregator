@@ -13,6 +13,13 @@ form, input {
     padding:0
 }
 
+a {
+    font-family: "Arial";
+    font-size: 13px;
+    color: #474747;
+    text-decoration: underline;
+}
+
 .extTable {
     height: 100%;
     width: 100%;
@@ -321,7 +328,7 @@ a.buttonLink{
   margin:1.2em 0 0;
 }
 
-.description {
+.description, .description-grey {
   font-size:1.0em;
   font-weight:normal;
   font:1.0em Georgia,Times,serif;
@@ -331,15 +338,16 @@ a.buttonLink{
 }
 
 .description-grey {
-  font-size:1.0em;
-  font-weight:normal;
-  font:1.0em Georgia,Times,serif;
-  color:#666;
-  margin:1.2em 0 0;
-  text-align: justify;
-  background: #DCDCDC;
+  background: #f0f0f0;
 }
 
+.description a, .description-grey a {
+    font-family: "Arial";
+    font-size: 13px;
+    font-weight: bold;
+    color: #474747;
+    text-decoration: none;
+}
 .copyright {
   font-weight:normal;
   font:0.6em Georgia,Times,serif;

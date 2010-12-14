@@ -413,9 +413,17 @@ public class Database {
 	
 	//Find all objects in collection 'collectionName' where are present fields with values as in the 'criteria' 
 	private static ArrayList<DBWrapper> findAllInCollection(String collectionName, DBObject criteria){
+		return findAllInCollection(collectionName, criteria, null);		
+	}
+	
+	//Find all objects in collection 'collectionName' where are present fields with values as in the 'criteria'. And Sort with order 
+	private static ArrayList<DBWrapper> findAllInCollection(String collectionName, DBObject criteria, DBObject order){
 		ArrayList<DBWrapper> objects = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(collectionName).find(criteria);
+			if(order != null){
+				cur = cur.sort(order);
+			}
 			while(cur.hasNext()){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
@@ -438,22 +446,24 @@ public class Database {
 	//Methods for Gui
 	
 	public static ArrayList<DBWrapper> getAllContinents(){
-		return findAllInCollection(COLLECTION_CONTINENTS,new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CONTINENT));		
+		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME, 1);
+		return findAllInCollection(COLLECTION_CONTINENTS,new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CONTINENT), orderBy);		
 	}
 	
 	public static ArrayList<DBWrapper> getAllCountriesByContinent(ObjectId continentId){
 		BasicDBObject criteria = new BasicDBObject();
 		//criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_COUNTRY);
 		criteria.put(DBWrapper.FIELD_CONTINENT_ID,continentId);
-		
-		return findAllInCollection(COLLECTION_COUNTRIES,criteria);		
+		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME, 1);
+		return findAllInCollection(COLLECTION_COUNTRIES,criteria,orderBy);		
 	}
 	
 	public static ArrayList<DBWrapper> getAllCitiesByCountry(ObjectId countryId){
 		BasicDBObject criteria = new BasicDBObject();
 		//criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_CITY);
 		criteria.put(DBWrapper.FIELD_COUNTRY_ID,countryId);
-		return findAllInCollection(COLLECTION_CITIES,criteria);	
+		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME, 1);
+		return findAllInCollection(COLLECTION_CITIES,criteria,orderBy);	
 	}
 	
 	@SuppressWarnings("unchecked")
