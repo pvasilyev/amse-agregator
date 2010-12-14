@@ -79,7 +79,7 @@
                             </table>
 
                             <div class="klcopyright">
-                                Это копирайт (c)
+                                <a href="info.xml">Информация о создателях сайта</a>
                                 <br/>
                                 2010
                             </div>
