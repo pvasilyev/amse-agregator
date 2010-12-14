@@ -48,7 +48,7 @@ public class Searcher {
     }
 
     private static UserQuery addTilda(UserQuery query) {
-        StringBuffer expr = new StringBuffer(query.getQueryExpression().replaceAll("~", ""));
+        StringBuffer expr = new StringBuffer(query.getQueryExpression().replaceAll("[~-]", " "));
         Pattern word = Pattern.compile("[a-zA-Zа-яА-Я]+");
         Matcher matcher = word.matcher(expr);
         StringBuffer endExpr = new StringBuffer();
