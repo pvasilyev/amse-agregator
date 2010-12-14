@@ -7,6 +7,7 @@ import ru.amse.agregator.searcher.UserQuery;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.storage.UniqueId;
+import ru.amse.agregator.utils.HtmlTools;
 
 import javax.xml.crypto.Data;
 import java.io.File;
@@ -99,11 +100,12 @@ public class AttractionManager {
                 continue;
             }
 
-            tmp = dbwr.get(i).getDescriptionArray().get(0);
+            tmp = (String) dbwr.get(i).getDescriptionArray().get(0);
 
             if (tmp != null) {
-                if (tmp.length() > 300) {
-                    attraction.setDescription(new String(tmp.substring(0, 300) + " ..."));
+            	String withoutTags = HtmlTools.clearString(tmp);
+                if (withoutTags.length() > 300) {
+                    attraction.setDescription(new String(withoutTags.substring(0, 300) + " ..."));
                 } else {
                     attraction.setDescription(tmp);
                 }
@@ -134,7 +136,7 @@ public class AttractionManager {
         attraction.setType(type);
         attraction.setName(dbwr.getName());
         if (!type.equals("Continent")) {
-            attraction.setDescription(dbwr.getDescriptionArray().get(0));
+            attraction.setDescription((String) dbwr.getDescriptionArray().get(0));
 
             ArrayList<String> imagesArray = dbwr.getImagesArray();
             if (imagesArray != null) {
@@ -149,7 +151,7 @@ public class AttractionManager {
 //        attraction.setCost(dbwr.getCost());
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
-            attraction.setWebsite(dbwr.getSourceUrlArray().get(0));
+            attraction.setWebsite((String) dbwr.getSourceUrlArray().get(0));
 //        attraction.setRooms(dbwr.getRooms()); 
         }
 

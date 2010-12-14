@@ -106,16 +106,19 @@
 <!---->
                             <!--Смотрите также:-->
                             <br/>
-
+                            
+                            <ul>
                             <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
+                                <li>
                                 <a>
                                     <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                                 select="type"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="name" disable-output-escaping="yes"/>
                                 </a>
-                                <br/>
+                                </li>
                             </xsl:for-each>
+                            </ul>
                         </xsl:if>
 
                     </td>

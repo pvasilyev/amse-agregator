@@ -15,12 +15,18 @@ public class DataCleaner extends DefaultHandler {
 		result = new StringBuffer();
 		goodTags = new ArrayList<String>();
 		goodTags.add("table");
+		goodTags.add("tbody");
+		goodTags.add("tr");
+		goodTags.add("td");
 		goodTags.add("div");
 		goodTags.add("span");
 		goodTags.add("b");
 		goodTags.add("p");
 		goodTags.add("i");
 		goodTags.add("u");
+		goodTags.add("ul");
+		goodTags.add("ol");
+		goodTags.add("li");
 		goodTags.add("br");
 	}
 	

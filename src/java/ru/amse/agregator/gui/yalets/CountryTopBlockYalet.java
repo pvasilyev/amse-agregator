@@ -19,7 +19,7 @@ public class CountryTopBlockYalet implements Yalet {
 		
 		for (DBWrapper country : countries) {
 			
-			ArrayList<DBWrapper> cities = Database.getTopNWithKeyValue(2,DBWrapper.TYPE_CITY,DBWrapper.FIELD_COUNTRY_ID, country.getId());
+			ArrayList<DBWrapper> cities = Database.getTopNWithKeyValue(3,DBWrapper.TYPE_CITY,DBWrapper.FIELD_COUNTRY_ID, country.getId());
 			
 			Record countryRec = new Record();
 			countryRec.addCell("name", country.getName());

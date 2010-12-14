@@ -21,6 +21,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 
+import ru.amse.agregator.utils.HtmlTools;
+
 
 public class MyUniversalListener implements ScraperRuntimeListener  {
 		
@@ -63,11 +65,11 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 							
 				    if(myList.get(i).toString().equals(DBWrapper.FIELD_IMAGES)){
 					    
-				    	newEntry.setImagesArray(createImagesArray(clearString(myList.get(i+1).toString())));
+				    	newEntry.setImagesArray(createImagesArray(HtmlTools.clearString(myList.get(i+1).toString())));
 					    
 				    } else if(myList.get(i).toString().equals(DBWrapper.FIELD_KEYWORDS)){
 					
-					    newEntry.setKeyWordsArray(createImagesArray(clearString(myList.get(i+1).toString())));
+					    newEntry.setKeyWordsArray(createImagesArray(HtmlTools.clearString(myList.get(i+1).toString())));
 					
 				    }else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
@@ -139,34 +141,7 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 		}
 		return images;
 	}
-	
-	//This method clears string from tags
-	private String clearString(String incomed){
 		
-		if(incomed != null && !incomed.isEmpty()){
-			int a,b;
-			while(incomed.indexOf('<') != (-1) && incomed.indexOf('>') != (-1)){
-				a = incomed.indexOf('<');
-				b = incomed.indexOf('>', a);
-				if( b > a ){
-					incomed = incomed.substring(0,a) + incomed.substring(b);
-					incomed = incomed.replaceFirst(">", " ");
-				}
-				else {
-					break;
-				}
-			}	
-			incomed = incomed.replaceAll("\n", " ");
-			incomed = incomed.replaceAll("\t", " ");
-			incomed = incomed.replaceAll(" {2,}", " ");
-			incomed = incomed.replaceAll(" {1,}[.]", ".");
-			incomed = incomed.replaceAll(" {1,}[,]", ",");
-			return incomed.trim();
-		}
-		else
-			return null;
-	}
-	
 	//Create coordinates point from string
 	@SuppressWarnings("unused")
 	private Point2D.Double createCoord(String lon, String lat){

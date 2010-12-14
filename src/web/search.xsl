@@ -35,7 +35,7 @@
                     <tr>
                         <td align="left">
 
-                            <a>
+                            <a class="simpleTopItemTitle">
                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                             select="type"/>
                                 </xsl:attribute>

@@ -25,10 +25,8 @@
                                 <xsl:value-of select="menu-item[1]/name"/>
                             </tr>
                             <xsl:for-each select="menu-item">
-                                <xsl:sort order="ascending" select="name"/>
-
-                                <tr class="simpleTopItemContent">
-                                    <xsl:if test="position() != 1">
+                                <xsl:if test="position() > 1">
+                                    <tr class="simpleTopItemContent">
                                         <xsl:if test="position() mod 2 = 0">
                                             <td class="allcountries-grey">
                                             <a>
@@ -47,9 +45,8 @@
                                             </a>
                                             </td>
                                         </xsl:if>
-                                    </xsl:if>
-
-                                </tr>
+                                    </tr>
+                                </xsl:if>
                             </xsl:for-each>
                         </table>
                         <br/>
