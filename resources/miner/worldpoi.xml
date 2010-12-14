@@ -255,16 +255,16 @@
 									<text>type</text>
 									<template>ArchAttraction</template>
 									
-									<text>continent</text>
+									<text>continent_name</text>
 									<template>${returnContinent.toString()}</template>
 									
-									<text>country</text>
+									<text>country_name</text>
 									<template>${returnCountry.toString()}</template>
 
 									<text>city</text>
 									<template>${returnCity.toString()}</template>
 
-									<text>poiName</text>
+									<text>name_name</text>
 									<template>${returnPoiName.toString()}</template>
 									
 									<text>coordinates</text>
