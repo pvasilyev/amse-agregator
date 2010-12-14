@@ -116,7 +116,8 @@ public class AttractionManager {
         return result;
     }
 
-    public List<Attraction> getAttractionById(String id, String type) {
+    @SuppressWarnings("unchecked")
+	public List<Attraction> getAttractionById(String id, String type) {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
 
@@ -136,7 +137,14 @@ public class AttractionManager {
         attraction.setType(type);
         attraction.setName(dbwr.getName());
         if (!type.equals("Continent")) {
-            attraction.setDescription((String) dbwr.getDescriptionArray().get(0));
+        	StringBuffer sb = new StringBuffer();
+        	ArrayList<String> descArray = dbwr.getDescriptionArray();
+        	if(descArray != null){
+            	for(String desc : descArray){
+            		sb.append(desc + "<hr>");
+            	}
+        	}
+            attraction.setDescription(sb.toString());
 
             ArrayList<String> imagesArray = dbwr.getImagesArray();
             if (imagesArray != null) {
