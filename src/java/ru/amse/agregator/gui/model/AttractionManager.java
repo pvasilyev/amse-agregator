@@ -159,7 +159,16 @@ public class AttractionManager {
 //        attraction.setCost(dbwr.getCost());
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
-            attraction.setWebsite((String) dbwr.getSourceUrlArray().get(0));
+        	sb = new StringBuffer();
+        	ArrayList<String> srcArray = dbwr.getSourceUrlArray();
+        	if(srcArray != null){
+        		int i=0;
+            	for(String src : srcArray){
+            		sb.append(src + ((srcArray.size()-1 == i)?(""):(", ")));
+            		i++;
+            	}
+        	}
+            attraction.setWebsite(sb.toString());
 //        attraction.setRooms(dbwr.getRooms()); 
         }
 
