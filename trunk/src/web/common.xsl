@@ -145,6 +145,7 @@
 
     <xsl:template name="continentSelectBlock">
         <div class="simpleBlock">
+            Выберите континент:
             <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0" />
             <map name="continentsMap" >
                 <xsl:for-each select="page/data[@id = 'continentSelectBlock']/collection/record">
