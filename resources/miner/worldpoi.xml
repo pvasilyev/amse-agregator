@@ -268,7 +268,7 @@
 									<template>${returnPoiName.toString()}</template>
 									
 									<text>coordinates</text>
-									<template>${returnCoordinates.toString()}</template>
+									<template>${returnCoordinates.toString().replaceAll(",",".").trim()}</template>
 			
 								<!--	<text>description</text>
 									<template>${returnDescription.toString()}</template> -->
