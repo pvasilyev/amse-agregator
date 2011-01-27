@@ -15,6 +15,7 @@
   * Про порядок выполнения всевозможных работ написано [http://code.google.com/p/amse-agregator/wiki/WorkStyle тут]
   * Про способ организации кода в svn написано [http://code.google.com/p/amse-agregator/wiki/AboutSVN тут]
   * Текущий список проблем, вопросов и их решений и ответов написан [http://code.google.com/p/amse-agregator/wiki/ProblemsAndSolutions тут]
+  * Отзывы, комментарии и предложения от пользователей и участников проекта написано [http://code.google.com/p/amse-agregator/wiki/CommentsFromUsers тут]
 
 ==Техническая информация и документация==
 
