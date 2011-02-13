@@ -41,6 +41,17 @@ final public class Cluster {
         return objects.size();
     }
 
+    // indicates whether cluster contains an object from main database
+    // returns an UniqueId of that object or null otherwise
+    public UniqueId objectFromMainDB() {
+        for (UniqueId id : objects) {
+            if (id.fromMainDB()) {
+                return id;
+            }
+        }
+        return null;
+    }
+
     // prints and object to system output for testing and logging
     public void print() {
         for (UniqueId id : objects) {

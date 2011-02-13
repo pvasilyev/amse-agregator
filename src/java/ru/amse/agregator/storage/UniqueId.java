@@ -23,16 +23,21 @@ final public class UniqueId {
 
     }
 
-    ObjectId getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    String getCollectionName() {
+    public String getCollectionName() {
         return collectionName;
     }
 
-    String getDatabaseName() {
+    public String getDatabaseName() {
         return databaseName;
+    }
+
+    // indicates whether it's an object from main database
+    public boolean fromMainDB() {
+        return (databaseName.equals(Database.MAIN_DB_NAME));
     }
 
 }
