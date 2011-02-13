@@ -1,7 +1,5 @@
 package ru.amse.agregator.storage;
 
-
-
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
