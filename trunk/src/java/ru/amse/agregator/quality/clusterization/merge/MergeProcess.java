@@ -5,6 +5,7 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.ClusterStorage;
 import ru.amse.agregator.storage.DBWrapper;
 
 import ru.amse.agregator.storage.Database;
+import ru.amse.agregator.storage.UniqueId;
 
 /**
  *
@@ -31,9 +32,18 @@ final public class MergeProcess {
 
             DBWrapper obj = merger.mergeCluster(cluster);
             if(obj.getName() != null && !obj.getName().isEmpty()){
-                //put it in the storage
-                Database.connectToMainBase();
-                Database.add(obj);
+                // add or update an object
+                UniqueId objectToUpdateId = cluster.objectFromMainDB();
+                if (objectToUpdateId != null) {
+                    // update the correct object
+                    Database.connectToMainBase();
+                    obj.setId(objectToUpdateId.getId());
+                    Database.update(obj);
+                } else {
+                    // add a new object
+                    Database.connectToMainBase();
+                    Database.add(obj);
+                }
             }
             
 

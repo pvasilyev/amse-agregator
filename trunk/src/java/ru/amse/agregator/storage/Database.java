@@ -62,6 +62,11 @@ public class Database {
 	public static void connectToMainBase(){
 		connect(DB_SERVER_ADDRESS, DB_SERVER_PORT,MAIN_DB_NAME);
 	}
+
+    //Connect to database specified by name
+	public static void connectToBase(String dbName){
+		connect(DB_SERVER_ADDRESS, DB_SERVER_PORT, dbName);
+	}
 	
 	//Connect to server address:port, and database dbName
 	public static void connect(String address, int port, String dbName){
@@ -798,7 +803,7 @@ public class Database {
 	//-------------------------------------------------------------
 	
 	//---------------------------------
-	//--Methods for Clasterization-----
+	//--Methods for Clusterization-----
 	//---------------------------------
 	
     public static DBWrapper getByUniqueId(UniqueId uniqueId) {
@@ -808,7 +813,7 @@ public class Database {
     }
     
 	//---------------------------------
-	//--Methods for Clasterization end-
+	//--Methods for Clusterization end-
 	//---------------------------------
     
     
