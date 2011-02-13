@@ -1,5 +1,6 @@
 package ru.amse.agregator.storage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.io.IOException;
 
 import org.bson.types.ObjectId;
@@ -17,6 +18,7 @@ public class StorageTester {
     	
    
         Database.connectToMainBase();  
+        Database.unificationNames();
         
         System.out.println(Database.getDBObjectByIdAndType(new ObjectId("4cf59db19f5edb2f5e12070f"), DBWrapper.TYPE_COUNTRY));
         System.out.println(Database.getTopNWithKeyValue(100, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_COUNTRY_ID, new ObjectId("4cf59db19f5edb2f5e12070f")));
