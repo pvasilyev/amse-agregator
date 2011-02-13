@@ -28,6 +28,8 @@ public class DataCleaner extends DefaultHandler {
 		goodTags.add("ol");
 		goodTags.add("li");
 		goodTags.add("br");
+		goodTags.add("strong");
+		
 	}
 	
     public void startElement(String uri, String localName, String qName,  Attributes attributes){

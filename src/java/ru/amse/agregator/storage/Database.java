@@ -4,9 +4,13 @@ package ru.amse.agregator.storage;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Pattern;
+
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -409,6 +413,86 @@ public class Database {
 		} else {
 			return null;
 		}	
+	}
+	
+	public static void unificationNames() {
+		Set<String> collections = myDB.getCollectionNames();
+		for (String collection : collections) {
+			ArrayList<DBWrapper> array = Database.getAllCollection(collection);
+			if (array == null){
+				System.out.println("пустой array");
+			}
+			else{
+				for (DBWrapper obj : array) {
+					if (obj == null){
+						System.out.println("пустой obj");
+					}
+					else{
+						String name = obj.getName();
+						if (name == null){
+							System.out.println("пустой name");
+						}
+						else{
+							char[] arrayName = name.toCharArray();
+							if (arrayName.length == 0){
+								System.out.println("пустой arrayName");
+							}
+							else{
+								arrayName[0] = Character.toUpperCase(arrayName[0]);
+								for ( int i = 1 ; i < arrayName.length; ++i){
+									if (Character.isUpperCase(arrayName[i])&&((arrayName[i] >'а' && arrayName[i] <'я') || (arrayName[i] >'А' && arrayName[i] <'Я'))){
+										if (Character.isLetter(arrayName[i-1])){
+											arrayName[i] = Character.toLowerCase(arrayName[i]);			
+										}
+									}
+								}
+								name =   new String(arrayName);
+								name = name.replaceAll("-", " - ");
+								name = name.replaceAll("  ", " ");
+								
+								obj.setName(name);
+								Database.update(obj);
+								
+							}
+						}
+					}
+				}	
+			}
+		}
+
+
+		Pattern first = Pattern.compile("[-']");
+		Pattern second = Pattern.compile("[^а-яА-Яa-zA-Z0-9]");
+		for (String collection : collections) {
+			ArrayList<DBWrapper> array = Database.getAllCollection(collection);
+			if (array == null){
+				System.out.println("пустой array");
+			}
+			else{
+				for (DBWrapper obj : array) {
+					
+					String name = obj.getName();
+					if (name == null){
+						System.out.println("пустой name");
+					}
+					else{
+						
+						if (first.matcher(obj.getName()).find()){
+							String nameInDbModified = second.matcher(obj.getName()).replaceAll(""); 
+							for (DBWrapper obj1 : array){
+								if (obj1.getName() != null){
+									String nameInDb = second.matcher(obj1.getName()).replaceAll(""); 						
+									if (nameInDb.equalsIgnoreCase(nameInDbModified)) {
+										obj1.setName(obj.getName());
+										Database.update(obj1);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	//Find all objects in collection 'collectionName' where are present fields with values as in the 'criteria' 
