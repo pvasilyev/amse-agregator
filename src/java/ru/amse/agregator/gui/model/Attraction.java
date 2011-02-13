@@ -2,6 +2,7 @@ package ru.amse.agregator.gui.model;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -24,6 +25,7 @@ public class Attraction {
     private String rooms = "";
     private String rating = "";
     private List<MenuItem> attractionList = new ArrayList<MenuItem>();
+    private HashMap<String, String> tabMap = new HashMap<String, String>();
 
     public String getType() {
         return type;
@@ -151,5 +153,13 @@ public class Attraction {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public HashMap<String, String> getTabMap() {
+        return tabMap;
+    }
+
+    public void setTabMap(HashMap<String, String> tabMap) {
+        this.tabMap = tabMap;
     }
 }

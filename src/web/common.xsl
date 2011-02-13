@@ -81,7 +81,7 @@
                             <div class="klcopyright">
                                 <a href="info.xml">Информация о создателях сайта</a>
                                 <br/>
-                                2010
+                                2010-2011
                             </div>
 
                         </td>
@@ -119,28 +119,30 @@
                     Популярные страны:
                 </td>
             </tr>
-            <xsl:for-each select="page/data[@id = 'countryTopBlock']/collection/record">
-
-                <tr>
-                    <td class="simpleTopItemTitle">
-                        <a>
-                            <xsl:attribute name="href">attractiondescription.xml?type=Country&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
-                            <xsl:copy-of select="cells/cell[1]/value" />
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="simpleTopItemContent">
-                        <xsl:for-each select="cells/cell[3]/value/record">
-                            <a>
-                                <xsl:attribute name="href">attractiondescription.xml?type=City&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
-                                <xsl:copy-of select="cells/cell[1]/value" />
-                            </a><br/>
-                        </xsl:for-each>
-                    </td>
-                </tr>
-            </xsl:for-each>
+            <xsl:apply-templates select="page/data[@id ='countryTopBlock']/collection/record" mode="countryTopBlock"/>
         </table>
+    </xsl:template>
+
+    <xsl:template match="record" mode="countryTopBlock">
+        <tr>
+            <td class="simpleTopItemTitle">
+                <a href="attractiondescription.xml?type=Country&amp;id={cells/cell[2]/value}">
+                    <xsl:copy-of select="cells/cell[1]/value" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td class="simpleTopItemContent">
+                <xsl:apply-templates select="cells/cell[3]/value/record" mode="simpleTopItemContent"/>
+            </td>
+        </tr>
+    </xsl:template>
+
+    <xsl:template match="record" mode="simpleTopItemContent">
+       <a href="attractiondescription.xml?type=City&amp;id={cells/cell[2]/value}">
+           <xsl:value-of select="cells/cell[1]/value"/>
+       </a>
+       <br/>
     </xsl:template>
 
     <xsl:template name="continentSelectBlock">
@@ -148,37 +150,35 @@
             Выберите континент:
             <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0" />
             <map name="continentsMap" >
-                <xsl:for-each select="page/data[@id = 'continentSelectBlock']/collection/record">
-                    <area shape="poly">
-                        <xsl:attribute name="coords">
-                            <xsl:if test = "cells/cell[1]/value = 'Австралия и Океания'">
-                                148,108,177,110,189,91,171,79,147,88
-                            </xsl:if>
-                            <xsl:if test = "cells/cell[1]/value = 'Северная Америка'">
-                                15,28,86,21,41,67
-                            </xsl:if>
-                            <xsl:if test = "cells/cell[1]/value = 'Южная Америка'">
-                                47,67,73,81,57,113,43,80
-                            </xsl:if>
-                            <xsl:if test = "cells/cell[1]/value = 'Европа'">
-                                87,58,106,21,139,27,129,51,111,57
-                            </xsl:if>
-                            <xsl:if test = "cells/cell[1]/value = 'Азия'">
-                                138,36,181,42,169,72,132,70,127,53,138,52
-                            </xsl:if>
-                            <xsl:if test = "cells/cell[1]/value = 'Африка'">
-                                102,56,121,58,134,72,115,96,95,70
-                            </xsl:if>
-                        </xsl:attribute>
-                        <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="cells/cell[2]/value"/>&amp;type=Continent</xsl:attribute>
-                        <xsl:attribute name="title">
-                            <xsl:value-of select="cells/cell[1]/value"/>
-                        </xsl:attribute>
-                    </area>
-                </xsl:for-each>
-                
+                <xsl:apply-templates select="page/data[@id = 'continentSelectBlock']/collection/record" mode="continentsMap"/>
             </map>
         </div>
+    </xsl:template>
+
+    <xsl:template match="record" mode="continentsMap">
+        <area shape="poly" title="{cells/cell[1]/value}"
+                           href="attractiondescription.xml?id={cells/cell[2]/value}&amp;type=Continent">
+            <xsl:attribute name="coords">
+                <xsl:if test = "cells/cell[1]/value = 'Австралия и Океания'">
+                    148,108,177,110,189,91,171,79,147,88
+                </xsl:if>
+                <xsl:if test = "cells/cell[1]/value = 'Северная Америка'">
+                    15,28,86,21,41,67
+                </xsl:if>
+                <xsl:if test = "cells/cell[1]/value = 'Южная Америка'">
+                    47,67,73,81,57,113,43,80
+                </xsl:if>
+                <xsl:if test = "cells/cell[1]/value = 'Европа'">
+                    87,58,106,21,139,27,129,51,111,57
+                </xsl:if>
+                <xsl:if test = "cells/cell[1]/value = 'Азия'">
+                    138,36,181,42,169,72,132,70,127,53,138,52
+                </xsl:if>
+                <xsl:if test = "cells/cell[1]/value = 'Африка'">
+                    102,56,121,58,134,72,115,96,95,70
+                </xsl:if>
+            </xsl:attribute>
+        </area>
     </xsl:template>
     
     <xsl:template name="attractionTopBlock">
@@ -188,47 +188,37 @@
                     Популярные достопримечательности:
                 </td>
             </tr>
-            <xsl:for-each select="page/data[@id = 'attractionTopBlock']/collection/record">
-                <tr>
-                    <td>
-                    <xsl:if test="position() mod 2 = 0">
-                        <xsl:attribute name="class">
-                            attractionsTopItemFirst
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:if test="position() mod 2 != 0">
-                        <xsl:attribute name="class">
-                            attractionsTopItemSecond
-                        </xsl:attribute>
-                    </xsl:if>
-                        <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes" />
-                        <br/>
-                        <div class="attractionsTopItemP1">
-                            <a>
-                                <xsl:attribute name="href">attractiondescription.xml?type=Attraction&amp;id=<xsl:value-of select="cells/cell[2]/value"/></xsl:attribute>
-                                <img width="66" height="55">
-                                    <xsl:attribute name="src">
-                                        <xsl:value-of select="cells/cell[4]/value"/>
-                                    </xsl:attribute>
-                                </img>
-                            </a>
-                        </div>
-                        <div class="attractionsTopItemP2">
-                            <xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes" />
-                        </div>
-                    </td>
-                </tr>
-            </xsl:for-each>
+            <xsl:apply-templates select="page/data[@id = 'attractionTopBlock']/collection/record" mode="attractionsTopHeader"/>
         </table>
     </xsl:template>
 
-    <!--<xsl:template name="attractionTopBlock2">-->
-        <!--<xsl:apply-templates select="page/data[@id = 'attractionTopBlock']/collection/record"/>-->
-    <!--</xsl:template>-->
-
-    <xsl:template name="attractionTopBlock2" match="page/data[@id = 'attractionTopBlock']/collection/record">
-
+    <xsl:template match="record" mode="attractionsTopHeader">
+        <tr>
+            <td>
+            <xsl:if test="position() mod 2 = 0">
+                <xsl:attribute name="class">
+                    attractionsTopItemFirst
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="position() mod 2 != 0">
+                <xsl:attribute name="class">
+                    attractionsTopItemSecond
+                </xsl:attribute>
+            </xsl:if>
+                <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes" />
+                <br/>
+                <div class="attractionsTopItemP1">
+                    <a href="attractiondescription.xml?type=Attraction&amp;id={cells/cell[2]/value}">
+                        <img width="66" height="55" src="{cells/cell[4]/value}"/>
+                    </a>
+                </div>
+                <div class="attractionsTopItemP2">
+                    <xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes" />
+                </div>
+            </td>
+        </tr>
     </xsl:template>
+
 
 
 

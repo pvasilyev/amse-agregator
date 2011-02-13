@@ -18,79 +18,43 @@
         <xsl:call-template name="attractionTopBlock"/>
     </xsl:template>
 
-    <xsl:template match="//collection" mode="show">
-        <xsl:for-each select="attraction">
-            <xsl:if test="type = 'Error'">
-                <br/>
-                <div class="description">
-                    Информация временно недоступна.
-                </div>
-            </xsl:if>
+    <xsl:template match="page/data/collection" mode="show">
+        <xsl:apply-templates select="attraction" mode="attractiondescription-xml"/>
+    </xsl:template>
 
-            <table width="100%">
-                <tr>
-                    <td align="left" class="title">
-                        <xsl:value-of select="name" disable-output-escaping="yes"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="description" colspan="2">
-                        <xsl:if test="description != ''">
-                            Описание:
-                            <br/>
-                            <xsl:value-of select="description" disable-output-escaping="yes"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="copyright">
-                        <xsl:if test="website != ''">
-                            ©
-                            <xsl:value-of select="website" disable-output-escaping="yes"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="b-serp-item__text" colspan="2">
-                        <xsl:if test="architect != ''">
-                            Архитектор:
-                            <xsl:value-of select="architect" disable-output-escaping="yes"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="b-serp-item__text" colspan="2">
-                        <xsl:if test="adress != ''">
-                            Адресс:
-                            <xsl:value-of select="adress" disable-output-escaping="yes"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="b-serp-item__text" colspan="2">
-                        <xsl:if test="buildDate != ''">
-                            Дата постройки:
-                            <xsl:value-of select="buildDate" disable-output-escaping="yes"/>
-                        </xsl:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%">
-                        <xsl:if test="images-array != ''">
-                            <xsl:for-each select="//data[@id='showAttractionDesc']//images-array">
-                                <xsl:for-each select="//data[@id='showAttractionDesc']//string">
-                                    <img src="{.}" class="big_image"/>
-                                    <span style="padding:0px 10px;"/>
-                                </xsl:for-each>
+    <xsl:template match="attraction" mode="attractiondescription-xml">
+        <xsl:if test="type = 'Error'">
+            <br/>
+            <div class="description">
+                Информация временно недоступна.
+            </div>
+        </xsl:if>
 
-                            </xsl:for-each>
-                        </xsl:if>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td width="80%" class="description">
-                        <xsl:if test="//data[@id='showAttractionDesc']//menu-item != ''">
+        <table width="100%">
+            <tr>
+                <td align="left" class="title">
+                    <xsl:value-of select="name" disable-output-escaping="yes"/>
+                </td>
+            </tr>
+            <tr align="left">
+                <td>
+                    <xsl:if test="tab-map//description = 'true'">
+                        <a href="attractiondescription.xml?id={id}&amp;type={type}&amp;tab=description">
+                            Общая информация
+                        </a>
+                    </xsl:if>
+
+                    <xsl:if test="tab-map//images = 'true'">
+                        |
+                        <a href="attractiondescription.xml?id={id}&amp;type={type}&amp;tab=images">
+                            Галерея
+                        </a>
+                    </xsl:if>
+
+                    <xsl:if test="tab-map//list = 'true'">
+                        |
+                        <a href="attractiondescription.xml?id={id}&amp;type={type}&amp;tab=list">
                             <xsl:if test="type = 'City'">
                                 Достопримечательности города
                             </xsl:if>
@@ -100,32 +64,151 @@
                             <xsl:if test="type = 'Continent'">
                                 Страны континента
                             </xsl:if>
-                            <!--<xsl:if test="type = 'City'">-->
-                                <!--Достопримечательности города-->
-                            <!--</xsl:if>-->
-<!---->
-                            <!--Смотрите также:-->
-                            <br/>
-                            
-                            <ul>
+                        </a>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td class="description" colspan="1" width="30%">
+                    <xsl:if test=".//images-array != ''">
+                        <xsl:apply-templates select=".//images-array//string" mode="attractiondescription-xml"/>
+                    </xsl:if>
+
+                    <xsl:if test="description != ''">
+                        <xsl:value-of select="description" disable-output-escaping="yes"/>
+                    </xsl:if>
+
+
+                    <xsl:if test=".//menu-item != ''">
+                        <xsl:if test="type = 'City'">
+                            Достопримечательности города
+                        </xsl:if>
+                        <xsl:if test="type = 'Country'">
+                            Города страны
+                        </xsl:if>
+                        <xsl:if test="type = 'Continent'">
+                            Страны континента
+                        </xsl:if>
+                        <!--<xsl:if test="type = 'City'">-->
+                        <!--Достопримечательности города-->
+                        <!--</xsl:if>-->
+                        <!---->
+                        <!--Смотрите также:-->
+                        <br/>
+
+                        <ul>
                             <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
                                 <li>
-                                <a>
-                                    <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
-                                                select="type"/>
-                                    </xsl:attribute>
-                                    <xsl:value-of select="name" disable-output-escaping="yes"/>
-                                </a>
+                                    <a href="attractiondescription.xml?id={id}&amp;type={type}">
+                                        <xsl:value-of select="name" disable-output-escaping="yes"/>
+                                    </a>
                                 </li>
                             </xsl:for-each>
-                            </ul>
+                        </ul>
+                    </xsl:if>
+                </td>
+            </tr>
+            <!--<tr>
+                <td class="description" colspan="2">
+                    <xsl:if test="description != ''">
+                        Описание:
+                        <br/>
+                        <xsl:value-of select="description" disable-output-escaping="yes"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="copyright">
+                    <xsl:if test="website != ''">
+                        ©
+                        <xsl:value-of select="website" disable-output-escaping="yes"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td class="b-serp-item__text" colspan="2">
+                    <xsl:if test="architect != ''">
+                        Архитектор:
+                        <xsl:value-of select="architect" disable-output-escaping="yes"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td class="b-serp-item__text" colspan="2">
+                    <xsl:if test="adress != ''">
+                        Адресс:
+                        <xsl:value-of select="adress" disable-output-escaping="yes"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td class="b-serp-item__text" colspan="2">
+                    <xsl:if test="buildDate != ''">
+                        Дата постройки:
+                        <xsl:value-of select="buildDate" disable-output-escaping="yes"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td width="30%">
+                    <xsl:if test="images-array != ''">
+                        <xsl:apply-templates select=".//images-array//string" mode="attractiondescription-xml"/>
+                    </xsl:if>
+                </td>
+            </tr>
+            <tr>
+                <td width="80%" class="description">
+                    <xsl:if test="//data[@id='showAttractionDesc']//menu-item != ''">
+                        <xsl:if test="type = 'City'">
+                            Достопримечательности города
                         </xsl:if>
+                        <xsl:if test="type = 'Country'">
+                            Города страны
+                        </xsl:if>
+                        <xsl:if test="type = 'Continent'">
+                            Страны континента
+                        </xsl:if>
+                        &lt;!&ndash;<xsl:if test="type = 'City'">&ndash;&gt;
+                        &lt;!&ndash;Достопримечательности города&ndash;&gt;
+                        &lt;!&ndash;</xsl:if>&ndash;&gt;
+                        &lt;!&ndash;&ndash;&gt;
+                        &lt;!&ndash;Смотрите также:&ndash;&gt;
+                        <br/>
 
-                    </td>
-                </tr>
+                        <ul>
+                            <xsl:for-each select="//data[@id='showAttractionDesc']//menu-item">
+                                <li>
+                                    <a href="attractiondescription.xml?id={id}&amp;type={type}">
+                                        <xsl:value-of select="name" disable-output-escaping="yes"/>
+                                    </a>
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
 
-            </table>
-        </xsl:for-each>
+                </td>
+            </tr>    -->
+
+        </table>
     </xsl:template>
+
+    <xsl:template match="images-array">
+        <xsl:apply-templates select=".//string" mode="attractiondescription-xml"/>
+    </xsl:template>
+
+    <xsl:template match="string" mode="attractiondescription-xml">
+        <img src="{.}" class="big_image"/>
+        <span style="padding:0px 10px;"/>
+    </xsl:template>
+
+    <xsl:template match="description">
+        <xsl:value-of select="."/>
+    </xsl:template>
+
+
+    <xsl:template name="mainAttractionDescriptionContainer">
+
+    </xsl:template>
+
 
 </xsl:stylesheet>

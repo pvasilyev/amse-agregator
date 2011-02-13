@@ -11,10 +11,8 @@ import ru.amse.agregator.utils.HtmlTools;
 
 import javax.xml.crypto.Data;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.sql.Array;
+import java.util.*;
 
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
@@ -85,7 +83,7 @@ public class AttractionManager {
 
             tmp = dbwr.get(i).getType();
             if (tmp == null) {
-                log.error("CONYINUE");
+                log.error("CONTINUE");
                 continue;
             }
             attraction.setType(tmp);
@@ -103,7 +101,7 @@ public class AttractionManager {
             tmp = (String) dbwr.get(i).getDescriptionArray().get(0);
 
             if (tmp != null) {
-            	String withoutTags = HtmlTools.clearString(tmp);
+                String withoutTags = HtmlTools.clearString(tmp);
                 if (withoutTags.length() > 300) {
                     attraction.setDescription(new String(withoutTags.substring(0, 300) + " ..."));
                 } else {
@@ -116,8 +114,117 @@ public class AttractionManager {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-	public List<Attraction> getAttractionById(String id, String type) {
+    public List<Attraction> getSomeAttractionById(String id, String type, String tab) {
+        AttractionManager.connectToDatabase();
+        ObjectId selectedItem = new ObjectId(id);
+
+        DBWrapper dbwr = Database.getDBObjectByIdAndTypeAndIncRating(selectedItem, type);
+
+        List<Attraction> result = new ArrayList<Attraction>();
+
+        if (dbwr == null) {
+            Attraction attraction = new Attraction();
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+        Attraction attraction = new Attraction();
+
+        attraction.setTabMap(getTabsArray(dbwr));
+        attraction.setId(dbwr.getId().toString());
+        attraction.setType(type);
+        attraction.setName(dbwr.getName());
+
+        System.out.println("tab: " + attraction.getTabMap().get("list"));
+
+        if (tab.equals("images")) {
+            ArrayList<String> imagesArray = dbwr.getImagesArray();
+            if (imagesArray != null) {
+                if (imagesArray.size() > 0) {
+                    attraction.setImagesArray(imagesArray);
+                }
+            }
+
+        } else if (tab.equals("description")) {
+            StringBuffer sb = new StringBuffer();
+            ArrayList<String> descArray = dbwr.getDescriptionArray();
+            ArrayList<String> srcArray = dbwr.getSourceUrlArray();
+
+            if ((descArray != null) && (descArray.size() > 0)) {
+                for (int i = 0; i < descArray.size(); ++i) {
+                    sb.append(descArray.get(i));
+                    sb.append("<hr>");
+                    sb.append("<small>©");
+                    sb.append(srcArray.get(i));
+                    sb.append("</small><br/><br/>");
+                }
+            }
+            attraction.setDescription(sb.toString());
+
+            sb = new StringBuffer();
+
+        } else if (tab.equals("list")) {
+            attraction.setAttractionList(addListOfAttractions(attraction));
+        }
+
+        result.add(attraction);
+        return result;
+    }
+
+    private HashMap<String, String> getTabsArray(DBWrapper attraction) {
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        String type = attraction.getType();
+        String parameter;
+        if (!attraction.getName().equals("")) {
+            map.put("name", "true");
+        } else {
+            map.put("name", "false");
+        }
+        if (!type.equals("Continent")) {
+            if (attraction.getDescriptionArray().size() > 0) {
+                map.put("description", "true");
+            } else {
+                map.put("description", "false");
+            }
+
+            if ((attraction.getImagesArray() != null) && (attraction.getImagesArray().size() > 0)) {
+
+                if (!attraction.getImagesArray().get(0).equals("")) {
+                    map.put("images", "true");
+                } else {
+                    map.put("images", "false");
+                }
+            } else {
+                map.put("images", "false");
+            }
+        }
+
+        if (type.equals("City") || type.equals("Country") || type.equals("Continent")) {
+            Attraction a = new Attraction();
+            a.setId(attraction.getId().toString());
+            a.setType(type);
+            ArrayList<MenuItem> links = addListOfAttractions(a);
+            if ((links != null) && (links.size() > 0)) {
+                System.out.println("links" + links.get(0).getName());
+                if (!links.get(0).getId().equals("")) {
+                    map.put("list", "true");
+                } else {
+                    map.put("list", "false");
+                }
+
+            } else {
+                map.put("list", "false");
+            }
+
+        } else {
+            map.put("list", "false");
+        }
+        return map;
+    }
+
+
+    public List<Attraction> getAttractionById(String id, String type) {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
 
@@ -137,13 +244,13 @@ public class AttractionManager {
         attraction.setType(type);
         attraction.setName(dbwr.getName());
         if (!type.equals("Continent")) {
-        	StringBuffer sb = new StringBuffer();
-        	ArrayList<String> descArray = dbwr.getDescriptionArray();
-        	if(descArray != null){
-            	for(String desc : descArray){
-            		sb.append(desc + "<hr>");
-            	}
-        	}
+            StringBuffer sb = new StringBuffer();
+            ArrayList<String> descArray = dbwr.getDescriptionArray();
+            if (descArray != null) {
+                for (String desc : descArray) {
+                    sb.append(desc + "<hr>");
+                }
+            }
             attraction.setDescription(sb.toString());
 
             ArrayList<String> imagesArray = dbwr.getImagesArray();
@@ -151,7 +258,7 @@ public class AttractionManager {
                 if (imagesArray.size() > 0) {
                     attraction.setImagesArray(imagesArray);
                 }
-            } 
+            }
 //        attraction.setCoordinates(dbwr.getCoords().toString());
 //        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
 //        attraction.setDate_foundation(dbwr.getBuildDate().toString());
@@ -159,15 +266,15 @@ public class AttractionManager {
 //        attraction.setCost(dbwr.getCost());
 //        attraction.setAddress(dbwr.getAddress());
 //        attraction.setMusic(dbwr.getMusic());
-        	sb = new StringBuffer();
-        	ArrayList<String> srcArray = dbwr.getSourceUrlArray();
-        	if(srcArray != null){
-        		int i=0;
-            	for(String src : srcArray){
-            		sb.append(src + ((srcArray.size()-1 == i)?(""):(", ")));
-            		i++;
-            	}
-        	}
+            sb = new StringBuffer();
+            ArrayList<String> srcArray = dbwr.getSourceUrlArray();
+            if (srcArray != null) {
+                int i = 0;
+                for (String src : srcArray) {
+                    sb.append(src + ((srcArray.size() - 1 == i) ? ("") : (", ")));
+                    i++;
+                }
+            }
             attraction.setWebsite(sb.toString());
 //        attraction.setRooms(dbwr.getRooms()); 
         }

@@ -8,9 +8,14 @@ import ru.amse.agregator.storage.Database;
 
 public class ShowAttractionDescYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
-   
+
     @Override
     public void process(InternalRequest req, InternalResponse res) {
-        res.add(manager.getAttractionById(req.getParameter("id"), req.getParameter("type")));
+        String tmp = req.getParameter("tab");
+        if (tmp != null && !"".equals(tmp)) {
+            res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), req.getParameter("tab")));
+        } else {
+            res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), "description"));
+        }
     }
 }
