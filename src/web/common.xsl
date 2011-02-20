@@ -6,19 +6,54 @@
 
     <xsl:template match="/">
 
-        <html xmlns="http://www.w3.org/1999/xhtml">
+        <html>
+
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta http-equiv="Content-Language" content="ru"/>
                 <title>AMSE Туризм</title>
                 <link href="style.css" type="text/css" rel="stylesheet"/>
                 <script type="text/javascript">
-                    function searchClicked(){
+                    function searchClicked() {
                         document.searchForm.submit();
                     }
                 </script>
+                <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAagSBU5_3ClK3meB5PAzQQxQaJtG5tQXIO35ApQMeCJS2-9685xRI2v9YCAn2DKbtVFr0yib1PjvK0w"
+                        type="text/javascript"/>
+                <script src="http://maps.google.com/maps?file=api&amp;v=2"
+                        type="text/javascript"></script>
+                <script type="text/javascript">
+                    function initialize()
+                    {
+
+                    if (!GBrowserIsCompatible()){}else {
+                    var map = new GMap2(document.getElementById("google-map"));
+                    map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+                    }
+                    }
+
+                    downloadUrl("coords.xml", function(doc) {
+                    alert("!!!");
+                            var xmlDoc = xmlParse(document);
+                            var markers = xmlDoc.documentElement.getElementsByTagName("marker");
+                            for (var i = 0; i &lt; markers.length; i++) {
+                              // obtain the attribues of each marker
+                              var lat = parseFloat(markers[i].getAttribute("lat"));
+                              var lng = parseFloat(markers[i].getAttribute("lng"));
+                              var point = new google.maps.LatLng(lat,lng);
+                              var html = markers[i].getAttribute("html");
+                              var label = markers[i].getAttribute("label");
+                              // create the marker
+                              var marker = createMarker(point,label,html);
+                            }
+                            // put the assembled side_bar_html contents into the side_bar div
+                            document.getElementById("side_bar").innerHTML = side_bar_html;
+                          });
+
+
+                </script>
             </head>
-            <body>
+            <body onload="initialize()" onunload="GUnload()">
                 <table class="extTable">
                     <tr>
                         <td class="extTableTD">
@@ -34,9 +69,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="logo_p2"  onclick="location.href='index.xml';">
+                                    <td id="logo_p2" onclick="location.href='index.xml';">
                                     </td>
-                                    <td id="logo_p3"  onclick="location.href='index.xml';">
+                                    <td id="logo_p3" onclick="location.href='index.xml';">
                                     </td>
                                     <td id="linksContainer">
                                         <table id="linksTable" align="right">
@@ -45,10 +80,10 @@
                                                     <a href="menu.xml">Все страны</a>
                                                 </td>
                                                 <!--<td>-->
-                                                    <!--<a href="#">Top10</a>-->
+                                                <!--<a href="#">Top10</a>-->
                                                 <!--</td>-->
                                                 <!--<td>-->
-                                                    <!--<a href="hotels.xml">Отели</a>-->
+                                                <!--<a href="hotels.xml">Отели</a>-->
                                                 <!--</td>-->
                                                 <td>
                                                     <a href="largefind.xml">Расширенный поиск</a>
@@ -69,11 +104,11 @@
                                     </td>
                                     <td id="centerColomn">
                                         <!-- Этот блок потмо разумно вынести в отдельный шаблон. !!!Города с картинками!!! -->
-                                        <xsl:call-template name="main"/> 
-                                        
+                                        <xsl:call-template name="main"/>
+
                                     </td>
                                     <td id="rightColomn">
-                                         <xsl:call-template name="rightmenu"/>
+                                        <xsl:call-template name="rightmenu"/>
                                     </td>
                                 </tr>
                             </table>
@@ -94,25 +129,24 @@
 
     </xsl:template>
 
-    
 
     <xsl:template name="find">
         <!--<form action="attractions.xml" method="post">-->
-            <tr>
-                <td id="searchForm">
-                    <form id="searchForm" name="searchForm" method="POST" action="search.xml">
-                        <input type="text" id="search" name="findTextBox"/>
-                    </form>
-                </td>
-                <td class="searchButtonTd">
-                    <a class="buttonLink" onclick="searchClicked()">Найти</a>
-                </td>
-            </tr>
+        <tr>
+            <td id="searchForm">
+                <form id="searchForm" name="searchForm" method="POST" action="search.xml">
+                    <input type="text" id="search" name="findTextBox"/>
+                </form>
+            </td>
+            <td class="searchButtonTd">
+                <a class="buttonLink" onclick="searchClicked()">Найти</a>
+            </td>
+        </tr>
         <!--</form>-->
     </xsl:template>
-    
-    
-       <xsl:template name="countryTopBlock">
+
+
+    <xsl:template name="countryTopBlock">
         <table class="simpleTop">
             <tr>
                 <td class="simpleTopHeader">
@@ -127,7 +161,7 @@
         <tr>
             <td class="simpleTopItemTitle">
                 <a href="attractiondescription.xml?type=Country&amp;id={cells/cell[2]/value}">
-                    <xsl:copy-of select="cells/cell[1]/value" />
+                    <xsl:copy-of select="cells/cell[1]/value"/>
                 </a>
             </td>
         </tr>
@@ -139,48 +173,49 @@
     </xsl:template>
 
     <xsl:template match="record" mode="simpleTopItemContent">
-       <a href="attractiondescription.xml?type=City&amp;id={cells/cell[2]/value}">
-           <xsl:value-of select="cells/cell[1]/value"/>
-       </a>
-       <br/>
+        <a href="attractiondescription.xml?type=City&amp;id={cells/cell[2]/value}">
+            <xsl:value-of select="cells/cell[1]/value"/>
+        </a>
+        <br/>
     </xsl:template>
 
     <xsl:template name="continentSelectBlock">
         <div class="simpleBlock">
             Выберите континент:
-            <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0" />
-            <map name="continentsMap" >
-                <xsl:apply-templates select="page/data[@id = 'continentSelectBlock']/collection/record" mode="continentsMap"/>
+            <img usemap="#continentsMap" src="images/continents.jpg" alt="" border="0"/>
+            <map name="continentsMap">
+                <xsl:apply-templates select="page/data[@id = 'continentSelectBlock']/collection/record"
+                                     mode="continentsMap"/>
             </map>
         </div>
     </xsl:template>
 
     <xsl:template match="record" mode="continentsMap">
         <area shape="poly" title="{cells/cell[1]/value}"
-                           href="attractiondescription.xml?id={cells/cell[2]/value}&amp;type=Continent">
+              href="attractiondescription.xml?id={cells/cell[2]/value}&amp;type=Continent">
             <xsl:attribute name="coords">
-                <xsl:if test = "cells/cell[1]/value = 'Австралия и Океания'">
+                <xsl:if test="cells/cell[1]/value = 'Австралия и Океания'">
                     148,108,177,110,189,91,171,79,147,88
                 </xsl:if>
-                <xsl:if test = "cells/cell[1]/value = 'Северная Америка'">
+                <xsl:if test="cells/cell[1]/value = 'Северная Америка'">
                     15,28,86,21,41,67
                 </xsl:if>
-                <xsl:if test = "cells/cell[1]/value = 'Южная Америка'">
+                <xsl:if test="cells/cell[1]/value = 'Южная Америка'">
                     47,67,73,81,57,113,43,80
                 </xsl:if>
-                <xsl:if test = "cells/cell[1]/value = 'Европа'">
+                <xsl:if test="cells/cell[1]/value = 'Европа'">
                     87,58,106,21,139,27,129,51,111,57
                 </xsl:if>
-                <xsl:if test = "cells/cell[1]/value = 'Азия'">
+                <xsl:if test="cells/cell[1]/value = 'Азия'">
                     138,36,181,42,169,72,132,70,127,53,138,52
                 </xsl:if>
-                <xsl:if test = "cells/cell[1]/value = 'Африка'">
+                <xsl:if test="cells/cell[1]/value = 'Африка'">
                     102,56,121,58,134,72,115,96,95,70
                 </xsl:if>
             </xsl:attribute>
         </area>
     </xsl:template>
-    
+
     <xsl:template name="attractionTopBlock">
         <table class="attractionsTop">
             <tr>
@@ -188,24 +223,25 @@
                     Популярные достопримечательности:
                 </td>
             </tr>
-            <xsl:apply-templates select="page/data[@id = 'attractionTopBlock']/collection/record" mode="attractionsTopHeader"/>
+            <xsl:apply-templates select="page/data[@id = 'attractionTopBlock']/collection/record"
+                                 mode="attractionsTopHeader"/>
         </table>
     </xsl:template>
 
     <xsl:template match="record" mode="attractionsTopHeader">
         <tr>
             <td>
-            <xsl:if test="position() mod 2 = 0">
-                <xsl:attribute name="class">
-                    attractionsTopItemFirst
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="position() mod 2 != 0">
-                <xsl:attribute name="class">
-                    attractionsTopItemSecond
-                </xsl:attribute>
-            </xsl:if>
-                <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes" />
+                <xsl:if test="position() mod 2 = 0">
+                    <xsl:attribute name="class">
+                        attractionsTopItemFirst
+                    </xsl:attribute>
+                </xsl:if>
+                <xsl:if test="position() mod 2 != 0">
+                    <xsl:attribute name="class">
+                        attractionsTopItemSecond
+                    </xsl:attribute>
+                </xsl:if>
+                <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>
                 <br/>
                 <div class="attractionsTopItemP1">
                     <a href="attractiondescription.xml?type=Attraction&amp;id={cells/cell[2]/value}">
@@ -213,84 +249,82 @@
                     </a>
                 </div>
                 <div class="attractionsTopItemP2">
-                    <xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes" />
+                    <xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes"/>
                 </div>
             </td>
         </tr>
     </xsl:template>
 
 
+    <!--
+        <xsl:template name="leftmenulist">
+            <table>
+                <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
+                    <xsl:sort order="ascending" select="name"/>
 
-
-<!--
-    <xsl:template name="leftmenulist">
-        <table>
-            <xsl:for-each select="//data[@id='leftMenu']//left-menu-item">
-                <xsl:sort order="ascending" select="name"/>
-
-                <tr>
-                    <td class="simpleTopItemTitle">
-                        <a class="left-menu-link">
-                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
-                                        select="type"/>
-                            </xsl:attribute>
-                            <xsl:value-of select="name"/>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="simpleTopItemContent">
-                        <a class="left-menu-link">
-                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
-                                        select="type"/>
-                            </xsl:attribute>
-                            <xsl:value-of select="name"/>
+                    <tr>
+                        <td class="simpleTopItemTitle">
                             <a class="left-menu-link">
                                 <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
                                             select="type"/>
                                 </xsl:attribute>
                                 <xsl:value-of select="name"/>
                             </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="simpleTopItemContent">
+                            <a class="left-menu-link">
+                                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
+                                </xsl:attribute>
+                                <xsl:value-of select="name"/>
+                                <a class="left-menu-link">
+                                    <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                                select="type"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="name"/>
+                                </a>
 
-                        </a>
-                    </td>
-                </tr>
+                            </a>
+                        </td>
+                    </tr>
 
 
-                <br/>
-            </xsl:for-each>
-        </table>
+                    <br/>
+                </xsl:for-each>
+            </table>
 
-    </xsl:template>
--->
-<!--
-    <xsl:template name="rightmenulist">
-        <table class="attractionsTopItemFirst">
-            <xsl:for-each select="//data[@id='rightMenu']//right-menu-item">
+        </xsl:template>
+    -->
+    <!--
+        <xsl:template name="rightmenulist">
+            <table class="attractionsTopItemFirst">
+                <xsl:for-each select="//data[@id='rightMenu']//right-menu-item">
 
-                <tr>
-                    <td colspan="2" class="attractionsTopItemP1">
-                        <a class="right-menu-link">
-                            <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
-                                        select="type"/>
-                            </xsl:attribute>
-                            <xsl:value-of select="name"/>
+                    <tr>
+                        <td colspan="2" class="attractionsTopItemP1">
+                            <a class="right-menu-link">
+                                <xsl:attribute name="href">attractiondescription.xml?id=<xsl:value-of select="id"/>&amp;type=<xsl:value-of
+                                            select="type"/>
+                                </xsl:attribute>
+                                <xsl:value-of select="name"/>
 
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/kolizey.jpg" alt="no image"/>
-                    </td>
-                    <td class="attractionsTopItemP2">
-                        <xsl:value-of select="id"/>
-                        sl djfslkjdlsj dlkjsldkfjs ldkjsl djflsdj
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </table>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/kolizey.jpg" alt="no image"/>
+                        </td>
+                        <td class="attractionsTopItemP2">
+                            <xsl:value-of select="id"/>
+                            sl djfslkjdlsj dlkjsldkfjs ldkjsl djflsdj
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </table>
 
-    </xsl:template>
--->
+        </xsl:template>
+    -->
 </xsl:stylesheet>
