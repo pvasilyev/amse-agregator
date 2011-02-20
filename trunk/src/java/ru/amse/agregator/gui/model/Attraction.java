@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
 public class Attraction {
     private String id = "";
     private String type = "";
     private String name  = "";
     private String description = "";
-    private String coordinates = "";
+    private HashMap<String, String> coordinates = new HashMap<String, String>();
     private String image = "";
     private ArrayList<String> imagesArray = new ArrayList<String>();
     private String keywords = "";
@@ -25,7 +23,7 @@ public class Attraction {
     private String rooms = "";
     private String rating = "";
     private List<MenuItem> attractionList = new ArrayList<MenuItem>();
-    private HashMap<String, String> tabMap = new HashMap<String, String>();
+    private HashMap<String, String> fieldMap = new HashMap<String, String>();
 
     public String getType() {
         return type;
@@ -43,13 +41,8 @@ public class Attraction {
         this.name = name;
     }
 
-    public String getCoordinates() {
-        return coordinates;
-    }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
-    }
+
 
     public String getKeywords() {
         return keywords;
@@ -155,11 +148,19 @@ public class Attraction {
         this.image = image;
     }
 
-    public HashMap<String, String> getTabMap() {
-        return tabMap;
+    public HashMap<String, String> getFieldMap() {
+        return fieldMap;
     }
 
-    public void setTabMap(HashMap<String, String> tabMap) {
-        this.tabMap = tabMap;
+    public void setFieldMap(HashMap<String, String> fieldMap) {
+        this.fieldMap = fieldMap;
+    }
+
+    public HashMap<String, String> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(HashMap<String, String> coordinates) {
+        this.coordinates = coordinates;
     }
 }

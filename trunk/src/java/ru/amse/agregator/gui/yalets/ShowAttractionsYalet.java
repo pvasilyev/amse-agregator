@@ -21,6 +21,7 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
 
     @Override
     public void process(InternalRequest req, InternalResponse res) {
+        System.err.println("sldkfjsdlkfjsldkfjslfj dkfjl skdfj lskdjflsk f");
         String tmp = req.getParameter(String.valueOf("findTextBox"));
         if (tmp != null && !"".equals(tmp)) {
             ArrayList<String> labels = setLabels(req);
@@ -44,7 +45,7 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
 //                log.error(req.getAllParameters());
 
                 List<Attraction> result = manager.getSearchResult(tmp, labels);
-                log.error(result + "RESULT");
+                System.err.println("ssss" + result);
                 if (result.size() == 0) {
                     Attraction attraction = new Attraction();
                     attraction.setType("Error");
@@ -52,13 +53,27 @@ public class ShowAttractionsYalet extends AbstractAgregatorYalet {
                 }
                 res.add(result);
 //            }
+            } else {
+                ArrayList<String> labels = setLabels(req);
+
+//            log.error(req.getAllParameters());
+
+                List<Attraction> result = manager.getSearchResult("Рим", labels);
+                log.error(result + "RESULT");
+                if (result.size() == 0) {
+                    Attraction attraction = new Attraction();
+                    attraction.setType("Error");
+                    result.add(attraction);
+                }
+                res.add(result);
             }
+
         }
     }
 
     private ArrayList<String> setLabels
             (InternalRequest
-                    req) {
+                     req) {
         ArrayList<String> labels = new ArrayList<String>();
         if (req.getParameter("countryCheckbox") != null) {
             labels.add("Country");

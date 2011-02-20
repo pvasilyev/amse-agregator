@@ -15,7 +15,11 @@ public class ShowAttractionDescYalet extends AbstractAgregatorYalet {
         if (tmp != null && !"".equals(tmp)) {
             res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), req.getParameter("tab")));
         } else {
-            res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), "description"));
+            if (req.getParameter("type").equals("Continent")) {
+                res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), "list"));
+            } else {
+                res.add(manager.getSomeAttractionById(req.getParameter("id"), req.getParameter("type"), "all"));
+            }
         }
     }
 }

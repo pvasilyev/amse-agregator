@@ -6,12 +6,9 @@ import ru.amse.agregator.searcher.Searcher;
 import ru.amse.agregator.searcher.UserQuery;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
-import ru.amse.agregator.storage.UniqueId;
 import ru.amse.agregator.utils.HtmlTools;
 
-import javax.xml.crypto.Data;
 import java.io.File;
-import java.sql.Array;
 import java.util.*;
 
 public class AttractionManager {
@@ -130,12 +127,14 @@ public class AttractionManager {
         }
         Attraction attraction = new Attraction();
 
-        attraction.setTabMap(getTabsArray(dbwr));
+        attraction.setFieldMap(getTabsArray(dbwr));
         attraction.setId(dbwr.getId().toString());
         attraction.setType(type);
         attraction.setName(dbwr.getName());
-
-        System.out.println("tab: " + attraction.getTabMap().get("list"));
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("x", "60.25684");
+        hm.put("y", "24.06847");
+        attraction.setCoordinates(hm);
 
         if (tab.equals("images")) {
             ArrayList<String> imagesArray = dbwr.getImagesArray();
@@ -165,6 +164,29 @@ public class AttractionManager {
 
         } else if (tab.equals("list")) {
             attraction.setAttractionList(addListOfAttractions(attraction));
+        } else if (tab.equals("all")) {
+            ArrayList<String> imagesArray = dbwr.getImagesArray();
+            if (imagesArray != null) {
+                if (imagesArray.size() > 0) {
+                    attraction.setImagesArray(imagesArray);
+                    System.out.println("images");
+                }
+            }
+
+            StringBuffer sb = new StringBuffer();
+            ArrayList<String> descArray = dbwr.getDescriptionArray();
+            ArrayList<String> srcArray = dbwr.getSourceUrlArray();
+
+            if ((descArray != null) && (descArray.size() > 0)) {
+                System.out.println("description");
+                sb.append(descArray.get(0));
+                sb.append("<hr>");
+                sb.append("<small>©");
+                sb.append(srcArray.get(0));
+                sb.append("</small>");
+
+            }
+            attraction.setDescription(sb.toString());
         }
 
         result.add(attraction);
