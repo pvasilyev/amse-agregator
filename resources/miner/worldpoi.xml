@@ -47,6 +47,9 @@
 				var iBegin = str.indexOf("«");
 				var iEnd = str.indexOf("»");
 				var realCont = str.substring(iBegin + 1, iEnd);
+				if (realCont.equals("Антарктика") || realCont.equals("Океания")) {
+					realCont = "Австралия и Океания";
+				}
 			]]>
 			sys.defineVariable("returnContinent", realCont, true);
 		</script>
