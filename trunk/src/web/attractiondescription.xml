@@ -6,4 +6,5 @@
     <yalet id="countryTopBlock" />
     <yalet id="continentSelectBlock" /> 
     <yalet id="showAttractionDesc"/>
+    <yalet id="maps"/>
 </page>
