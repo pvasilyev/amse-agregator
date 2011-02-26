@@ -63,5 +63,6 @@
 	<bean id="countryTopBlockYalet" class="ru.amse.agregator.gui.yalets.CountryTopBlockYalet"/>
 	<bean id="continentSelectBlockYalet" class="ru.amse.agregator.gui.yalets.СontinentSelectBlockYalet"/>
 	<bean id="attractionTopBlockYalet" class="ru.amse.agregator.gui.yalets.AttractionTopBlockYalet"/>
-    
+    <bean id="mapsYalet" class="ru.amse.agregator.gui.yalets.MapsYalet">  	
+    </bean>
 </beans>

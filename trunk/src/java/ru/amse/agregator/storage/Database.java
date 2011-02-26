@@ -545,6 +545,13 @@ public class Database {
 		return findAllInCollection(COLLECTION_COUNTRIES,criteria,orderBy);		
 	}
 	
+	public static ArrayList<DBWrapper> getAllAttrByCity(ObjectId cityId){
+		BasicDBObject criteria = new BasicDBObject();
+		criteria.put(DBWrapper.FIELD_CITY_ID, cityId);
+		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME,1);
+		return findAllInCollection(COLLECTION_ATTRACTIONS, criteria,orderBy);
+	}
+	
 	public static ArrayList<DBWrapper> getAllCitiesByCountry(ObjectId countryId){
 		BasicDBObject criteria = new BasicDBObject();
 		//criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_CITY);

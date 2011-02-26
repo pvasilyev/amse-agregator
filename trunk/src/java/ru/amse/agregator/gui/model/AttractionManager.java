@@ -131,10 +131,10 @@ public class AttractionManager {
         attraction.setId(dbwr.getId().toString());
         attraction.setType(type);
         attraction.setName(dbwr.getName());
-        HashMap<String, String> hm = new HashMap<String, String>();
-        hm.put("x", "60.25684");
-        hm.put("y", "24.06847");
-        attraction.setCoordinates(hm);
+//        HashMap<String, String> hm = new HashMap<String, String>();
+//        hm.put("x", "60.25684");
+//        hm.put("y", "24.06847");
+//        attraction.setCoordinates(hm);
 
         if (tab.equals("images")) {
             ArrayList<String> imagesArray = dbwr.getImagesArray();
