@@ -10,7 +10,7 @@ public class Attraction {
     private String type = "";
     private String name  = "";
     private String description = "";
-    private HashMap<String, String> coordinates = new HashMap<String, String>();
+    //private HashMap<String, String> coordinates = new HashMap<String, String>();
     private String image = "";
     private ArrayList<String> imagesArray = new ArrayList<String>();
     private String keywords = "";
@@ -24,6 +24,7 @@ public class Attraction {
     private String rating = "";
     private List<MenuItem> attractionList = new ArrayList<MenuItem>();
     private HashMap<String, String> fieldMap = new HashMap<String, String>();
+    private ArrayList<ArrayList<String>> coordinates = new ArrayList<ArrayList<String>>();
 
     public String getType() {
         return type;
@@ -156,11 +157,19 @@ public class Attraction {
         this.fieldMap = fieldMap;
     }
 
-    public HashMap<String, String> getCoordinates() {
+//    public HashMap<String, String> getCoordinates() {
+//        return coordinates;
+//    }
+//
+//    public void setCoordinates(HashMap<String, String> coordinates) {
+//        this.coordinates = coordinates;
+//    }
+    public ArrayList<ArrayList<String>> getCoordinates() {
         return coordinates;
     }
-
-    public void setCoordinates(HashMap<String, String> coordinates) {
-        this.coordinates = coordinates;
+    
+    public void setCoordinates(ArrayList<ArrayList<String>> coordinates) {
+    	this.coordinates = coordinates;
     }
+
 }
