@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="common.xsl"/>
+    
 
     <xsl:template name="leftmenu">
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
@@ -17,7 +18,7 @@
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
         <xsl:call-template name="attractionTopBlock"/>
     </xsl:template>
-
+    
     <!--<xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
@@ -90,12 +91,17 @@
             </tr>
             <tr>
                 <td class="description" colspan="1" width="30%">
-                    <xsl:if test="coordinates != ''">
+                 <!--   <xsl:if test="coordinates != ''">-->
                         <xsl:value-of select="coordinates" />
                         <table>
                             <tr>
                                 <td>
-                                    <div id="google-map" style="width: 350px; height: 250px;"/>
+                                    <!--<div id="google-map" style="width: 350px; height: 250px;"/>-->
+			    	 				<!--<div id="map_canvas" style="width: 350px; height: 250px;"/>--> 
+			    	 				<!--<xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>-->
+			    	 				<div id="map_canvas" style="width: 350px; height: 250px;"/>
+			    	 			<!--	<xsl:apply-templates select="//data[@id='maps']//record" mode="googlemap"/>
+       -->
                                 </td>
                                 <td width="20px"></td>
                                 <td>
@@ -146,7 +152,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </xsl:if>
+            <!--        </xsl:if> -->
 
 
                     <xsl:if test="images-array != '' and description=''">

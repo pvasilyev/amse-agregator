@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
-
+<xsl:include href="maps.xsl"/>
     <!--<xsl:key match="/page/items/item" name="item" use="@uid"/>-->
 
     <xsl:template match="/">
@@ -18,7 +18,8 @@
                         document.searchForm.submit();
                     }
                 </script>
-                <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAagSBU5_3ClK3meB5PAzQQxQaJtG5tQXIO35ApQMeCJS2-9685xRI2v9YCAn2DKbtVFr0yib1PjvK0w"
+              <xsl:call-template name="scriptBlock"/>
+               <!-- <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAagSBU5_3ClK3meB5PAzQQxQaJtG5tQXIO35ApQMeCJS2-9685xRI2v9YCAn2DKbtVFr0yib1PjvK0w"
                         type="text/javascript"/>
                 <script src="http://maps.google.com/maps?file=api&amp;v=2"
                         type="text/javascript"></script>
@@ -51,9 +52,10 @@
                           });
 
 
-                </script>
+                </script>-->
             </head>
-            <body onload="initialize()" onunload="GUnload()">
+            <!--<body onload="initialize()" onunload="GUnload()">-->
+            <body onload="initialize()">
                 <table class="extTable">
                     <tr>
                         <td class="extTableTD">
@@ -255,7 +257,12 @@
         </tr>
     </xsl:template>
 
-
+<!--	<xsl:template match="record" mode="googlemap">
+		<p>HELLO WORLD!</p>
+		<xsl:value-of select="cells/cell[2]/value" disable-output-escaping="yes"/>
+		<div id="map_canvas" style="width: 350px; height: 250px;"/>
+	</xsl:template>-->
+	
     <!--
         <xsl:template name="leftmenulist">
             <table>
