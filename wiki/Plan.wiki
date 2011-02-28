@@ -51,7 +51,7 @@
 == Back-end ==
  # Правильно обрезать тэги в описаниях, чтобы слова не слипались; (_Ира вроде что-то уже выложила, надо посмотреть_) [http://code.google.com/p/amse-agregator/issues/detail?id=6 Ира, issue 6]
  # Добиться максимальной унификации в названиях объектов; [http://code.google.com/p/amse-agregator/issues/detail?id=6 Наташа, issue 6]
- # Намайнить координаты и положить их в базу; [http://code.google.com/p/amse-agregator/issues/detail?id=10 Паша В. + Кирилл, issue 10]
+ # Намайнить координаты и положить их в базу; [http://code.google.com/p/amse-agregator/issues/detail?id=10 Паша В. + Кирилл AC, issue 10]
  # Кластеризация объектов по координатам; [http://code.google.com/p/amse-agregator/issues/detail?id=9 Паша Т., issue 9]
  # Научиться отображать объекты на карте;
  # Научитсья ранжировать информацию по популярности;
