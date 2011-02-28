@@ -136,6 +136,7 @@ public class AttractionManager {
 //        hm.put("y", "24.06847");
 //        attraction.setCoordinates(hm);
 
+
         if (tab.equals("images")) {
             ArrayList<String> imagesArray = dbwr.getImagesArray();
             if (imagesArray != null) {
@@ -173,13 +174,18 @@ public class AttractionManager {
                 }
             }
 
+//            HashMap<String, String> hm = new HashMap<String, String>();
+//            hm.put("x", "37.4419");
+//            hm.put("y", "-122.1419");
+//            attraction.setCoordinates(hm);
+
             StringBuffer sb = new StringBuffer();
             ArrayList<String> descArray = dbwr.getDescriptionArray();
             ArrayList<String> srcArray = dbwr.getSourceUrlArray();
 
             if ((descArray != null) && (descArray.size() > 0)) {
                 System.out.println("description");
-                sb.append(descArray.get(0));
+                sb.append(descArray.get(0).substring(300));
                 sb.append("<hr>");
                 sb.append("<small>©");
                 sb.append(srcArray.get(0));
