@@ -136,7 +136,7 @@
         <!--<form action="attractions.xml" method="post">-->
         <tr>
             <td id="searchForm">
-                <form id="searchForm" name="searchForm" method="POST" action="search.xml">
+                <form id="searchForm" name="searchForm" method="GET" action="search.xml">
                     <input type="text" id="search" name="findTextBox"/>
                 </form>
             </td>
