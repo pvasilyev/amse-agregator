@@ -39,6 +39,9 @@ public class Searcher {
 
     public static ArrayList<DBWrapper> search(UserQuery query) {
         query = addTilda(query);
+        if (query.getQueryExpression().isEmpty()) {
+            return new ArrayList<DBWrapper>();
+        }
         try {
             return search(INDEX_DIR, query, "name");
         } catch (Exception e) {
@@ -49,7 +52,7 @@ public class Searcher {
 
     private static UserQuery addTilda(UserQuery query) {
         StringBuffer expr = new StringBuffer(query.getQueryExpression().replaceAll("[~-]", " "));
-        Pattern word = Pattern.compile("[a-zA-Zа-яА-Я]+");
+        Pattern word = Pattern.compile("[a-zA-Zа-яА-Я0-9]+");
         Matcher matcher = word.matcher(expr);
         StringBuffer endExpr = new StringBuffer();
         int lastEnd = 0;
