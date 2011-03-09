@@ -49,12 +49,16 @@ public class MapsYalet extends AbstractAgregatorYalet {
     							newRecord.addCell("lng", coord.x);
             					newRecord.addCell("lat",coord.y);
             					newRecord.addCell("name",obj.getName());
+            					newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
+            					if (obj.getImagesArray().size() > 0){
+        					    	newRecord.addCell("img",obj.getImagesArray().get(0));
+        					    }
         					    webRes.add(newRecord);
     						}
     					}
     					
     				}
-    				res.add(webRes);
+    				
     			}
     		}
     	}
@@ -75,12 +79,15 @@ public class MapsYalet extends AbstractAgregatorYalet {
                 				newRecord.addCell("lng", coord.x);
                 				newRecord.addCell("lat",coord.y);
                 				newRecord.addCell("name",obj.getName());
+                				newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
+                				if (obj.getImagesArray().size() > 0){
+        					    	newRecord.addCell("img",obj.getImagesArray().get(0));
+        					    }
             				    webRes.add(newRecord);
         					}
         				}
         				
         			}
-        			res.add(webRes);
         		}
     	}
     	else if (!type.equals(DBWrapper.TYPE_CONTINENT)){
@@ -95,14 +102,18 @@ public class MapsYalet extends AbstractAgregatorYalet {
     				newRecord.addCell("lng", coord.x);
     				newRecord.addCell("lat",coord.y);
     				newRecord.addCell("name",obj.getName());
+    				newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
+    				if (obj.getImagesArray().size() > 0){
+				    	newRecord.addCell("img",obj.getImagesArray().get(0));
+				    }
 				    webRes.add(newRecord);
 				}
 			}
-    		res.add(webRes);
     	}
-        		
     	
-
+        		
+    	res.add(webRes);
+    	
 //    		ArrayList<Record> webRes = new ArrayList<Record>(); 
 //    		for ( int i = 1 ; i < 10; ++i){
 //	    		Record newRecord = new Record();

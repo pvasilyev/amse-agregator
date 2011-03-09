@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Attraction {
+	private String zoom = "";
     private String id = "";
     private String type = "";
     private String name  = "";
@@ -42,7 +43,13 @@ public class Attraction {
         this.name = name;
     }
 
-
+    public void setZoom(String name){
+    	this.zoom = name;
+    }
+    
+    public String getZoom(){
+    	return zoom;
+    }
 
 
     public String getKeywords() {

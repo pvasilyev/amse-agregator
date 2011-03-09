@@ -65,4 +65,5 @@
 	<bean id="attractionTopBlockYalet" class="ru.amse.agregator.gui.yalets.AttractionTopBlockYalet"/>
     <bean id="mapsYalet" class="ru.amse.agregator.gui.yalets.MapsYalet">  	
     </bean>
+    <bean id="mapsTempYalet" class="ru.amse.agregator.gui.yalets.MapsTempYalet"/>  	
 </beans>

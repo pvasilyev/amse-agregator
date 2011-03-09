@@ -7,4 +7,5 @@
     <yalet id="continentSelectBlock" /> 
     <yalet id="showAttractionDesc"/>
     <yalet id="maps"/>
+    <yalet id="mapsTemp"/>
 </page>
