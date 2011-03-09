@@ -194,6 +194,9 @@ public class AttractionManager {
             }
             attraction.setDescription(sb.toString());
         }
+        else if(tab.equals("zoom")){
+        	attraction.setZoom("15");
+        }
 
         result.add(attraction);
         return result;

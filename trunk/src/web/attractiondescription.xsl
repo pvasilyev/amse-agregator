@@ -104,7 +104,10 @@
                                 <!--<div id="google-map" style="width: 350px; height: 250px;"/>-->
                                 <!--<div id="map_canvas" style="width: 350px; height: 250px;"/>-->
                                 <!--<xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>-->
+                                <xsl:if test="//data[@id='maps']//record != ''">
+                                <xsl:variable name="countCoords" select="count(//data[@id='maps']//record)"/>
                                 <div id="map_canvas" style="width: 350px; height: 250px;"/>
+                                 </xsl:if>
                                 <!--	<xsl:apply-templates select="//data[@id='maps']//record" mode="googlemap"/>
                                 -->
                             </td>
