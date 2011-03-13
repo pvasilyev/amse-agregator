@@ -11,7 +11,6 @@ import java.io.File;
 public class IndexMain {
     public static void main(String[] args) {
         try {
-        // todo Разобрать вывод в XML файла-состояния.
             long beginIndexTime = System.currentTimeMillis();
             File indexDir = null;
             boolean makeNewIndex = true;
@@ -62,17 +61,18 @@ public class IndexMain {
             if (errorInArgs) {
                 System.out.println("Usage: IndexMain [-a|-n] [--dir <indexDirectory>]");
                 return;
-            } else {
-                if (makeNewIndex)  {
-                    OriginalIndexer.makeNewIndex(indexDir);
-                } else {
-                    OriginalIndexer.addToIndex(indexDir);
-                }
             }
-// spring
+
+            System.out.print("Start the indexing process\n");
+            if (makeNewIndex)  {
+                OriginalIndexer.makeNewIndex(indexDir);
+            } else {
+                OriginalIndexer.addToIndex(indexDir);
+            }
+
             long endIndexTime = System.currentTimeMillis();
             long timeForIndexing = endIndexTime - beginIndexTime;
-            System.out.println(OriginalIndexer.getCountIndexedFiles() + " files indexed by " + timeForIndexing + " milli seconds.");
+            System.out.println(OriginalIndexer.getCountIndexedFiles() + "(" + OriginalIndexer.getCountAllObject() + ") files indexed by " + timeForIndexing + " milli seconds.");
         } catch (Exception e) {
             System.out.println("Error in function Indexer. Message: " + e.getMessage());            
         }
