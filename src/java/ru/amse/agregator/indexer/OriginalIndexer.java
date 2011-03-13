@@ -106,6 +106,8 @@ public class OriginalIndexer {
             documentForCurrentObject = getDocumentForCurrentCafe(object);
         } else if (object.getType().equals(DBWrapper.TYPE_COUNTRY)) {
             documentForCurrentObject = getDocumentForCurrentCountry(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_CONTINENT)) {
+            documentForCurrentObject = getDocumentForCurrentContinent(object);
         } else {
             documentForCurrentObject = null;
             System.out.println(object);
@@ -117,6 +119,16 @@ public class OriginalIndexer {
         } else {
             //System.out.println("Error in object. Object isn't indexed.");    // Выводится, если объект не может быть
         }
+    }
+
+    private static Document getDocumentForCurrentContinent(DBWrapper continent) {
+        IndexDocument indexDocument = new IndexDocument(continent);
+
+        indexDocument.addObjectId();
+        indexDocument.addObjectType();
+        indexDocument.addObjectName();
+
+        return indexDocument.getDocument();
     }
 
     private static Document getDocumentForCurrentShopping(DBWrapper shopping) {
