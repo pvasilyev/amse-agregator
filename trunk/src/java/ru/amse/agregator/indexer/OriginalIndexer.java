@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class OriginalIndexer {
     protected static int countIndexedFiles;
+    protected static int countAllObject;
 
     public static void makeNewIndex(File indexDir) throws IOException {
         ToolsForWorkWithFiles.cleanDirectory(indexDir);
@@ -41,6 +42,10 @@ public class OriginalIndexer {
 
     public static int getCountIndexedFiles() {
         return countIndexedFiles;
+    }
+
+    public static int getCountAllObject() {
+        return countAllObject;
     }
 
     protected static void setInfoAboutIndexToFile() throws ParserConfigurationException {
@@ -62,10 +67,17 @@ public class OriginalIndexer {
     }
 
     protected static void IndexAllObjects(IndexWriter writer) throws IOException {
+        System.out.print("Connect to DB\n");
         connectToDB(); // необходима запущенная на компьютере база
+        System.out.print("Ok.\nGetting all object\n");
         ArrayList<DBWrapper> allObjects = Database.getAllDBObjects();
-        for (DBWrapper currentObject : allObjects) {
-            indexObject(writer, currentObject);
+        countAllObject = allObjects.size();
+        System.out.print("Ok.\nIndexing...\n");
+        for (int i = 0; i < allObjects.size(); ++i) {
+            indexObject(writer, allObjects.get(i));
+            if (i % 1000 == 0 && i != 0) {
+                System.out.print("Indexed " + i + " objects\n");
+            }
         }
     }
 
@@ -84,12 +96,19 @@ public class OriginalIndexer {
             documentForCurrentObject = getDocumentForCurrentNaturalAttraction(object);
         } else if (object.getType().equals(DBWrapper.TYPE_HOTEL)) {
             documentForCurrentObject = getDocumentForCurrentHotel(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_MUSEUM)) {
+            documentForCurrentObject = getDocumentForCurrentMuseum(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_ENTERTAINMENT)) {
+            documentForCurrentObject = getDocumentForCurrentEntertainment(object);
+        } else if (object.getType().equals(DBWrapper.TYPE_SHOPPING)) {
+            documentForCurrentObject = getDocumentForCurrentShopping(object);
         } else if (object.getType().equals(DBWrapper.TYPE_CAFE)) {
             documentForCurrentObject = getDocumentForCurrentCafe(object);
         } else if (object.getType().equals(DBWrapper.TYPE_COUNTRY)) {
             documentForCurrentObject = getDocumentForCurrentCountry(object);
         } else {
             documentForCurrentObject = null;
+            System.out.println(object);
         }
 
         if (documentForCurrentObject != null) {
@@ -98,6 +117,33 @@ public class OriginalIndexer {
         } else {
             //System.out.println("Error in object. Object isn't indexed.");    // Выводится, если объект не может быть
         }
+    }
+
+    private static Document getDocumentForCurrentShopping(DBWrapper shopping) {
+        IndexDocument indexDocument = new IndexDocument(shopping);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCityId();
+
+        return indexDocument.getDocument();
+    }
+
+    private static Document getDocumentForCurrentEntertainment(DBWrapper entertainment) {
+        IndexDocument indexDocument = new IndexDocument(entertainment);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCityId();
+
+        return indexDocument.getDocument();
+    }
+
+    private static Document getDocumentForCurrentMuseum(DBWrapper museum) {
+        IndexDocument indexDocument = new IndexDocument(museum);
+
+        indexDocument.addTypicalFields();
+        indexDocument.addObjectCityId();
+
+        return indexDocument.getDocument();
     }
 
     protected static Document getDocumentForCurrentCity(DBWrapper city) {
@@ -112,7 +158,7 @@ public class OriginalIndexer {
         IndexDocument indexDocument = new IndexDocument(attraction);
 
         indexDocument.addTypicalFields();
-        indexDocument.addObjectCity();
+        indexDocument.addObjectCityId();
         indexDocument.addObjectArchitect();
 
         return indexDocument.getDocument();
@@ -122,7 +168,7 @@ public class OriginalIndexer {
         IndexDocument indexDocument = new IndexDocument(attraction);
 
         indexDocument.addTypicalFields();
-        indexDocument.addObjectCity();
+        indexDocument.addObjectCityId();
 
         return indexDocument.getDocument();
     }
@@ -131,7 +177,7 @@ public class OriginalIndexer {
         IndexDocument indexDocument = new IndexDocument(hotel);
 
         indexDocument.addTypicalFields();
-        indexDocument.addObjectCity();
+        indexDocument.addObjectCityId();
 
         return indexDocument.getDocument();
     }
@@ -140,7 +186,7 @@ public class OriginalIndexer {
         IndexDocument indexDocument = new IndexDocument(cafe);
 
         indexDocument.addTypicalFields();
-        indexDocument.addObjectCity();
+        indexDocument.addObjectCityId();
         indexDocument.addObjectMusic();
 
         return indexDocument.getDocument();
@@ -148,22 +194,20 @@ public class OriginalIndexer {
 
     private static Document getDocumentForCurrentCountry(DBWrapper country) {
         IndexDocument indexDocument = new IndexDocument(country);
-        System.out.println(country);        
         indexDocument.addTypicalFields();
-
         return indexDocument.getDocument();
     }
 
     protected static class IndexDocument {
-        private final String FIELD_TYPE = "type";
-        private final String FIELD_ID = "id";
-        private final String FIELD_NAME = "name";
-        private final String FIELD_DESCRIPTIONS = "descriptions";
-        private final String FIELD_DESCRIPTION = "description";
-        private final String FIELD_KEYWORDS = "keywords";
-        private final String FIELD_CITY = "city";
-        private final String FIELD_MUSIC = "music";
-        private final String FIELD_ARCHITECT = "architect";
+        private final String FIELD_TYPE = DBWrapper.FIELD_TYPE;
+        private final String FIELD_ID = DBWrapper.FIELD_ID;
+        private final String FIELD_NAME = DBWrapper.FIELD_NAME;
+        private final String FIELD_DESCRIPTIONS = DBWrapper.FIELD_DESC + "s";
+        private final String FIELD_DESCRIPTION = DBWrapper.FIELD_DESC;
+        private final String FIELD_KEYWORDS = DBWrapper.FIELD_KEYWORDS;
+        private final String FIELD_CITY_ID = DBWrapper.FIELD_CITY_ID;
+        private final String FIELD_MUSIC = DBWrapper.FIELD_MUSIC;
+        private final String FIELD_ARCHITECT = DBWrapper.FIELD_ARCHITECT;
 
         private final Document document;
         private final DBWrapper object;
@@ -252,9 +296,9 @@ public class OriginalIndexer {
             addField(FIELD_KEYWORDS, allKeyWords.toString());
         }
 
-        public void addObjectCity() {
+        public void addObjectCityId() {
             String cityId = "" + object.getCityId();
-            addField(FIELD_CITY, cityId);
+            addField(FIELD_CITY_ID, cityId);
         }
 
         public void addObjectArchitect() {
