@@ -11,6 +11,13 @@ import java.io.IOException;
 
 public class ToolsForWorkWithFiles {
     public static void cleanDirectory(File directory) throws IOException {
+        if (!directory.exists() && directory.mkdirs()) {
+             return;
+        }
+        if (!directory.exists()) {
+            throw new IOException("Don't create the file " + directory.getAbsolutePath());
+        }
+
         File[] filesInCurrentDirectory = directory.listFiles();
 
         for (File currentFile: filesInCurrentDirectory) {
