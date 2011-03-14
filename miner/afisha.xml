@@ -274,6 +274,21 @@
 											<var name="poiPage"/>
 										</xpath>
 									</var-def>
+									<script language="javascript">
+										<![CDATA[
+											var source = usefullInfo.toArray();
+											var str = source[0].toString();
+											str = str.substring(str.indexOf("<br/>") + 5, str.length());
+											str = str.substring(str.indexOf("<br/>"), str.length());
+											str = str.substring(0, str.indexOf("</p>"));
+											var info = new Array();
+											info.push(str);
+										]]>
+										sys.defineVariable("returnUsefullInfo", info.join(";"), true);
+									</script>
+									<var-def name="realUsefullInfo">
+										<var name="returnUsefullInfo"/>
+									</var-def>
 									<!-- /scrap usefull info -->
 									
 									<!-- scrap descr -->
@@ -349,7 +364,7 @@
 										<template>${returnCoordinates.toString().replaceAll(",",".").trim()}</template>
 			
 										<text>description</text>
-										<template>${returnDescr.toString()}</template>
+										<template>${returnUsefullInfo.toString() + "\n" + returnDescr.toString();}</template>
 			
 										<text>images</text>
 										<template>${returnPhotos.toString()}</template>
