@@ -29,6 +29,33 @@
 			</html-to-xml>				
 		</var-def>
 		
+		<var-def name="continent_name">
+			<xpath expression="//h1[@class='b-main-header']">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		<script language="javascript">
+			<![CDATA[
+				var source = continent_name.toArray();
+				var i = 0;
+				var name = new Array();
+				while (i < source.length) {
+					var j = source[i].toString().indexOf("</span>");
+					if (j >= 0) {
+						var str = source[i].toString().substring(j + 7, source[i].toString().length());
+						var jj = str.indexOf("<");
+						str = str.substring(0, jj);
+						name.push(str);
+					}
+					i++;
+				}
+			]]>
+			sys.defineVariable("returnContinent", name.join(";"), true);
+		</script>
+		<var-def name="realContinent">
+			<var name="returnContinent"/>
+		</var-def>					
+		
 		<!-- biuld list of countries in "i" continent -->
 		<var-def name="countryList">
 			<xpath expression="//div[@class='b-geonav']/a/@href">
@@ -49,6 +76,28 @@
 						</html-to-xml>									
 					</var-def>
 					
+					<var-def name="country_name">
+						<xpath expression="//h1[@class='b-main-header']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					<script language="javascript">
+					<![CDATA[
+						var source = country_name.toString();
+						var i  = source.indexOf("</span>") + 7;
+						var str = source.substring(i, source.length());
+						i =  str.indexOf("</span>") + 7;
+						str = str.substring(i, str.length());
+						str = str.substring(0, str.indexOf("<"));
+						var name = new Array();						
+						name.push(str);
+					]]>
+					sys.defineVariable("returnCountry", name.join(";"), true);
+					</script>
+					<var-def name="realCountry">
+						<var name="returnCountry"/>
+					</var-def>					
+					
 					<!--biuld list by cities in "k" country in "i" continent-->
 					<var-def name="cityList">
 						<xpath expression="//div[@class='b-geonav']/a/@href">
@@ -65,12 +114,37 @@
 						<empty>
 						<try>
 							<body>
+							<var-def name="cityPage">
+								<html-to-xml>
+									<http url="${sys.fullUrl(city, blank);}"/>
+								</html-to-xml>									
+							</var-def>
+								
+							<var-def name="city_name">
+								<xpath expression="//h1[@class='b-main-header']">
+									<var name="cityPage"/>
+								</xpath>
+							</var-def>
+							<script language="javascript">
+							<![CDATA[
+								var source = city_name.toString();
+								var i  = source.indexOf("</span>") + 7;
+								var str = source.substring(i, source.length());
+								i =  str.indexOf("</span>") + 7;
+								str = str.substring(i, str.length());
+								str = str.substring(0, str.indexOf("<"));
+								var name = new Array();						
+								name.push(str);
+							]]>
+							sys.defineVariable("returnCity", name.join(";"), true);
+							</script>
+							<var-def name="realCity">
+								<var name="returnCity"/>
+							</var-def>	
 							<!-- biuld link of pois in "l" city in "k" country in "i" continent -->
 							<var-def name="poisLink">
 								<xpath expression="//div[@class='b-best-objects']/p/a/@href">
-									<html-to-xml>
-										<http url='${sys.fullUrl(city, blank);}'></http>
-									</html-to-xml>
+									<var name="cityPage"/>
 								</xpath>
 							</var-def>
 							
@@ -104,6 +178,27 @@
 											<http url="${sys.fullUrl(poi, blank);}"></http>
 										</html-to-xml>
 									</var-def>
+									
+									<var-def name="poi_name">
+										<xpath expression="//div[@class='b-object-header']/h1">
+											<var name="poiPage"/>
+										</xpath>
+									</var-def>
+									<script language="javascript">
+									<![CDATA[
+										var source = poi_name.toString();
+										source = source.trim();
+										source = source.substring(source.indexOf(">") + 1, source.length());
+										source = source.substring(0, source.indexOf("</"));
+										var name = new Array();						
+										name.push(source);
+									]]>
+									sys.defineVariable("returnPoiName", name.join(";"), true);
+									</script>
+									<var-def name="realPoi">
+										<var name="returnPoiName"/>
+									</var-def>	
+									
 									<!-- scrap coordinates-->
 									<var-def name="mapPage">
 										<xpath expression="//div[@class='g-full-col b-tabs']/ul/li[3]/a/@href">
@@ -233,6 +328,37 @@
 										<var name="returnPhotos"/>
 									</var-def>
 									<!-- /scrap photos -->
+									
+									<var-def name="returnValue">
+										<text>type</text>
+										<template>Attraction</template>
+									
+										<text>continent_name</text>
+										<template>${returnContinent.toString()}</template>
+									
+										<text>country_name</text>
+										<template>${returnCountry.toString()}</template>
+
+										<text>city_name</text>
+										<template>${returnCity.toString()}</template>
+
+										<text>name</text>
+										<template>${returnPoiName.toString()}</template>
+									
+										<text>coordinates</text>
+										<template>${returnCoordinates.toString().replaceAll(",",".").trim()}</template>
+			
+										<text>description</text>
+										<template>${returnDescr.toString()}</template>
+			
+										<text>images</text>
+										<template>${returnPhotos.toString()}</template>
+									
+										<text>source_url</text>
+										<template>${sys.fullUrl(poi, blank).toString()}</template>
+									</var-def>
+		
+									<var-def name="addToDB">1</var-def>
 								</empty>
 								</body>
 							</loop>
