@@ -306,8 +306,10 @@
 												var j = source[i].toString().indexOf(">") + 1;
 												var str = source[i].toString().substring(j, source[i].toString().length());
 												j = str.indexOf("</");
-												str = str.substring(0, j);
-												tagsArray.push(str);
+												if (j > 0) {
+													str = str.substring(0, j);
+													tagsArray.push(str);
+												}
 												i++;
 											}
 										]]>
@@ -331,9 +333,26 @@
 											var photosArray = new Array();
 											while (i < source.length) {
 												var j = source[i].toString().indexOf("p_s.jpg");
-												var str = source[i].toString().substring(0, j);
-												str = str + "p_f.jpg";
-												photosArray.push(str);
+												if (j > 0) {
+													var str = source[i].toString().substring(0, j);
+													str = str + "p_f.jpg";
+													photosArray.push(str);
+												} else {
+													j = source[i].toString().indexOf("p_S.jpg");
+													if (j > 0) {
+														var str = source[i].toString().substring(0, j);
+														str = str + "p_F.jpg";
+														photosArray.push(str);
+													} else {
+														j = source[i].toString().indexOf("_small_");
+														if (j > 0) {
+															var str = source[i].toString().substring(0, j);
+															str = str + "_big_";
+															str = str + source[i].toString().substring(j + 7, source[i].toString().length());
+															photosArray.push(str);
+														}
+													}
+												}
 												i++;
 											}
 										]]>
