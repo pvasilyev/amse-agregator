@@ -21,12 +21,9 @@ public class MapsYalet extends AbstractAgregatorYalet {
     @Override
     public void process(InternalRequest req, InternalResponse res) {
 
-//		String tmp = req.getParameter("tab");
-//    	System.out.println(req.getParameter("id")+"     tmp = "+ tmp);
-    	Attraction attraction = new Attraction();
+        Attraction attraction = new Attraction();
     	attraction.setId(req.getParameter("id"));
-    	//res.add((new ArrayList<Attraction>()).add(attraction));
-    	Database.connectToMainBase();	
+    	Database.connectToMainBase();
     	ArrayList<Record> webRes = new ArrayList<Record>(); 
     	ObjectId selectedItem = new ObjectId(req.getParameter("id"));
     	String type = req.getParameter("type");

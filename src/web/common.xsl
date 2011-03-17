@@ -262,7 +262,7 @@
 		<xsl:value-of select="cells/cell[2]/value" disable-output-escaping="yes"/>
 		<div id="map_canvas" style="width: 350px; height: 250px;"/>
 	</xsl:template>-->
-	
+
     <!--
         <xsl:template name="leftmenulist">
             <table>

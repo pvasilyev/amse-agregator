@@ -11,6 +11,7 @@ public class Attraction {
     private String type = "";
     private String name  = "";
     private String description = "";
+    private ArrayList<String> descriptionArray = new ArrayList<String>();
     //private HashMap<String, String> coordinates = new HashMap<String, String>();
     private String image = "";
     private ArrayList<String> imagesArray = new ArrayList<String>();
@@ -179,4 +180,11 @@ public class Attraction {
     	this.coordinates = coordinates;
     }
 
+    public ArrayList<String> getDescriptionArray() {
+        return descriptionArray;
+    }
+
+    public void setDescriptionArray(ArrayList<String> descriptionArray) {
+        this.descriptionArray = descriptionArray;
+    }
 }
