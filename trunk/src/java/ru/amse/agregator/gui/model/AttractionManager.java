@@ -111,6 +111,59 @@ public class AttractionManager {
         return result;
     }
 
+    public List<Attraction> getSomeAttractionByIdMoreDescription(String id, String type, String tab, String descriptionId) {
+        AttractionManager.connectToDatabase();
+        ObjectId selectedItem = new ObjectId(id);
+
+        DBWrapper dbwr = Database.getDBObjectByIdAndTypeAndIncRating(selectedItem, type);
+
+        List<Attraction> result = new ArrayList<Attraction>();
+
+        if (dbwr == null) {
+            Attraction attraction = new Attraction();
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+        Attraction attraction = new Attraction();
+        HashMap<String, String> tabMap = new HashMap<String, String>();
+        try {
+            tabMap = getTabsArray(dbwr);
+            attraction.setFieldMap(tabMap);
+            attraction.setId(dbwr.getId().toString());
+            attraction.setType(type);
+            attraction.setName(dbwr.getName());
+        } catch (NullPointerException e) {
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+
+        if (isEmptyTabMap(tabMap)) {
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+
+        if (tab.equals("moredescription") && tabMap.get("description").equals("true")) {
+            ArrayList<String> ar = new ArrayList<String>();
+            ar = dbwr.getDescriptionArray();
+            for (String a : ar) {
+                StringBuffer sb = new StringBuffer();
+                sb.append(dbwr.getDescriptionArray().get(Integer.parseInt(descriptionId)));
+                sb.append("<hr>");
+                sb.append("<small>©");
+                sb.append(dbwr.getSourceUrlArray().get(Integer.parseInt(descriptionId)));
+                sb.append("</small><br/><br/>");
+                arrayList.add(sb.toString());
+            }
+        }
+        result.add(attraction);
+        return result;
+    }
+
     public List<Attraction> getSomeAttractionById(String id, String type, String tab) {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
@@ -126,38 +179,44 @@ public class AttractionManager {
             return result;
         }
         Attraction attraction = new Attraction();
+        HashMap<String, String> tabMap = new HashMap<String, String>();
+        try {
+            tabMap = getTabsArray(dbwr);
+            attraction.setFieldMap(tabMap);
+            attraction.setId(dbwr.getId().toString());
+            attraction.setType(type);
+            attraction.setName(dbwr.getName());
+        } catch (NullPointerException e) {
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
 
-        attraction.setFieldMap(getTabsArray(dbwr));
-        attraction.setId(dbwr.getId().toString());
-        attraction.setType(type);
-        attraction.setName(dbwr.getName());
+        if (isEmptyTabMap(tabMap)) {
+            attraction.setType("Error");
+            result.add(attraction);
+            return result;
+        }
+
 //        HashMap<String, String> hm = new HashMap<String, String>();
 //        hm.put("x", "60.25684");
 //        hm.put("y", "24.06847");
 //        attraction.setCoordinates(hm);
 
 
-        if (tab.equals("images")) {
-            ArrayList<String> imagesArray = dbwr.getImagesArray();
-            if (imagesArray != null) {
-                if (imagesArray.size() > 0) {
-                    attraction.setImagesArray(imagesArray);
-                }
-            }
-
-        } else if (tab.equals("description")) {
+        if (tab.equals("images") && tabMap.get("images").equals("true")) {
+            attraction.setImagesArray(dbwr.getImagesArray());
+        } else if (tab.equals("description") && tabMap.get("description").equals("true")) {
             StringBuffer sb = new StringBuffer();
             ArrayList<String> descArray = dbwr.getDescriptionArray();
             ArrayList<String> srcArray = dbwr.getSourceUrlArray();
 
-            if ((descArray != null) && (descArray.size() > 0)) {
-                for (int i = 0; i < descArray.size(); ++i) {
-                    sb.append(descArray.get(i));
-                    sb.append("<hr>");
-                    sb.append("<small>©");
-                    sb.append(srcArray.get(i));
-                    sb.append("</small><br/><br/>");
-                }
+            for (int i = 0; i < descArray.size(); ++i) {
+                sb.append(descArray.get(i));
+                sb.append("<hr>");
+                sb.append("<small>©");
+                sb.append(srcArray.get(i));
+                sb.append("</small><br/><br/>");
             }
             attraction.setDescription(sb.toString());
 
@@ -166,33 +225,31 @@ public class AttractionManager {
         } else if (tab.equals("list")) {
             attraction.setAttractionList(addListOfAttractions(attraction));
         } else if (tab.equals("all")) {
-            ArrayList<String> imagesArray = dbwr.getImagesArray();
-            if (imagesArray != null) {
-                if (imagesArray.size() > 0) {
-                    attraction.setImagesArray(imagesArray);
-                    System.out.println("images");
+            if (tabMap.get("images").equals("true")) {
+                attraction.setImagesArray(dbwr.getImagesArray());
+            }
+
+            ArrayList<String> arrayList = new ArrayList<String>();
+
+            if (tabMap.get("description").equals("true")) {
+                ArrayList<String> ar = dbwr.getDescriptionArray();
+                ArrayList<String> sr = dbwr.getSourceUrlArray();
+                for (String str : ar) {
+                    StringBuffer sb = new StringBuffer();
+                    if (str.length() > 400) {
+                        sb.append(str.substring(0, 400));
+                        sb.append("...");
+                    } else {
+                        sb.append(str);
+                    }
+                    sb.append("<hr>");
+                    sb.append("<small>©");
+                    sb.append(sr.get(0));
+                    sb.append("</small><br/><br/>");
+                    arrayList.add(sb.toString());
                 }
+                attraction.setDescriptionArray(arrayList);
             }
-
-//            HashMap<String, String> hm = new HashMap<String, String>();
-//            hm.put("x", "37.4419");
-//            hm.put("y", "-122.1419");
-//            attraction.setCoordinates(hm);
-
-            StringBuffer sb = new StringBuffer();
-            ArrayList<String> descArray = dbwr.getDescriptionArray();
-            ArrayList<String> srcArray = dbwr.getSourceUrlArray();
-
-            if ((descArray != null) && (descArray.size() > 0)) {
-                System.out.println("description");
-                sb.append(descArray.get(0).substring(300));
-                sb.append("<hr>");
-                sb.append("<small>©");
-                sb.append(srcArray.get(0));
-                sb.append("</small>");
-
-            }
-            attraction.setDescription(sb.toString());
         }
         else if(tab.equals("zoom")){
         	attraction.setZoom("15");
@@ -202,7 +259,9 @@ public class AttractionManager {
         return result;
     }
 
-    private HashMap<String, String> getTabsArray(DBWrapper attraction) {
+    private HashMap<String, String> getTabsArray
+            (DBWrapper
+                     attraction) {
 
         HashMap<String, String> map = new HashMap<String, String>();
         String type = attraction.getType();
@@ -213,12 +272,15 @@ public class AttractionManager {
             map.put("name", "false");
         }
         if (!type.equals("Continent")) {
-            if (attraction.getDescriptionArray().size() > 0) {
-                map.put("description", "true");
-            } else {
+            try {
+                if (attraction.getDescriptionArray().size() > 0) {
+                    map.put("description", "true");
+                } else {
+                    map.put("description", "false");
+                }
+            } catch (NullPointerException e) {
                 map.put("description", "false");
             }
-
             if ((attraction.getImagesArray() != null) && (attraction.getImagesArray().size() > 0)) {
 
                 if (!attraction.getImagesArray().get(0).equals("")) {
@@ -254,6 +316,17 @@ public class AttractionManager {
         return map;
     }
 
+    private boolean isEmptyTabMap(HashMap<String, String> map) {
+        if (map.get("images").equals("true")) {
+            return false;
+        } else if (map.get("description").equals("true")) {
+            return false;
+        } else if (map.get("list").equals("true")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public List<Attraction> getAttractionById(String id, String type) {
         AttractionManager.connectToDatabase();
@@ -290,13 +363,6 @@ public class AttractionManager {
                     attraction.setImagesArray(imagesArray);
                 }
             }
-//        attraction.setCoordinates(dbwr.getCoords().toString());
-//        attraction.setKeywords(dbwr.getKeyWordsArray().get(0));
-//        attraction.setDate_foundation(dbwr.getBuildDate().toString());
-//        attraction.setArchitect(dbwr.getArchitect());
-//        attraction.setCost(dbwr.getCost());
-//        attraction.setAddress(dbwr.getAddress());
-//        attraction.setMusic(dbwr.getMusic());
             sb = new StringBuffer();
             ArrayList<String> srcArray = dbwr.getSourceUrlArray();
             if (srcArray != null) {

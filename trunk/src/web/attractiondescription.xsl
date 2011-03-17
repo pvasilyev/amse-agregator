@@ -119,63 +119,62 @@
                                         <tr style="heigth: 150px">
                                             <td>
 
-                                                <xsl:apply-templates select="images-array/string[1]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                            <td>
+                                                    <xsl:apply-templates select="images-array/string[1]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
+                                                <td>
 
-                                                <xsl:apply-templates select="images-array/string[2]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                            <td>
+                                                    <xsl:apply-templates select="images-array/string[2]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
+                                                <td>
 
-                                                <xsl:apply-templates select="images-array/string[3]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                        </tr>
-                                        <!-- Если меньше 4х картинок -->
-                                        <xsl:if test="$count-of-images &lt; 3">
-                                            <tr>
-                                                <td class="small_image"/>
+                                                    <xsl:apply-templates select="images-array/string[3]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
                                             </tr>
-                                        </xsl:if>
-                                        <tr style="heigth: 150px;">
-                                            <td>
-                                                <xsl:apply-templates select="images-array/string[4]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                            <td>
+                                            <!-- Если меньше 4х картинок -->
+                                            <xsl:if test="$count-of-images &lt; 3">
+                                                <tr>
+                                                    <td class="small_image"/>
+                                                </tr>
+                                            </xsl:if>
+                                            <tr style="heigth: 150px;">
+                                                <td>
+                                                    <xsl:apply-templates select="images-array/string[4]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
+                                                <td>
 
-                                                <xsl:apply-templates select="images-array/string[5]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                            <td>
+                                                    <xsl:apply-templates select="images-array/string[5]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
+                                                <td>
 
-                                                <xsl:apply-templates select="images-array/string[6]"
-                                                                     mode="attractiondescription-xml-mini"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </xsl:if>
-                            </td>
-                        </tr>
-                    </table>
+                                                    <xsl:apply-templates select="images-array/string[6]"
+                                                                         mode="attractiondescription-xml-mini"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </xsl:if>
+                                </td>
+                            </tr>
+                        </table>
                     <!--</xsl:if>-->
 
 
-                    <xsl:if test="images-array != '' and description=''">
-                        <xsl:apply-templates select=".//images-array//string" mode="attractiondescription-xml"/>
-                    </xsl:if>
-                    <div id="aaa">
+                    <div id="aaa" width="400px !important;">
                         <xsl:if test="description != ''">
                             <xsl:value-of select="description" disable-output-escaping="yes"/>
-                            <br/>
-                            <a href="attractiondescription.xml?id={id}&amp;type={type}&amp;tab=description">еще
-                                описания
-                            </a>
-
+                        </xsl:if>
+                        <xsl:if test="description-array != ''">
+                            <xsl:apply-templates select=".//description-array//string" mode="description-array"/>
                         </xsl:if>
                     </div>
+
+                    <xsl:if test="images-array != '' and description-array=''">
+                        <xsl:apply-templates select=".//images-array//string" mode="images-array"/>
+                    </xsl:if>
 
 
                     <xsl:if test="attraction-list/menu-item != ''">
@@ -205,22 +204,20 @@
         </table>
     </xsl:template>
 
-    <xsl:template match="images-array">
-        <xsl:apply-templates select="string" mode="attractiondescription-xml"/>
-    </xsl:template>
-
-    <xsl:template match="string" mode="attractiondescription-xml">
+    <xsl:template match="string" mode="images-array">
         <img src="{.}" class="big_image"/>
         <span style="padding:0px 10px;"/>
+    </xsl:template>
+
+    <xsl:template match="string" mode="description-array">
+        <div>
+        <xsl:value-of select="." disable-output-escaping="yes"/>
+        </div>
     </xsl:template>
 
     <xsl:template match="string" mode="attractiondescription-xml-mini">
         <img src="{.}" class="small_image"/>
         <span style="padding:20px 0px;"/>
-    </xsl:template>
-
-    <xsl:template match="description">
-        <xsl:value-of select="."/>
     </xsl:template>
 
 </xsl:stylesheet>
