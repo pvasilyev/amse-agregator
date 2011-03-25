@@ -19,7 +19,7 @@ import ru.amse.agregator.storage.UniqueId;
 public class ClusterizationTester {
 
 
-    public static void Test() {
+    public static void Test() throws Exception {
         double threshold = 0.0;
 
         System.out.println("Deleting main base");
@@ -135,7 +135,7 @@ public class ClusterizationTester {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Test();
     }
 

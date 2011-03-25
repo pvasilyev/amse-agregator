@@ -7,7 +7,7 @@ import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.storage.UniqueId;
 
-public class DescriptionMerger extends AttributeMerger {
+public class FingerprintDescriptionMerger extends AttributeMerger {
 
     // parameter that adjusts how similar descriptions should be to be merged in one
     static final double DEFAULT_MIN_SIMILARITY = 0.5;
@@ -15,13 +15,13 @@ public class DescriptionMerger extends AttributeMerger {
     final double minSimilarity;
     private DescriptionFingerprinter fingerprinter;
 
-    public DescriptionMerger(DescriptionFingerprinter fingerprinter, double minSimilarity) {
+    public FingerprintDescriptionMerger(DescriptionFingerprinter fingerprinter, double minSimilarity) {
         assert(fingerprinter != null);
         this.fingerprinter = fingerprinter;
         this.minSimilarity = minSimilarity;
     }
 
-    public DescriptionMerger(DescriptionFingerprinter fingerprinter) {
+    public FingerprintDescriptionMerger(DescriptionFingerprinter fingerprinter) {
         this(fingerprinter, DEFAULT_MIN_SIMILARITY);
     }
 
