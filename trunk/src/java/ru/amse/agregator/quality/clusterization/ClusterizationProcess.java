@@ -106,7 +106,12 @@ final public class ClusterizationProcess {
 
             System.out.println("Merging and adding to main base");
 
-            MergeProcess.perform(new ObjectMerger(), storage);
+            try {
+                MergeProcess.perform(new ObjectMerger(), storage);
+            } catch (InternalException e) {
+                System.out.println("Execution aborted! Following error occured!:");
+                System.out.println(e);
+            }
         }
   
        System.out.println("Finished clusterization process successfully");

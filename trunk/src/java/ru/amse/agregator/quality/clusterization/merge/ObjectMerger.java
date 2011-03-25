@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ru.amse.agregator.quality.clusterization.InternalException;
 import ru.amse.agregator.storage.UniqueId;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.quality.clusterization.clusterstorage.Cluster;
@@ -23,7 +24,7 @@ public class ObjectMerger extends ClusterMerger {
     private DescriptionFingerprinter fingerprinter;
 
     final private Map<String, AttributeMerger> attMergers;
-    public ObjectMerger() {
+    public ObjectMerger() throws InternalException {
 
         
         final AttributeMerger mergeStringLists = new StringListMerger();
@@ -32,16 +33,20 @@ public class ObjectMerger extends ClusterMerger {
         fingerprinter = new DescriptionFingerprinter();
         attMergers = new TreeMap<String, AttributeMerger>();
 
+        // set appropriate mergers for corresponding fields
+        // note that setting wrong mergers may cause runtime errors due type conversion
+
         attMergers.put(DBWrapper.FIELD_CONTINENT_ID, new ContinentiIdMerger());
         attMergers.put(DBWrapper.FIELD_COUNTRY_ID, new CountryIdMerger());
         attMergers.put(DBWrapper.FIELD_CITY_ID, new CityIdMerger());
         attMergers.put(DBWrapper.FIELD_KEYWORDS, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_IMAGES, mergeStringLists);
-        attMergers.put(DBWrapper.FIELD_DESC, new DescriptionMerger(fingerprinter));
+        attMergers.put(DBWrapper.FIELD_DESC, new FingerprintDescriptionMerger(fingerprinter));
         attMergers.put(DBWrapper.FIELD_SOURCE_URL, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
         attMergers.put(DBWrapper.FIELD_ID, doNothing);     
         attMergers.put(DBWrapper.FIELD_COORDS, new CoordinatesMerger());
+        attMergers.put(DBWrapper.FIELD_RATING, new RatingMerger());
     }
 
 
