@@ -27,6 +27,7 @@ public class Attraction {
     private List<MenuItem> attractionList = new ArrayList<MenuItem>();
     private HashMap<String, String> fieldMap = new HashMap<String, String>();
     private ArrayList<ArrayList<String>> coordinates = new ArrayList<ArrayList<String>>();
+    private ArrayList<Cell> parents = new ArrayList<Cell>();
 
     public String getType() {
         return type;
@@ -186,5 +187,13 @@ public class Attraction {
 
     public void setDescriptionArray(ArrayList<String> descriptionArray) {
         this.descriptionArray = descriptionArray;
+    }
+
+    public ArrayList<Cell> getParents() {
+        return parents;
+    }
+
+    public void setParents(ArrayList<Cell> parents) {
+        this.parents = parents;
     }
 }
