@@ -1,5 +1,6 @@
 package ru.amse.agregator.gui.model;
 
+import net.sf.saxon.expr.PairIterator;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import ru.amse.agregator.searcher.Searcher;
@@ -10,6 +11,7 @@ import ru.amse.agregator.utils.HtmlTools;
 
 import java.io.File;
 import java.util.*;
+import java.util.jar.Attributes;
 
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
@@ -28,19 +30,6 @@ public class AttractionManager {
         } else {
             Database.connectToMainBase();
         }
-    }
-
-    //Временный метод
-    public List<Attraction> getAllAttraction() {
-        List<Attraction> result = new ArrayList<Attraction>();
-
-        for (int i = 1; i < 5; i++) {
-            Attraction attraction = new Attraction();
-            attraction.setType("City");
-            attraction.setName("имя _ " + i);
-            result.add(attraction);
-        }
-        return result;
     }
 
     //Получение данных из базы
@@ -111,6 +100,7 @@ public class AttractionManager {
         return result;
     }
 
+    // For next description on main attaraction page
     public List<Attraction> getSomeAttractionByIdMoreDescription(String id, String type, String tab, String descriptionId) {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
@@ -164,6 +154,7 @@ public class AttractionManager {
         return result;
     }
 
+    // Get Attraction - main method
     public List<Attraction> getSomeAttractionById(String id, String type, String tab) {
         AttractionManager.connectToDatabase();
         ObjectId selectedItem = new ObjectId(id);
@@ -178,7 +169,7 @@ public class AttractionManager {
             result.add(attraction);
             return result;
         }
-        Attraction attraction = new Attraction();
+        Attraction attraction = setParents(dbwr, type);
         HashMap<String, String> tabMap = new HashMap<String, String>();
         try {
             tabMap = getTabsArray(dbwr);
@@ -255,10 +246,31 @@ public class AttractionManager {
         	attraction.setZoom("15");
         }
 
+        attraction.getParents();
         result.add(attraction);
         return result;
     }
 
+
+    private Attraction setParents(DBWrapper dbWrapper, String type) {
+        Attraction attraction = new Attraction();
+        ArrayList<Cell> arrayList = new ArrayList<Cell>();
+        if (type.equals("Continent")) {
+            return attraction;
+        } else if (type.equals("Country")) {
+            arrayList.add(new Cell(dbWrapper.getStaticContinentName(), dbWrapper.getContinentId().toString()));
+            attraction.setParents(arrayList);
+            return attraction;
+        } else if (type.equals("City")) {
+
+            return attraction;
+        } else {
+           return attraction;
+        }
+
+    }
+
+    // Hash Map of tabs <name of tab, True/False>
     private HashMap<String, String> getTabsArray
             (DBWrapper
                      attraction) {
@@ -316,8 +328,9 @@ public class AttractionManager {
         return map;
     }
 
+    // Check tab for absent content
     private boolean isEmptyTabMap(HashMap<String, String> map) {
-        if (map.get("images").equals("true")) {
+        /*if (map.get("images").equals("true")) {
             return false;
         } else if (map.get("description").equals("true")) {
             return false;
@@ -325,66 +338,10 @@ public class AttractionManager {
             return false;
         } else {
             return true;
-        }
+        }*/  return false;
     }
 
-    public List<Attraction> getAttractionById(String id, String type) {
-        AttractionManager.connectToDatabase();
-        ObjectId selectedItem = new ObjectId(id);
-
-        DBWrapper dbwr = Database.getDBObjectByIdAndTypeAndIncRating(selectedItem, type);
-
-        List<Attraction> result = new ArrayList<Attraction>();
-
-        if (dbwr == null) {
-            Attraction attraction = new Attraction();
-            attraction.setType("Error");
-            result.add(attraction);
-            return result;
-        }
-
-        Attraction attraction = new Attraction();
-        attraction.setId(dbwr.getId().toString());
-        attraction.setType(type);
-        attraction.setName(dbwr.getName());
-        if (!type.equals("Continent")) {
-            StringBuffer sb = new StringBuffer();
-            ArrayList<String> descArray = dbwr.getDescriptionArray();
-            if (descArray != null) {
-                for (String desc : descArray) {
-                    sb.append(desc + "<hr>");
-                }
-            }
-            attraction.setDescription(sb.toString());
-
-            ArrayList<String> imagesArray = dbwr.getImagesArray();
-            if (imagesArray != null) {
-                if (imagesArray.size() > 0) {
-                    attraction.setImagesArray(imagesArray);
-                }
-            }
-            sb = new StringBuffer();
-            ArrayList<String> srcArray = dbwr.getSourceUrlArray();
-            if (srcArray != null) {
-                int i = 0;
-                for (String src : srcArray) {
-                    sb.append(src + ((srcArray.size() - 1 == i) ? ("") : (", ")));
-                    i++;
-                }
-            }
-            attraction.setWebsite(sb.toString());
-//        attraction.setRooms(dbwr.getRooms()); 
-        }
-
-
-        if (type.equals("City") || type.equals("Country") || type.equals("Continent")) {
-            attraction.setAttractionList(addListOfAttractions(attraction));
-        }
-        result.add(attraction);
-
-        return result;
-    }
-
+    //Get list of attractions
     private ArrayList<MenuItem> addListOfAttractions(Attraction attraction) {
         ArrayList<MenuItem> links = new ArrayList<MenuItem>();
 
@@ -415,4 +372,6 @@ public class AttractionManager {
         return links;
 
     }
+
+
 }

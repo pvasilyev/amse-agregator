@@ -11,7 +11,8 @@
     </xsl:template>
 
     <xsl:template name="main">
-        <xsl:apply-templates select="page/data/collection" mode="show"/>
+        <xsl:call-template name="indexMainContent"/>
+        <!--<xsl:apply-templates select="page/data/collection" mode="show"/>-->
     </xsl:template>
 
     <xsl:template name="rightmenu">
@@ -29,7 +30,11 @@
         </xsl:copy>
     </xsl:template>-->
 
-    <xsl:template match="page/data/collection" mode="show">
+    <xsl:template name="indexMainContent">
+        <xsl:apply-templates select="page/data[@id='showAttractionDesc']/collection" mode="show"/>
+    </xsl:template>
+
+    <xsl:template match="collection" mode="show">
         <div id="main-container">
             <xsl:apply-templates select="attraction" mode="attractiondescription-xml"/>
         </div>
@@ -47,6 +52,11 @@
         <table width="100%">
             <tr>
                 <td align="left" class="title">
+                    <xsl:if test="parents != ''">
+                        <a class="title" href="attractiondescription.xml?id={parents/cell/value}&amp;type=Continent&amp;tab=list"><xsl:value-of select="parents/cell/name"/></a>
+                        -
+                    </xsl:if>
+
                     <xsl:value-of select="name" disable-output-escaping="yes"/>
                 </td>
             </tr>
@@ -113,6 +123,7 @@
                             </td>
                             <td width="20px"></td>
                             <td>
+                                <!-- All Info -->
                                 <xsl:if test="images-array != ''">
                                     <xsl:variable name="count-of-images" select="count(images-array/string)"/>
                                     <table width="350px">
@@ -162,7 +173,7 @@
                         </table>
                     <!--</xsl:if>-->
 
-
+                    <!-- Description -->
                     <div id="aaa" width="400px !important;">
                         <xsl:if test="description != ''">
                             <xsl:value-of select="description" disable-output-escaping="yes"/>
@@ -172,11 +183,12 @@
                         </xsl:if>
                     </div>
 
+                    <!-- Images -->
                     <xsl:if test="images-array != '' and description-array=''">
                         <xsl:apply-templates select=".//images-array//string" mode="images-array"/>
                     </xsl:if>
 
-
+                    <!-- List of attractions -->
                     <xsl:if test="attraction-list/menu-item != ''">
                         <xsl:if test="type = 'City'">
                             Достопримечательности города
