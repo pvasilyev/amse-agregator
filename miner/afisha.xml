@@ -16,6 +16,7 @@
 	</xpath>
 </var-def>
 <var-def name="blank"></var-def>
+<!--/ biuld continent list -->
 
 <!-- begin cycle by continents -->
 <loop item="continent" index="i" empty="yes" filter="6-7">
@@ -46,6 +47,11 @@
 						var str = source[i].toString().substring(j + 7, source[i].toString().length());
 						var jj = str.indexOf("<");
 						str = str.substring(0, jj);
+						if (str.equals("Ближний Восток")) {
+							str = "Азия";
+						} else if (str.equals("Центральная Америка")) {
+							str = "Северная Америка";
+						}
 						name.push(str);
 					}
 					i++;
@@ -55,7 +61,7 @@
 		</script>
 		<var-def name="realContinent">
 			<var name="returnContinent"/>
-		</var-def>					
+		</var-def>
 		
 		<!-- biuld list of countries in "i" continent -->
 		<var-def name="countryList">
