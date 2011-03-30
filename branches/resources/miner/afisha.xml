@@ -18,7 +18,7 @@
 <var-def name="blank"></var-def>
 
 <!-- begin cycle by continents -->
-<loop item="continent" index="i" empty="yes" filter="5-7">
+<loop item="continent" index="i" empty="yes" filter="6-7">
 	<list>
 		<var name="continentList"/>
 	</list>
