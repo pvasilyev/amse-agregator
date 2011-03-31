@@ -18,7 +18,7 @@
 <var-def name="blank"></var-def>
 <!--/ biuld continent list -->
 
-<!-- begin cycle by continents -->
+<!-- target: build all countries with their coordinates -->
 <loop item="continent" index="i" empty="yes" filter="6-7">
 	<list>
 		<var name="continentList"/>
@@ -62,13 +62,13 @@
 		<var-def name="realContinent">
 			<var name="returnContinent"/>
 		</var-def>
-		
 		<!-- biuld list of countries in "i" continent -->
 		<var-def name="countryList">
 			<xpath expression="//div[@class='b-geonav']/a/@href">
 				<var name="continentPage"/>
 			</xpath>
 		</var-def>
+		<!--/ biuld list of countries in "i" continent -->
 		
 		<!-- begin cycle by countries in "i" continent -->
 			<loop item="country" index="k" empty="yes">
@@ -103,6 +103,238 @@
 					</script>
 					<var-def name="realCountry">
 						<var name="returnCountry"/>
+					</var-def>					
+					
+					<!-- row country coordinates -->
+					<var-def name="country_coords">
+						<xpath expression="//script[@type='text/javascript']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					
+					<!-- clean and get real country coordinates -->
+					<script language="javascript">
+					<![CDATA[ 
+						var source = country_coords.toArray();
+						var i = 0;
+						var coord = new Array();
+						while (i < source.length) {
+							var str = source[i].toString();
+							var j = str.indexOf("page_data.map.center");
+							if (j > 0) {
+								str = str.substring(j, str.length());
+								var k = str.indexOf("lat:");
+								str = str.substring(k, str.length());
+								k = str.indexOf(", lng:")
+								var lat = str.substring(4, k);
+								str = str.substring(k + 6, str.length());
+								var lng = str.substring(0, str.indexOf(","));
+								coord.push(lat.replaceAll(",", "."))
+								coord.push(lng.replaceAll(",", "."))
+							}
+							i++;
+						}
+					]]>
+					sys.defineVariable("returnCountryCoordinates", coord.join(";"), true);
+					</script>
+					
+					<var-def name="realCountryCoordinates">
+						<var name="returnCountryCoordinates"/>
+					</var-def>
+					
+					<var-def name="countryDescription">
+						<xpath expression="//div[@class='article-item']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					
+					<var-def name="returnValue">
+						<text>type</text>
+						<template>Country</template>
+						
+						<text>country_name</text>
+						<template>${returnCountry.toString()}</template>
+						
+						<text>continent_name</text>
+						<template>${returnContinent.toString()}</template>
+						
+						<text>coordinates</text>
+						<template>${returnCountryCoordinates.toString()}</template>
+						
+						<text>description</text>
+						<template>${countryDescription.toString()}</template>
+					</var-def>
+					<var-def name="addToDB">1</var-def>
+				</empty>
+				</body>
+			</loop>
+	</empty>
+	</body>
+</loop>
+<!--/ target: build all countries with their coordinates -->
+
+<!-- begin cycle by continents -->
+<loop item="continent" index="i" empty="yes" filter="9">
+	<list>
+		<var name="continentList"/>
+	</list>
+	<body>
+	<empty>
+		<var-def name="continentPage">
+			<html-to-xml>
+				<http url="${sys.fullUrl(continent, blank);}"/>
+			</html-to-xml>				
+		</var-def>
+		
+		<var-def name="continent_name">
+			<xpath expression="//h1[@class='b-main-header']">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		<script language="javascript">
+			<![CDATA[
+				var source = continent_name.toArray();
+				var i = 0;
+				var name = new Array();
+				while (i < source.length) {
+					var j = source[i].toString().indexOf("</span>");
+					if (j >= 0) {
+						var str = source[i].toString().substring(j + 7, source[i].toString().length());
+						var jj = str.indexOf("<");
+						str = str.substring(0, jj);
+						if (str.equals("Ближний Восток")) {
+							str = "Азия";
+						} else if (str.equals("Центральная Америка")) {
+							str = "Северная Америка";
+						}
+						name.push(str);
+					}
+					i++;
+				}
+			]]>
+			sys.defineVariable("returnContinent", name.join(";"), true);
+		</script>
+		<var-def name="realContinent">
+			<var name="returnContinent"/>
+		</var-def>
+		
+		<!-- row continent coordinates -->
+		<var-def name="continent_coords">
+			<xpath expression="//script[@type='text/javascript']">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		
+		<!-- clean and get real country coordinates -->
+		<script>
+		<![CDATA[ 
+			var source = continent_coords.toArray();
+			var i = 0;
+			var coords = new Array();
+			while (i < source.length) {
+				var str = source[i].toString();
+				var j = str.indexOf("page_data.map.center");
+				if (j > 0) {
+					str = str.substring(j, str.length());
+					str = str.substring(0, str.indexOf("\n"));
+					var k = str.indexOf("lat:");
+					str = str.substring(k, str.length());
+					var lat = str.substring(k + 4, str.indexOf(","));
+					k = str.indexOf("lng:");
+					str = str.substring(k, str.length());
+					var lng = str.substring(k + 4, str.indexOf(","));
+					coords.push(lat.replaceAll(",", "."));
+					coords.push(lng.replaceAll(",", "."));
+				}
+				i++;
+			}
+		]]>
+		sys.defineVariable("returnContinentCoordinates", coords.join(";"), true);
+		</script>
+		
+		<var-def name="realContinentCoordinates">
+			<var name="returnContinentCoordinates"/>
+		</var-def>					
+		
+		<!-- biuld list of countries in "i" continent -->
+		<var-def name="countryList">
+			<xpath expression="//div[@class='b-geonav']/a/@href">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		<!--/ biuld list of countries in "i" continent -->
+		
+		<!-- begin cycle by countries in "i" continent -->
+			<loop item="country" index="k" empty="yes">
+				<list>
+					<var name="countryList"/>
+				</list>
+				<body>
+				<empty>
+					<var-def name="countryPage">
+						<html-to-xml>
+							<http url="${sys.fullUrl(country, blank);}"/>
+						</html-to-xml>									
+					</var-def>
+					
+					<var-def name="country_name">
+						<xpath expression="//h1[@class='b-main-header']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					<script language="javascript">
+					<![CDATA[
+						var source = country_name.toString();
+						var i  = source.indexOf("</span>") + 7;
+						var str = source.substring(i, source.length());
+						i =  str.indexOf("</span>") + 7;
+						str = str.substring(i, str.length());
+						str = str.substring(0, str.indexOf("<"));
+						var name = new Array();						
+						name.push(str);
+					]]>
+					sys.defineVariable("returnCountry", name.join(";"), true);
+					</script>
+					<var-def name="realCountry">
+						<var name="returnCountry"/>
+					</var-def>					
+					
+					<!-- row country coordinates -->
+					<var-def name="country_coords">
+						<xpath expression="//script[@type='text/javascript']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					
+					<!-- clean and get real country coordinates -->
+					<script>
+					<![CDATA[ 
+						var source = country_coords.toArray();
+						var i = 0;
+						var coords = new Array();
+						while (i < source.length) {
+							var str = source[i].toString();
+							var j = str.indexOf("page_data.map.center");
+							if (j > 0) {
+								str = str.substring(j, str.length());
+								str = str.substring(0, str.indexOf("\n"));
+								var k = str.indexOf("lat:");
+								str = str.substring(k, str.length());
+								var lat = str.substring(k + 4, str.indexOf(","));
+								k = str.indexOf("lng:");
+								str = str.substring(k, str.length());
+								var lng = str.substring(k + 4, str.indexOf(","));
+								coords.push(lat.replaceAll(",", "."));
+								coords.push(lng.replaceAll(",", "."));
+							}
+							i++;
+						}
+					]]>
+					sys.defineVariable("returnCountryCoordinates", coords.join(";"), true);
+					</script>
+					
+					<var-def name="realCountryCoordinates">
+						<var name="returnCountryCoordinates"/>
 					</var-def>					
 					
 					<!--biuld list by cities in "k" country in "i" continent-->
@@ -166,6 +398,45 @@
 								]]>
 								sys.defineVariable("realPoisLink", real, true);
 							</script>
+							
+							<!-- row city coordinates -->
+							<var-def name="city_coords">
+								<xpath expression="//script[@type='text/javascript']">
+									<var name="cityPage"/>
+								</xpath>
+							</var-def>
+					
+							<!-- clean and get real country coordinates -->
+							<script>
+							<![CDATA[ 
+								var source = city_coords.toArray();
+								var i = 0;
+								var coords = new Array();
+								while (i < source.length) {
+									var str = source[i].toString();
+									var j = str.indexOf("page_data.map.center");
+									if (j > 0) {
+										str = str.substring(j, str.length());
+										str = str.substring(0, str.indexOf("\n"));
+										var k = str.indexOf("lat:");
+										str = str.substring(k, str.length());
+										var lat = str.substring(k + 4, str.indexOf(","));
+										k = str.indexOf("lng:");
+										str = str.substring(k, str.length());
+										var lng = str.substring(k + 4, str.indexOf(","));
+										coords.push(lat.replaceAll(",", "."));
+										coords.push(lng.replaceAll(",", "."));
+									}
+									i++;
+								}
+							]]>
+							sys.defineVariable("returnCityCoordinates", coords.join(";"), true);
+							</script>
+
+							<var-def name="realCityCoordinates">
+								<var name="returnCityCoordinates"/>
+							</var-def>					
+							
 							<var-def name="poisList">
 								<xpath expression="//div[@class='places-list-item']/h3/a/@href">
 									<html-to-xml>
@@ -214,7 +485,7 @@
 											</html-to-xml>
 										</xpath>
 									</var-def>
-									<var-def name="coordinates">
+									<var-def name="poi_coordinates">
 										<xpath expression="//div[@class='g-one-col g-wrapper']/div[@id='map-info']/following-sibling::script[@type='text/javascript']">
 											<html-to-xml>
 												<http url="${sys.fullUrl(site, mapPage);}"></http>
@@ -223,7 +494,7 @@
 									</var-def>
 									<script language="javascript">
 										<![CDATA[
-											var source = coordinates.toArray();
+											var source = poi_coordinates.toArray();
 											var i = 0;
 											var coord = new Array();
 											while (i < source.length) {
@@ -241,10 +512,10 @@
 												i++;
 											}
 										]]>
-										sys.defineVariable("returnCoordinates", coord.join(";"), true);
+										sys.defineVariable("returnPoiCoordinates", coord.join(";"), true);
 									</script>
-									<var-def name="realCoords">
-										<var name="returnCoordinates"/>
+									<var-def name="realPoiCoordinates">
+										<var name="returnPoiCoordinates"/>
 									</var-def>
 									<!-- /scrap coordinates-->
 									
@@ -387,7 +658,7 @@
 										<template>${returnPoiName.toString()}</template>
 									
 										<text>coordinates</text>
-										<template>${returnCoordinates.toString().replaceAll(",",".").trim()}</template>
+										<template>${returnPoiCoordinates.toString().replaceAll(",",".").trim()}</template>
 			
 										<text>description</text>
 										<template>${returnUsefullInfo.toString() + "\n" + returnDescr.toString();}</template>
@@ -398,7 +669,7 @@
 										<text>source_url</text>
 										<template>${sys.fullUrl(poi, blank).toString()}</template>
 									</var-def>
-		
+
 									<var-def name="addToDB">1</var-def>
 								</empty>
 								</body>
