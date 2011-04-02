@@ -188,7 +188,7 @@
 							<!-- то сайт redirect'ит нас на страничку с питерскими достопримечательностями -->
 							<!-- т.е. http://afisha.ru/spb/sight/sights_list                               -->
 							<case>
-								<if condition="${poisLinkPage.toString().indexOf(realPoisLink.toString()) < 0}">
+								<if condition="${poisLinkPage.toString().indexOf(realPoisLink.toString())&lt;0}">
 									<var-def name="poisList"></var-def>
 									<var-def name="city==spb">
 										<var name="returnCity"/>
@@ -433,7 +433,8 @@
 													}
 													k--;
 													source = source.substring(k, source.length());
-													while (!", Афиша, Afisha".equals(source)) {
+													while (!", Афиша, Afisha".equals(source)
+															&& !"Афиша, Afisha".equals(source)) {
 														var i = source.indexOf(", ");
 														var str = source.substring(0, i);
 														keywordsArray.push((str.trim()).toLowerCase());
