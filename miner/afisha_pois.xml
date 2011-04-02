@@ -6,6 +6,14 @@
 	http://www.afisha.ru
 </var-def>
 
+<var-def name="blank"></var-def>
+
+<var-def name="spbPoisLinkPage">
+	<html-to-xml>
+		<http url="http://www.afisha.ru/spb/sights/sight_list/"></http>
+	</html-to-xml>
+</var-def>
+
 <!-- biuld continent list -->
 <var-def name="continentList">
 	<xpath expression="//div[@class='b-geonav']/a/@href">
@@ -14,11 +22,11 @@
 		</html-to-xml>
 	</xpath>
 </var-def>
-<var-def name="blank"></var-def>
+
 <!--/ biuld continent list -->
 
 <!-- begin cycle by continents -->
-<loop item="continent" index="i" empty="yes" filter="9">
+<loop item="continent" index="i" empty="yes" filter="8">
 	<list>
 		<var name="continentList"/>
 	</list>
@@ -61,45 +69,7 @@
 		<var-def name="realContinent">
 			<var name="returnContinent"/>
 		</var-def>
-		
-		<!-- row continent coordinates -->
-		<var-def name="continent_coords">
-			<xpath expression="//script[@type='text/javascript']">
-				<var name="continentPage"/>
-			</xpath>
-		</var-def>
-		
-		<!-- clean and get real country coordinates -->
-		<script>
-		<![CDATA[ 
-			var source = continent_coords.toArray();
-			var i = 0;
-			var coords = new Array();
-			while (i < source.length) {
-				var str = source[i].toString();
-				var j = str.indexOf("page_data.map.center");
-				if (j > 0) {
-					str = str.substring(j, str.length());
-					str = str.substring(0, str.indexOf("\n"));
-					var k = str.indexOf("lat:");
-					str = str.substring(k, str.length());
-					var lat = str.substring(k + 4, str.indexOf(","));
-					k = str.indexOf("lng:");
-					str = str.substring(k, str.length());
-					var lng = str.substring(k + 4, str.indexOf(","));
-					coords.push(lat.replaceAll(",", "."));
-					coords.push(lng.replaceAll(",", "."));
-				}
-				i++;
-			}
-		]]>
-		sys.defineVariable("returnContinentCoordinates", coords.join(";"), true);
-		</script>
-		
-		<var-def name="realContinentCoordinates">
-			<var name="returnContinentCoordinates"/>
-		</var-def>					
-		
+				
 		<!-- biuld list of countries in "i" continent -->
 		<var-def name="countryList">
 			<xpath expression="//div[@class='b-geonav']/a/@href">
@@ -205,52 +175,34 @@
 								]]>
 								sys.defineVariable("realPoisLink", real, true);
 							</script>
-							
-							<!-- row city coordinates -->
-							<var-def name="city_coords">
-								<xpath expression="//script[@type='text/javascript']">
-									<var name="cityPage"/>
-								</xpath>
-							</var-def>
-					
-							<!-- clean and get real city coordinates -->
-							<script>
-							<![CDATA[ 
-								var source = city_coords.toArray();
-								var i = 0;
-								var coords = new Array();
-								while (i < source.length) {
-									var str = source[i].toString();
-									var j = str.indexOf("page_data.map.center");
-									if (j > 0) {
-										str = str.substring(j, str.length());
-										str = str.substring(0, str.indexOf("\n"));
-										var k = str.indexOf("lat:");
-										str = str.substring(k, str.length());
-										var lat = str.substring(k + 4, str.indexOf(","));
-										k = str.indexOf("lng:");
-										str = str.substring(k, str.length());
-										var lng = str.substring(k + 4, str.indexOf(","));
-										coords.push(lat.replaceAll(",", "."));
-										coords.push(lng.replaceAll(",", "."));
-									}
-									i++;
-								}
-							]]>
-							sys.defineVariable("returnCityCoordinates", coords.join(";"), true);
-							</script>
 
-							<var-def name="realCityCoordinates">
-								<var name="returnCityCoordinates"/>
-							</var-def>					
-							
-							<var-def name="poisList">
-								<xpath expression="//div[@class='places-list-item']/h3/a/@href">
-									<html-to-xml>
-										<http url="${sys.fullUrl(realPoisLink, blank);}"></http>
-									</html-to-xml>
-								</xpath>
+							<var-def name="poisLinkPage">
+								<html-to-xml>
+									<http url="${sys.fullUrl(realPoisLink, blank);}"></http>
+								</html-to-xml>
 							</var-def>
+							
+							<!-- Есть один спецэффект.                                                     -->
+							<!-- Если у города city_xxx нет странички вида                                 -->
+							<!-- http://afisha.ru/city_xxx/sight/sights_list                               -->
+							<!-- то сайт redirect'ит нас на страничку с питерскими достопримечательностями -->
+							<!-- т.е. http://afisha.ru/spb/sight/sights_list                               -->
+							<case>
+								<if condition="${poisLinkPage.toString().equals(spbPoisLinkPage.toString())}">
+									<var-def name="poisList"></var-def>
+									<var-def name="city==spb"></var-def>
+								</if>
+								<else>
+									<var-def name="poisList">
+										<xpath expression="//div[@class='places-list-item']/h3/a/@href">
+											<html-to-xml>
+												<http url="${sys.fullUrl(realPoisLink, blank);}"></http>
+											</html-to-xml>
+										</xpath>
+									</var-def>
+								</else>
+							</case>
+							
 							<loop item="poi" index="m" empty="yes">
 								<list>
 									<var name="poisList"/>
@@ -262,6 +214,10 @@
 										<html-to-xml>
 											<http url="${sys.fullUrl(poi, blank);}"></http>
 										</html-to-xml>
+									</var-def>
+									
+									<var-def name="poiUrl">
+										<template>${sys.fullUrl(poi, blank).toString()}</template>
 									</var-def>
 									
 									<var-def name="poi_name">
@@ -448,6 +404,12 @@
 									</var-def>
 									<!-- /scrap photos -->
 									
+									<var-def name="meta_info">
+										<xpath expression="//meta[@name='keywords']/@content">
+											<var name="poiPage"/>
+										</xpath>
+									</var-def>
+									
 									<var-def name="returnValue">
 										<text>type</text>
 										<template>Attraction</template>
@@ -463,6 +425,9 @@
 
 										<text>name</text>
 										<template>${returnPoiName.toString()}</template>
+										
+										<text>keywords</text>
+										<template>${returnTags.toString()}</template>
 									
 										<text>coordinates</text>
 										<template>${returnPoiCoordinates.toString().replaceAll(",",".").trim()}</template>
