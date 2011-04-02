@@ -79,7 +79,7 @@
 		<!--/ biuld list of countries in "i" continent -->
 		
 		<!-- begin cycle by countries in "i" continent -->
-			<loop item="country" index="k" empty="yes">
+			<loop item="country" index="k" empty="yes" filter="3">
 				<list>
 					<var name="countryList"/>
 				</list>
@@ -190,7 +190,9 @@
 							<case>
 								<if condition="${poisLinkPage.toString().equals(spbPoisLinkPage.toString())}">
 									<var-def name="poisList"></var-def>
-									<var-def name="city==spb"></var-def>
+									<var-def name="city==spb">
+										<var name="returnCity"/>
+									</var-def>
 								</if>
 								<else>
 									<var-def name="poisList">
@@ -200,260 +202,303 @@
 											</html-to-xml>
 										</xpath>
 									</var-def>
-								</else>
-							</case>
+											
+									<loop item="poi" index="m" empty="yes">
+										<list>
+											<var name="poisList"/>
+										</list>
+									
+										<body>
+										<empty>
+											<var-def name="poiPage">
+												<html-to-xml>
+													<http url="${sys.fullUrl(poi, blank);}"></http>
+												</html-to-xml>
+											</var-def>
+										
+											<var-def name="poiUrl">
+												<template>${sys.fullUrl(poi, blank).toString()}</template>
+											</var-def>
+									
+											<var-def name="poi_name">
+												<xpath expression="//div[@class='b-object-header']/h1">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+											<![CDATA[
+												var source = poi_name.toString();
+												source = source.trim();
+												source = source.substring(source.indexOf(">") + 1, source.length());
+												source = source.substring(0, source.indexOf("</"));
+												var name = new Array();						
+												name.push(source);
+											]]>
+											sys.defineVariable("returnPoiName", name.join(";"), true);
+											</script>
+											<var-def name="realPoi">
+												<var name="returnPoiName"/>
+											</var-def>	
+											
+											<!-- scrap coordinates-->
+											<var-def name="mapPage">
+												<xpath expression="//div[@class='g-full-col b-tabs']/ul/li[3]/a/@href">
+													<html-to-xml>
+														<http url="${sys.fullUrl(poi, blank);}"></http>
+													</html-to-xml>
+												</xpath>
+											</var-def>
+											
+											<case>
+												<if condition="${!mapPage.toString().isEmpty()}">
+													<var-def name="poi_coordinates">
+														<xpath expression="//div[@class='g-one-col g-wrapper']/div[@id='map-info']/following-sibling::script[@type='text/javascript']">
+															<html-to-xml>
+																<http url="${sys.fullUrl(site, mapPage);}"></http>
+															</html-to-xml>
+														</xpath>
+													</var-def>
+													<script language="javascript">
+														<![CDATA[
+															var source = poi_coordinates.toArray();
+															var i = 0;
+															var coord = new Array();
+															while (i < source.length) {
+																var j = source[i].toString().indexOf("page_data.map.center");
+																if (j >= 0) {
+																	var str = source[i].toString().substring(j, source[i].toString().length() - 1);
+																	var jj = str.indexOf("{");
+																	str = str.substring(jj + 5, str.length());
+																	var latCoord = str.substring(0, str.indexOf(","));
+																	str = str.substring(str.indexOf(":"), str.length());
+																	var lngCoord = str.substring(1, str.indexOf(","));
+																	coord.push(latCoord.replaceAll(',', '.'));
+																	coord.push(lngCoord.replaceAll(',', '.'));
+															}
+																i++;
+															}
+														]]>
+														sys.defineVariable("returnPoiCoordinates", coord.join(";"), true);
+													</script>
+													<var-def name="realPoiCoordinates">
+														<var name="returnPoiCoordinates"/>
+													</var-def>
+												</if>
+												<else>
+													<var-def name="returnPoiCoordinates"></var-def>
+												</else>
+											</case>
+						
+											<!-- /scrap coordinates-->
+										
+											<!-- scrap tags -->
+											<var-def name="tags">
+												<xpath expression="//span[@class='b-tags']/span[@id]">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+												<![CDATA[
+													var source = tags.toArray();
+												var i = 0;
+													var tagsArray = new Array();
+													while (i < source.length) {
+														var j = source[i].toString().indexOf(">") + 1;
+														var str = source[i].toString().substring(j, source[i].toString().length());
+														j = str.indexOf("</");
+														str = str.substring(0, j);
+														tagsArray.push(str);
+														i++;
+													}
+												]]>
+												sys.defineVariable("returnTags", tagsArray.join(";"), true);
+											</script>
+											<var-def name="realTags">
+												<var name="returnTags"/>
+											</var-def>
+											<!-- /scrap tags -->
+									
+											<!-- scrap usefull info -->
+											<var-def name="usefullInfo">
+												<xpath expression="//div[@class='b-object-header']/following-sibling::p">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+												<![CDATA[
+													var source = usefullInfo.toArray();
+													var str = source[0].toString();
+													str = str.substring(str.indexOf("<br/>") + 5, str.length());
+													str = str.substring(str.indexOf("<br/>"), str.length());
+													str = str.substring(0, str.indexOf("</p>"));
+													var info = new Array();
+													info.push(str);
+												]]>
+												sys.defineVariable("returnUsefullInfo", info.join(";"), true);
+											</script>
+											<var-def name="realUsefullInfo">
+												<var name="returnUsefullInfo"/>
+											</var-def>
+											<!-- /scrap usefull info -->
+									
+											<!-- scrap descr -->
+											<var-def name="descr">
+												<xpath expression="//div[@class='b-object-desc']/p[@id]">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+												<![CDATA[
+													var source = descr.toArray();
+													var i = 0;
+													var tagsArray = new Array();
+													while (i < source.length) {
+														var j = source[i].toString().indexOf(">") + 1;
+														var str = source[i].toString().substring(j, source[i].toString().length());
+														j = str.indexOf("</");
+														if (j > 0) {
+															str = str.substring(0, j);
+															tagsArray.push(str);
+														}
+														i++;
+													}
+											]]>
+												sys.defineVariable("returnDescr", tagsArray.join(";"), true);
+											</script>
+											<var-def name="realDescr">
+												<var name="returnDescr"/>
+											</var-def>
+											<!-- /scrap descr -->
 							
-							<loop item="poi" index="m" empty="yes">
-								<list>
-									<var name="poisList"/>
-								</list>
-									
-								<body>
-								<empty>
-									<var-def name="poiPage">
-										<html-to-xml>
-											<http url="${sys.fullUrl(poi, blank);}"></http>
-										</html-to-xml>
-									</var-def>
-									
-									<var-def name="poiUrl">
-										<template>${sys.fullUrl(poi, blank).toString()}</template>
-									</var-def>
-									
-									<var-def name="poi_name">
-										<xpath expression="//div[@class='b-object-header']/h1">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-									<![CDATA[
-										var source = poi_name.toString();
-										source = source.trim();
-										source = source.substring(source.indexOf(">") + 1, source.length());
-										source = source.substring(0, source.indexOf("</"));
-										var name = new Array();						
-										name.push(source);
-									]]>
-									sys.defineVariable("returnPoiName", name.join(";"), true);
-									</script>
-									<var-def name="realPoi">
-										<var name="returnPoiName"/>
-									</var-def>	
-									
-									<!-- scrap coordinates-->
-									<var-def name="mapPage">
-										<xpath expression="//div[@class='g-full-col b-tabs']/ul/li[3]/a/@href">
-											<html-to-xml>
-												<http url="${sys.fullUrl(poi, blank);}"></http>
-											</html-to-xml>
-										</xpath>
-									</var-def>
-									<var-def name="poi_coordinates">
-										<xpath expression="//div[@class='g-one-col g-wrapper']/div[@id='map-info']/following-sibling::script[@type='text/javascript']">
-											<html-to-xml>
-												<http url="${sys.fullUrl(site, mapPage);}"></http>
-											</html-to-xml>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-										<![CDATA[
-											var source = poi_coordinates.toArray();
-											var i = 0;
-											var coord = new Array();
-											while (i < source.length) {
-												var j = source[i].toString().indexOf("page_data.map.center");
-												if (j >= 0) {
-													var str = source[i].toString().substring(j, source[i].toString().length() - 1);
-													var jj = str.indexOf("{");
-													str = str.substring(jj + 5, str.length());
-													var latCoord = str.substring(0, str.indexOf(","));
-													str = str.substring(str.indexOf(":"), str.length());
-													var lngCoord = str.substring(1, str.indexOf(","));
-													coord.push(latCoord.replaceAll(',', '.'));
-													coord.push(lngCoord.replaceAll(',', '.'));
-												}
-												i++;
-											}
-										]]>
-										sys.defineVariable("returnPoiCoordinates", coord.join(";"), true);
-									</script>
-									<var-def name="realPoiCoordinates">
-										<var name="returnPoiCoordinates"/>
-									</var-def>
-									<!-- /scrap coordinates-->
-									
-									<!-- scrap tags -->
-									<var-def name="tags">
-										<xpath expression="//span[@class='b-tags']/span[@id]">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-										<![CDATA[
-											var source = tags.toArray();
-											var i = 0;
-											var tagsArray = new Array();
-											while (i < source.length) {
-												var j = source[i].toString().indexOf(">") + 1;
-												var str = source[i].toString().substring(j, source[i].toString().length());
-												j = str.indexOf("</");
-												str = str.substring(0, j);
-												tagsArray.push(str);
-												i++;
-											}
-										]]>
-										sys.defineVariable("returnTags", tagsArray.join(";"), true);
-									</script>
-									<var-def name="realTags">
-										<var name="returnTags"/>
-									</var-def>
-									<!-- /scrap tags -->
-									
-									<!-- scrap usefull info -->
-									<var-def name="usefullInfo">
-										<xpath expression="//div[@class='b-object-header']/following-sibling::p">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-										<![CDATA[
-											var source = usefullInfo.toArray();
-											var str = source[0].toString();
-											str = str.substring(str.indexOf("<br/>") + 5, str.length());
-											str = str.substring(str.indexOf("<br/>"), str.length());
-											str = str.substring(0, str.indexOf("</p>"));
-											var info = new Array();
-											info.push(str);
-										]]>
-										sys.defineVariable("returnUsefullInfo", info.join(";"), true);
-									</script>
-									<var-def name="realUsefullInfo">
-										<var name="returnUsefullInfo"/>
-									</var-def>
-									<!-- /scrap usefull info -->
-									
-									<!-- scrap descr -->
-									<var-def name="descr">
-										<xpath expression="//div[@class='b-object-desc']/p[@id]">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-										<![CDATA[
-											var source = descr.toArray();
-											var i = 0;
-											var tagsArray = new Array();
-											while (i < source.length) {
-												var j = source[i].toString().indexOf(">") + 1;
-												var str = source[i].toString().substring(j, source[i].toString().length());
-												j = str.indexOf("</");
-												if (j > 0) {
-													str = str.substring(0, j);
-													tagsArray.push(str);
-												}
-												i++;
-											}
-										]]>
-										sys.defineVariable("returnDescr", tagsArray.join(";"), true);
-									</script>
-									<var-def name="realDescr">
-										<var name="returnDescr"/>
-									</var-def>
-									<!-- /scrap descr -->
-									
-									<!-- scrap photos -->
-									<var-def name="photos">
-										<xpath expression="//div[@class='wrimg']/img/@src">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
-									<script language="javascript">
-										<![CDATA[
-											var source = photos.toArray();
-											var i = 0;
-											var photosArray = new Array();
-											while (i < source.length) {
-												var j = source[i].toString().indexOf("p_s.jpg");
-												if (j > 0) {
-													var str = source[i].toString().substring(0, j);
-													str = str + "p_f.jpg";
-													photosArray.push(str);
-												} else {
-													j = source[i].toString().indexOf("p_S.jpg");
-													if (j > 0) {
-														var str = source[i].toString().substring(0, j);
-														str = str + "p_F.jpg";
-														photosArray.push(str);
-													} else {
-														j = source[i].toString().indexOf("_small_");
+											<!-- scrap photos -->
+											<var-def name="photos">
+												<xpath expression="//div[@class='wrimg']/img/@src">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+												<![CDATA[
+													var source = photos.toArray();
+													var i = 0;
+													var photosArray = new Array();
+													while (i < source.length) {
+														var j = source[i].toString().indexOf("p_s.jpg");
 														if (j > 0) {
 															var str = source[i].toString().substring(0, j);
-															str = str + "_big_";
-															str = str + source[i].toString().substring(j + 7, source[i].toString().length());
+															str = str + "p_f.jpg";
 															photosArray.push(str);
+														} else {
+														j = source[i].toString().indexOf("p_S.jpg");
+															if (j > 0) {
+															var str = source[i].toString().substring(0, j);
+																str = str + "p_F.jpg";
+																photosArray.push(str);
+															} else {
+																j = source[i].toString().indexOf("_small_");
+																if (j > 0) {
+																	var str = source[i].toString().substring(0, j);
+																	str = str + "_big_";
+																	str = str + source[i].toString().substring(j + 7, source[i].toString().length());
+																	photosArray.push(str);
+																}
+															}
 														}
+														i++;
 													}
-												}
-												i++;
-											}
-										]]>
-										sys.defineVariable("returnPhotos", photosArray.join(";"), true);
-									</script>
-									<var-def name="realPhotos">
-										<var name="returnPhotos"/>
-									</var-def>
-									<!-- /scrap photos -->
+												]]>
+												sys.defineVariable("returnPhotos", photosArray.join(";"), true);
+											</script>
+											<var-def name="realPhotos">
+												<var name="returnPhotos"/>
+											</var-def>
+											<!-- /scrap photos -->
 									
-									<var-def name="meta_info">
-										<xpath expression="//meta[@name='keywords']/@content">
-											<var name="poiPage"/>
-										</xpath>
-									</var-def>
+											<var-def name="meta_info">
+												<xpath expression="//meta[@name='keywords']/@content">
+													<var name="poiPage"/>
+												</xpath>
+											</var-def>
+											<script language="javascript">
+												<![CDATA[
+													var source = meta_info.toString();
+													var keywordsArray = new Array();
+													var bCont = true;
+													var k = 1;
+													var first = source.charAt(0);
+													while (bCont && k < source.length())	{
+														if (source.charAt(k) == first && source.charAt(k-1) != ' ') {
+															bCont = false;
+														}
+														k++;
+													}
+													k--;
+													source = source.substring(k, source.length());
+													while (!", Афиша, Afisha".equals(source)) {
+														var i = source.indexOf(", ");
+														var str = source.substring(0, i);
+														keywordsArray.push((str.trim()).toLowerCase());
+														source = source.substring(i + 2, source.length());
+													}
+													var tags = returnTags.toArray();
+													k = 0;
+													while (k < tags.length) {
+														keywordsArray.push(tags[k].toString().trim().toLowerCase());
+														k++;
+													}
+												]]>
+												sys.defineVariable("returnKeywords", keywordsArray.join(";"), true);
+											</script>
+											<var-def name="realKeywords">
+												<var name="returnKeywords"/>
+											</var-def>
+											<var-def name="returnValue">
+												<text>type</text>
+												<template>Attraction</template>
 									
-									<var-def name="returnValue">
-										<text>type</text>
-										<template>Attraction</template>
+												<text>continent_name</text>
+												<template>${returnContinent.toString()}</template>
 									
-										<text>continent_name</text>
-										<template>${returnContinent.toString()}</template>
-									
-										<text>country_name</text>
-										<template>${returnCountry.toString()}</template>
+												<text>country_name</text>
+												<template>${returnCountry.toString()}</template>
 
-										<text>city_name</text>
-										<template>${returnCity.toString()}</template>
+												<text>city_name</text>
+												<template>${returnCity.toString()}</template>
 
-										<text>name</text>
-										<template>${returnPoiName.toString()}</template>
+												<text>name</text>
+												<template>${returnPoiName.toString()}</template>
 										
-										<text>keywords</text>
-										<template>${returnTags.toString()}</template>
+												<text>keywords</text>
+												<template>${returnKeywords.toString()}</template>
 									
-										<text>coordinates</text>
-										<template>${returnPoiCoordinates.toString().replaceAll(",",".").trim()}</template>
+												<text>coordinates</text>
+												<template>${returnPoiCoordinates.toString().replaceAll(",",".").trim()}</template>
 			
-										<text>description</text>
-										<template>${returnUsefullInfo.toString() + "\n" + returnDescr.toString();}</template>
-			
-										<text>images</text>
-										<template>${returnPhotos.toString()}</template>
+												<text>description</text>
+												<template>${returnUsefullInfo.toString() + "\n" + returnDescr.toString();}</template>
+				
+												<text>images</text>
+												<template>${returnPhotos.toString()}</template>
 									
-										<text>source_url</text>
-										<template>${sys.fullUrl(poi, blank).toString()}</template>
-									</var-def>
+												<text>source_url</text>
+												<template>${sys.fullUrl(poi, blank).toString()}</template>
+											</var-def>
 
-									<var-def name="addToDB">1</var-def>
+											<var-def name="addToDB">1</var-def>
+										</empty>
+										</body>
+
+									</loop>
+									</else>
+									</case>	
+									</body>
+
+									<catch>
+									</catch>
+								</try>
 								</empty>
 								</body>
 							</loop>
-							</body>
-							
-							<catch>
-							</catch>
-						</try>
-						</empty>
-						</body>
-					</loop>
+						
 				</empty>
 				</body>
 			</loop>
