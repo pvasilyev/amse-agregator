@@ -79,7 +79,7 @@
 		<!--/ biuld list of countries in "i" continent -->
 		
 		<!-- begin cycle by countries in "i" continent -->
-			<loop item="country" index="k" empty="yes" filter="3">
+			<loop item="country" index="k" empty="yes">
 				<list>
 					<var name="countryList"/>
 				</list>
@@ -188,7 +188,7 @@
 							<!-- то сайт redirect'ит нас на страничку с питерскими достопримечательностями -->
 							<!-- т.е. http://afisha.ru/spb/sight/sights_list                               -->
 							<case>
-								<if condition="${poisLinkPage.toString().equals(spbPoisLinkPage.toString())}">
+								<if condition="${poisLinkPage.toString().indexOf(realPoisLink.toString()) < 0}">
 									<var-def name="poisList"></var-def>
 									<var-def name="city==spb">
 										<var name="returnCity"/>
