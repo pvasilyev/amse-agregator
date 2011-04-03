@@ -9,7 +9,6 @@ import ru.amse.agregator.storage.Database;
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
-import ru.amse.agregator.storage.UniqueId;
 
 public class CountryTopBlockYalet implements Yalet {
 
