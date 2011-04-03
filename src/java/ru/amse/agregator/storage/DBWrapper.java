@@ -670,6 +670,7 @@ public class DBWrapper extends StorageObject{
         typeNames.add(TYPE_MUSEUM);
         typeNames.add(TYPE_NATURAL_ATTRACTION);
         typeNames.add(TYPE_SHOPPING);
+        typeNames.add(TYPE_ATTRACTION);
 
         return typeNames;
     }
