@@ -24,15 +24,15 @@ import ru.amse.agregator.utils.Tools;
  *
  * @author pavel
  */
-public class QualityDesciptionMerger extends AttributeMerger {
+public class QualityDescriptionMerger extends AttributeMerger {
 
     TextQuality qualityMeter = null;
 
-    public QualityDesciptionMerger() throws InternalException {
+    public QualityDescriptionMerger() throws InternalException {
 
         qualityMeter = new TextQuality();
         try {
-            qualityMeter.readGoodVocabularyFromFile("myGoodVocabulary.txt");
+            qualityMeter.readGoodVocabularyFromFile("./resources/clusterizer/myGoodVocabulary.txt");
         } catch (IOException e) {
             throw new InternalException("Couldn't read vocabulary from file");
         }
@@ -56,12 +56,12 @@ public class QualityDesciptionMerger extends AttributeMerger {
             }
 
             ArrayList<String> sortedDescriptions 
-                    = new ArrayList<String>(sortByQuality(descriptionList, qualityMeter));
+                    = new ArrayList<String>(sortByQuality(descriptionList));
 
             resultingObject.setDescriptionArray(sortedDescriptions);
     }
 
-    static List<String> sortByQuality(List<String> descriptions, TextQuality qualityMeter) {
+    public List<String> sortByQuality(List<String> descriptions) {
 
         Map<String, Double> descriptionsToRating = new HashMap<String, Double>();
         for (String description : descriptions) {

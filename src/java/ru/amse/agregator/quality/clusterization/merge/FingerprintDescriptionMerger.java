@@ -12,8 +12,8 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
     // parameter that adjusts how similar descriptions should be to be merged in one
     static final double DEFAULT_MIN_SIMILARITY = 0.5;
     
-    final double minSimilarity;
     private DescriptionFingerprinter fingerprinter;
+    private double minSimilarity;
 
     public FingerprintDescriptionMerger(DescriptionFingerprinter fingerprinter, double minSimilarity) {
         assert(fingerprinter != null);
@@ -25,21 +25,8 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
         this(fingerprinter, DEFAULT_MIN_SIMILARITY);
     }
 
-    @Override
-    public void mergeAttributes
-            (final String attributeName, final Cluster cluster, DBWrapper resultingObject) {
-        //form a list of all descriptions for this cluster
-        List<String> descriptionList = new ArrayList<String>();
-
-        for (UniqueId id : cluster.getObjectList()) {
-            DBWrapper obj = Database.getByUniqueId(id);
-
-            ArrayList<String> descriptions = obj.getDescriptionArray();
-            if (descriptions != null) {
-                descriptionList.addAll(obj.getDescriptionArray());
-            }
-        }
-
+    public List<String> filterWithFingerprinter
+            (List<String> descriptionList) {
         // use fingerprinter to create prints for all descriptions
         List<Fingerprint> fingerprintList = new ArrayList<Fingerprint>();
         // this list represents indexes from descriptionList
@@ -64,22 +51,16 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
                 Fingerprint fingerprintI = fingerprintList.get(i);
                 Fingerprint fingerprintJ = fingerprintList.get(j);
                 if (Fingerprint.distance(fingerprintI, fingerprintJ) < minSimilarity) {
-                    //output similar descriptions
-//                    System.out.println("Dist: " + Fingerprint.distance(fingerprintI, fingerprintJ));
-//                    System.out.println(descriptionList.get(i));
-//                    System.out.println(fingerprintI);
-//                    System.out.println(descriptionList.get(j));
-//                    System.out.println(fingerprintJ);
 
                     //discard one of the descriptions
                     String descriptionI = descriptionList.get(i);
                     String descriptionJ = descriptionList.get(j);
-                    if (descriptionI.length() > descriptionJ.length()) {
-                        // discard jth description
-                        indexes.remove(new Integer(j));
-                    } else {
+                    if (i < j) {
                         // discard ith description
-                        indexes.remove(new Integer(i));
+                        indexes.remove(i);
+                    } else {
+                        // discard jth description
+                        indexes.remove(j);
                     }
                 }
             }
@@ -91,8 +72,25 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
             resultingList.add(descriptionList.get(index));
         }
 
-        resultingObject.setDescriptionArray(resultingList);
+        return resultingList;
+    }
 
+    @Override
+    public void mergeAttributes
+            (final String attributeName, final Cluster cluster, DBWrapper resultingObject) {
+        //form a list of all descriptions for this cluster
+        List<String> descriptionList = new ArrayList<String>();
+
+        for (UniqueId id : cluster.getObjectList()) {
+            DBWrapper obj = Database.getByUniqueId(id);
+
+            ArrayList<String> descriptions = obj.getDescriptionArray();
+            if (descriptions != null) {
+                descriptionList.addAll(obj.getDescriptionArray());
+            }
+        }
+        ArrayList<String> filteredDescriptions = new ArrayList(filterWithFingerprinter(descriptionList));
+        resultingObject.setDescriptionArray(filteredDescriptions);
     }
 
 }
