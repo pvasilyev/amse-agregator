@@ -11,6 +11,7 @@ import java.util.Set;
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import ru.amse.agregator.ranking.Categories;
 
 public class DBWrapper extends StorageObject{	
 	public static final String FIELD_TYPE = "type";
@@ -639,6 +640,11 @@ public class DBWrapper extends StorageObject{
 		}
 	}
 
+    public boolean isInCategory(String category) {
+        return getKeyWordsArray().contains(category);
+    }
+
+
 	//--------------------------
 	//-----Get-methods-end----
 	//--------------------------
@@ -648,7 +654,8 @@ public class DBWrapper extends StorageObject{
 	//-----------------------------
 	//-----Static methods start----
 	//-----------------------------
-	
+
+
     public static ArrayList<String> getTypeNames() {
         ArrayList<String> typeNames = new ArrayList<String>();
 

@@ -46,7 +46,7 @@ public class UI extends JFrame implements TableModelListener{
 		JMenuItem addItem = new JMenuItem("Add row");
         addItem.addActionListener(new ActionListener() {
 
-                @Override
+                //@Override
 				public void actionPerformed(ActionEvent event) {
                         try{
                         tableModel.addRow();
@@ -59,7 +59,7 @@ public class UI extends JFrame implements TableModelListener{
         JMenuItem deleteItem = new JMenuItem("Delete Row");
         deleteItem.addActionListener(new ActionListener() {
                 
-                @Override
+                //@Override
 				public void actionPerformed(ActionEvent e) {
                         tableModel.removeRow(collectionsTable.getSelectedRow());
                 }
@@ -100,7 +100,7 @@ public class UI extends JFrame implements TableModelListener{
 		dbList.addListSelectionListener(
 			new ListSelectionListener(){
 
-			@Override
+			//@Override
 			public void valueChanged(ListSelectionEvent event) {
 				try{	
 					if (dbList.getSelectedIndex() ==0)
@@ -126,7 +126,7 @@ public class UI extends JFrame implements TableModelListener{
 		collectionsList.addListSelectionListener(
 				new ListSelectionListener(){
 
-				@Override
+				//@Override
 				public void valueChanged(ListSelectionEvent event) {
 					try{	
 						Vector<String> typesNames = new Vector<String>();
@@ -147,7 +147,7 @@ public class UI extends JFrame implements TableModelListener{
 		typeList.addListSelectionListener(
 				new ListSelectionListener(){
 
-				@Override
+				//@Override
 				public void valueChanged(ListSelectionEvent event) {
 					try{	
 						container.remove(collectionsTable);
@@ -222,7 +222,7 @@ public class UI extends JFrame implements TableModelListener{
         	return String.class;
         }
 
-        @Override
+        //@Override
 		public int getColumnCount() {
                 return columnNames.size();
         }
@@ -232,12 +232,12 @@ public class UI extends JFrame implements TableModelListener{
                 return columnNames.get(columnIndex);
         }
 
-        @Override
+        //@Override
 		public int getRowCount() {
                 return rowData.size();
         }
 
-        @Override
+        //@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
                 if( (columnIndex >= rowData.get(rowIndex).size()))  return ("777777");
                 return rowData.get(rowIndex).get(columnIndex);
@@ -310,7 +310,7 @@ public class UI extends JFrame implements TableModelListener{
         }
 
 
-	@Override
+	//@Override
 	public void tableChanged(TableModelEvent arg0) {	
 		
 			int row = collectionsTable.getEditingRow(); 

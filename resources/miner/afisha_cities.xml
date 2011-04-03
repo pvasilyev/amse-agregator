@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config scriptlang="default_script_lang">
+
+
+<var-def name="site">
+	http://www.afisha.ru
+</var-def>
+
+<!-- biuld continent list -->
+<var-def name="continentList">
+	<xpath expression="//div[@class='b-geonav']/a/@href">
+		<html-to-xml>
+			<http url="http://www.afisha.ru/travel/"/>
+		</html-to-xml>
+	</xpath>
+</var-def>
+<var-def name="blank"></var-def>
+<!--/ biuld continent list -->
+
+
+<!-- target: build all cities with their coordinates and description -->
+<loop item="continent" index="i" empty="yes" filter="1-8">
+	<list>
+		<var name="continentList"/>
+	</list>
+	<body>
+	<empty>
+		<var-def name="continentPage">
+			<html-to-xml>
+				<http url="${sys.fullUrl(continent, blank);}"/>
+			</html-to-xml>				
+		</var-def>
+		
+		<var-def name="continent_name">
+			<xpath expression="//h1[@class='b-main-header']">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		<script language="javascript">
+			<![CDATA[
+				var source = continent_name.toArray();
+				var i = 0;
+				var name = new Array();
+				while (i < source.length) {
+					var j = source[i].toString().indexOf("</span>");
+					if (j >= 0) {
+						var str = source[i].toString().substring(j + 7, source[i].toString().length());
+						var jj = str.indexOf("<");
+						str = str.substring(0, jj);
+						if (str.equals("Ближний Восток")) {
+							str = "Азия";
+						} else if (str.equals("Центральная Америка")) {
+							str = "Северная Америка";
+						}
+						name.push(str);
+					}
+					i++;
+				}
+			]]>
+			sys.defineVariable("returnContinent", name.join(";"), true);
+		</script>
+		<var-def name="realContinent">
+			<var name="returnContinent"/>
+		</var-def>
+		<!-- biuld list of countries in "i" continent -->
+		<var-def name="countryList">
+			<xpath expression="//div[@class='b-geonav']/a/@href">
+				<var name="continentPage"/>
+			</xpath>
+		</var-def>
+		<!--/ biuld list of countries in "i" continent -->
+		
+		<!-- begin cycle by countries in "i" continent -->
+			<loop item="country" index="k" empty="yes">
+				<list>
+					<var name="countryList"/>
+				</list>
+				<body>
+				<empty>
+					<var-def name="countryPage">
+						<html-to-xml>
+							<http url="${sys.fullUrl(country, blank);}"/>
+						</html-to-xml>									
+					</var-def>
+					
+					<var-def name="country_name">
+						<xpath expression="//h1[@class='b-main-header']">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					<script language="javascript">
+					<![CDATA[
+						var source = country_name.toString();
+						var i  = source.indexOf("</span>") + 7;
+						var str = source.substring(i, source.length());
+						i =  str.indexOf("</span>") + 7;
+						str = str.substring(i, str.length());
+						str = str.substring(0, str.indexOf("<"));
+						var name = new Array();						
+						name.push(str);
+					]]>
+					sys.defineVariable("returnCountry", name.join(";"), true);
+					</script>
+					<var-def name="realCountry">
+						<var name="returnCountry"/>
+					</var-def>					
+					
+
+					<!--biuld list by cities in "k" country in "i" continent-->
+					<var-def name="cityList">
+						<xpath expression="//div[@class='b-geonav']/a/@href">
+							<var name="countryPage"/>
+						</xpath>
+					</var-def>
+					
+					<!-- begin cycle by cities in "k" country in "i" continent -->
+					<loop item="city" index="l" empty="yes">
+						<list>
+							<var name="cityList"/>
+						</list>
+						<body>
+						<empty>
+							<var-def name="cityPage">
+								<html-to-xml>
+									<http url="${sys.fullUrl(city, blank);}"/>
+								</html-to-xml>									
+							</var-def>
+								
+							<var-def name="city_name">
+								<xpath expression="//h1[@class='b-main-header']">
+									<var name="cityPage"/>
+								</xpath>
+							</var-def>
+							<script language="javascript">
+							<![CDATA[
+								var source = city_name.toString();
+								var i  = source.indexOf("</span>") + 7;
+								var str = source.substring(i, source.length());
+								i =  str.indexOf("</span>") + 7;
+								str = str.substring(i, str.length());
+								str = str.substring(0, str.indexOf("<"));
+								var name = new Array();						
+								name.push(str);
+							]]>
+							sys.defineVariable("returnCity", name.join(";"), true);
+							</script>
+							<var-def name="realCity">
+								<var name="returnCity"/>
+							</var-def>	
+														
+							<!-- row city coordinates -->
+							<var-def name="city_coords">
+								<xpath expression="//script[@type='text/javascript']">
+									<var name="cityPage"/>
+								</xpath>
+							</var-def>
+					
+							<!-- clean and get real city coordinates -->
+							<script language="javascript">
+							<![CDATA[ 
+								var source = city_coords.toArray();
+								var i = 0;
+								var coords = new Array();
+								while (i < source.length) {
+									var str = source[i].toString();
+									var j = str.indexOf("page_data.map.center");
+									if (j > 0) {
+										str = str.substring(j, str.length());
+										var k = str.indexOf("lat:");
+										str = str.substring(k, str.length());
+										var lat = str.substring(4, str.indexOf(", lng:"));
+										k = str.indexOf("lng:");
+										str = str.substring(k, str.length());
+										var lng = str.substring(4, str.indexOf(","));
+										coords.push(lat.replaceAll(",", "."));
+										coords.push(lng.replaceAll(",", "."));
+									}
+									i++;
+								}
+							]]>
+							sys.defineVariable("returnCityCoordinates", coords.join(";"), true);
+							</script>
+
+							<var-def name="realCityCoordinates">
+								<var name="returnCityCoordinates"/>
+							</var-def>					
+					
+							<var-def name="cityDescription">
+								<xpath expression="//div[@class='long-description s-toggle-area']">
+									<var name="cityPage"/>
+								</xpath>
+							</var-def>
+			
+							<var-def name="returnValue">
+								<text>type</text>
+								<template>City</template>
+								
+								<text>continent_name</text>
+								<template>${returnContinent.toString()}</template>
+						
+								<text>country_name</text>
+								<template>${returnCountry.toString()}</template>
+								
+								<text>city_name</text>
+								<template>${returnCity.toString()}</template>
+								
+								<text>coordinates</text>
+								<template>${returnCityCoordinates.toString()}</template>
+						
+								<text>description</text>
+								<template>${cityDescription.toString()}</template>
+							</var-def>
+							<var-def name="addToDB">1</var-def>							
+						</empty>
+						</body>
+					</loop>
+				</empty>
+				</body>
+			</loop>
+	</empty>
+	</body>
+</loop>
+<!--/ target: build all cities with their coordinates and description -->
+
+
+</config>
