@@ -534,7 +534,8 @@ public class Database {
 	
 	public static ArrayList<DBWrapper> getAllContinents(){
 		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME, 1);
-		return findAllInCollection(COLLECTION_CONTINENTS,new BasicDBObject(DBWrapper.FIELD_TYPE,DBWrapper.TYPE_CONTINENT), orderBy);		
+		return findAllInCollection(COLLECTION_CONTINENTS,
+                new BasicDBObject(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_CONTINENT), orderBy);
 	}
 	
 	public static ArrayList<DBWrapper> getAllCountriesByContinent(ObjectId continentId){
@@ -563,7 +564,9 @@ public class Database {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<String> getAllTypesOfObjectByCity(ObjectId cityId){
 		if(myDB != null){
-			ArrayList<String> types = (ArrayList<String>) myDB.getCollection(COLLECTION_ATTRACTIONS).distinct(DBWrapper.FIELD_TYPE,new BasicDBObject(DBWrapper.FIELD_CITY_ID, cityId));
+			ArrayList<String> types =
+                    (ArrayList<String>) myDB.getCollection(COLLECTION_ATTRACTIONS).distinct(DBWrapper.FIELD_TYPE,
+                            new BasicDBObject(DBWrapper.FIELD_CITY_ID, cityId));
 			return types;
 		} else{
 			return null;
