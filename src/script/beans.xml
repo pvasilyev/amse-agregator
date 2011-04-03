@@ -44,26 +44,26 @@
         <property name="manager" ref="manager"/>
 	</bean>
 
-   <bean id="showAttractionDescYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescYalet">
+    <bean id="showAttractionDescYalet" class="ru.amse.agregator.gui.yalets.ShowAttractionDescYalet">
         <property name="manager" ref="manager"/>
     </bean>
+ 
+    <bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
 
-	<bean id="manager" class="ru.amse.agregator.gui.model.AttractionManager"/>
-
-	<bean id="topYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
+    <bean id="topYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
        <property name="type" value="City"/>
        <property name="count" value="9"/>
-	</bean>
-	
-	<bean id="topCityYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
-       <property name="type" value="City"/>
-       <property name="count" value="9"/>
-	</bean>
-	
-	<bean id="countryTopBlockYalet" class="ru.amse.agregator.gui.yalets.CountryTopBlockYalet"/>
-	<bean id="continentSelectBlockYalet" class="ru.amse.agregator.gui.yalets.СontinentSelectBlockYalet"/>
-	<bean id="attractionTopBlockYalet" class="ru.amse.agregator.gui.yalets.AttractionTopBlockYalet"/>
-    <bean id="mapsYalet" class="ru.amse.agregator.gui.yalets.MapsYalet">  	
     </bean>
+	
+    <bean id="topCityYalet" class=" ru.amse.agregator.gui.yalets.GetTopYalet">
+       <property name="type" value="City"/>
+       <property name="count" value="9"/>
+    </bean>
+	
+    <bean id="countryTopBlockYalet" class="ru.amse.agregator.gui.yalets.CountryTopBlockYalet"/>
+    <bean id="continentSelectBlockYalet" class="ru.amse.agregator.gui.yalets.СontinentSelectBlockYalet"/>
+    <bean id="attractionTopBlockYalet" class="ru.amse.agregator.gui.yalets.AttractionTopBlockYalet"/>
+    <bean id="mapsYalet" class="ru.amse.agregator.gui.yalets.MapsYalet"/>
     <bean id="mapsTempYalet" class="ru.amse.agregator.gui.yalets.MapsTempYalet"/>  	
+    <bean id="rankingBlockYalet" class="ru.amse.agregator.gui.yalets.RankingBlockYalet"/>
 </beans>
