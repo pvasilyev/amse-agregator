@@ -7,7 +7,7 @@
     <xsl:template name="leftmenu">
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
         <xsl:call-template name="countryTopBlock"/>
-        <xsl:call-template name="continentSelectBlock"/>
+        <xsl:call-template name="main"/>
     </xsl:template>
 
     <xsl:template name="main">
@@ -18,6 +18,11 @@
     <xsl:template name="rightmenu">
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
         <xsl:call-template name="attractionTopBlock"/>
+        <xsl:call-template name="rankingBlock"/>
+    </xsl:template>
+
+    <xsl:template name="rankingBlock">
+
     </xsl:template>
 
     <!--<xsl:template match="/">
@@ -229,6 +234,10 @@
 
     <xsl:template match="string" mode="attractiondescription-xml-mini">
         <img src="{.}" class="small_image"/>
+        <span style="padding:20px 0px;"/>
+    </xsl:template>
+
+    <xsl:template match="string" mode="attractiondescription-xml-mini">
         <span style="padding:20px 0px;"/>
     </xsl:template>
 
