@@ -13,11 +13,12 @@ import java.io.IOException;
  */
 public class CategoriesTest {
     public void test() {
-        //Database.connectToMainBase();
-        //Database.unificationNames();
         Database.connectToDirtyBase();
-
-        System.out.println(Database.getDBObjectByIdAndType(new ObjectId("4d98356bbc76b0863969d2b5"), DBWrapper.TYPE_ATTRACTION));
+        DBWrapper redFort = Database.getDBObjectByIdAndType(new ObjectId("4d9835b0bc76b0864869d2b5"), DBWrapper.TYPE_ATTRACTION);
+        System.out.println(redFort.getKeyWordsArray());
+        System.out.println("redFort in ATTRACTION category : " + redFort.isInCategory(Categories.ATTRACTION));
+        System.out.println("redFort in BUILDING category : " + redFort.isInCategory(Categories.BUILDING));
+        System.out.println("redFort in BRIDGE category : " + redFort.isInCategory(Categories.BRIDGE));
     }
 
     public static void main(String[] args) throws IOException {
