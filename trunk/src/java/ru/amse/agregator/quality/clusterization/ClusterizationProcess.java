@@ -23,7 +23,7 @@ final public class ClusterizationProcess {
 
     static public void perform() {
 
-        // hard-coded thershold, we may choose to adjust this parameter later
+        // hard-coded threshold, we may choose to adjust this parameter later
         final double threshold = 0.0;
 
         Database.connectToMainBase();
