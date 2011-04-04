@@ -2,8 +2,6 @@ package ru.amse.agregator.storage;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -49,7 +47,37 @@ public class Database {
 	public static final String 	COLLECTION_COMMENTS = "comments";
 	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
 	
-
+	
+	/**
+	 * Returns all elements from Collection with name COLLECTION_USERS
+	 * @return ArrayList<User>
+	 */
+	public static ArrayList<User> getAllUsers(){
+		DBCollection collection = myDB.getCollection(COLLECTION_USERS);
+		if (collection != null){
+			ArrayList<User> users = new ArrayList<User>();
+			DBCursor cur = collection.find();
+			while(cur.hasNext()){
+				users.add(new User(cur.next()));
+			}
+			return users;
+		}
+		return null;
+	}
+	
+	/**
+	 * Add user to collection with name "COLLECTION_USERS". If parameter is null then function returns null.
+	 * @param user user which is wanted to add
+	 * @return ObjectId of user in collection after adding
+	 */
+	public static ObjectId addUser(User user){
+		if(user != null){
+			user.setId(addToCollection(COLLECTION_USERS, user.toDBObject()));
+			return user.getId();
+		} else {
+			return null;
+		}
+	}
 	
 	//Connect to dirty database
 	public static void connectToDirtyBase(){
@@ -90,6 +118,7 @@ public class Database {
 			myCollections.add(COLLECTION_CONTINENTS);
 			myCollections.add(COLLECTION_CAFE);
 			myCollections.add(COLLECTION_HOTELS);
+			myCollections.add(COLLECTION_USERS);
 		}
 	}
 	
@@ -141,11 +170,16 @@ public class Database {
 		return getAllCollection(COLLECTION_ATTRACTIONS);
 	}
 	
+	/**
+	 * This function works only with collections which are consisting of {@link DBWrapper}, you can't write getAllCollection (COLLECTION_USERS)
+	 * @param collectionName the name of collection
+	 * @return all elements from collection
+	 */
 	public static ArrayList<DBWrapper> getAllCollection(String collectionName){
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(collectionName).find();
-			while(cur.hasNext()){
+			while(cur.hasNext()&&(cur.getClass().equals(DBWrapper.class))){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				allCollection.add(dbWrapper);
@@ -158,9 +192,9 @@ public class Database {
 		ArrayList<DBWrapper> allObjects = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			for(String collectionName : myCollections){
-				if (!collectionName.equals("system.indexes")) {
+				if (!collectionName.equals("system.indexes")&&(!collectionName.equals(COLLECTION_USERS))) {
 					DBCursor cur = myDB.getCollection(collectionName).find();
-					while(cur.hasNext()){
+					while(cur.hasNext()&&(cur.getClass().equals(DBWrapper.class))){
 						DBWrapper dbWrapper = new DBWrapper(cur.next());
 						dbWrapper.initFromDB();
 						allObjects.add(dbWrapper);
@@ -175,7 +209,7 @@ public class Database {
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
-			while(cur.hasNext()){
+			while(cur.hasNext() && (cur.getClass().equals(DBWrapper.class))){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				allCollection.add(dbWrapper);
@@ -188,11 +222,13 @@ public class Database {
 		ArrayList<DBWrapper> collection = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			for(String collectionName : myCollections){
-				DBCursor cur = myDB.getCollection(collectionName).find(new BasicDBObject(key,value));
-				while(cur.hasNext()){
-					DBWrapper dbWrapper = new DBWrapper(cur.next());
-					dbWrapper.initFromDB();
-					collection.add(dbWrapper);
+				if (!collectionName.equals(COLLECTION_USERS)){
+					DBCursor cur = myDB.getCollection(collectionName).find(new BasicDBObject(key,value));
+					while(cur.hasNext()){
+						DBWrapper dbWrapper = new DBWrapper(cur.next());
+						dbWrapper.initFromDB();
+						collection.add(dbWrapper);
+					}
 				}
 			}
 		}
@@ -225,7 +261,7 @@ public class Database {
 			}
 			criteria.put(key,value);
 			DBCursor cur = myDB.getCollection(typeCollection(type)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(count);
-			while(cur.hasNext()){
+			while(cur.hasNext()&& (cur.getClass().equals(DBWrapper.class))){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				top.add(dbWrapper);
@@ -378,7 +414,8 @@ public class Database {
 		}
 		return allCollection;
 	}
-		
+	
+	
 	private static ObjectId addToCollection(String collectionName, DBObject object){ 
 		if(myDB != null){
 			myDB.getCollection(collectionName).save(object); 
@@ -401,7 +438,7 @@ public class Database {
 	
 	//Find one object in collection 'collectionName' where field id == 'id'
 	private static DBObject findInCollectionById(String collectionName, ObjectId id){
-		return findInCollection(collectionName,DBWrapper.FIELD_ID, id);
+		return findInCollection(collectionName,StorageObject.FIELD_ID, id);
 	}
 	
 	//Find one object in collection 'collectionName' where field 'key' == 'value'

@@ -18,12 +18,19 @@ public class StorageTester {
     	
    
         Database.connectToMainBase();  
-        Database.unificationNames();
+        //Database.unificationNames();
+        
+        User user = new User();
+        user.setKeyValue(User.FIELD_LOGIN, "aaaa");
+        user.setKeyValue(User.FIELD_NAME, "Name");
+        Database.addUser(user);
+        ArrayList<User> users = Database.getAllUsers();
         
         System.out.println(Database.getDBObjectByIdAndType(new ObjectId("4cf59db19f5edb2f5e12070f"), DBWrapper.TYPE_COUNTRY));
         System.out.println(Database.getTopNWithKeyValue(100, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_COUNTRY_ID, new ObjectId("4cf59db19f5edb2f5e12070f")));
 
-        
+        ArrayList<DBWrapper> collectionUsers = Database.getAllDBObjects();
+        int k = 0;
 //        ObjectId nullContinent = Database.getContinentIdByName("");
 //        System.out.println(nullContinent);
 //        ///*
