@@ -58,8 +58,7 @@
             <tr>
                 <td align="left" class="title">
                     <xsl:if test="parents != ''">
-                        <a class="title" href="attractiondescription.xml?id={parents/cell/value}&amp;type=Continent&amp;tab=list"><xsl:value-of select="parents/cell/name"/></a>
-                        -
+                        <xsl:apply-templates select="parents/cell" mode="name"/>
                     </xsl:if>
 
                     <xsl:value-of select="name" disable-output-escaping="yes"/>
@@ -112,28 +111,29 @@
             </tr>
             <tr>
                 <td class="description" colspan="1" width="30%">
-                    <!--<xsl:if test="coordinates != ''">-->
-                    <table>
-                        <tr>
-                            <td onload="GDownloadUrl()" onunload="GUnload()">
-                                <!--<div id="google-map" style="width: 350px; height: 250px;"/>-->
-                                <!--<div id="map_canvas" style="width: 350px; height: 250px;"/>-->
-                                <!--<xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>-->
-                                <xsl:if test="//data[@id='maps']//record != ''">
-                                <xsl:variable name="countCoords" select="count(//data[@id='maps']//record)"/>
-                                <div id="map_canvas" style="width: 350px; height: 250px;"/>
-                                 </xsl:if>
-                                <!--	<xsl:apply-templates select="//data[@id='maps']//record" mode="googlemap"/>
-                                -->
-                            </td>
-                            <td width="20px"></td>
-                            <td>
-                                <!-- All Info -->
-                                <xsl:if test="images-array != ''">
-                                    <xsl:variable name="count-of-images" select="count(images-array/string)"/>
-                                    <table width="350px">
-                                        <tr style="heigth: 150px">
-                                            <td>
+                    <xsl:if test="field-map/description = 'true'">
+                        <table>
+                            <tr>
+                                <td onload="GDownloadUrl()" onunload="GUnload()">
+                                    <!--<div id="google-map" style="width: 350px; height: 250px;"/>-->
+                                    <!--<div id="map_canvas" style="width: 350px; height: 250px;"/>-->
+                                    <!--<xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>-->
+                                    <xsl:if test="//data[@id='maps']//record != ''">
+                                        <xsl:variable name="countCoords" select="count(//data[@id='maps']//record)"/>
+                                        <div id="map_canvas" style="width: 350px; height: 250px;"/>
+                                    </xsl:if>
+                                    <!--	<xsl:apply-templates select="//data[@id='maps']//record" mode="googlemap"/>
+                                    -->
+                                </td>
+                                <td width="20px"></td>
+                                <td>
+                                    <!-- All Info -->
+
+                                    <xsl:if test="images-array != ''">
+                                        <xsl:variable name="count-of-images" select="count(images-array/string)"/>
+                                        <table width="350px">
+                                            <tr style="heigth: 150px">
+                                                <td>
 
                                                     <xsl:apply-templates select="images-array/string[1]"
                                                                          mode="attractiondescription-xml-mini"/>
@@ -172,11 +172,12 @@
                                                 </td>
                                             </tr>
                                         </table>
+
                                     </xsl:if>
                                 </td>
                             </tr>
                         </table>
-                    <!--</xsl:if>-->
+                    </xsl:if>
 
                     <!-- Description -->
                     <div id="aaa" width="400px !important;">
@@ -228,7 +229,7 @@
 
     <xsl:template match="string" mode="description-array">
         <div>
-        <xsl:value-of select="." disable-output-escaping="yes"/>
+            <xsl:value-of select="." disable-output-escaping="yes"/>
         </div>
     </xsl:template>
 
@@ -237,8 +238,22 @@
         <span style="padding:20px 0px;"/>
     </xsl:template>
 
-    <xsl:template match="string" mode="attractiondescription-xml-mini">
-        <span style="padding:20px 0px;"/>
+    <xsl:template match="cell" mode="name">
+        <xsl:choose>
+            <xsl:when test="position() = 1">
+                <a class="title" href="attractiondescription.xml?id={value}&amp;type=Continent&amp;tab=list">
+                    <xsl:value-of select="name"/>
+                </a>
+                <xsl:text> - </xsl:text>
+            </xsl:when>
+            <xsl:when test="position() = 2">
+                <a class="title" href="attractiondescription.xml?id={value}&amp;type=Country&amp;tab=all">
+                    <xsl:value-of select="name"/>
+                </a>
+                <xsl:text> - </xsl:text>
+            </xsl:when>
+        </xsl:choose>
+
     </xsl:template>
 
 </xsl:stylesheet>
