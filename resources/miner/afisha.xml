@@ -161,7 +161,7 @@
 					<text>type</text>
 					<template>Country</template>
 					
-					<text>country_name</text>
+					<text>name</text>
 					<template>${returnCountry.toString()}</template>
 					
 					<text>continent_name</text>
@@ -276,7 +276,7 @@
 							<text>country_name</text>
 							<template>${returnCountry.toString()}</template>
 								
-							<text>city_name</text>
+							<text>name</text>
 							<template>${returnCity.toString()}</template>
 								
 							<text>coordinates</text>
@@ -327,7 +327,7 @@
 								</var-def>
 							</if>
 							<else>
-							<!-- Иначе -- идем на эту страницу и качаем оттуда все достопримечательности -->
+							<!-- Иначе идем на эту страницу и качаем оттуда все достопримечательности -->
 								
 								<!-- build list of pois -->
 								<var-def name="poisList">
@@ -354,7 +354,7 @@
 											</html-to-xml>
 										</var-def>
 										
-										<!-- debug info -- if you wanna know the source of the problem -->
+										<!-- debug info if you wanna know the source of the problem -->
 										<var-def name="poiUrl">
 											<template>${sys.fullUrl(poi, blank).toString()}</template>
 										</var-def>
