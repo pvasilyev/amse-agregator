@@ -17,7 +17,7 @@ import ru.amse.agregator.storage.Database;
 public class MapsTempYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
 
-    @Override
+    //@Override
     public void process(InternalRequest req, InternalResponse res) {
     	Attraction attraction = new Attraction();
     	attraction.setId(req.getParameter("id"));
