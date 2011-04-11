@@ -71,15 +71,17 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 					
 					    newEntry.setKeyWordsArray(createImagesArray(HtmlTools.clearString(myList.get(i+1).toString())));
 					
-				    }else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
+				    } else if(myList.get(i).toString().equals(DBWrapper.FIELD_COORDS)){
 		
 					    ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
 					    String tmp = myList.get(i+1).toString();
 					    double lon, lat;
-					    lon = Double.parseDouble(tmp.substring(0, tmp.indexOf(';')));
-					    lat = Double.parseDouble(tmp.substring(tmp.indexOf(';') +1 ));
-					    coords.add(new Point2D.Double(lon, lat));
-					    newEntry.setCoordsArray(coords);
+                        if (tmp.indexOf(";") > 0) {
+                            lon = Double.parseDouble(tmp.substring(0, tmp.indexOf(';')));
+					        lat = Double.parseDouble(tmp.substring(tmp.indexOf(';') +1 ));
+                            coords.add(new Point2D.Double(lon, lat));
+					        newEntry.setCoordsArray(coords);
+                        }
 				    }
 				    else {			
 				    	try {
