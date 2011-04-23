@@ -20,7 +20,13 @@ public class StandardMetric extends Metric {
             if ((name1 != null) &&
                 (name2 != null)) {
 
-                distance += getNormalizedDistance(name1, name2);
+                double nameDistance;
+
+                nameDistance = getNormalizedDistance(name1, name2);
+                // regular expression for searchinh a substring without a case
+                //b = string.matches("(?i).*i am.*");
+
+                distance += nameDistance;
                 parametersEvaluated += 1;
             } else {
                 // objects that don't have names

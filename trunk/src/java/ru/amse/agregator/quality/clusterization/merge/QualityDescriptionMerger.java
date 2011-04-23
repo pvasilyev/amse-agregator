@@ -29,7 +29,7 @@ public class QualityDescriptionMerger extends AttributeMerger {
 
     private TextQuality qualityMeter = null;
     // path to <project_directory>/resources/clusterizer/myGoodVocabulary.txt
-    private final String GOOD_VOCABULARY_PATH = "resources/clusterizer/myGoodVocabulary.txt";
+    static private final String GOOD_VOCABULARY_PATH = "resources/clusterizer/myGoodVocabulary.txt";
 
     public QualityDescriptionMerger() throws InternalException {
 
