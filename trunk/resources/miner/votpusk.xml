@@ -60,7 +60,7 @@
 		                <text>Country</text>
 		                
 		                <text>name</text>
-		                <template>${countryName.toString().trim()}</template>
+		                <template>${countryName.trim().replaceAll("Россия.+", "Россия").toString().trim()}</template>
 		
 		                <text>keywords</text>
 		                <template>${countryName.toString().trim() + ";" + countryOriginalName.toString().trim().substring(1,countryOriginalName.toString().trim().length()-1)}</template>
