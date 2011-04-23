@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,11 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 		ArrayList<String> images = new ArrayList<String>();
 		
 		if(input.indexOf(';') == -1){
-			images.add(input);
+			if (input.indexOf(' ') == -1){
+				images.add(input);
+			} else{
+				return (ArrayList<String>)Arrays.asList(input.split("[ ;,]"));
+			}
 		}
 		else{
 			int fromIndex = 0;

@@ -179,7 +179,7 @@ public class Database {
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(collectionName).find();
-			while(cur.hasNext()&&(cur.getClass().equals(DBWrapper.class))){
+			while(cur.hasNext()){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				allCollection.add(dbWrapper);
@@ -194,7 +194,7 @@ public class Database {
 			for(String collectionName : myCollections){
 				if (!collectionName.equals("system.indexes")&&(!collectionName.equals(COLLECTION_USERS))) {
 					DBCursor cur = myDB.getCollection(collectionName).find();
-					while(cur.hasNext()&&(cur.getClass().equals(DBWrapper.class))){
+					while(cur.hasNext()){
 						DBWrapper dbWrapper = new DBWrapper(cur.next());
 						dbWrapper.initFromDB();
 						allObjects.add(dbWrapper);
@@ -209,7 +209,7 @@ public class Database {
 		ArrayList<DBWrapper> allCollection = new ArrayList<DBWrapper>();
 		if(myDB != null){
 			DBCursor cur = myDB.getCollection(typeCollection(type)).find(new BasicDBObject(DBWrapper.FIELD_TYPE,type));
-			while(cur.hasNext() && (cur.getClass().equals(DBWrapper.class))){
+			while(cur.hasNext()){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				allCollection.add(dbWrapper);
@@ -261,7 +261,7 @@ public class Database {
 			}
 			criteria.put(key,value);
 			DBCursor cur = myDB.getCollection(typeCollection(type)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(count);
-			while(cur.hasNext()&& (cur.getClass().equals(DBWrapper.class))){
+			while(cur.hasNext()){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				top.add(dbWrapper);
