@@ -11,16 +11,16 @@ public class User extends StorageObject{
 	public static String FIELD_LOGIN = "login";
 	public static String FIELD_NAME = "name";
 	public static String FIELD_PASSWORD = "password";
-	public static String FIELD_MY_ATTRACTION = "my Attraction";
+	public static String FIELD_MY_TOUR =  "tours";
 	
 	public User(DBObject dbObject){
 		super(dbObject);
-		myDBObj.put(FIELD_MY_ATTRACTION, null);
+		myDBObj.put(FIELD_MY_TOUR, new ArrayList<ObjectId>());
 	}
 	
 	public User(){
 		super (new BasicDBObject());
-		myDBObj.put(FIELD_MY_ATTRACTION, null);
+		myDBObj.put(FIELD_MY_TOUR, new ArrayList<ObjectId>());
 	}
 	
 	public void setKeyValue(String key, String value){
@@ -38,8 +38,8 @@ public class User extends StorageObject{
 		}
 	}
 	
-	private void setAttraction(ArrayList<ObjectId> arrayId){
-		myDBObj.put(FIELD_MY_ATTRACTION, arrayId);
+	private void setTour(ArrayList<ObjectId> arrayId){
+		myDBObj.put(FIELD_MY_TOUR, arrayId);
 	}
 	
 	@SuppressWarnings("unused")
@@ -57,13 +57,14 @@ public class User extends StorageObject{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<ObjectId> getAttraction(){
-		return (ArrayList<ObjectId>)myDBObj.get(FIELD_MY_ATTRACTION);
+	public ArrayList<ObjectId> getTour(){
+		return (ArrayList<ObjectId>)myDBObj.get(FIELD_MY_TOUR);
 	}
 	
-	public void addAttraction(ObjectId id){
-		ArrayList<ObjectId> arrayAttr = getAttraction();
+	public void addTour(ObjectId id){
+		ArrayList<ObjectId> arrayAttr = getTour();
 		arrayAttr.add(id);
-		setAttraction(arrayAttr);
+		setTour(arrayAttr);
 	}
+
 }
