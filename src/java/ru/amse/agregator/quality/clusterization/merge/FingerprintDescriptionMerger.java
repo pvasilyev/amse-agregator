@@ -53,14 +53,13 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
                 if (Fingerprint.distance(fingerprintI, fingerprintJ) < minSimilarity) {
 
                     //discard one of the descriptions
-                    String descriptionI = descriptionList.get(i);
-                    String descriptionJ = descriptionList.get(j);
-                    if (i < j) {
+                    //we discard that which comes last in the list
+                    if (j > i) {
                         // discard ith description
-                        indexes.remove(i);
+                        indexes.remove((Integer)i);
                     } else {
                         // discard jth description
-                        indexes.remove(j);
+                        indexes.remove((Integer)j);
                     }
                 }
             }
@@ -89,7 +88,7 @@ public class FingerprintDescriptionMerger extends AttributeMerger {
                 descriptionList.addAll(obj.getDescriptionArray());
             }
         }
-        ArrayList<String> filteredDescriptions = new ArrayList(filterWithFingerprinter(descriptionList));
+        ArrayList<String> filteredDescriptions = new ArrayList<String>(filterWithFingerprinter(descriptionList));
         resultingObject.setDescriptionArray(filteredDescriptions);
     }
 

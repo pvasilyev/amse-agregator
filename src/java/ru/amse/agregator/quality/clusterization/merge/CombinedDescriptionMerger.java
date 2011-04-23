@@ -11,15 +11,19 @@ import java.util.List;
 
 /**
  * @author: Pavel
+ *
+ * This class combines description merging techniques of qualityDescription merger
+ * which ranges descriptions depending on the quality of descriptions and
+ * fingerprintMerger which deletes similar descriptions
  */
 public class CombinedDescriptionMerger extends AttributeMerger {
 
-    private DescriptionFingerprinter fingerprinter;
+    //private DescriptionFingerprinter fingerprinter;
     private QualityDescriptionMerger qualityMerger;
     private FingerprintDescriptionMerger fingerprintMerger;
 
     public CombinedDescriptionMerger(DescriptionFingerprinter fingerprinter) throws InternalException {
-        this.fingerprinter = fingerprinter;
+        //this.fingerprinter = fingerprinter;
         qualityMerger = new QualityDescriptionMerger();
         fingerprintMerger = new FingerprintDescriptionMerger(fingerprinter);
     }
@@ -41,9 +45,9 @@ public class CombinedDescriptionMerger extends AttributeMerger {
 
         ArrayList<String> sortedDescriptions;
         sortedDescriptions = new ArrayList<String>(qualityMerger.sortByQuality(descriptionList));
-        List<String> resultingList = fingerprintMerger.filterWithFingerprinter(descriptionList);
+        List<String> resultingList = fingerprintMerger.filterWithFingerprinter(sortedDescriptions);
 
-        resultingObject.setDescriptionArray(new ArrayList(resultingList));
+        resultingObject.setDescriptionArray(new ArrayList<String>(resultingList));
     }
 
 }
