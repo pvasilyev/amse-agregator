@@ -7,7 +7,7 @@
     <xsl:template name="leftmenu">
         <!-- @todo заменить это на параметризуемый вызов блоков  -->
         <xsl:call-template name="countryTopBlock"/>
-        <xsl:call-template name="main"/>
+        <xsl:call-template name="continentSelectBlock"/>
     </xsl:template>
 
     <xsl:template name="main">
