@@ -534,7 +534,7 @@ public class DBWrapper extends StorageObject{
 	public Date getBuildDate(){
 		return (Date) myDBObj.get(FIELD_DATE_FOUNDATION);
 	}
-	
+
 	public String getRooms(){
 		return myDBObj.getString(FIELD_ROOMS);
 	}
@@ -561,10 +561,14 @@ public class DBWrapper extends StorageObject{
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getDescriptionArray(){
-
 		return (ArrayList<String>) myDBObj.get(FIELD_DESC);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getCategArray(){
+		return (ArrayList<String>) myDBObj.get(FIELD_CATEGORY);
+	}
+
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getSourceUrlArray(){
 		return (ArrayList<String>) myDBObj.get(FIELD_SOURCE_URL);
