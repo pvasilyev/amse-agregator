@@ -7,7 +7,9 @@ import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.storage.UniqueId;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import net.sf.saxon.functions.Collection;
 
 /**
  * @author: Pavel
@@ -47,7 +49,10 @@ public class CombinedDescriptionMerger extends AttributeMerger {
         sortedDescriptions = new ArrayList<String>(qualityMerger.sortByQuality(descriptionList));
         List<String> resultingList = fingerprintMerger.filterWithFingerprinter(sortedDescriptions);
 
-        resultingObject.setDescriptionArray(new ArrayList<String>(resultingList));
+        // reverse the list so the best description will be the first
+        Collections.reverse(resultingList);
+        resultingObject.setDescriptionArray
+                (new ArrayList<String>(resultingList));
     }
 
 }

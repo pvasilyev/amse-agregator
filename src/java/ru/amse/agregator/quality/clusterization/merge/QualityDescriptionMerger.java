@@ -8,6 +8,7 @@ package ru.amse.agregator.quality.clusterization.merge;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,14 @@ import ru.amse.agregator.utils.Tools;
 public class QualityDescriptionMerger extends AttributeMerger {
 
     private TextQuality qualityMeter = null;
+    // path to <project_directory>/resources/clusterizer/myGoodVocabulary.txt
+    private final String GOOD_VOCABULARY_PATH = "resources/clusterizer/myGoodVocabulary.txt";
 
     public QualityDescriptionMerger() throws InternalException {
 
         qualityMeter = new TextQuality();
         try {
-            qualityMeter.readGoodVocabularyFromFile("./resources/clusterizer/myGoodVocabulary.txt");
+            qualityMeter.readGoodVocabularyFromFile(GOOD_VOCABULARY_PATH);
         } catch (IOException e) {
             throw new InternalException("Couldn't read vocabulary from file");
         }
@@ -58,6 +61,8 @@ public class QualityDescriptionMerger extends AttributeMerger {
             ArrayList<String> sortedDescriptions 
                     = new ArrayList<String>(sortByQuality(descriptionList));
 
+            // reverse the list so the best description will be the first
+            Collections.reverse(sortedDescriptions);
             resultingObject.setDescriptionArray(sortedDescriptions);
     }
 

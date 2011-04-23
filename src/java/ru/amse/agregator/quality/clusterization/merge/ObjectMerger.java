@@ -41,7 +41,7 @@ public class ObjectMerger extends ClusterMerger {
         attMergers.put(DBWrapper.FIELD_CITY_ID, new CityIdMerger());
         attMergers.put(DBWrapper.FIELD_KEYWORDS, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_IMAGES, mergeStringLists);
-        attMergers.put(DBWrapper.FIELD_DESC, new FingerprintDescriptionMerger(fingerprinter));
+        attMergers.put(DBWrapper.FIELD_DESC, new CombinedDescriptionMerger(fingerprinter));
         attMergers.put(DBWrapper.FIELD_SOURCE_URL, mergeStringLists);
         attMergers.put(DBWrapper.FIELD_UNIQUE_ID, doNothing);
         attMergers.put(DBWrapper.FIELD_ID, doNothing);     
