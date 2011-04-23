@@ -46,12 +46,8 @@ public class Database {
 	public static final String 	COLLECTION_USERS = "users";
 	public static final String 	COLLECTION_COMMENTS = "comments";
 	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
+	public static final String COLLECTION_TOURS = "tours";
 	
-	
-	/**
-	 * Returns all elements from Collection with name COLLECTION_USERS
-	 * @return ArrayList<User>
-	 */
 	public static ArrayList<User> getAllUsers(){
 		DBCollection collection = myDB.getCollection(COLLECTION_USERS);
 		if (collection != null){
@@ -65,6 +61,20 @@ public class Database {
 		return null;
 	}
 	
+	public static ArrayList<Tour> getAllToursByUser(ObjectId userId){
+		User user = (User)findInCollection(COLLECTION_USERS,StorageObject.FIELD_ID, userId);
+		if (user != null){
+			ArrayList<ObjectId> toursId =  user.getTour();
+			ArrayList<Tour> tours = new ArrayList<Tour>();
+			for (ObjectId id : toursId){
+				tours.add((Tour)findInCollection(COLLECTION_TOURS,StorageObject.FIELD_ID, id));
+			}
+			return tours;
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * Add user to collection with name "COLLECTION_USERS". If parameter is null then function returns null.
 	 * @param user user which is wanted to add
@@ -74,6 +84,14 @@ public class Database {
 		if(user != null){
 			user.setId(addToCollection(COLLECTION_USERS, user.toDBObject()));
 			return user.getId();
+		} else {
+			return null;
+		}
+	}
+	public static ObjectId addTour(Tour tour){
+		if(tour != null){
+			tour.setId(addToCollection(COLLECTION_TOURS, tour.toDBObject()));
+			return tour.getId();
 		} else {
 			return null;
 		}

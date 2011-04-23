@@ -36,6 +36,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_CATEGORY = "category";
 	public static final String FIELD_SOURCE_URL = "source_url";
 	public static final String FIELD_RATING = "rating";
+	public static final String FIELD_INFO = "info";
 	
 	public static final String FIELD_UNIQUE_ID = "unique_id";
 	
@@ -133,6 +134,10 @@ public class DBWrapper extends StorageObject{
 		} else {
 			myDBObj.put(key,value);
 		}
+	}
+	
+	public String getInfo(){
+		return (String) myDBObj.get(FIELD_INFO);
 	}
 	
     //sets an attribute represented by a listed of strings

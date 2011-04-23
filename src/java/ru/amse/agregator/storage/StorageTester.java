@@ -32,6 +32,21 @@ public class StorageTester {
        
         ArrayList<DBWrapper> collectionUsers = Database.getAllDBObjects();
         int k = 0;
+        Tour tour = new Tour();
+        tour.setKeyValue(Tour.FIELD_NAME, "aaaa");
+        DBWrapper attr = new DBWrapper();
+        attr.setName(";;;");
+        attr.setType(Database.COLLECTION_ATTRACTIONS);
+        Database.add(attr);
+        tour.setId((ObjectId) attr.getId());
+        
+        System.out.println(tour.getName());
+        tour.setKeyValue(Tour.FIELD_ID_USER, user.getId().toString());
+        tour.setKeyValue(Tour.FIELD_ID_USER, user.getId().toString());
+       System.out.println(attr.getId());
+        tour.addAttraction(attr.getId());
+        Database.addTour(tour);
+       
 //        ObjectId nullContinent = Database.getContinentIdByName("");
 //        System.out.println(nullContinent);
 //        ///*
