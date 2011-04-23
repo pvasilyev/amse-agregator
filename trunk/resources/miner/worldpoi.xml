@@ -272,9 +272,9 @@
 									
 									<text>coordinates</text>
 									<template>${returnCoordinates.toString().replaceAll(",",".").trim()}</template>
-			
-								<!--	<text>description</text>
-									<template>${returnDescription.toString()}</template> -->
+	
+									<text>description</text>
+									<template>${returnDescription.toString()}</template> 
 			
 									<text>images</text>
 									<template>${image.toString()}</template>
