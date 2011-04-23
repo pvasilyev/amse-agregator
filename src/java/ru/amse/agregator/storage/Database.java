@@ -460,7 +460,7 @@ public class Database {
 	}
 	
 	//Find one object in collection 'collectionName' where field 'key' == 'value'
-	private static DBObject findInCollection(String collectionName, String key, Object value){
+	public static DBObject findInCollection(String collectionName, String key, Object value){
 			return findInCollection(collectionName, new BasicDBObject(key, value));
 	}
 	

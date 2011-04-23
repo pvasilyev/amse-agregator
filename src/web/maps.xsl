@@ -5,7 +5,7 @@
     		setMySize(new google.maps.LatLng(<xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>,<xsl:value-of select="cells/cell[2]/value" disable-output-escaping="yes"/>),new google.maps.LatLng(<xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes"/>,<xsl:value-of select="cells/cell[4]/value" disable-output-escaping="yes"/>));	
     </xsl:template>
     <xsl:template match="record" mode="googlemap">
-		placeMarker(new google.maps.LatLng( <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>,<xsl:value-of select="cells/cell[2]/value" disable-output-escaping="yes"/>),"<xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes"/>","<xsl:value-of select="cells/cell[4]/value" disable-output-escaping="yes"/>","<xsl:value-of select="cells/cell[5]/value" disable-output-escaping="yes"/>");
+		placeMarker(new google.maps.LatLng( <xsl:value-of select="cells/cell[1]/value" disable-output-escaping="yes"/>,<xsl:value-of select="cells/cell[2]/value" disable-output-escaping="yes"/>),"<xsl:value-of select="cells/cell[3]/value" disable-output-escaping="yes"/>","<xsl:value-of select="cells/cell[4]/value" disable-output-escaping="yes"/>","<xsl:value-of select="cells/cell[5]/value" disable-output-escaping="yes"/>","<xsl:value-of select="cells/cell[6]/value" disable-output-escaping="yes"/>");
 	</xsl:template>
 
 	
@@ -31,14 +31,19 @@
   					<xsl:apply-templates select="//data[@id='maps']//record" mode="googlemap"/>
   				}
   				
-  				function placeMarker(location, about, myURL, myImg) {
+  				function placeMarker(location, about, myURL, myInfo, myImg) {
   					var marker = new google.maps.Marker({
       					position: location, 
       					map: map,
       					title: about
   					});
-  					
-  					var message = "<a href ="+ myURL+">"+about+"</a>";
+  					var message;
+  					if (myImg == ""){
+  						message = "<a href ="+ myURL+">"+about+"</a>"+myInfo;
+  					}
+  					else{
+  					message = "<a href ="+ myURL+">"+about+"</a>"+"<br/>"+myInfo+"    "+" <img width=" + 50 + " src ="+myImg +"/>";
+  					}
   					var infowindow = new google.maps.InfoWindow(
       					{ content: message,
        					 size: new google.maps.Size(50,50)
