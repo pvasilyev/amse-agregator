@@ -26,7 +26,7 @@ import ru.amse.agregator.utils.Tools;
  */
 public class QualityDescriptionMerger extends AttributeMerger {
 
-    TextQuality qualityMeter = null;
+    private TextQuality qualityMeter = null;
 
     public QualityDescriptionMerger() throws InternalException {
 

@@ -16,6 +16,7 @@ import ru.amse.agregator.quality.clusterization.clusterstorage.Cluster;
 public class StringListMerger extends AttributeMerger {
 
     @Override
+    @SuppressWarnings("unchecked")
     public void mergeAttributes
             (final String attributeName, final Cluster cluster, DBWrapper resultingObject) {
         ArrayList<ArrayList<String>> stringLists = new ArrayList<ArrayList<String>>();

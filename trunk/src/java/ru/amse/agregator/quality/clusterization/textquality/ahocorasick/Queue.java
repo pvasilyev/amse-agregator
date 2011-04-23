@@ -8,12 +8,12 @@ import java.util.ArrayList;
    represent a queue.
  */
 class Queue {
-    ArrayList l1;
-    ArrayList l2;
+    ArrayList<Object> l1;
+    ArrayList<Object> l2;
 
     public Queue() {
-	l1 = new ArrayList();
-	l2 = new ArrayList();
+	l1 = new ArrayList<Object>();
+	l2 = new ArrayList<Object>();
     }
 
     public void add(State s) {
