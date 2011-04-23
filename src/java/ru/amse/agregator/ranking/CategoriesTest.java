@@ -11,6 +11,7 @@ import java.io.IOException;
  * Date: 23.03.11
  * Time: 13:23
  */
+
 public class CategoriesTest {
     public void test() {
         Database.connectToDirtyBase();

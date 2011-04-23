@@ -22,7 +22,12 @@
     </xsl:template>
 
     <xsl:template name="rankingBlock">
-
+        <option>
+			<xsl:attribute name="value">
+			<xsl:value-of select="OfficeCode" />
+			</xsl:attribute>
+			<xsl:value-of select="OfficeName" />
+		</option>
     </xsl:template>
 
     <!--<xsl:template match="/">
