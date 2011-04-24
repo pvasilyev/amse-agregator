@@ -4,10 +4,7 @@ import com.mongodb.*;
 import org.bson.types.ObjectId;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Database {
@@ -40,7 +37,8 @@ public class Database {
 	public static final String 	COLLECTION_USERS = "users";
 	public static final String 	COLLECTION_COMMENTS = "comments";
 	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
-	public static final String COLLECTION_TOURS = "tours";
+	public static final String  COLLECTION_TOURS = "tours";
+    public static final String  COLLECTION_CATEGORIES = "categories";
 
 	public static ArrayList<User> getAllUsers(){
 		DBCollection collection = myDB.getCollection(COLLECTION_USERS);
@@ -141,6 +139,7 @@ public class Database {
 			myCollections.add(COLLECTION_CAFE);
 			myCollections.add(COLLECTION_HOTELS);
 			myCollections.add(COLLECTION_USERS);
+			myCollections.add(COLLECTION_CATEGORIES);
 		}
 	}
 	
@@ -331,6 +330,8 @@ public class Database {
 			collectionName = COLLECTION_CAFE;
 		} else if(type.equals(DBWrapper.TYPE_USER)) {
 			collectionName = COLLECTION_USERS;
+        } else if (type.equals(DBWrapper.TYPE_CATEGORY)) {
+            collectionName = COLLECTION_CATEGORIES;
 		} else if(type.equals(DBWrapper.TYPE_COMMENT)) {
 			collectionName = COLLECTION_COMMENTS;
 		} else {
@@ -382,7 +383,7 @@ public class Database {
 		BasicDBObject criteria = new BasicDBObject();
 		criteria.put(DBWrapper.FIELD_NAME,cityName);
 		DBObject obj = findInCollection(COLLECTION_CITIES,criteria);
-		if(obj != null){
+		if(obj != null) {
 			myLastDB = myDB;
 			myLastCityName = cityName;
 			myLastCityId = (ObjectId) obj.get(DBWrapper.FIELD_ID);
@@ -646,7 +647,90 @@ public class Database {
 		return objects;	
 	}
 
-	
+    public static ArrayList<String> getTopNCategories(int count) {
+        final ArrayList<String> result = new ArrayList<String>();
+        final Set<String> set = new HashSet<String>();
+        final Collection<DBWrapper> topObjects = getTopNWithType(count * 100, DBWrapper.TYPE_ATTRACTION);
+
+        for (DBWrapper object : topObjects) {
+            set.addAll(object.getCategoryArray());
+            if (set.size() > count) {
+                break;
+            }
+        }
+
+        result.addAll(set);
+        return result;
+    }
+
+    public static ArrayList<String> getTopNCategoriesInContinent(int count, final ObjectId objectIdInContinent) {
+        final ArrayList<String> result = new ArrayList<String>();
+        final Set<String> set = new HashSet<String>();
+        final Collection<DBWrapper> topObjectsInContinent =
+                getTopNWithKeyValue(count,
+                        DBWrapper.TYPE_ATTRACTION,
+                        DBWrapper.FIELD_CONTINENT_ID,
+                        objectIdInContinent);
+
+        for (DBWrapper object : topObjectsInContinent) {
+            if (object != null) {
+                set.addAll(object.getCategoryArray());
+            }
+            if (result.size() > count) {
+                break;
+            }
+        }
+
+        result.addAll(set);
+        return result;
+    }
+
+    public static ArrayList<String> getTopNCategoriesInCountry(int count, final ObjectId objectIdInCountry) {
+        final ArrayList<String> result = new ArrayList<String>();
+        final Set<String> set = new HashSet<String>();
+        final Collection<DBWrapper> topObjectsInContinent =
+                getTopNWithKeyValue(count,
+                                    DBWrapper.TYPE_ATTRACTION,
+                                    DBWrapper.FIELD_COUNTRY_ID,
+                                    objectIdInCountry);
+
+        for (DBWrapper object : topObjectsInContinent) {
+            if (object != null) {
+                set.addAll(object.getCategoryArray());
+            }
+            if (set.size() > count) {
+                break;
+            }
+        }
+
+        result.addAll(set);
+        return result;
+    }
+
+
+    public static ArrayList<String> getTopNCategoriesInCity(int count, final ObjectId objectIdInCity) {
+        final ArrayList<String> result = new ArrayList<String>();
+        final Set<String> set = new HashSet<String>();
+        final Collection<DBWrapper> topObjectsInContinent =
+                getTopNWithKeyValue(count,
+                                    DBWrapper.TYPE_ATTRACTION,
+                                    DBWrapper.FIELD_CITY_ID,
+                                    objectIdInCity);
+
+        for (DBWrapper object : topObjectsInContinent) {
+            if (object != null) {
+                set.addAll(object.getCategoryArray());
+            }
+            if (set.size() > count) {
+                break;
+            }
+        }
+
+        result.addAll(set);
+        return result;
+    }
+
+
 	//-------------------------------------------------------------
 	public static void createIndexes(){
 		if(myDB != null){
