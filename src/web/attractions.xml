@@ -4,5 +4,6 @@
     <yalet id="leftMenu"/>
     <yalet id="rightMenu"/>
     <yalet id="showAttractions"/>
+    <yalet id="login" />
 </page>
 

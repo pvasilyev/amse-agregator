@@ -5,6 +5,7 @@
     <yalet id="countryTopBlock" />
     <yalet id="continentSelectBlock" />
     <yalet id="showAttractions"/>
+    <yalet id="login" />
     <!--<yalet id="rightMenu"/>-->
 </page>
 

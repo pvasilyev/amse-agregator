@@ -4,4 +4,5 @@
     <yalet id="attractionTopBlock" />
     <yalet id="countryTopBlock" />
     <yalet id="continentSelectBlock" />
+    <yalet id="login" />
 </page>

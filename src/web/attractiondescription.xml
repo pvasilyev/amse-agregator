@@ -10,4 +10,5 @@
     <yalet id="maps"/>
     <yalet id="mapsTemp"/>
     <yalet id = "add"/>
+    <yalet id="login" />
 </page>

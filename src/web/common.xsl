@@ -223,6 +223,7 @@
         </area>
     </xsl:template>
 
+
     <xsl:template name="attractionTopBlock">
         <table class="attractionsTop">
             <tr>
@@ -261,6 +262,50 @@
             </td>
         </tr>
     </xsl:template>
+
+
+
+
+
+    <xsl:template name="loginBlock">
+        <table width="80%" height="250" cellspacing="25" align="center" valign="middle">
+            <tr align="center">
+                <td>
+                    <xsl:if test="//AUTH = -1 or //AUTH = 0">
+                        <form action="index.xml" method="POST">
+                            Мыло:  <input type="text" name="email"/><br/>
+                            Пароль: <input type="password" name="pwd"/><br/>
+                            <input type="checkbox" name="toRegister" value="YES" />Зарегистрироваться.<br/>
+                            <input type="submit" value="Поехали!" />
+                        </form>
+                    </xsl:if>
+
+                    <xsl:if test="//AUTH =0">
+                        Неверное мыло или пароль! Повторите попытку!
+                    </xsl:if>
+
+                    <xsl:if test="//AUTH =2">
+                        Привет юзер с айдишником:
+                        <xsl:value-of select="//uid" disable-output-escaping="yes"/>
+                        <form action="index.xml" method="POST">
+                            <input type="hidden" name="logout" value="YES" /><br/>
+                            <input type="submit" value="Выход" />
+                        </form>
+                    </xsl:if>
+
+                    <xsl:if test="//AUTH =1">
+                        Спасибо за регистрацию.
+                    </xsl:if>
+
+                </td>
+            </tr>
+        </table>
+    </xsl:template>
+
+
+
+
+
 
 <!--	<xsl:template match="record" mode="googlemap">
 		<p>HELLO WORLD!</p>

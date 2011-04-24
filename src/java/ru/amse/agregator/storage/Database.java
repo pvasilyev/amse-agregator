@@ -1,5 +1,8 @@
 package ru.amse.agregator.storage;
 
+import com.mongodb.*;
+import org.bson.types.ObjectId;
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,24 +10,15 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import org.bson.types.ObjectId;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
-import com.mongodb.MongoException;
-
 public class Database {
 	private static Mongo myMongo = null;
 	private static DB myDB = null;
-	
+
 	private static String myCurrentAddress;
 	private static int myCurrentPort;
-	
+
 	private static ArrayList<String> myCollections;
-	
+
 	private static String myLastContinentName = null;
 	private static String myLastCityName = null;
 	private static String myLastCountryName = null;
@@ -32,12 +26,12 @@ public class Database {
 	private static ObjectId myLastCityId = null;
 	private static ObjectId myLastCountryId = null;
 	private static DB myLastDB = null;
-	
+
 	public static final String 	DB_SERVER_ADDRESS = "localhost";
 	public static final int 	DB_SERVER_PORT = 27017;
 	public static final String 	MAIN_DB_NAME = "mainDB";
 	public static final String 	DIRTY_DB_NAME = "dirtyDB";
-	
+
 	public static final String 	COLLECTION_HOTELS = "hotels";
 	public static final String 	COLLECTION_CONTINENTS = "continents";
 	public static final String 	COLLECTION_COUNTRIES = "countries";
@@ -47,7 +41,7 @@ public class Database {
 	public static final String 	COLLECTION_COMMENTS = "comments";
 	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
 	public static final String COLLECTION_TOURS = "tours";
-	
+
 	public static ArrayList<User> getAllUsers(){
 		DBCollection collection = myDB.getCollection(COLLECTION_USERS);
 		if (collection != null){
@@ -60,6 +54,16 @@ public class Database {
 		}
 		return null;
 	}
+
+    public static User getUser(final String login, final String pwd){
+        final DBObject maybeUser = findInCollection(COLLECTION_USERS, new BasicDBObject(User.FIELD_LOGIN, login).append(User.FIELD_PASSWORD, pwd));
+        if(maybeUser != null){
+            return new User(maybeUser);
+        } else {
+            return null;
+        }
+    }
+
 	
 	public static ArrayList<Tour> getAllToursByUser(ObjectId userId){
 		User user = (User)findInCollection(COLLECTION_USERS,StorageObject.FIELD_ID, userId);

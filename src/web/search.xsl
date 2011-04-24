@@ -10,6 +10,7 @@
     </xsl:template>
     <!-- @todo заменить это на параметризуемый вызов блоков  -->
     <xsl:template name="rightmenu">
+        <xsl:call-template name="loginBlock"/>
         <xsl:call-template name="attractionTopBlock"/>
     </xsl:template>
 
