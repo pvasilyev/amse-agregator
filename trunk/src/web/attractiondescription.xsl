@@ -117,6 +117,11 @@
                    					 <input type="hidden" name="id" value="{id}"/>
                    					 <input type="hidden" name="type" value="{type}"/> 
                    					 <input type="hidden" name="flag" value="1"/>
+                   					 <input type="hidden" name="user">
+                   					 	<xsl:attribute name="value">
+                   					 		<xsl:value-of select="//uid"/>
+                   					 	</xsl:attribute>
+                   					 </input>
                					</form>
                             	
                 					<a class="buttonLink" onclick="addClicked()">Добавить в избранное</a>
