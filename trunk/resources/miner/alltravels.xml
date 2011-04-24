@@ -5,7 +5,7 @@
 		<var-def name="sourceUrl">
 	        http://www.alltravels.com.ua/
 	    </var-def>
-		
+		<var-def name="blank"></var-def>
 	    <var-def name="home">
 	        http://www.country.alltravels.com.ua/ru/
 	    </var-def>
@@ -146,7 +146,21 @@
 					                        </xpath>
 				                    	</list>
 				                    	<body>
-				                    		<script return='imageUrl.toString() + &quot;;&quot;' />
+				                    		<!-- validate city image -->
+				                    		<empty>
+				                    		<var-def name="checkUrl">
+        										<http url="${sys.fullUrl(imageUrl, blank)}"/>
+											</var-def>
+											</empty>
+											<script language="javascript">
+											    sys.defineVariable("status", http.statusCode, true);
+											</script>
+											<case>
+												<if condition='${status.toString().equals("200.0")}'>
+						                    		<script return='imageUrl.toString() + &quot;;&quot;'/>
+												</if>
+											</case>
+				                    		<!-- end validating-->											
 				                    	</body>
 									</loop>
 			                     </var-def>
@@ -215,11 +229,30 @@
 			                                    <var name="museumContent"/>
 			                                </xpath>                 
 			                            </var-def>    
-			                            <var-def name="pictureMuseum">
+			                            
+			                            <!-- validate picture of museum -->
+			                            <var-def name="validatePictureMuseum">
 			                                <xpath expression="//div[@class='itemtext']//img/@src">
 			                                    <var name="museumContent"/>
 			                                </xpath> 
 			                            </var-def>
+										<script language="javascript">
+										    sys.defineVariable("status", http.statusCode, true);
+										</script>
+										<case>
+											<if condition='${status.toString().equals("200.0")}'>
+							                    <var-def name="pictureMuseum">
+					                                <xpath expression="//div[@class='itemtext']//img/@src">
+			    		                                <var name="museumContent"/>
+			            		                    </xpath> 
+			                    		        </var-def>
+											</if>
+											<else>
+												<var-def name="pictureMuseum"></var-def>
+											</else>
+										</case>
+										<!-- end validating -->
+			                            
 			                            <var-def name="nameMuseum">
 			                                <xpath expression="//div[@class='pagetitle']//h1/text()">
 			                                    <var name="museumContent"/>
@@ -285,11 +318,30 @@
 			                                   	<var name="ArchAttractionContent"/>
 			                                </xpath>                 
 			                            </var-def>    
-			                            <var-def name="pictureArchAttraction">
+			                            
+			                            <!-- validate picture of arch attraction-->
+			                            <var-def name="validatePictureArchAttraction">
 			                                <xpath expression="//div[@class='itemtext']//img/@src">
 			                                    <var name="ArchAttractionContent"/>
 			                                </xpath> 
 			                            </var-def>
+										<script language="javascript">
+										    sys.defineVariable("status", http.statusCode, true);
+										</script>
+										<case>
+											<if condition='${status.toString().equals("200.0")}'>
+							                    <var-def name="pictureArchAttraction">
+					                                <xpath expression="//div[@class='itemtext']//img/@src">
+					                                    <var name="ArchAttractionContent"/>
+			    		                            </xpath> 
+			            		                </var-def>
+											</if>
+											<else>
+												<var-def name="pictureArchAttraction"/>
+											</else>
+										</case>
+										<!-- end validating -->
+										
 			                            <var-def name="nameArchAttraction">
 			                                <xpath expression="//div[@class='pagetitle']//h1">
 			                                    <var name="ArchAttractionContent"/>
@@ -358,11 +410,31 @@
 			                                    <var name="entertainmentContent"/>
 			                                </xpath>                 
 			                            </var-def>    
-			                            <var-def name="pictureentertainment">
+			                            
+			                            <!-- validate picture of entertainment -->
+			                            <var-def name="validatePictureEntertainment">
 			                                <xpath expression="//div[@class='itemtext']//img/@src">
 			                                    <var name="entertainmentContent"/>
 			                                </xpath> 
 			                            </var-def>
+										<script language="javascript">
+										    sys.defineVariable("status", http.statusCode, true);
+										</script>
+										<case>
+											<if condition='${status.toString().equals("200.0")}'>
+							                    <var-def name="pictureentertainment">
+					                                <xpath expression="//div[@class='itemtext']//img/@src">
+					                                    <var name="entertainmentContent"/>
+					                                </xpath> 
+			    		                        </var-def>
+											</if>
+											<else>
+												<var-def name="pictureentertainment"></var-def>
+											</else>
+										</case>
+										<!-- end validating -->
+			                            
+			                            
 			                            <var-def name="nameentertainment">
 			                                <xpath expression="//div[@class='pagetitle']//h1">
 			                                    <var name="entertainmentContent"/>

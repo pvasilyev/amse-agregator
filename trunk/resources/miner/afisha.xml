@@ -549,11 +549,75 @@
 															}
 														}
 													}
-													i++;
+													i++;	
 												}
 											]]>
-											sys.defineVariable("returnPhotos", photosArray.join(";"), true);
+											sys.defineVariable("validatePhotos", photosArray.join(";"), true);
 										</script>
+										
+										<var-def name="realPhotos">
+											<var name="validatePhotos"/>
+										</var-def>
+										
+										<var-def name="returnPhotos">
+											<loop item="photoUrl" filter="unique" index="i">
+												<list>
+													<template>${validatePhotos.toString()}</template>
+												</list>
+												<body>
+												<!-- validate city image -->
+													<try>
+														<body>
+															<empty>
+															<script language="javascript">
+																<![CDATA[ 
+																	var arr = realPhotos.toString().split(";");
+																	var strr = arr[i-1];
+																	var j = strr.indexOf("p_s.jpg");
+																	var photo;
+																	if (j > 0) {
+																		var str = strr.toString().substring(0, j);
+																		str = str + "p_f.jpg";
+																		photo = str;
+																	} else {
+																	j = strr.toString().indexOf("p_S.jpg");
+																		if (j > 0) {
+																		var str = strr.toString().substring(0, j);
+																			str = str + "p_F.jpg";
+																			photo = str;
+																		} else {
+																			j = strr.toString().indexOf("_small_");
+																			if (j > 0) {
+																				var str = strr.toString().substring(0, j);
+																				str = str + "_big_";
+																				str = str + strr.toString().substring(j + 7, strr.toString().length());
+																				photo = str;
+																			}
+																		}
+																	}
+																 ]]>
+																 sys.defineVariable("nextUrl", photo, true);
+															</script>
+															<var-def name="checkUrl">
+		    	    											<http url='${nextUrl}'/>
+															</var-def>
+															</empty>
+															<script language="javascript">
+														    	sys.defineVariable("status", http.statusCode, true);
+															</script>
+															<case>
+																<if condition='${status.toString().equals("200.0")}'>
+									                   		<script return='photoUrl.toString() + &quot;;&quot;'/>
+															</if>
+															</case>
+														</body>
+														<catch></catch>
+													</try>					                    														
+				                    			<!-- end validating-->
+				                    			</body>
+											</loop>
+										</var-def>
+										
 										<var-def name="realPhotos">
 											<var name="returnPhotos"/>
 										</var-def>
@@ -603,7 +667,7 @@
 										<!-- begin return poi expression -->
 										<var-def name="returnValue">
 											<text>type</text>
-											<template>Attraction</template>
+											<template>ArchAttraction</template>
 								
 											<text>continent_name</text>
 											<template>${returnContinent.toString()}</template>
@@ -623,7 +687,7 @@
 											<text>coordinates</text>
 											<template>${returnPoiCoordinates.toString().replaceAll(",",".").trim()}</template>
 											
-											<text>address</text>
+											<text>info</text>
 											<template>${returnAddressInfo.toString()}</template>
 		
 											<text>description</text>
