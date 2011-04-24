@@ -147,12 +147,30 @@
 				</script>
 			</if>
 
-			<else>
-				<var-def name="countryImages">
-					<xpath expression="//tbody/tr/td/img/@src">
+			<else>				
+				<!-- validate countries images -->
+                <var-def name="validateCountriesImages">
+	                 <xpath expression="//tbody/tr/td/img/@src">
 						<var name="loadedData"/>
 					</xpath>
-				</var-def>
+	            </var-def>
+				<script language="javascript">
+				    sys.defineVariable("status", http.statusCode, true);
+				</script>
+				<case>
+					<if condition='${status.toString().equals("200.0")}'>
+						<var-def name="countryImagess">
+							<xpath expression="//tbody/tr/td/img/@src">
+								<var name="loadedData"/>
+							</xpath>
+						</var-def>
+					</if>
+					<else>
+						<var-def name="pictureMuseum"></var-def>
+					</else>
+				</case>
+				<!-- end validating -->
+				
 			</else>	
 		</case>	
 		
@@ -274,7 +292,7 @@
 							<body>
 								<!-- validate attr1 image -->
 								<var-def name="checkUrl">
-									<http url='${photoUrl.toString().replace("thumbnails","pictures")}'/>
+									<http url='${sys.fullUrl(siteName, photoUrl.toString().replace("thumbnails","pictures"))}'/>
 								</var-def>
 								<script language="javascript">
 									sys.defineVariable("status", http.statusCode, true);
