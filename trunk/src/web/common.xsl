@@ -263,10 +263,6 @@
         </tr>
     </xsl:template>
 
-
-
-
-
     <xsl:template name="loginBlock">
         <table width="80%" height="250" cellspacing="25" align="center" valign="middle">
             <tr align="center">
@@ -303,7 +299,33 @@
     </xsl:template>
 
 
-
+    <xsl:template name="rankingBlock">
+        <option>
+			<xsl:attribute name="value">
+			<xsl:value-of select="OfficeCode"/>
+			</xsl:attribute>
+			<xsl:value-of select="OfficeName"/>
+		</option>
+        <table width="80%" height="250" cellspacing="25" align="center" valign="middle">
+            <tr align="center">
+                <td>
+                    <form action="index.xml" method="POST">
+                        <select name="asd">
+                            <option>
+                                OfficeCode
+                            </option>
+                            <option>
+                                PostCode
+                            </option>
+                            <xsl:apply-templates select="page/data[@id='rankingBlock']/collection/record"/>
+                        </select>
+                        <br/>
+                        <input type="submit" value="Ранжировать"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </xsl:template>
 
 
 
