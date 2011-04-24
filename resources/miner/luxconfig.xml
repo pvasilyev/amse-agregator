@@ -100,13 +100,37 @@
 		<case>	
 
 			<if condition="${!countryImageLink.isEmpty()}">				
-				<var-def name="loadedLinkData">
+				<var-def name="loadedLinksData">
 					<xpath expression="//div[@id='picBox']//img/@src">
 						<html-to-xml outputtype="pretty">
 						  <http url="${countryImageLink}"/>
 				  		</html-to-xml>
 					 </xpath>
 				</var-def>
+				
+       	        <var-def name="loadedLinkData">
+					<loop item="photoUrl" index="i" filter="unique">
+						<list>
+							<var name="loadedLinksData"/>
+						</list>								
+					<body>
+						<!-- validate attr1 image -->
+						<var-def name="checkUrl">
+							<http url='${sys.fullUrl(siteName, photoUrl.toString().replace("thumbnails","pictures"))}'/>
+						</var-def>
+						<script language="javascript">
+							sys.defineVariable("status", http.statusCode, true);
+						</script>
+						<case>
+							<if condition='${status.toString().equals("200.0")}'>
+								<script return='photoUrl.toString() + &quot;;&quot;'/>
+							</if>
+						</case>
+						<!-- end validating-->
+				</body>
+				</loop>
+				</var-def>
+				
 		
 				<script language="javascript">
 					<![CDATA[
@@ -115,7 +139,7 @@
 					var i = 0;
 					var a = new Array();
 					while(i < l.length ){
-						a.push(b.concat(l[i].toString().replace("thumbnails","pictures")));
+						a.push(b.concat(l[i].toString()));
 						i++;
 					}
 				   ]]>
@@ -234,14 +258,37 @@
 				<case>	
 		
 					<if condition="${!CityImageLink.isEmpty()}">				
-						<var-def name="loadedLinkData">
+						<var-def name="loadedLinksData">
 							<xpath expression="//div[@id='picBox']//img/@src">
 								<html-to-xml outputtype="pretty">
 								  <http url="${CityImageLink}"/>
 						  		</html-to-xml>
 							 </xpath>
 						</var-def>
-				
+						
+						<var-def name="loadedLinkData">
+							<loop item="photoUrl" index="i" filter="unique">
+								<list>
+									<var name="loadedLinksData"/>
+								</list>								
+							<body>
+								<!-- validate attr1 image -->
+								<var-def name="checkUrl">
+									<http url='${photoUrl.toString().replace("thumbnails","pictures")}'/>
+								</var-def>
+								<script language="javascript">
+									sys.defineVariable("status", http.statusCode, true);
+								</script>
+								<case>
+									<if condition='${status.toString().equals("200.0")}'>
+										<script return='photoUrl.toString() + &quot;;&quot;'/>
+									</if>
+								</case>
+								<!-- end validating-->
+							</body>
+							</loop>
+						</var-def>
+						
 						<script language="javascript">
 							<![CDATA[
 							var b = "http://www.luxe.ru";
@@ -249,7 +296,7 @@
 							var i = 0;
 							var a = new Array();
 							while(i < l.length ){
-								a.push(b.concat(l[i].toString().replace("thumbnails","pictures")));
+								a.push(b.concat(l[i].toString()));
 								i++;
 							}
 						   ]]>
@@ -258,11 +305,29 @@
 					</if>
 		
 					<else>
-						<var-def name="cityImages">
-							<xpath expression="//tbody/tr/td/img/@src">
+						<!-- validate picture of museum -->
+                        <var-def name="validateCityImage">
+	                        <xpath expression="//tbody/tr/td/img/@src">
 								<var name="loadedData"/>
 							</xpath>
-						</var-def>
+			            </var-def>
+						<script language="javascript">
+							
+						    sys.defineVariable("status", http.statusCode, true);
+						</script>
+						<case>
+							<if condition='${status.toString().equals("200.0")}'>
+				                 <var-def name="cityImages">
+									<xpath expression="//tbody/tr/td/img/@src">
+										<var name="loadedData"/>
+									</xpath>
+								</var-def>
+							</if>
+							<else>
+								<var-def name="cityImages"/>
+							</else>
+						</case>
+						<!-- end validating -->
 					</else>	
 				</case>
 				<!--Тут заканчиваеться выдерание картинок-->

@@ -247,12 +247,27 @@
 									sys.defineVariable("returnDescription", desc.join(";"), true);
 								</script>
 								<!-- end concat descriptions -->								
-								
-								<var-def name="image">
-								<xpath expression="//table[@id='tMapAndImg']/tbody/tr/td/a/img/@src">
+																
+								<!-- validate poi picture-->
+		                        <var-def name="validatePoiImage">
+			                        <xpath expression="//table[@id='tMapAndImg']/tbody/tr/td/div/a/img/@src">
 										<var name="poiPage"/>
 									</xpath>
-								</var-def>
+					            </var-def>
+								<script language="javascript">
+								    sys.defineVariable("status", http.statusCode, true);
+								</script>
+								<case>
+									<if condition='${status.toString().equals("200.0")}'>
+						                 <var-def name="image">
+											<var name="validatePoiImage"/>
+										</var-def>
+									</if>
+									<else>
+										<var-def name="image"/>
+									</else>
+								</case>
+								<!-- end validating -->
 								
 								<var-def name="returnValue">
 									<text>type</text>
