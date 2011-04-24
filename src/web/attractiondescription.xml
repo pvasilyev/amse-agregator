@@ -9,4 +9,5 @@
     <yalet id="showAttractionDesc"/>
     <yalet id="maps"/>
     <yalet id="mapsTemp"/>
+    <yalet id = "add"/>
 </page>

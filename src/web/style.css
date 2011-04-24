@@ -131,6 +131,14 @@ a.buttonLink{
     cursor: pointer;
 }
 
+.addButton{
+    width:100px;
+    text-align: center;
+}
+
+
+
+
 #search {
     width: 99%;
     border: 1px solid #474747;

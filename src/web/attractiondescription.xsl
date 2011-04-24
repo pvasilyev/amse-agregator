@@ -181,6 +181,17 @@
                                     </xsl:if>
                                 </td>
                             </tr>
+                            <tr>
+                       
+                				<form id="addForm" name="addForm" method="GET" action="attractiondescription.xml">
+                   					 <input type="hidden" name="id" value="{id}"/>
+                   					 <input type="hidden" name="type" value="{type}"/> 
+                   					 <input type="hidden" name="flag" value="1"/>
+               					</form>
+                            	<td class="addButton">
+                					<a class="buttonLink" onclick="addClicked()">Добавить в избранное</a>
+            					</td>
+                            </tr>
                         </table>
                     </xsl:if>
 
