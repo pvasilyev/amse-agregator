@@ -42,7 +42,7 @@
   						message = "<a href ="+ myURL+">"+about+"</a>"+myInfo;
   					}
   					else{
-  					message = "<a href ="+ myURL+">"+about+"</a>"+"<br/>"+myInfo+"    "+" <img width=" + 50 + " src ="+myImg +"/>";
+  						message = "<a href ="+ myURL+">"+about+"</a>"+"<br/>"+myInfo+"    "+" <img width=" + 50 + " src ="+myImg +"/>";
   					}
   					var infowindow = new google.maps.InfoWindow(
       					{ content: message,
