@@ -67,4 +67,5 @@
     <bean id="mapsTempYalet" class="ru.amse.agregator.gui.yalets.MapsTempYalet"/>  	
     <bean id="rankingBlockYalet" class="ru.amse.agregator.gui.yalets.RankingBlockYalet"/>
     <bean id="forPrintYalet" class="ru.amse.agregator.gui.yalets.ForPrintYalet"/>
+    <bean id="addYalet" class="ru.amse.agregator.gui.yalets.AddYalet"/>
 </beans>

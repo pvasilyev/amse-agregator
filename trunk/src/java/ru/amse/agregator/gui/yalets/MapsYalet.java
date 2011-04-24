@@ -48,25 +48,23 @@ public class MapsYalet extends AbstractAgregatorYalet {
             					newRecord.addCell("name",obj.getName());
             					newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
             					if (obj.getAddress() == null || obj.getAddress().equals("")){
-                					newRecord.addCell("info","adress");
+                					newRecord.addCell("info","");
                 				}
                 				else{
-                					//newRecord.addCell("info",obj.getInfo());
                 					String str = obj.getAddress();
-        
+                			        
                 					str = str.replaceAll("<br/>", " ");
                 					str = str.replaceAll("[\\s]{1,}", " ");
                 					
-                					//System.out.println(str);
                 					newRecord.addCell("info",str);
                 				}
-            				//	System.out.println(obj.getAddress()+"\n");
                 				if (obj.getImagesArray().size() > 0){
             				    	newRecord.addCell("img",obj.getImagesArray().get(0));
             				    }
                 				else{
+                					newRecord.addCell("img","");
                 				}
-        					    webRes.add(newRecord);
+                				webRes.add(newRecord);
     						}
     					}
     					
@@ -94,16 +92,21 @@ public class MapsYalet extends AbstractAgregatorYalet {
                 				newRecord.addCell("name",obj.getName());
                 				newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
                 				if (obj.getAddress() == null || obj.getAddress().equals("")){
-                					newRecord.addCell("info","adress");
+                					newRecord.addCell("info","");
                 				}
                 				else{
-                					//newRecord.addCell("info",obj.getInfo());
-                					newRecord.addCell("info",obj.getAddress());
+                					String str = obj.getAddress();
+                			        
+                					str = str.replaceAll("<br/>", " ");
+                					str = str.replaceAll("[\\s]{1,}", " ");
+                					
+                					newRecord.addCell("info",str);
                 				}
                 				if (obj.getImagesArray().size() > 0){
             				    	newRecord.addCell("img",obj.getImagesArray().get(0));
             				    }
                 				else{
+                					newRecord.addCell("img","");
                 				}
             				    webRes.add(newRecord);
         					}
@@ -124,17 +127,21 @@ public class MapsYalet extends AbstractAgregatorYalet {
     				newRecord.addCell("name",obj.getName());
     				newRecord.addCell("URL","attractiondescription.xml?id="+obj.getId()+"&amp;type="+obj.getType());
     				if (obj.getAddress() == null || obj.getAddress().equals("")){
-    					newRecord.addCell("info","adress");
+    					newRecord.addCell("info","");
     				}
     				else{
-    					//newRecord.addCell("info",obj.getInfo());
-    					newRecord.addCell("info",obj.getAddress());
-    				}
+    					String str = obj.getAddress();
+    			        
+    					str = str.replaceAll("<br/>", " ");
+    					str = str.replaceAll("[\\s]{1,}", " ");
+    					
+    					newRecord.addCell("info",str);
+    					}
     				if (obj.getImagesArray().size() > 0){
 				    	newRecord.addCell("img",obj.getImagesArray().get(0));
 				    }
     				else{
-    					newRecord.addCell("img",obj.getImagesArray().get(0));
+    					newRecord.addCell("img","");
     				}
 				    webRes.add(newRecord);
 				}
