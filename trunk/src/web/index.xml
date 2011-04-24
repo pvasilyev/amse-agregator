@@ -6,5 +6,6 @@
     <yalet id="countryTopBlock" />
     <yalet id="continentSelectBlock" />
     <yalet id="topCity" />
+    <yalet id="login" />
 </page>
 

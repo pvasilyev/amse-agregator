@@ -1,10 +1,10 @@
 package ru.amse.agregator.storage;
 
-import java.util.ArrayList;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
 
 public class User extends StorageObject{
 	
@@ -24,18 +24,7 @@ public class User extends StorageObject{
 	}
 	
 	public void setKeyValue(String key, String value){
-		if (key.equals(FIELD_LOGIN)){
-			myDBObj.put(FIELD_LOGIN, value);
-		}
-		else if(key.equals(FIELD_NAME)){
-			myDBObj.put(FIELD_NAME, value);
-		}
-		else if (key.equals(FIELD_PASSWORD)){
-			myDBObj.put(FIELD_PASSWORD, value);
-		}
-		else {
-			myDBObj.put(key,value);
-		}
+        myDBObj.put(key,value);
 	}
 	
 	private void setTour(ArrayList<ObjectId> arrayId){
