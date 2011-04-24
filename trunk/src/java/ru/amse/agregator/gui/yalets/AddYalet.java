@@ -18,7 +18,6 @@ public class AddYalet  extends AbstractAgregatorYalet {
     public void process(InternalRequest req, InternalResponse res) {
     	if (req.getParameter("flag")!=null && req.getParameter("flag").equals("1")){
         	Database.connectToMainBase();
-        	System.out.println("!!!!!!!!!!!!!!!!!!!!");
         	DBWrapper newRec= new DBWrapper();
         	newRec.setName(req.getParameter("id"));
         	newRec.setType(req.getParameter("type"));
