@@ -12,6 +12,7 @@
     <xsl:template name="rightmenu">
         <xsl:call-template name="loginBlock"/>
         <xsl:call-template name="attractionTopBlock"/>
+        <xsl:call-template name="rankingBlock"/>
     </xsl:template>
 
     <xsl:template name="main">
