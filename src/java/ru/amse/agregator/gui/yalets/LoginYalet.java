@@ -35,7 +35,11 @@ public class LoginYalet extends AbstractAgregatorYalet {
 
         if ("YES".equals(logout)) {
             System.out.println("LOGOUT");
-            res.setCookies(new HashMap<String, String>());
+            final HashMap<String, String> result = new HashMap<String, String>();
+            result.put("email", "");
+            result.put("pwd", "");
+            result.put("uid", "");
+            res.setCookies(result);
             responseMap.put("AUTH", "-1");
             res.add(responseMap);
             return;

@@ -55,7 +55,6 @@ public class AttractionTopBlockYalet implements Yalet {
         } else if (req.getParameter("type").equals("Continent")) {
             return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CONTINENT_ID, id);
         } else if (req.getParameter("type").equals("Country")) {
-            //System.out.println(continentId.toString());
             return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_COUNTRY_ID, id);
         } else if (req.getParameter("type").equals("City")) {
             return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CITY_ID, id);

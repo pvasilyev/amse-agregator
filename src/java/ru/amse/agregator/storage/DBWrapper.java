@@ -33,7 +33,7 @@ public class DBWrapper extends StorageObject{
 	public static final String FIELD_MUSIC = "music";
 	public static final String FIELD_WEBSITE = "website";
 	public static final String FIELD_ROOMS = "rooms";
-	public static final String FIELD_CATEGORY = "category";
+	public static final String FIELD_CATEGORY = "keywords";
 	public static final String FIELD_SOURCE_URL = "source_url";
 	public static final String FIELD_RATING = "rating";
 	public static final String FIELD_INFO = "info";
@@ -53,6 +53,7 @@ public class DBWrapper extends StorageObject{
 	public static final String TYPE_HOTEL = "Hotel";
 	public static final String TYPE_USER = "User";		
 	public static final String TYPE_COMMENT = "Comment";
+    public static final String TYPE_CATEGORY = "Category";
 	
 	private String myCityName = null;
 	private String myCountryName = null;
@@ -60,9 +61,10 @@ public class DBWrapper extends StorageObject{
 	
     // this field is used in clusterization module to address the object in the whole database
 	private UniqueId myUniqueId = null;
-	
-	
-	public DBWrapper(DBObject dbObject){
+
+
+
+    public DBWrapper(DBObject dbObject){
 		super(dbObject);
 	}
 		
@@ -570,7 +572,7 @@ public class DBWrapper extends StorageObject{
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> getCategArray(){
+	public ArrayList<String> getCategoryArray(){
 		return (ArrayList<String>) myDBObj.get(FIELD_CATEGORY);
 	}
 
