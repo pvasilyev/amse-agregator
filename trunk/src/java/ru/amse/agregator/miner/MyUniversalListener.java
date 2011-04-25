@@ -112,18 +112,22 @@ public class MyUniversalListener implements ScraperRuntimeListener  {
 	}
 	
 	private ArrayList<String> createImagesArray(String input){
-		
-		if(input == null || input.equals("")){
+        System.out.println(input);
+		if(input == null){
 			return null;
 		}
+
+        if (input.equals("")) {
+            return new ArrayList<String>();
+        }
 		
 		ArrayList<String> images = new ArrayList<String>();
 		
 		if(input.indexOf(';') == -1){
 			if (input.indexOf(' ') == -1){
 				images.add(input);
-			} else{
-				return (ArrayList<String>)Arrays.asList(input.split("[ ;,]"));
+			} else {
+                return new ArrayList<String>(Arrays.asList(input.split("[ ;,]")));
 			}
 		}
 		else{
