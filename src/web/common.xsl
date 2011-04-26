@@ -268,8 +268,8 @@
     </xsl:template>
 
     <xsl:template name="loginBlock">
-        <table width="80%" height="250" cellspacing="25" align="center" valign="middle">
-            <tr align="center">
+        <table width = "100%">
+            <tr align="right">
                 <td>
                     <xsl:if test="//AUTH = -1 or //AUTH = 0">
                         <form action="index.xml" method="POST">
@@ -285,10 +285,9 @@
                     </xsl:if>
 
                     <xsl:if test="//AUTH =2">
-                        Привет юзер с айдишником:
-                        <xsl:value-of select="//uid" disable-output-escaping="yes"/>
+                    	Вы зашли как : <xsl:value-of select="//email"/>
                         <form action="index.xml" method="POST">
-                            <input type="hidden" name="logout" value="YES" /><br/>
+                            <input type="hidden" name="logout" value="YES" />
                             <input type="submit" value="Выход" />
                         </form>
                     </xsl:if>

@@ -126,6 +126,10 @@ final public class ClusterizationProcess {
     }
 
     public static void main(String[] args) {
+    	
+    	Database.connectToDirtyBase();
+    	Database.unificationNames();
+    	
         //set default parameter values
         baseToAddName = Database.DIRTY_DB_NAME;
         shouldDeleteMainDB = false;

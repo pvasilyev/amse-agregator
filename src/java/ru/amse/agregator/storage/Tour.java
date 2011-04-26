@@ -14,7 +14,6 @@ public class Tour extends StorageObject{
 	
 	public Tour(DBObject dbObject){
 		super(dbObject);
-		myDBObj.put(FIELD_MY_ATTRACTION, new ArrayList<ObjectId>());
 	}
 	
 	public Tour(){

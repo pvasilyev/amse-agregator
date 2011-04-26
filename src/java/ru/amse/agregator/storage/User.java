@@ -15,7 +15,6 @@ public class User extends StorageObject{
 	
 	public User(DBObject dbObject){
 		super(dbObject);
-		myDBObj.put(FIELD_MY_TOUR, new ArrayList<ObjectId>());
 	}
 	
 	public User(){
@@ -32,12 +31,12 @@ public class User extends StorageObject{
 	}
 	
 	@SuppressWarnings("unused")
-	private String getLogin(){
+	public String getLogin(){
 		return (String)myDBObj.get(FIELD_LOGIN);
 	}
 	
 	@SuppressWarnings("unused")
-	private String getName(){
+	public String getName(){
 		return (String)myDBObj.get(FIELD_NAME);
 	}
 	
