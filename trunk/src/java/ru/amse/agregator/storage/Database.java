@@ -719,14 +719,15 @@ public class Database {
 
         for (DBWrapper object : topObjectsInContinent) {
             if (object != null) {
-                set.addAll(object.getCategoryArray());
+            	if (object.getCategoryArray()!=null)
+            		set.addAll(object.getCategoryArray());
             }
             if (set.size() > count) {
                 break;
             }
         }
-
-        result.addAll(set);
+        if (set != null)
+        	result.addAll(set);
         return result;
     }
 

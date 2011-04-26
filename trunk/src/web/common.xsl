@@ -19,9 +19,13 @@
                     }
                 </script>
               <script type="text/javascript">
-                    function addClicked() {
-                         document.addForm.submit();
-                    }
+                  function addClicked() {
+                        document.addForm.submit();
+                 }
+                 function printClicked() {
+                        document.printForm.submit();
+                  }
+                    
               </script>
               <xsl:call-template name="scriptBlock"/>
                <!-- <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAagSBU5_3ClK3meB5PAzQQxQaJtG5tQXIO35ApQMeCJS2-9685xRI2v9YCAn2DKbtVFr0yib1PjvK0w"

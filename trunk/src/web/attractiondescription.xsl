@@ -104,7 +104,7 @@
                             </a>
                         </xsl:if>
                         |
-                        <form id="addForm" name="addForm" method="GET" action="attractiondescription.xml">
+                       <form id="addForm" name="addForm" method="GET" action="attractiondescription.xml">
                    					 <input type="hidden" name="id" value="{id}"/>
                    					 <input type="hidden" name="type" value="{type}"/> 
                    					 <input type="hidden" name="flag" value="1"/>
@@ -113,9 +113,19 @@
                    					 		<xsl:value-of select="//uid"/>
                    					 	</xsl:attribute>
                    					 </input>
-               					</form>
+               			</form>
+               			<a class="buttonLink" onclick="addClicked()">Добавить в избранное</a>
+               			|
+                        <form id="printForm" name="printForm" method="GET" action="forPrint.xml">
+                   					 <input type="hidden" name="user">
+                   					 	<xsl:attribute name="value">
+                   					 		<xsl:value-of select="//uid"/>
+                   					 	</xsl:attribute>
+                   					 </input>
+               			</form>
+               			<a class="buttonLink" onclick="printClicked()">Печатать избранное</a>
                             	
-                					<a class="buttonLink" onclick="addClicked()">Добавить в избранное</a>
+                					
             					
                     </xsl:if>
                 </td>

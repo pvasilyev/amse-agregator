@@ -3,6 +3,18 @@
 <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 <xsl:template match="/">
 <html>
+ <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="ru"/>
+    <title>AMSE Туризм</title>
+    <link href="style.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript">
+    	function deleteClicked(x) {
+        	document.getElementById(x).submit();
+        }
+        
+    </script>
+  </head>
   <body>  	
   	<xsl:apply-templates select="//data[@id='forPrint']//record" mode="print-xml"/>
   </body>
@@ -18,5 +30,26 @@
     	<p><b> INFO : </b><xsl:value-of select="cells/cell[4]/value" disable-output-escaping="yes"/>
         </p>
     </xsl:if>
-  </xsl:template>
+    <form name="deleteForm" method="GET" action="forPrint.xml">
+    <xsl:attribute name="id">
+    	<xsl:value-of select="cells/cell[5]/value"/>
+    </xsl:attribute>
+    	<input type="hidden" name="id" value="{id}"/>
+    	<input type="hidden" name="id_attr">
+        	<xsl:attribute name="value">
+            	<xsl:value-of select="cells/cell[5]/value"/>
+            </xsl:attribute>
+        </input>
+    	<input type="hidden" name="type" value="{type}"/> 
+        <input type="hidden" name="user">
+        	<xsl:attribute name="value">
+        		<xsl:value-of select="cells/cell[6]/value"/>
+        	</xsl:attribute>
+    	</input>
+   	</form>
+    <a class="buttonLink" >
+    	<xsl:attribute name="onclick">deleteClicked('<xsl:value-of select="cells/cell[5]/value"/>')
+        </xsl:attribute>
+    Удалить из избранного</a>
+ </xsl:template>
 </xsl:stylesheet>
