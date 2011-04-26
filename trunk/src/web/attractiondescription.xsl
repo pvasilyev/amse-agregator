@@ -102,32 +102,29 @@
                                     Страны континента
                                 </xsl:if>
                             </a>
-                        </xsl:if>
-                        |
-                       <form id="addForm" name="addForm" method="GET" action="attractiondescription.xml">
-                   					 <input type="hidden" name="id" value="{id}"/>
-                   					 <input type="hidden" name="type" value="{type}"/> 
-                   					 <input type="hidden" name="flag" value="1"/>
-                   					 <input type="hidden" name="user">
-                   					 	<xsl:attribute name="value">
-                   					 		<xsl:value-of select="//uid"/>
-                   					 	</xsl:attribute>
-                   					 </input>
-               			</form>
-               			<a class="buttonLink" onclick="addClicked()">Добавить в избранное</a>
-               			|
-                        <form id="printForm" name="printForm" method="GET" action="forPrint.xml">
-                   					 <input type="hidden" name="user">
-                   					 	<xsl:attribute name="value">
-                   					 		<xsl:value-of select="//uid"/>
-                   					 	</xsl:attribute>
-                   					 </input>
-               			</form>
-               			<a class="buttonLink" onclick="printClicked()">Печатать избранное</a>
-                            	
-                					
-            					
-                    </xsl:if>
+                        </xsl:if>                  	
+                	</xsl:if>
+                	<xsl:if test="//AUTH != -1 and //AUTH != 0">
+                	
+                	<form id="addForm" name="addForm" method="GET" action="attractiondescription.xml">
+                   		<input type="hidden" name="id" value="{id}"/>
+                   		<input type="hidden" name="type" value="{type}"/> 
+       					<input type="hidden" name="flag" value="1"/>
+       					<input type="hidden" name="user">
+       					 	<xsl:attribute name="value">
+       					 		<xsl:value-of select="//uid"/>
+       					 	</xsl:attribute>
+       					 </input>
+   					</form>
+		   			<a class="buttonLink" onclick="addClicked()"><FONT size = "2"> Добавить в избранное</FONT></a> | <a class="buttonLink" onclick="printClicked()"><FONT size = "2"> Печатать избранное</FONT></a>
+               		 <form id="printForm" name="printForm" method="GET" action="forPrint.xml">
+		       					 <input type="hidden" name="user">
+		       					 	<xsl:attribute name="value">
+		       					 		<xsl:value-of select="//uid"/>
+		       					 	</xsl:attribute>
+		       					 </input>
+		   			</form> 
+               		</xsl:if>
                 </td>
             </tr>
             <tr>
