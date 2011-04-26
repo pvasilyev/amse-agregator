@@ -782,34 +782,30 @@ public class Database {
 				keys.put(DBWrapper.FIELD_RATING,1);
 				myDB.getCollection(collectionname).ensureIndex(keys);
 
-				if(collectionname.equals(COLLECTION_CITIES) 
-						|| collectionname.equals(COLLECTION_CONTINENTS) 
-						|| collectionname.equals(COLLECTION_COUNTRIES)){					
-					keys = new BasicDBObject();
-					keys.put(DBWrapper.FIELD_NAME,1);
-					myDB.getCollection(collectionname).ensureIndex(keys);
-					
-					keys = new BasicDBObject();
-					keys.put(DBWrapper.FIELD_NAME,1);
-					keys.put(DBWrapper.FIELD_TYPE,1);
-					myDB.getCollection(collectionname).ensureIndex(keys);
-					
-					keys = new BasicDBObject();
-					keys.put(DBWrapper.FIELD_NAME,1);
-					keys.put(DBWrapper.FIELD_CITY_ID,1);
-					myDB.getCollection(collectionname).ensureIndex(keys);
-					
-					keys = new BasicDBObject();
-					keys.put(DBWrapper.FIELD_NAME,1);
-					keys.put(DBWrapper.FIELD_COUNTRY_ID,1);
-					myDB.getCollection(collectionname).ensureIndex(keys);
-					
-					keys = new BasicDBObject();
-					keys.put(DBWrapper.FIELD_NAME,1);
-					keys.put(DBWrapper.FIELD_CONTINENT_ID,1);
-					myDB.getCollection(collectionname).ensureIndex(keys);
-				}
-				
+                keys = new BasicDBObject();
+                keys.put(DBWrapper.FIELD_NAME,1);
+                myDB.getCollection(collectionname).ensureIndex(keys);
+
+                keys = new BasicDBObject();
+                keys.put(DBWrapper.FIELD_NAME,1);
+                keys.put(DBWrapper.FIELD_TYPE,1);
+                myDB.getCollection(collectionname).ensureIndex(keys);
+
+                keys = new BasicDBObject();
+                keys.put(DBWrapper.FIELD_NAME,1);
+                keys.put(DBWrapper.FIELD_CITY_ID,1);
+                myDB.getCollection(collectionname).ensureIndex(keys);
+
+                keys = new BasicDBObject();
+                keys.put(DBWrapper.FIELD_NAME,1);
+                keys.put(DBWrapper.FIELD_COUNTRY_ID,1);
+                myDB.getCollection(collectionname).ensureIndex(keys);
+
+                keys = new BasicDBObject();
+                keys.put(DBWrapper.FIELD_NAME,1);
+                keys.put(DBWrapper.FIELD_CONTINENT_ID,1);
+                myDB.getCollection(collectionname).ensureIndex(keys);
+
 			}
 
 		}
