@@ -26,7 +26,6 @@ public class ForPrintYalet extends AbstractAgregatorYalet {
 		attr.setType(Database.COLLECTION_ATTRACTIONS);
 		Database.add(attr);
 		tour.addAttraction(attr.getId());
-		tour.addAttraction(attr.getId());
 		Database.addTour(tour);
 		ArrayList<ObjectId> allArch = tour.getAttraction();
 		for (ObjectId id : allArch) {
@@ -55,6 +54,9 @@ public class ForPrintYalet extends AbstractAgregatorYalet {
 			} else {
 				newRecord.addCell("info", " ");
 			}
+			newRecord.addCell("id_attr", id.toString());
+			newRecord.addCell("id_user", req.getParameter("user"));
+			System.out.println(id.toString());
 			webRes.add(newRecord);
 
 		}

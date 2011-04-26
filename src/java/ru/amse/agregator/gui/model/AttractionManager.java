@@ -88,6 +88,13 @@ public class AttractionManager {
 
             if (tmp != null) {
                 String withoutTags = HtmlTools.clearString(tmp);
+                System.out.println(withoutTags);
+                withoutTags = withoutTags.replaceAll("<tr.*>", "<br/>");
+                withoutTags = withoutTags.replaceAll("<td.*>", "<br/>");
+                withoutTags = withoutTags.replaceAll("<br/>", "~~~~~~~~~");
+                withoutTags = withoutTags.replaceAll("[(</.*>)(<.*>)]", "");
+                withoutTags = withoutTags.replaceAll( "~~~~~~~~~","<br/>");
+                System.out.println(withoutTags);
                 if (withoutTags.length() > 300) {
                     attraction.setDescription(new String(withoutTags.substring(0, 300) + " ..."));
                 } else {
@@ -222,6 +229,14 @@ public class AttractionManager {
                     for (String str : ar) {
                         StringBuffer sb = new StringBuffer();
                         if (str.length() > 400) {
+                        	 System.out.println(str);
+                        	 str = str.replaceAll("<tr.*>", "<br/>");
+                        	 str = str.replaceAll("<td.*>", "<br/>");
+                        	 str = str.replaceAll("<br/>", "~~~~~~~~~");
+                        	 str = str.replaceAll("</.*>", "");
+                        	 str = str.replaceAll("<.*>", "");
+                        	 str = str.replaceAll( "~~~~~~~~~","<br/>");
+                             System.out.println(str);
                             sb.append(str.substring(0, 400));
                             sb.append("...");
                         } else {
