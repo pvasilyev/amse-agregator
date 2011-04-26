@@ -8,6 +8,7 @@ import ru.amse.agregator.gui.model.Record;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,8 +56,7 @@ public class RankingBlockYalet implements Yalet {
         } else if (req.getParameter("type").equals("City")) {
             return Database.getTopNCategoriesInCity(10, id);
         } else {
-            ObjectId cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ATTRACTION). getCityId();
-            return Database.getTopNCategoriesInCity(10, cityId);
+            return new ArrayList<String>();
         }
     }
 
