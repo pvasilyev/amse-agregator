@@ -22,6 +22,7 @@ import java.util.Map;
 public class RankingBlockYalet implements Yalet {
 
     public void process(InternalRequest req, InternalResponse res) {
+        try {
         Database.connectToMainBase();
         final ArrayList<Record> webRes = new ArrayList<Record>();
         ArrayList<String> rankings = new ArrayList<String>();
@@ -39,6 +40,7 @@ public class RankingBlockYalet implements Yalet {
         }
 
         res.add(webRes);
+        } catch (Exception e) {}
 
     }
 

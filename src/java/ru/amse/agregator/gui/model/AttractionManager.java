@@ -276,18 +276,27 @@ public class AttractionManager {
                 String name = dbWrapper.getStaticContinentName();
                 if ((id != null)&& (!name.equals(""))) {
                     arrayList.add(new Cell(name, id.toString()));
+                    arrayList.add(new Cell("type", "Continent"));
                 }
-                attraction.setParents(arrayList);
+                if (arrayList != null) attraction.setParents(arrayList);
                 return attraction;
             } else if (type.equals("City")) {
-                DBWrapper parent = Database.getDBObjectByIdAndTypeAndIncRating(dbWrapper.getCountryId(), "Country");
-                if (parent != null) {
-                    arrayList.add(new Cell(parent.getStaticContinentName(), parent.getContinentId().toString()));
+                ObjectId id = dbWrapper.getCountryId();
+                String name = dbWrapper.getStaticCountryName();
+                if ((id != null)&& (!name.equals(""))) {
+                    arrayList.add(new Cell(name, id.toString()));
+                    arrayList.add(new Cell("type", "Country"));
                 }
-                arrayList.add(new Cell(dbWrapper.getStaticCountryName(), dbWrapper.getCountryId().toString()));
-                attraction.setParents(arrayList);
+                if (arrayList != null) attraction.setParents(arrayList);
                 return attraction;
             } else {
+                ObjectId id = dbWrapper.getCityId();
+                String name = dbWrapper.getStaticCityName();
+                if ((id != null)&& (!name.equals(""))) {
+                    arrayList.add(new Cell(name, id.toString()));
+                    arrayList.add(new Cell("type", "City"));
+                }
+                if (arrayList != null) attraction.setParents(arrayList);
                 return attraction;
             }
         } catch (Exception e) {

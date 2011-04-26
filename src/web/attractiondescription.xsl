@@ -210,7 +210,9 @@
 
                     <!-- Images -->
                     <xsl:if test="images-array != '' and description-array=''">
+                        <div style="margin-left: 53px;">
                         <xsl:apply-templates select=".//images-array//string" mode="images-array"/>
+                        </div>
                     </xsl:if>
 
                     <!-- List of attractions -->
@@ -243,7 +245,7 @@
 
     <xsl:template match="string" mode="images-array">
         <img src="{.}" class="big_image"/>
-        <span style="padding:0px 10px;"/>
+        <span style="padding:0px 15px;"/>
     </xsl:template>
 
     <xsl:template match="string" mode="description-array">
@@ -259,15 +261,21 @@
 
     <xsl:template match="cell" mode="name">
         <xsl:choose>
-            <xsl:when test="position() = 1">
-                <a class="title" href="attractiondescription.xml?id={value}&amp;type=Continent&amp;tab=list">
-                    <xsl:value-of select="name"/>
+            <xsl:when test="value = 'Continent'">
+                <a class="title" href="attractiondescription.xml?id={preceding-sibling::cell/value}&amp;type=Continent&amp;tab=list">
+                    <xsl:value-of select="preceding-sibling::cell/name"/>
                 </a>
                 <xsl:text> - </xsl:text>
             </xsl:when>
-            <xsl:when test="position() = 2">
-                <a class="title" href="attractiondescription.xml?id={value}&amp;type=Country&amp;tab=all">
-                    <xsl:value-of select="name"/>
+            <xsl:when test="value = 'Country'">
+                <a class="title" href="attractiondescription.xml?id={preceding-sibling::cell/value}&amp;type=Country&amp;tab=list">
+                    <xsl:value-of select="preceding-sibling::cell/name"/>
+                </a>
+                <xsl:text> - </xsl:text>
+            </xsl:when>
+            <xsl:when test="value = 'City'">
+                <a class="title" href="attractiondescription.xml?id={preceding-sibling::cell/value}&amp;type=City&amp;tab=list">
+                    <xsl:value-of select="preceding-sibling::cell/name"/>
                 </a>
                 <xsl:text> - </xsl:text>
             </xsl:when>
