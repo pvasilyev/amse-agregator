@@ -38,7 +38,7 @@ public class Database {
 	public static final String 	COLLECTION_COMMENTS = "comments";
 	public static final String 	COLLECTION_ATTRACTIONS = "attractions";
 	public static final String  COLLECTION_TOURS = "tours";
-    public static final String  COLLECTION_CATEGORIES = "categories";
+    public static final String  COLLECTION_CATEGORIES = "keywords";
 
 	public static ArrayList<User> getAllUsers(){
 		DBCollection collection = myDB.getCollection(COLLECTION_USERS);
@@ -477,7 +477,7 @@ public class Database {
 			return null;
 		}	
 	}
-	
+
 	public static void unificationNames() {
 		Set<String> collections = myDB.getCollectionNames();
 		for (String collection : collections) {
@@ -592,7 +592,7 @@ public class Database {
 	//------------------------
 	//Methods for Gui
 	
-	public static ArrayList<DBWrapper> getAllContinents(){
+	public static ArrayList<DBWrapper> getAllContinents() {
 		BasicDBObject orderBy = new BasicDBObject(DBWrapper.FIELD_NAME, 1);
 		return findAllInCollection(COLLECTION_CONTINENTS,
                 new BasicDBObject(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_CONTINENT), orderBy);
@@ -648,20 +648,21 @@ public class Database {
 	}
 
     public static ArrayList<String> getTopNCategories(int count) {
-        final ArrayList<String> result = new ArrayList<String>();
         final Set<String> set = new HashSet<String>();
-        final Collection<DBWrapper> topObjects = getTopNWithType(count, DBWrapper.TYPE_ATTRACTION);
+        if (myDB != null) {
+            BasicDBObject criteria = new BasicDBObject();
+			criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_ARCH_ATTRACTION);
+            DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
 
-        for (DBWrapper object : topObjects) {
-        	if (object.getCategoryArray() != null)
-            set.addAll(object.getCategoryArray());
-            if (set.size() > count) {
-                break;
+            while (cur.hasNext() && set.size() < count) {
+                DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+                if (dbWrapper.getCategoryArray() != null) {
+                    set.addAll(dbWrapper.getCategoryArray());
+                }
             }
         }
-        if (set != null)
-        	result.addAll(set);
-        return result;
+        return new ArrayList<String>(new ArrayList<String>(set).subList(0, count - 1));
     }
 
     public static ArrayList<String> getTopNCategoriesInContinent(int count, final ObjectId objectIdInContinent) {
@@ -691,10 +692,8 @@ public class Database {
         final ArrayList<String> result = new ArrayList<String>();
         final Set<String> set = new HashSet<String>();
         final Collection<DBWrapper> topObjectsInContinent =
-                getTopNWithKeyValue(count,
-                                    DBWrapper.TYPE_ATTRACTION,
-                                    DBWrapper.FIELD_COUNTRY_ID,
-                                    objectIdInCountry);
+                getAllDBObjectsWithKeyValue(DBWrapper.FIELD_COUNTRY_ID,
+                                    objectIdInCountry.toString());
 
         for (DBWrapper object : topObjectsInContinent) {
             if (object != null) {
