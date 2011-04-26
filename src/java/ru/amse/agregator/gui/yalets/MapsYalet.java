@@ -1,19 +1,16 @@
 package ru.amse.agregator.gui.yalets;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-
-
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
-
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
-
 import ru.amse.agregator.gui.model.Attraction;
 import ru.amse.agregator.gui.model.Record;
 import ru.amse.agregator.storage.DBWrapper;
 import ru.amse.agregator.storage.Database;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class MapsYalet extends AbstractAgregatorYalet {
     Logger log = Logger.getLogger(ShowAttractionsYalet.class);
@@ -54,7 +51,7 @@ public class MapsYalet extends AbstractAgregatorYalet {
                 					String str = obj.getAddress();
                 			        
                 					str = str.replaceAll("<br/>", " ");
-                					str = str.replaceAll("[\\s]{1,}", " ");
+                					str = str.replaceAll("[\\s]+", " ");
                 					
                 					newRecord.addCell("info",str);
                 				}

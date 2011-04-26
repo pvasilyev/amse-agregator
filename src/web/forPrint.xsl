@@ -16,7 +16,7 @@
     </script>
   </head>
   <body>  	
-  	<xsl:apply-templates select="//data[@id='forPrint']//record" mode="print-xml"/>
+  	<xsl:apply-templates select="//data[@id='forPrint']/collection/record" mode="print-xml"/>
   </body>
   </html>
 </xsl:template>
