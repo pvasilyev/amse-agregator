@@ -1,6 +1,5 @@
 package ru.amse.agregator.gui.model;
 
-import net.sf.saxon.expr.PairIterator;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import ru.amse.agregator.searcher.Searcher;
@@ -10,8 +9,9 @@ import ru.amse.agregator.storage.Database;
 import ru.amse.agregator.utils.HtmlTools;
 
 import java.io.File;
-import java.util.*;
-import java.util.jar.Attributes;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AttractionManager {
     Logger log = Logger.getLogger(AttractionManager.class);
@@ -205,9 +205,12 @@ public class AttractionManager {
                 for (int i = 0; i < descArray.size(); ++i) {
                     sb.append(descArray.get(i));
                     sb.append("<hr>");
-                    sb.append("<small>©");
-                    sb.append(srcArray.get(i));
-                    sb.append("</small><br/><br/>");
+                    if(srcArray.size() > i){
+                        sb.append("<small>©");
+                        sb.append(srcArray.get(i));
+                        sb.append("</small><br/><br/>");
+                    }
+
                 }
                 attraction.setDescription(sb.toString());
 
@@ -240,9 +243,12 @@ public class AttractionManager {
                             sb.append(str);
                         }
                         sb.append("<hr>");
-                        sb.append("<small>©");
-                        sb.append(sr.get(0));
-                        sb.append("</small><br/><br/>");
+                        if(!sr.isEmpty()){
+                            sb.append("<small>©");
+                            sb.append(sr.get(0));
+                            sb.append("</small><br/><br/>");
+                        }
+
                         arrayList.add(sb.toString());
                     }
                     attraction.setDescriptionArray(arrayList);
