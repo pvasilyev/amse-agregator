@@ -650,7 +650,7 @@ public class Database {
     public static ArrayList<String> getTopNCategories(int count) {
         final ArrayList<String> result = new ArrayList<String>();
         final Set<String> set = new HashSet<String>();
-        final Collection<DBWrapper> topObjects = getTopNWithType(count * 100, DBWrapper.TYPE_ATTRACTION);
+        final Collection<DBWrapper> topObjects = getTopNWithType(count, DBWrapper.TYPE_ATTRACTION);
 
         for (DBWrapper object : topObjects) {
         	if (object.getCategoryArray() != null)
