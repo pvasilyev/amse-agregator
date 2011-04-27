@@ -22,25 +22,28 @@ import java.util.Map;
 public class RankingBlockYalet implements Yalet {
 
     public void process(InternalRequest req, InternalResponse res) {
+        System.out.println("tro-lo-lo");
         try {
-        Database.connectToMainBase();
-        final ArrayList<Record> webRes = new ArrayList<Record>();
-        ArrayList<String> rankings = new ArrayList<String>();
+            Database.connectToMainBase();
+            final ArrayList<Record> webRes = new ArrayList<Record>();
+            ArrayList<String> rankings = new ArrayList<String>();
+            System.out.println("tro-lo-lo");
+            if (requestFromWorld(req)) {
+                rankings = Database.getTopNCategories(10);
+            } else {
+                rankings = getRankings(req);
+            }
 
-        if (requestFromWorld(req)) {
-            rankings = Database.getTopNCategories(10);
-        } else {
-            rankings = getRankings(req);
+            for (String rank : rankings) {
+                final Record record = new Record();
+                record.addCell("category", rank);
+                webRes.add(record);
+            }
+
+            res.add(webRes);
+        } catch (Exception e) {
+            //
         }
-
-        for (String rank : rankings) {
-            final Record record = new Record();
-            record.addCell("category", rank);
-            webRes.add(record);
-        }
-
-        res.add(webRes);
-        } catch (Exception e) {}
 
     }
 
@@ -58,7 +61,7 @@ public class RankingBlockYalet implements Yalet {
         } else if (req.getParameter("type").equals("City")) {
             return Database.getTopNCategoriesInCity(10, id);
         } else {
-            ObjectId cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ATTRACTION).getCityId();
+            ObjectId cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ARCH_ATTRACTION).getCityId();
             return Database.getTopNCategoriesInCity(10, cityId);
         }
     }

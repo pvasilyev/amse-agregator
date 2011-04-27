@@ -254,7 +254,7 @@ public class AttractionManager {
                     attraction.setDescriptionArray(arrayList);
                 }
             } else if (tab.equals("zoom")) {
-                attraction.setZoom("15");
+                attraction.setZoom("10");
             }
 
             attraction.getParents();
