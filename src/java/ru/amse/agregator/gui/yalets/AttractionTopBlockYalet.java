@@ -18,7 +18,7 @@ public class AttractionTopBlockYalet implements Yalet {
         final String category = req.getParameter("rankingValue");
 //        System.out.println(category);
         if (requestFromWorld(req)) {
-            attractions = Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
+            attractions = Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ARCH_ATTRACTION, category);
         } else {
             attractions = getTopAttractions(req, category);
         }
@@ -49,12 +49,12 @@ public class AttractionTopBlockYalet implements Yalet {
 
     private ArrayList<DBWrapper> getTopAttractions(final InternalRequest req, final String category) {
         if (req == null) {
-            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category) ;
+            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ARCH_ATTRACTION, category) ;
         }
 
         ObjectId id = new ObjectId(req.getParameter("id"));
         if (id == null) {
-            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
+            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ARCH_ATTRACTION, category);
         } else if (req.getParameter("type").equals("Continent")) {
             return Database.getTopNWithKeyValueAndCategory(5,
                     DBWrapper.TYPE_ARCH_ATTRACTION,
