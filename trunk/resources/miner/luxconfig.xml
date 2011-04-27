@@ -159,14 +159,14 @@
 				</script>
 				<case>
 					<if condition='${status.toString().equals("200.0")}'>
-						<var-def name="countryImagess">
+						<var-def name="countryImages">
 							<xpath expression="//tbody/tr/td/img/@src">
 								<var name="loadedData"/>
 							</xpath>
 						</var-def>
 					</if>
 					<else>
-						<var-def name="pictureMuseum"></var-def>
+						<var-def name="countryImages"></var-def>
 					</else>
 				</case>
 				<!-- end validating -->

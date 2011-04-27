@@ -58,7 +58,8 @@ public class RankingBlockYalet implements Yalet {
         } else if (req.getParameter("type").equals("City")) {
             return Database.getTopNCategoriesInCity(10, id);
         } else {
-            return new ArrayList<String>();
+            ObjectId cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ATTRACTION).getCityId();
+            return Database.getTopNCategoriesInCity(10, cityId);
         }
     }
 

@@ -286,7 +286,7 @@
 
                     <xsl:if test="//AUTH =2">
                     	Вы зашли как : <xsl:value-of select="//email"/>
-                        <form action="index.xml" method="POST">
+                        <form action="" method="POST">
                             <input type="hidden" name="logout" value="YES" />
                             <input type="submit" value="Выход" />
                         </form>
@@ -303,24 +303,12 @@
 
 
     <xsl:template name="rankingBlock">
-        <option>
-			<xsl:attribute name="value">
-			<xsl:value-of select="OfficeCode"/>
-			</xsl:attribute>
-			<xsl:value-of select="OfficeName"/>
-		</option>
         <table width="80%" height="250" cellspacing="25" align="center" valign="middle">
             <tr align="center">
                 <td>
-                    <form action="index.xml" method="POST">
-                        <select name="asd">
-                            <option>
-                                OfficeCode
-                            </option>
-                            <option>
-                                PostCode
-                            </option>
-                            <xsl:apply-templates select="page/data[@id='rankingBlock']/collection/record"/>
+                    <form action="" method="POST">
+                        <select name="rankingValue">
+                            <xsl:apply-templates select="page/data[@id = 'rankingBlock']/collection/record" mode="categoriesTop"/>
                         </select>
                         <br/>
                         <input type="submit" value="Ранжировать"/>
@@ -330,6 +318,11 @@
         </table>
     </xsl:template>
 
+    <xsl:template match="record" mode="categoriesTop">
+        <option>
+            <xsl:value-of select="cells/cell[1]/value"/>
+        </option>
+    </xsl:template>
 
 
 <!--	<xsl:template match="record" mode="googlemap">
