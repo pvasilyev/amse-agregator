@@ -22,18 +22,32 @@ public class CategoriesTest {
         System.out.println("redFort in BUILDING category : " + redFort.isInCategory(Categories.BUILDING));
         System.out.println("redFort in BRIDGE category : " + redFort.isInCategory(Categories.BRIDGE));
 
-//        final ArrayList<String> tops = Database.getTopNCategoriesInContinent(10, new ObjectId("4db5f3742420b08648e35ec0"));
-//        for (String top : tops) {
+//        ArrayList<String> tops = Database.getTopNCategoriesInCountry(10, new ObjectId("4db5f4a72420b08697e45ec0"));
+//        for (final String top : tops) {
 //            System.out.println(top);
 //        }
-
-        final ArrayList<String> tops = Database.getTopNCategories(10);
-        for (String top : tops) {
-            System.out.println(top);
+//        System.out.println("--");
+//        tops = Database.getTopNCategoriesInContinent(10, new ObjectId("4db5f38f2420b08675e35ec0"));
+//        for (final String top : tops) {
+//            System.out.println(top);
+//        }
+//        System.out.println("--");
+//        tops = Database.getTopNCategoriesInCity(10, new ObjectId("4db5f4a82420b08698e45ec0"));
+//        for (final String top : tops) {
+//            System.out.println(top);
+//        }
+//        System.out.println("--");
+//        tops = Database.getTopNCategories(10);
+//        for (final String top : tops) {
+//            System.out.println(top);
+//        }
+        ArrayList<DBWrapper> topWithCat = Database.getTopNWithKeyValueAndCategory(10, DBWrapper.TYPE_ARCH_ATTRACTION,
+                                                    DBWrapper.FIELD_COUNTRY_ID,
+                                                    new ObjectId("4db5f4a72420b08697e45ec0"),
+                                                    "достопримечательности");
+        for (DBWrapper top : topWithCat) {
+            System.out.println(top.getName());
         }
-//        final ArrayList<DBWrapper> allCities = Database.getAllCitiesByCountry(new ObjectId("4db5f4a72420b08697e45ec0"));
-//        Database.getAllDBObjectsWithKeyValue(DBWrapper.FIELD_COUNTRY_ID, "4db5f4a72420b08697e45ec0");
-//        System.out.println(Database.getAllDBObjectsWithKeyValue(DBWrapper.FIELD_COUNTRY_ID, "4db5f4a72420b08697e45ec0").get(0).getName());
     }
 
     public static void main(String[] args) throws IOException {

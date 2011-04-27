@@ -2,6 +2,7 @@ package ru.amse.agregator.storage;
 
 import com.mongodb.*;
 import org.bson.types.ObjectId;
+import ru.amse.agregator.ranking.Categories;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -662,75 +663,76 @@ public class Database {
                 }
             }
         }
-        return new ArrayList<String>(new ArrayList<String>(set).subList(0, count - 1));
+
+        final int upperBound = Math.min(count, set.size());
+
+        return new ArrayList<String>(new ArrayList<String>(set).subList(0, upperBound - 1));
     }
 
-    public static ArrayList<String> getTopNCategoriesInContinent(int count, final ObjectId objectIdInContinent) {
-        final ArrayList<String> result = new ArrayList<String>();
+    public static ArrayList<String> getTopNCategoriesInContinent(int count, final ObjectId continentId) {
         final Set<String> set = new HashSet<String>();
-        final Collection<DBWrapper> topObjectsInContinent =
-                getTopNWithKeyValue(count,
-                        DBWrapper.TYPE_ATTRACTION,
-                        DBWrapper.FIELD_CONTINENT_ID,
-                        objectIdInContinent);
+        if (myDB != null) {
+            BasicDBObject criteria = new BasicDBObject();
+			criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_ARCH_ATTRACTION);
+			criteria.put(DBWrapper.FIELD_CONTINENT_ID, continentId);
+            DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
 
-        for (DBWrapper object : topObjectsInContinent) {
-            if (object != null) {
-            	if (object.getCategoryArray()!=null)
-            		set.addAll(object.getCategoryArray());
-            }
-            if (result.size() > count) {
-                break;
+            while (cur.hasNext() && set.size() < count) {
+                DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+                if (dbWrapper.getCategoryArray() != null) {
+                    set.addAll(dbWrapper.getCategoryArray());
+                }
             }
         }
-        if (set != null)
-        	result.addAll(set);
-        return result;
+
+        final int upperBound = Math.max(Math.min(count, set.size()), 1);
+
+        return new ArrayList<String>(new ArrayList<String>(set).subList(0, upperBound - 1));
     }
 
-    public static ArrayList<String> getTopNCategoriesInCountry(int count, final ObjectId objectIdInCountry) {
-        final ArrayList<String> result = new ArrayList<String>();
+    public static ArrayList<String> getTopNCategoriesInCountry(int count, final ObjectId countryId) {
         final Set<String> set = new HashSet<String>();
-        final Collection<DBWrapper> topObjectsInContinent =
-                getAllDBObjectsWithKeyValue(DBWrapper.FIELD_COUNTRY_ID,
-                                    objectIdInCountry.toString());
+        if (myDB != null) {
+            BasicDBObject criteria = new BasicDBObject();
+			criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_ARCH_ATTRACTION);
+			criteria.put(DBWrapper.FIELD_COUNTRY_ID, countryId);
+            DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
 
-        for (DBWrapper object : topObjectsInContinent) {
-            if (object != null) {
-            	if (object.getCategoryArray()!=null)
-                set.addAll(object.getCategoryArray());
-            }
-            if (set.size() > count) {
-                break;
+            while (cur.hasNext() && set.size() < count) {
+                DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+                if (dbWrapper.getCategoryArray() != null) {
+                    set.addAll(dbWrapper.getCategoryArray());
+                }
             }
         }
-        if (set != null)
-        result.addAll(set);
-        return result;
+
+        final int upperBound = Math.max(Math.min(count, set.size()), 1);
+        return new ArrayList<String>(new ArrayList<String>(set).subList(0, upperBound - 1));
     }
 
 
-    public static ArrayList<String> getTopNCategoriesInCity(int count, final ObjectId objectIdInCity) {
-        final ArrayList<String> result = new ArrayList<String>();
+    public static ArrayList<String> getTopNCategoriesInCity(int count, final ObjectId cityId) {
         final Set<String> set = new HashSet<String>();
-        final Collection<DBWrapper> topObjectsInContinent =
-                getTopNWithKeyValue(count,
-                                    DBWrapper.TYPE_ATTRACTION,
-                                    DBWrapper.FIELD_CITY_ID,
-                                    objectIdInCity);
+        if (myDB != null) {
+            BasicDBObject criteria = new BasicDBObject();
+			criteria.put(DBWrapper.FIELD_TYPE, DBWrapper.TYPE_ARCH_ATTRACTION);
+			criteria.put(DBWrapper.FIELD_CITY_ID, cityId);
+            DBCursor cur = myDB.getCollection(COLLECTION_ATTRACTIONS).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
 
-        for (DBWrapper object : topObjectsInContinent) {
-            if (object != null) {
-            	if (object.getCategoryArray()!=null)
-            		set.addAll(object.getCategoryArray());
-            }
-            if (set.size() > count) {
-                break;
+            while (cur.hasNext() && set.size() < count) {
+                DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+                if (dbWrapper.getCategoryArray() != null) {
+                    set.addAll(dbWrapper.getCategoryArray());
+                }
             }
         }
-        if (set != null)
-        	result.addAll(set);
-        return result;
+
+        final int upperBound = Math.max(Math.min(count, set.size()), 1);
+
+        return new ArrayList<String>(new ArrayList<String>(set).subList(0, upperBound - 1));
     }
 
 
@@ -965,6 +967,62 @@ public class Database {
 	//---------------------------------
 	//--Methods for Clusterization end-
 	//---------------------------------
-    
-    
+
+
+
+    public static ArrayList<DBWrapper> getTopNWithTypeAndCategory(int count,
+                                                                  final String attractionType,
+                                                                  final String category) {
+        if (category == null) {
+            return getTopNWithType(count, attractionType);
+        }
+
+        final ArrayList<DBWrapper> result = new ArrayList<DBWrapper>();
+        if(myDB != null){
+            BasicDBObject criteria = new BasicDBObject();
+            if(!attractionType.equals(DBWrapper.TYPE_ATTRACTION)){
+                criteria.put(DBWrapper.FIELD_TYPE, attractionType);
+            }
+
+            DBCursor cur = myDB.getCollection(typeCollection(attractionType)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(count);
+            while(cur.hasNext()) {
+                DBWrapper dbWrapper = new DBWrapper(cur.next());
+                dbWrapper.initFromDB();
+                if (Categories.isInCategory(dbWrapper, category)) {
+                    result.add(dbWrapper);
+                }
+            }
+        }
+
+
+        return result;
+    }
+
+    public static ArrayList<DBWrapper> getTopNWithKeyValueAndCategory(int count,
+                                                                      String type,
+                                                                      String key,
+                                                                      Object value,
+                                                                      final String category) {
+        if (category == null) {
+            return getTopNWithKeyValue(count, type, key, value);
+        }
+
+        ArrayList<DBWrapper> result = new ArrayList<DBWrapper>();
+		if(myDB != null){
+			BasicDBObject criteria = new BasicDBObject();
+			if(!type.equals(DBWrapper.TYPE_ATTRACTION)){
+				criteria.put(DBWrapper.FIELD_TYPE,type);
+			}
+			criteria.put(key,value);
+			DBCursor cur = myDB.getCollection(typeCollection(type)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(count);
+			while(cur.hasNext()){
+				DBWrapper dbWrapper = new DBWrapper(cur.next());
+				dbWrapper.initFromDB();
+				if (Categories.isInCategory(dbWrapper, category)) {
+                    result.add(dbWrapper);
+                }
+			}
+		}
+		return result;
+    }
 }

@@ -23,7 +23,7 @@ public class Categories {
     private DBWrapper dbObj = null;
 
     public static boolean isInCategory(DBWrapper dbObj, String category) {
-        return dbObj.getKeyWordsArray().contains(category);
+        return (dbObj != null && dbObj.getKeyWordsArray()!= null && dbObj.getKeyWordsArray().contains(category));
     }
 
 }

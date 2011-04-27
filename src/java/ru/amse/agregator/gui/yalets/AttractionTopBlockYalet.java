@@ -15,10 +15,12 @@ public class AttractionTopBlockYalet implements Yalet {
     public void process(InternalRequest req, InternalResponse res) {
         Database.connectToMainBase();
         ArrayList<DBWrapper> attractions;
+        final String category = req.getParameter("rankingValue");
+        System.out.println(category);
         if (requestFromWorld(req)) {
-            attractions = Database.getTopNWithType(5, DBWrapper.TYPE_ATTRACTION);
+            attractions = Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
         } else {
-            attractions = getTopAttractions(req);
+            attractions = getTopAttractions(req, category);
         }
 
         ArrayList<Record> webRes = new ArrayList<Record>();
@@ -45,22 +47,31 @@ public class AttractionTopBlockYalet implements Yalet {
         res.add(webRes);
 	}
 
-    private ArrayList<DBWrapper> getTopAttractions(InternalRequest req) {
+    private ArrayList<DBWrapper> getTopAttractions(final InternalRequest req, final String category) {
         if (req == null) {
-            return Database.getTopNWithType(5, DBWrapper.TYPE_ATTRACTION);
+            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category) ;
         }
+
         ObjectId id = new ObjectId(req.getParameter("id"));
         if (id == null) {
-            return Database.getTopNWithType(5, DBWrapper.TYPE_ATTRACTION);
+            return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
         } else if (req.getParameter("type").equals("Continent")) {
-            return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CONTINENT_ID, id);
+            return Database.getTopNWithKeyValueAndCategory(5,
+                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                                                    DBWrapper.FIELD_CONTINENT_ID, id, category);
         } else if (req.getParameter("type").equals("Country")) {
-            return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_COUNTRY_ID, id);
+            return Database.getTopNWithKeyValueAndCategory(5,
+                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                                                    DBWrapper.FIELD_COUNTRY_ID, id, category);
         } else if (req.getParameter("type").equals("City")) {
-            return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CITY_ID, id);
+            return Database.getTopNWithKeyValueAndCategory(5,
+                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                                                    DBWrapper.FIELD_CITY_ID, id, category);
         } else {
-            Object cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ATTRACTION).getCityId();
-            return Database.getTopNWithKeyValue(5, DBWrapper.TYPE_ATTRACTION, DBWrapper.FIELD_CITY_ID, cityId);
+            Object cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ARCH_ATTRACTION).getCityId();
+            return Database.getTopNWithKeyValueAndCategory(5,
+                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                                                    DBWrapper.FIELD_CITY_ID, cityId, category);
         }
     }
 
