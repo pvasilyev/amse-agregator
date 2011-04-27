@@ -984,13 +984,18 @@ public class Database {
                 criteria.put(DBWrapper.FIELD_TYPE, attractionType);
             }
 
-            DBCursor cur = myDB.getCollection(typeCollection(attractionType)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
-            while(cur.hasNext() && result.size() < count) {
-                DBWrapper dbWrapper = new DBWrapper(cur.next());
-                dbWrapper.initFromDB();
-                if (Categories.isInCategory(dbWrapper, category)) {
-                    result.add(dbWrapper);
+            DBCursor cur = myDB.getCollection(typeCollection(attractionType)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1)).limit(3000);
+
+            try {
+                while(cur.hasNext() && result.size() < count) {
+                    DBWrapper dbWrapper = new DBWrapper(cur.next());
+                    dbWrapper.initFromDB();
+                    if (Categories.isInCategory(dbWrapper, category)) {
+                        result.add(dbWrapper);
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -1014,15 +1019,13 @@ public class Database {
 				criteria.put(DBWrapper.FIELD_TYPE, type);
 			}
 			criteria.put(key, value);
-			DBCursor cur = myDB.getCollection(typeCollection(type)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING,-1));
+			DBCursor cur = myDB.getCollection(typeCollection(type)).find(criteria).sort(new BasicDBObject(DBWrapper.FIELD_RATING, -1));
 			while(cur.hasNext() && result.size() < count){
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				if (Categories.isInCategory(dbWrapper, category)) {
-//                    System.out.println(dbWrapper.getName());
                     result.add(dbWrapper);
                 } else {
-//                    System.out.println(dbWrapper.getName());
                 }
 			}
 		}

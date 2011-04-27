@@ -22,12 +22,10 @@ import java.util.Map;
 public class RankingBlockYalet implements Yalet {
 
     public void process(InternalRequest req, InternalResponse res) {
-        System.out.println("tro-lo-lo");
         try {
             Database.connectToMainBase();
             final ArrayList<Record> webRes = new ArrayList<Record>();
             ArrayList<String> rankings = new ArrayList<String>();
-            System.out.println("tro-lo-lo");
             if (requestFromWorld(req)) {
                 rankings = Database.getTopNCategories(10);
             } else {
