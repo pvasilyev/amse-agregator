@@ -57,21 +57,22 @@ public class AttractionTopBlockYalet implements Yalet {
             return Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
         } else if (req.getParameter("type").equals("Continent")) {
             return Database.getTopNWithKeyValueAndCategory(5,
-                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
-                                                    DBWrapper.FIELD_CONTINENT_ID, id, category);
+                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                    DBWrapper.FIELD_CONTINENT_ID, id, category);
         } else if (req.getParameter("type").equals("Country")) {
+            System.out.println("tro-lo-lo");
             return Database.getTopNWithKeyValueAndCategory(5,
-                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
-                                                    DBWrapper.FIELD_COUNTRY_ID, id, category);
+                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                    DBWrapper.FIELD_COUNTRY_ID, id, category);
         } else if (req.getParameter("type").equals("City")) {
             return Database.getTopNWithKeyValueAndCategory(5,
-                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
-                                                    DBWrapper.FIELD_CITY_ID, id, category);
+                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                    DBWrapper.FIELD_CITY_ID, id, category);
         } else {
             Object cityId = Database.getDBObjectByIdAndType(id, DBWrapper.TYPE_ARCH_ATTRACTION).getCityId();
             return Database.getTopNWithKeyValueAndCategory(5,
-                                                    DBWrapper.TYPE_ARCH_ATTRACTION,
-                                                    DBWrapper.FIELD_CITY_ID, cityId, category);
+                    DBWrapper.TYPE_ARCH_ATTRACTION,
+                    DBWrapper.FIELD_CITY_ID, cityId, category);
         }
     }
 

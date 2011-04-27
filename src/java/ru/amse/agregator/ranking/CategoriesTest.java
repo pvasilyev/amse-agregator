@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class CategoriesTest {
     public void test() {
-        Database.connectToDirtyBase();
-        DBWrapper redFort = Database.getDBObjectByIdAndType(new ObjectId("4db5f37b2420b0864ee35ec0"), DBWrapper.TYPE_ARCH_ATTRACTION);
-        System.out.println(redFort.getKeyWordsArray());
-        System.out.println("redFort in ATTRACTION category : " + redFort.isInCategory(Categories.ATTRACTION));
-        System.out.println("redFort in BUILDING category : " + redFort.isInCategory(Categories.BUILDING));
-        System.out.println("redFort in BRIDGE category : " + redFort.isInCategory(Categories.BRIDGE));
+        Database.connectToMainBase();
+//        DBWrapper redFort = Database.getDBObjectByIdAndType(new ObjectId("4db5f37b2420b0864ee35ec0"), DBWrapper.TYPE_ARCH_ATTRACTION);
+//        System.out.println(redFort.getKeyWordsArray());
+//        System.out.println("redFort in ATTRACTION category : " + redFort.isInCategory(Categories.ATTRACTION));
+//        System.out.println("redFort in BUILDING category : " + redFort.isInCategory(Categories.BUILDING));
+//        System.out.println("redFort in BRIDGE category : " + redFort.isInCategory(Categories.BRIDGE));
 
 //        ArrayList<String> tops = Database.getTopNCategoriesInCountry(10, new ObjectId("4db5f4a72420b08697e45ec0"));
 //        for (final String top : tops) {
@@ -42,12 +42,12 @@ public class CategoriesTest {
 //            System.out.println(top);
 //        }
         ArrayList<DBWrapper> topWithCat = Database.getTopNWithKeyValueAndCategory(10, DBWrapper.TYPE_ARCH_ATTRACTION,
-                                                    DBWrapper.FIELD_COUNTRY_ID,
-                                                    new ObjectId("4db5f4a72420b08697e45ec0"),
+                                                    DBWrapper.FIELD_CONTINENT_ID,
+                                                    new ObjectId("4db6f548b980b08631926585"),
                                                     "достопримечательности");
-        for (DBWrapper top : topWithCat) {
-            System.out.println(top.getName());
-        }
+//        for (DBWrapper top : topWithCat) {
+//            System.out.println(top.getName());
+//        }
     }
 
     public static void main(String[] args) throws IOException {
