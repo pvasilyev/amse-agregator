@@ -3,6 +3,7 @@
 <page>
     <yalet id="attractionTopBlock" />
     <yalet id="countryTopBlock" />
+    <yalet id="rankingBlock" />
     <yalet id="continentSelectBlock" />
     <yalet id="showAttractions"/>
     <yalet id="login" />

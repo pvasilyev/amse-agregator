@@ -45,6 +45,8 @@ public class CategoriesTest {
                                                     DBWrapper.FIELD_CONTINENT_ID,
                                                     new ObjectId("4db6f548b980b08631926585"),
                                                     "достопримечательности");
+
+        System.out.println(Database.getTopNCategories(10));
 //        for (DBWrapper top : topWithCat) {
 //            System.out.println(top.getName());
 //        }

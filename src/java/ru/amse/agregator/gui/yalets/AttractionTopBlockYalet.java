@@ -16,7 +16,7 @@ public class AttractionTopBlockYalet implements Yalet {
         Database.connectToMainBase();
         ArrayList<DBWrapper> attractions;
         final String category = req.getParameter("rankingValue");
-        System.out.println(category);
+//        System.out.println(category);
         if (requestFromWorld(req)) {
             attractions = Database.getTopNWithTypeAndCategory(5, DBWrapper.TYPE_ATTRACTION, category);
         } else {

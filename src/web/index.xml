@@ -5,6 +5,7 @@
     <yalet id="attractionTopBlock" />
     <yalet id="countryTopBlock" />
     <yalet id="continentSelectBlock" />
+    <yalet id="rankingBlock" />
     <yalet id="topCity" />
     <yalet id="login" />
 </page>

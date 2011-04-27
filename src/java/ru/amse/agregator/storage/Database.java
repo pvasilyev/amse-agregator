@@ -1019,7 +1019,7 @@ public class Database {
 				DBWrapper dbWrapper = new DBWrapper(cur.next());
 				dbWrapper.initFromDB();
 				if (Categories.isInCategory(dbWrapper, category)) {
-                    System.out.println(dbWrapper.getName());
+//                    System.out.println(dbWrapper.getName());
                     result.add(dbWrapper);
                 } else {
 //                    System.out.println(dbWrapper.getName());
