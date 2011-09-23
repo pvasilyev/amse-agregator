@@ -172,23 +172,33 @@
     <target name="run_miner" depends="dist"
         description="run mining from sites, which config-files in resources/miner">
         <java dir="${project.dir}" jar="${dist.dir}/miner.jar" fork="true">
+            <jvmarg value="-Xms64m"/>
+            <jvmarg value="-Xmx1750m"/>
             <arg value="resources/miner/" />
         </java>
     </target>
     
     <target name="run_clusterizer" depends="dist"
         description="run clusterization on dirtyDB, and creating mainDB">
-        <java dir="${project.dir}" jar="${dist.dir}/clusterizer.jar" fork="true"/>
-    </target>
+        <java dir="${project.dir}" jar="${dist.dir}/clusterizer.jar" fork="true">
+            <jvmarg value="-Xms64m"/>
+            <jvmarg value="-Xmx750m"/>
+        </java>
+   </target>
     
     <target name="run_mongoIndexer" depends="dist"
         description="run mongo-indexation on dirty and mainDB">
-        <java dir="${project.dir}" jar="${dist.dir}/mongoIndexer.jar" fork="true" />
-    </target>
+        <java dir="${project.dir}" jar="${dist.dir}/mongoIndexer.jar" fork="true">
+            <jvmarg value="-Xms64m"/>
+            <jvmarg value="-Xmx750m"/>
+        </java>
+   </target>
     
     <target name="run_indexer" depends="dist"
         description="run indexation on mainDB, and creating index-files in build/index">
         <java dir="${project.dir}" jar="${dist.dir}/indexer.jar" fork="true">
+            <jvmarg value="-Xms64m"/>
+            <jvmarg value="-Xmx750m"/>
             <arg value="-n" />
             <arg value="--dir" />
             <arg value="${index.dir}" />

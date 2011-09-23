@@ -36,16 +36,16 @@ public class DataCleaner extends DefaultHandler {
     		
     		if(goodTags.contains(qName.toLowerCase())){
     			if(!qName.toLowerCase().equals("br"))
-    				result.append("<" + qName + " class='my" + qName + "'>");
+    				result.append("<" + qName + " class='my" + qName + "'> ");
     			else
-    				result.append("<" + qName + "/>");
+    				result.append("<" + qName + "/> ");
     		}
     }
     
     public void endElement (String uri, String name, String qName){
     	
     	if(goodTags.contains(qName.toLowerCase()) && !qName.toLowerCase().equals("br"))
-			result.append("</" + qName + ">");
+			result.append("</" + qName + "> ");
     	
     }
     

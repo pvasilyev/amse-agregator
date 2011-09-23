@@ -229,15 +229,18 @@ public class AttractionManager {
                     ArrayList<String> ar = dbwr.getDescriptionArray();
                     ArrayList<String> sr = dbwr.getSourceUrlArray();
                     for (String str : ar) {
-                        StringBuffer sb = new StringBuffer();
+                        StringBuilder sb = new StringBuilder();
                         if (str.length() > 400) {
+                            System.out.println("str.length = " + str.length());
+                            final String subString = str.substring(0, 350);
+                            System.out.println("str.substr = " + subString);
                         	 str = str.replaceAll("<tr.*>", "<br/>");
                         	 str = str.replaceAll("<td.*>", "<br/>");
                         	 str = str.replaceAll("<br/>", "~~~~~~~~~");
                         	 str = str.replaceAll("</.*>", "");
                         	 str = str.replaceAll("<.*>", "");
                         	 str = str.replaceAll( "~~~~~~~~~","<br/>");
-                            sb.append(str.substring(0, 400));
+                            sb.append(subString);
                             sb.append("...");
                         } else {
                             sb.append(str);
