@@ -6,7 +6,7 @@
 Для mongo-админки надо :
   * поставить apache2
   * поставить php5
-  * скачать файлик {{{moadmin.php}}} и положить его себе в {{{/var/www/}}}
+  * скачать файлик *{{{moadmin.php}}}* [http://www.phpmoadmin.com/ с официального сайта] и положить его себе в *{{{/var/www/}}}*
 
 == Обо всем по порядку ==
 
@@ -18,3 +18,14 @@ sudo apt-get install php5 php5-dev php-pear apache2
 {{{
 sudo pecl install mongo
 }}}
+  # Выкачиваем файлик с php-шкой и кладем ее себе в *{{{/var/www/}}}*
+{{{
+wget -O moadmin.zip http://www.phpmoadmin.com/file/phpmoadmin.zip
+unzip moadmin.zip
+sudo mv moadmin.php /var/www/
+}}}
+  # Перезапускаем сервер apache:
+{{{
+sudo /etc/init.d/apache2 restart 
+}}}
+  # Радуемся жизни по адресу [http://127.0.0.1:8080/moadmin.php]
