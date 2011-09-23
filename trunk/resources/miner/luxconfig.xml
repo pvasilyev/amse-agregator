@@ -108,7 +108,8 @@
 					 </xpath>
 				</var-def>
 				
-       	        <var-def name="loadedLinkData">
+       	        <var-def name="loadedLinkData"/>
+       	        <var-def name="validated"/>
 					<loop item="photoUrl" index="i" filter="unique">
 						<list>
 							<var name="loadedLinksData"/>
@@ -123,28 +124,27 @@
 						</script>
 						<case>
 							<if condition='${status.toString().equals("200.0")}'>
-								<script return='photoUrl.toString() + &quot;;&quot;'/>
+<!--								<script return='photoUrl.toString() + &quot;;&quot;'/>-->
+								<script language="javascript">
+									<![CDATA[ 
+										var loaded = validated.toString();
+										var b = "http://www.luxe.ru";
+										var pUrl = photoUrl.toString().replace("thumbnails","pictures");
+										var result = validated + b + pUrl + ";";
+									 ]]>
+									 sys.defineVariable("loadedLinkData", result.toString(), true);
+								</script>
 							</if>
 						</case>
 						<!-- end validating-->
 				</body>
 				</loop>
+				
+				
+				<var-def name="countryImages">
+					<var name="loadedLinkData"/>
 				</var-def>
 				
-		
-				<script language="javascript">
-					<![CDATA[
-					var b = "http://www.luxe.ru";
-					var l = loadedLinkData.toArray();
-					var i = 0;
-					var a = new Array();
-					while(i < l.length ){
-						a.push(b.concat(l[i].toString()));
-						i++;
-					}
-				   ]]>
-				 	sys.defineVariable("countryImages",a.join(";"),true);
-				</script>
 			</if>
 
 			<else>				
@@ -284,7 +284,8 @@
 							 </xpath>
 						</var-def>
 						
-						<var-def name="loadedLinkData">
+						<var-def name="loadedLinkData"/>						
+						<var-def name="validated"/>						
 							<loop item="photoUrl" index="i" filter="unique">
 								<list>
 									<var name="loadedLinksData"/>
@@ -299,27 +300,26 @@
 								</script>
 								<case>
 									<if condition='${status.toString().equals("200.0")}'>
-										<script return='photoUrl.toString() + &quot;;&quot;'/>
+<!--										<script return='photoUrl.toString() + &quot;;&quot;'/> -->
+										<script language="javascript">
+											<![CDATA[ 
+												var loaded = validated.toString();
+												var b = "http://www.luxe.ru";
+												var pUrl = photoUrl.toString().replace("thumbnails","pictures");
+												var result = loaded + b + pUrl + ";";
+											 ]]>
+											 sys.defineVariable("loadedLinkData", result.toString(), true);
+										</script>
 									</if>
 								</case>
 								<!-- end validating-->
 							</body>
 							</loop>
+												
+						<var-def name="cityImages">
+							<var name="loadedLinkData"/>
 						</var-def>
 						
-						<script language="javascript">
-							<![CDATA[
-							var b = "http://www.luxe.ru";
-							var l = loadedLinkData.toArray();
-							var i = 0;
-							var a = new Array();
-							while(i < l.length ){
-								a.push(b.concat(l[i].toString()));
-								i++;
-							}
-						   ]]>
-						 	sys.defineVariable("cityImages",a.join(";"),true);
-						</script>
 					</if>
 		
 					<else>
