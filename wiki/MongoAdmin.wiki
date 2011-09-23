@@ -34,4 +34,4 @@ sudo mv moadmin.php /var/www/
 {{{
 sudo /etc/init.d/apache2 restart 
 }}}
-  # Радуемся жизни по адресу [http://127.0.0.1:8080/moadmin.php]
+  # Радуемся жизни по адресу [http://127.0.0.1/moadmin.php]
