@@ -18,6 +18,11 @@ sudo apt-get install php5 php5-dev php-pear apache2
 {{{
 sudo pecl install mongo
 }}}
+  # Подключить расширение mongo в php; для этого надо прописать строчку "extension=mongo.so" в конец файла php.ini:
+{{{
+sudo vim /etc/php5/apache2/php.ini
+}}}
+  # Сохраняем, закрываем
   # Выкачиваем файлик с php-шкой и кладем ее себе в *{{{/var/www/}}}*
 {{{
 wget -O moadmin.zip http://www.phpmoadmin.com/file/phpmoadmin.zip
