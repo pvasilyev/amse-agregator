@@ -15,11 +15,12 @@
     </var-def>
    
     
-    <loop item="linkCountry" filter="unique" empty = "yes" >
+    <loop item="linkCountry" filter="1-186" empty = "yes" >
         <list>
                <var name="listCountry"/>
         </list>
         <body>
+            <try><body>
             <empty>
             <var-def name="countryContent">
                 <html-to-xml>
@@ -104,7 +105,8 @@
                 <list>
                     <var name="linkForCityCountry"/>
                 </list>
-                <body>    
+                <body>
+                    <try><body>    
                      <empty>
                     <var-def name="сityContent">
                             <html-to-xml>
@@ -152,6 +154,8 @@
 								<body>
 									<empty>
 									<!-- validate city image -->
+									<try><body>
+									<case><if condition='${!((photoUrl == null) || ("".equals(photoUrl.toString())))}'>
 		                    		<var-def name="checkUrl">
  										<http url='${photoUrl.toString().replaceAll("/small","").replaceAll("\n",";")}'/>
 									</var-def>
@@ -170,6 +174,9 @@
 				                    		</script>
 										</if>
 									</case>
+									</if></case>
+									</body><catch></catch>
+									</try>
 	                    			<!-- end validating-->
 	                    			</empty>
 								</body>
@@ -232,6 +239,7 @@
                                    <var name="nameArch"/>
                             </list>
                             <body>
+                            <try><body>
                                 <script language="javascript">
                                         <![CDATA[
                                                 var str = nameOfArch.toString();
@@ -274,7 +282,7 @@
                                 <var-def name="addToDB">
                                     1
                                 </var-def>
-                                
+                            </body><catch></catch></try>    
                             </body>
                         </loop>
                         
@@ -290,6 +298,7 @@
                                    <var name="nameArch1"/>
                             </list>
                             <body>
+                            <try><body>    
                             	<empty>
                                 <script language="javascript">
                                         <![CDATA[
@@ -401,6 +410,7 @@
                                 </else>
                                 </case>
                                 </empty> 
+                            </body><catch></catch></try>    
                             </body>
                         </loop>
                         <var-def name = "ArchAttractionLinks">
@@ -467,6 +477,8 @@
 														<body>
 															<empty>
 															<!-- validate attr1 image -->
+															<try><body>
+								                    		<case><if condition='${!((photoUrl == null) || ("".equals(photoUrl.toString())))}'>
 								                    		<var-def name="checkUrl">
 						 										<http url='${photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}'/>
 															</var-def>
@@ -485,6 +497,9 @@
 										                    		</script>
 																</if>
 															</case>
+															</if></case>
+												</body><catch></catch>
+												</try>
 							                    			<!-- end validating-->
 							                    			</empty>
 														</body>
@@ -667,6 +682,8 @@
 														<body>
 															<empty>
 															<!-- validate attr2 image -->
+															<try><body>
+															<case><if condition='${!((photoUrl == null) || ("".equals(photoUrl.toString())))}'>
 								                    		<var-def name="checkUrl">
 						 										<http url='${photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}'/>
 															</var-def>
@@ -685,6 +702,9 @@
 										                    		</script>
 																</if>
 															</case>
+															</if></case>
+												</body><catch></catch>
+												</try>
 							                    			<!-- end validating-->
 							                    			</empty>
 														</body>
@@ -821,12 +841,13 @@
                         
                         
                         
-                        
-                    
                      </empty>
+                        
+                   </body><catch></catch></try> 
                 </body>
             </loop>
  </empty>
+        </body><catch></catch></try>
         </body>        
     </loop>
     </empty>
