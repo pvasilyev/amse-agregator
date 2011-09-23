@@ -37,16 +37,14 @@
 		
 		<!-- begin build real continent name -->
 		<var-def name="realContinent">		
-			<xpath expression="//div[@class='divTop10']/h1">
+			<xpath expression="//div[@class='mapTitle']/h2/b">
 				<var name="continentPage"/>
 			</xpath>
 		</var-def>
 		<script language="javascript">
 			<![CDATA[
 				var str = realContinent.toString();
-				var iBegin = str.indexOf("«");
-				var iEnd = str.indexOf("»");
-				var realCont = str.substring(iBegin + 1, iEnd);
+				var realCont = str.replace("<b>", "").replace("</b>", "");
 				if (realCont.equals("Антарктика") || realCont.equals("Океания")) {
 					realCont = "Австралия и Океания";
 				}
@@ -54,7 +52,7 @@
 			sys.defineVariable("returnContinent", realCont, true);
 		</script>
 		<!-- end build real continent name -->
-		
+
 		<!-- begin cycle by countries in "i" continent -->
 			<loop item="country" index="k" empty="yes">
 				<list>
@@ -98,7 +96,25 @@
 						<var name="countryPage"/>
 					</xpath>
 				</var-def>
-				
+
+				<!-- begin countryinfo return -->
+				<var-def name="returnValue">
+					<text>type</text>
+					<template>Country</template>
+									
+					<text>continent_name</text>
+					<template>${returnContinent.toString()}</template>
+
+					<text>name</text>
+					<template>${returnCountry.toString()}</template>
+									
+					<text>source_url</text>
+					<template>${sys.fullUrl(site, country).toString()}</template>
+				</var-def>
+
+				<var-def name="addToDB">1</var-def>
+				<!-- begin country city info return -->
+	
 				<!-- begin cycle by cities in "k" country in "i" continent -->
 				<loop item="city" index="l" empty="yes">
 					<list>
@@ -140,6 +156,27 @@
 								</html-to-xml>
 							</xpath>
 						</var-def>
+
+						<!-- begin city info return -->
+						<var-def name="returnValue">
+							<text>type</text>
+							<template>City</template>
+											
+							<text>continent_name</text>
+							<template>${returnContinent.toString()}</template>
+		
+							<text>country_name</text>
+							<template>${returnCountry.toString()}</template>
+
+							<text>name</text>
+							<template>${returnCity.toString()}</template>
+									
+							<text>source_url</text>
+							<template>${sys.fullUrl(site, city).toString()}</template>
+						</var-def>
+
+						<var-def name="addToDB">1</var-def>
+						<!-- begin city info return -->
 						
 						<!-- begin cycle by pois in "l" city in "k" country in "i" continent -->
 						<loop item="poi" index="m" empty="yes">
@@ -232,19 +269,24 @@
 									<![CDATA[
 										var descA = descriptionA.toArray();
 										var descB = descriptionB.toArray();
-										var desc = new Array();
-										var i = 0;
-										while( i < descA.length) {
-											desc.push(descA[i].toString());
-											i++;
+										var desc = "";
+										var k = 0;
+										while (k < descA.length) {
+											desc = desc + descA[k].toString() + "\n";
+											k++;
 										}
-										i = 0;
-										while( i < descB.length) {
-											desc.push(descB[i].toString());
-											i++;
+										k = 0;
+										while (k < descB.length) {
+											desc = desc + descB[k].toString() + "\n";
+											k++;
+										}
+
+										var k = desc.toString().indexOf("Редактировать?");
+										if (k >= 0) {
+											desc = desc.substring(0, k);
 										}
 									]]>
-									sys.defineVariable("returnDescription", desc.join(";"), true);
+									sys.defineVariable("returnDescription", desc, true);
 								</script>
 								<!-- end concat descriptions -->								
 																

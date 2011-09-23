@@ -142,13 +142,15 @@
                                     </html-to-xml>
                                 </xpath>                 
                             </var-def>
-                            <var-def name="photoCity">
-								<loop item="photoUrl" index="i" filter="unique">
+                            <var-def name="photoCity"/>
+                            <var-def name="validated"/>
+								<loop item="photoUrl" index="i" filter="unique" empty = "yes">
 									<list>
 										<var name="photosCity"/>
 									</list>
 								
 								<body>
+									<empty>
 									<!-- validate city image -->
 		                    		<var-def name="checkUrl">
  										<http url='${photoUrl.toString().replaceAll("/small","").replaceAll("\n",";")}'/>
@@ -158,13 +160,21 @@
 									</script>
 									<case>
 										<if condition='${status.toString().equals("200.0")}'>
-				                    		<script return='photoUrl.toString() + &quot;;&quot;'/>
+				                    		<script language="javascript">
+				                    			<![CDATA[ 
+				                    			var loaded = validated.toString();
+												var pUrl = photoUrl.toString().replaceAll("/small","").replaceAll("\n",";");
+												var result = validated + pUrl + ";";
+				                    			 ]]>
+				                    			 sys.defineVariable("photoCity", result.toString(), true);
+				                    		</script>
 										</if>
 									</case>
 	                    			<!-- end validating-->
+	                    			</empty>
 								</body>
 								</loop>
-							</var-def>
+
                         </else>
                     </case>
                         
@@ -275,11 +285,12 @@
                                 </html-to-xml>
                             </xpath>       
                         </var-def>
-                        <loop item="nameOfArch1" filter="unique">
+                        <loop item="nameOfArch1" filter="unique" empty="yes">
                             <list>
                                    <var name="nameArch1"/>
                             </list>
                             <body>
+                            	<empty>
                                 <script language="javascript">
                                         <![CDATA[
                                                 var str = nameOfArch1.toString();
@@ -389,7 +400,7 @@
                                 
                                 </else>
                                 </case>
-                                 
+                                </empty> 
                             </body>
                         </loop>
                         <var-def name = "ArchAttractionLinks">
@@ -419,11 +430,12 @@
                                             </html-to-xml>
                                         </xpath> 
                                     </var-def>
-                                    <loop item="linkarch1" filter="unique">
+                                    <loop item="linkarch1" filter="unique" empty="yes">
                                         <list>
                                                <var name="linksAttr1"/>
                                         </list>
                                         <body>
+                                        	<empty>
                                             <var-def name="contentLinkarch1">
                                                 <html-to-xml>
                                                     <http url="${linkarch1}"/>
@@ -446,12 +458,14 @@
                                                         </html-to-xml>
                                                     </xpath>
                                                     </var-def>
-                                                    <var-def name="photoAttr1">
-														<loop item="photoUrl" index="i" filter="unique">
+                                                    <var-def name="photoAttr1"/>
+                                                    <var-def name="validated"/>
+														<loop item="photoUrl" index="i" filter="unique" empty="yes">
 															<list>
 																<var name="photosAttr1"/>
 															</list>								
 														<body>
+															<empty>
 															<!-- validate attr1 image -->
 								                    		<var-def name="checkUrl">
 						 										<http url='${photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}'/>
@@ -460,14 +474,22 @@
 														    	sys.defineVariable("status", http.statusCode, true);
 															</script>
 															<case>
-																<if condition='${status.toString().equals("200.0")}'>
-										                    		<script return='photoUrl.toString() + &quot;;&quot;'/>
+																<if condition='${status.toString().equals("200.0")}'>										                    		
+										                    		<script language="javascript">
+										                    			<![CDATA[ 
+										                    			var loaded = validated.toString();
+																		var pUrl = photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";");
+																		var result = validated + pUrl + ";";
+										                    			 ]]>
+										                    			 sys.defineVariable("photoAttr1", result.toString(), true);
+										                    		</script>
 																</if>
 															</case>
 							                    			<!-- end validating-->
+							                    			</empty>
 														</body>
 														</loop>
-													</var-def>
+
 
                                                 </else>
                                             </case>
@@ -571,7 +593,7 @@
                                                 </if>
                                                 <else>
                                                     <text>images</text>
-                                                    <template>${photoAttr1.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}</template>
+                                                    <template>${photoAttr1.toString()}</template>
                                         
                                                 </else>
                                             </case>
@@ -581,7 +603,7 @@
                                 <var-def name="addToDB">
                                     1
                                 </var-def>
-                                            
+                                            </empty>
                                         </body>
                                     </loop>
                                 </if>
@@ -593,11 +615,12 @@
                                             </html-to-xml>
                                         </xpath> 
                                     </var-def>
-                                    <loop item="linksOfArch2" filter="unique">
+                                    <loop item="linksOfArch2" filter="unique" empty="yes">
                                         <list>
                                                <var name="unicpagesAttr"/>
                                         </list>
                                     <body>
+                                    	<empty>
                                         <var-def name="siteName">
                                             http://sightseen.turistua.com/
                                         </var-def>
@@ -608,11 +631,12 @@
                                                 </html-to-xml>
                                             </xpath> 
                                         </var-def>
-                                        <loop item="linkarch2" filter="unique">
+                                        <loop item="linkarch2" filter="unique" empty="yes">
                                             <list>
                                                    <var name="linksAttr2"/>
                                             </list>
                                             <body>
+                                            	<empty>
                                                 <var-def name="contentLinkarch2">
                                                     <html-to-xml>
                                                         <http url="${linkarch2}"/>
@@ -634,12 +658,14 @@
                                                                 </html-to-xml>
                                                             </xpath>
                                                         </var-def>
-                                                        <var-def name="photoAttr2">
-														<loop item="photoUrl" index="i" filter="unique">
+														<var-def name="photoAttr2"/>
+	                                                    <var-def name="validated"/>
+														<loop item="photoUrl" index="i" filter="unique" empty="yes">
 															<list>
 																<var name="photosAttr2"/>
 															</list>								
 														<body>
+															<empty>
 															<!-- validate attr2 image -->
 								                    		<var-def name="checkUrl">
 						 										<http url='${photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}'/>
@@ -649,13 +675,20 @@
 															</script>
 															<case>
 																<if condition='${status.toString().equals("200.0")}'>
-										                    		<script return='photoUrl.toString() + &quot;;&quot;'/>
+										                    		<script language="javascript">
+										                    			<![CDATA[ 
+										                    			var loaded = validated.toString();
+																		var pUrl = photoUrl.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";");
+																		var result = validated + pUrl + ";";
+										                    			 ]]>
+										                    			 sys.defineVariable("photoAttr2", result.toString(), true);
+										                    		</script>
 																</if>
 															</case>
 							                    			<!-- end validating-->
+							                    			</empty>
 														</body>
 														</loop>
-													</var-def>
 
                                                     </else>
                                                 </case>
@@ -758,7 +791,7 @@
                                                             
                                                             <text>images</text>
                                                             
-                                                              <template>${photoAttr2.toString().replaceAll("/pictures/",siteNameKL.toString() + "/pictures/").replaceAll("/pict135x95","").replaceAll("\n",";")}</template>
+                                                              <template>${photoAttr2.toString()}</template>
                                                           </else>
                                                     </case>
                                      
@@ -767,9 +800,10 @@
                                                 <var-def name="addToDB">
                                                     1
                                                 </var-def>
-                                            
+                                                </empty>
                                             </body>
                                         </loop>
+                                        </empty>
                                     </body>
                                 </loop>
                             
