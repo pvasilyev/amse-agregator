@@ -115,7 +115,7 @@
 			                       <var name="allCity"/>
 			                </list>
 			                <body>
-			                	
+			                	<empty>
 				                <var-def name="cityContent">
 				                    <html-to-xml>
 				                        <http url="${citylink}" charset="UTF-8"/>
@@ -139,13 +139,14 @@
 			                    </var-def>
 			                    
 			                    <var-def name="cityImages">
-				                    <loop item="imageUrl" index="i" filter="unique">
+				                    <loop item="imageUrl" index="i" filter="unique" empty="yes">
 				                    	<list>
 					                        <xpath expression="//div[@class='itemtext']//img/@src">
 					                            <var name="cityContent"/>
 					                        </xpath>
 				                    	</list>
 				                    	<body>
+				                    		<empty>
 				                    		<!-- validate city image -->
 				                    		<empty>
 				                    		<var-def name="checkUrl">
@@ -159,8 +160,9 @@
 												<if condition='${status.toString().equals("200.0")}'>
 						                    		<script return='imageUrl.toString() + &quot;;&quot;'/>
 												</if>
-											</case>
+											</case>											
 				                    		<!-- end validating-->											
+				                    		</empty>
 				                    	</body>
 									</loop>
 			                     </var-def>
@@ -308,6 +310,7 @@
 			                               <var name="ArchAttractionLinks"/>
 			                        </list>
 			                        <body>
+			                        	<empty>
 			                        	<var-def name = "ArchAttractionContent">
 		                                    <html-to-xml>
 		                                        <http url="${ArchAttractionLink}" charset="UTF-8"/>
@@ -370,6 +373,7 @@
 			                            <var-def name="addToDB">
 			                                  1
 			                            </var-def>
+			                            </empty>
 			                        </body>
 			                    </loop>
 			        
@@ -464,6 +468,7 @@
 			                            </var-def>
 			                        </body>
 			                    </loop>
+			                    </empty>
 			                </body>
 			            </loop>
 			        </body>
